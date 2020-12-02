@@ -1,9 +1,13 @@
 import days.day1.Day1
+import days.day2.Day2
 import framework.TaskRunner
 
-fun main() {
-    val days = listOf(Day1())
+val days = listOf(
+    Day1(),
+    Day2()
+)
 
+fun main() {
     for (day in days) {
         println("Day ${day.n}: ${day.title}")
 

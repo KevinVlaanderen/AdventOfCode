@@ -1,5 +1,7 @@
 package days.day1
 
+import days.day1.tasks.Task1
+import days.day1.tasks.Task2
 import framework.Day
 import framework.TaskDescription
 

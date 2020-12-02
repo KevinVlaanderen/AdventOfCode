@@ -1,4 +1,4 @@
-package days.day1
+package days.day1.tasks
 
 import framework.exceptions.AnswerNotFoundException
 import framework.Task

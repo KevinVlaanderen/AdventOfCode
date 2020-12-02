@@ -1,4 +1,4 @@
-package util
+package shared
 
 class FileUtil {
     fun readResource(path: String): String? =

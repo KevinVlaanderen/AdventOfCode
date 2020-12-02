@@ -1,6 +1,6 @@
 plugins {
-    java
-    kotlin("jvm") version "1.4.10"
+    `java-library`
+    kotlin("jvm")
 }
 
 group = "com.kevinvlaanderen"

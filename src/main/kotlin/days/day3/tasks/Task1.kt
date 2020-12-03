@@ -6,14 +6,9 @@ import shared.FileUtil
 
 class Task1: Task {
     override fun run(): TaskResult {
-        val input = FileUtil.readResource("/day3")
+        val input = FileUtil.readResource("/day3").lines().filter { it != "" }
 
-        val lines = input.lines().filter { it != "" }
-        val height = lines.size
-        val width = lines[0].length
-
-        val steps = (0 until height).map { (it*3)%width }
-        val count = steps.mapIndexed { row, step -> lines[row][step] }.count { it == '#' }
+        val count = countTrees(input, 3, 1)
 
         return TaskResult(count)
     }

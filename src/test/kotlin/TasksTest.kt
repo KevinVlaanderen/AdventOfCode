@@ -42,5 +42,10 @@ class TasksTest {
             val result = TaskRunner.run(day.tasks[0].implementation)
             assertEquals("247", result.answer)
         }
+
+        @Test fun task2() {
+            val result = TaskRunner.run(day.tasks[1].implementation)
+            assertEquals("2983070376", result.answer)
+        }
     }
 }

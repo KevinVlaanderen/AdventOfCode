@@ -1,17 +1,15 @@
-import days.day1.Day1
-import days.day2.Day2
-import days.day3.Day3
+import framework.Day
 import framework.TaskRunner
 
-val days = listOf(
-    Day1(),
-    Day2(),
-    Day3()
+val daysList = listOf(
+    Day(1, "Report Repair", listOf(days.day1.Task1(), days.day1.Task2())),
+    Day(2, "Password Philosophy", listOf(days.day2.Task1(), days.day2.Task2())),
+    Day(3, "Toboggan Trajectory", listOf(days.day3.Task1(), days.day3.Task2())),
 )
 
 fun main() {
-    for (day in days) {
-        println("Day ${day.n}: ${day.title}")
+    for (day in daysList) {
+        println("Day ${day.number}: ${day.title}")
 
         for (task in day.tasks) {
             val result = TaskRunner.run(task)

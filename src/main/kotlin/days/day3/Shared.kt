@@ -1,4 +1,4 @@
-package days.day3.tasks
+package days.day3
 
 fun countTrees(input: List<String>, deltaX: Int, deltaY: Int): Int =
     input

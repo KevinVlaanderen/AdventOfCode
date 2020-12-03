@@ -1,4 +1,4 @@
-package days.day2.tasks
+package days.day2
 
 import framework.Task
 import framework.TaskResult

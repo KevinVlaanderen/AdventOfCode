@@ -14,7 +14,7 @@ fun main() {
         for (task in day.tasks) {
             val result = TaskRunner.run(task)
 
-            println("\tResult for task ${task.number}: ${result.answer}")
+            println("\tResult for task ${task.number}: ${result.getOrNull()}")
         }
     }
 }

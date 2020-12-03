@@ -1,5 +1,5 @@
 package framework
 
 object TaskRunner {
-    fun run(task: Task): TaskResult = task.run()
+    fun <T : Any?>run(task: Task<T>): Result<T> = task.run()
 }

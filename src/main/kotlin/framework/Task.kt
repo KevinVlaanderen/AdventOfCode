@@ -1,8 +1,3 @@
 package framework
 
-interface Task {
-    fun run(): TaskResult
-
-    val number: Int
-    val description: String
-}
+abstract class Task<T>(val number: Int) : Runnable<T>

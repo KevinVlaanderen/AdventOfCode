@@ -14,9 +14,9 @@ fun main() {
         println("Day ${day.n}: ${day.title}")
 
         for (task in day.tasks) {
-            val result = TaskRunner.run(task.implementation)
+            val result = TaskRunner.run(task)
 
-            println("\tResult for task ${task.n}: ${result.answer}")
+            println("\tResult for task ${task.number}: ${result.answer}")
         }
     }
 }

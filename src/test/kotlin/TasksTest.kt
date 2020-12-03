@@ -17,7 +17,7 @@ class TaskTest {
         Triple(Day3(), 2, "2983070376"))
         .map { (day, task, answer) ->
             DynamicTest.dynamicTest("The answer for ${day.n} task $task is $answer") {
-                val result = TaskRunner.run(day.tasks[task-1].implementation)
+                val result = TaskRunner.run(day.tasks[task-1])
                 assertThat(result.answer).isEqualTo(answer)
             }
         }

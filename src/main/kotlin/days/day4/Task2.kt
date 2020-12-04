@@ -2,13 +2,10 @@ package days.day4
 
 import framework.Task
 import shared.extractDictionary
-import shared.readResource
 import shared.toBlocks
 
 class Task2 : Task<Int>(2) {
-    override fun run(): Result<Int> {
-        val input = readResource("/day4")
-
+    override fun run(input: String): Result<Int> {
         val requiredFields = PassportField.values().filter { it.required }
 
         val count = input

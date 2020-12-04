@@ -1,12 +1,9 @@
 package days.day2
 
 import framework.Task
-import shared.readResource
 
 class Task2 : Task<Int>(2) {
-    override fun run(): Result<Int> {
-        val input = readResource("/day2")
-
+    override fun run(input: String): Result<Int> {
         val regex = """(\d+)-(\d+) ([a-z]): (.*)""".toRegex()
 
         val matches = regex.findAll(input)

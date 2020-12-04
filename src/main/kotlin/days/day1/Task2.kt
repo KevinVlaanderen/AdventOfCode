@@ -2,12 +2,9 @@ package days.day1
 
 import framework.Task
 import framework.exceptions.AnswerNotFoundException
-import shared.readResource
 
 class Task2 : Task<Int>(2) {
-    override fun run(): Result<Int> {
-        val input = readResource("/day1")
-
+    override fun run(input: String): Result<Int> {
         val data = input.lines().filter { it != "" }.map { it.toInt() }
 
         for ((firstIndex, first) in data.withIndex())

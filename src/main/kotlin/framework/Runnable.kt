@@ -1,5 +1,5 @@
 package framework
 
 interface Runnable<out T> {
-    fun run(): Result<T>
+    fun run(input: String): Result<T>
 }

@@ -9,12 +9,12 @@ object Task2 : Task<Int>() {
         val data = input.toLines().map { it.toInt() }
 
         for ((firstIndex, first) in data.withIndex())
-            for ((secondIndex, second) in data.drop(firstIndex+1).withIndex())
-                for (third in data.drop(secondIndex+1)) {
+            for ((secondIndex, second) in data.drop(firstIndex + 1).withIndex())
+                for (third in data.drop(secondIndex + 1)) {
                     if (first + second + third == 2020) {
                         return Result.success(first * second * third)
                     }
-        }
+                }
 
         return Result.failure(AnswerNotFoundException())
     }

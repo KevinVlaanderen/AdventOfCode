@@ -1,7 +1,5 @@
 package shared
 
-import java.lang.Exception
-
 fun readResource(path: String): String =
     when (val data = {}::class.java.getResource(path)?.readText(Charsets.UTF_8)) {
         is String -> data

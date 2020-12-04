@@ -1,5 +1,5 @@
 package shared
 
-interface IValidate {
+interface Validation {
     fun validate(value: String): Boolean
 }

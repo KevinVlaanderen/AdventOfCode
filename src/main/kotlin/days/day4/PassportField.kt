@@ -1,6 +1,6 @@
 package days.day4
 
-import shared.IValidate
+import shared.Validation
 
 val yearPattern = """\d{4}""".toRegex()
 val heightPattern = """(\d+)(cm|in)""".toRegex()
@@ -8,7 +8,7 @@ val hairColorPattern = """#[0-9a-f]{6}""".toRegex()
 val eyeColorPattern = """amb|blu|brn|gry|grn|hzl|oth""".toRegex()
 val passportIdPattern = """\d{9}""".toRegex()
 
-enum class PassportField(val acronym: String, val required: Boolean = true) : IValidate {
+enum class PassportField(val acronym: String, val required: Boolean = true) : Validation {
     BIRTH_YEAR("byr") {
         override fun validate(value: String): Boolean = yearPattern.matches(value) && value.toInt() in 1920..2002
     },

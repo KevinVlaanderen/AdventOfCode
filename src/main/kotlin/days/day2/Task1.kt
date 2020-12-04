@@ -1,11 +1,11 @@
 package days.day2
 
 import framework.Task
-import shared.FileUtil
+import shared.readResource
 
 class Task1 : Task<Int>(1) {
     override fun run(): Result<Int> {
-        val input = FileUtil.readResource("/day2")
+        val input = readResource("/day2")
 
         val regex = """(\d+)-(\d+) ([a-z]): (.*)""".toRegex()
 

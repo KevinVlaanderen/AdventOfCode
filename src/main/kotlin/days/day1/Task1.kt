@@ -2,11 +2,11 @@ package days.day1
 
 import framework.exceptions.AnswerNotFoundException
 import framework.Task
-import shared.FileUtil
+import shared.readResource
 
 class Task1 : Task<Int>(1) {
     override fun run(): Result<Int> {
-        val input = FileUtil.readResource("/day1")
+        val input = readResource("/day1")
 
         val data = input.lines().filter { it != "" }.map { it.toInt() }
 

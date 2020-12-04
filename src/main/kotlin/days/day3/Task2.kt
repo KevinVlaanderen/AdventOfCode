@@ -1,11 +1,11 @@
 package days.day3
 
 import framework.Task
-import shared.FileUtil
+import shared.readResource
 
 class Task2 : Task<Long>(2) {
     override fun run(): Result<Long> {
-        val input = FileUtil.readResource("/day3").lines().filter { it != "" }
+        val input = readResource("/day3").lines().filter { it != "" }
 
         val count: Long =
             countTrees(input, 1, 1).toLong() *

@@ -3,7 +3,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 
-class TaskTest {
+class Tasks {
     @TestFactory
     fun testTasks() = listOf(
         Pair(days.day1.Task1(), 902451),

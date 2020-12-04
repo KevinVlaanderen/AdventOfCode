@@ -1,13 +1,13 @@
 package days.day4
 
 import framework.Task
-import shared.FileUtil
 import shared.extractDictionary
+import shared.readResource
 import shared.toBlocks
 
 class Task1 : Task<Int>(1) {
     override fun run(): Result<Int> {
-        val input = FileUtil.readResource("/day4")
+        val input = readResource("/day4")
 
         val count = input
             .toBlocks()

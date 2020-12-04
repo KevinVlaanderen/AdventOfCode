@@ -3,7 +3,7 @@ package days.day3
 import framework.Task
 import shared.toLines
 
-class Task1 : Task<Int>(1) {
+class Task1 : Task<Int>() {
     override fun run(input: String): Result<Int> {
         val data = input.toLines()
 

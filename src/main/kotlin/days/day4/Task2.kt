@@ -4,7 +4,7 @@ import framework.Task
 import shared.extractMap
 import shared.toBlocks
 
-class Task2 : Task<Int>(2) {
+class Task2 : Task<Int>() {
     override fun run(input: String): Result<Int> {
         val requiredFields = PassportField.values().filter { it.required }
 

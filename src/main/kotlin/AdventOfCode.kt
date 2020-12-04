@@ -1,21 +1,32 @@
 import framework.Day
 import framework.TaskRunner
 
-val daysList = listOf(
-    Day(1, "Report Repair", listOf(days.day1.Task1(), days.day1.Task2()), "/day1"),
-    Day(2, "Password Philosophy", listOf(days.day2.Task1(), days.day2.Task2()), "/day2"),
-    Day(3, "Toboggan Trajectory", listOf(days.day3.Task1(), days.day3.Task2()), "/day3"),
-    Day(4, "Passport Processing", listOf(days.day4.Task1(), days.day4.Task2()), "/day4"),
-)
+val daysList = mapOf(
+    1 to Day("Report Repair", mapOf(
+        1 to days.day1.Task1(),
+        2 to days.day1.Task2()),
+        "/day1"),
+    2 to Day("Password Philosophy", mapOf(
+        1 to days.day2.Task1(),
+        2 to days.day2.Task2()),
+        "/day2"),
+    3 to Day("Toboggan Trajectory", mapOf(
+        1 to days.day3.Task1(),
+        2 to days.day3.Task2()),
+        "/day3"),
+    4 to Day("Passport Processing", mapOf(
+        1 to days.day4.Task1(),
+        2 to days.day4.Task2()),
+        "/day4"))
 
 fun main() {
     for (day in daysList) {
-        println("Day ${day.number}: ${day.title}")
+        println("Day ${day.key}: ${day.value.title}")
 
-        for (task in day.tasks) {
-            val result = TaskRunner.run(task, day.defaultResourcePath)
+        for (task in day.value.tasks) {
+            val result = TaskRunner.run(task.value, day.value.defaultResourcePath)
 
-            println("\tResult for task ${task.number}: ${result.getOrNull()}")
+            println("\tResult for task ${task.key}: ${result.getOrNull()}")
         }
     }
 }

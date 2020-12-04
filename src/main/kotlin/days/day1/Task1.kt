@@ -4,7 +4,7 @@ import framework.Task
 import framework.exceptions.AnswerNotFoundException
 import shared.toLines
 
-class Task1 : Task<Int>() {
+object Task1 : Task<Int>() {
     override fun run(input: String): Result<Int> {
         val data = input.toLines().map { it.toInt() }
 

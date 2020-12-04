@@ -2,7 +2,7 @@ package days.day2
 
 import framework.Task
 
-class Task1 : Task<Int>() {
+object Task1 : Task<Int>() {
     override fun run(input: String): Result<Int> {
         val regex = """(\d+)-(\d+) ([a-z]): (.*)""".toRegex()
 

@@ -1,10 +1,11 @@
 package days.day3
 
 import framework.Task
+import shared.toLines
 
 class Task2 : Task<Long>(2) {
     override fun run(input: String): Result<Long> {
-        val data = input.lines().filter { it != "" }
+        val data = input.toLines()
 
         val count: Long =
             countTrees(data, 1, 1).toLong() *

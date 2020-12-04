@@ -1,10 +1,14 @@
 package shared
 
+fun String.toLines() = this
+    .lines()
+    .filter { it.trim() != "" }
+
 fun String.toBlocks() = this
     .split("""\n{2,}""".toRegex())
     .filter { it.trim() != "" }
 
-fun String.extractDictionary(separator: Char = ':') = this
+fun String.extractMap(separator: Char = ':') = this
     .split("""\s+""".toRegex())
     .filter { it.trim() != "" }
     .associate { field ->

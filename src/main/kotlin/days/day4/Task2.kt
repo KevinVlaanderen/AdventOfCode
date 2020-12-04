@@ -1,7 +1,7 @@
 package days.day4
 
 import framework.Task
-import shared.extractDictionary
+import shared.extractMap
 import shared.toBlocks
 
 class Task2 : Task<Int>(2) {
@@ -10,7 +10,7 @@ class Task2 : Task<Int>(2) {
 
         val count = input
             .toBlocks()
-            .map { block -> block.extractDictionary().mapKeys { PassportField.getPassportFieldByAcronym(it.key) } }
+            .map { block -> block.extractMap().mapKeys { PassportField.getPassportFieldByAcronym(it.key) } }
             .count { fields -> requiredFields.all { fields.containsKey(it) } && fields.all { it.key.validate(it.value) } }
 
         return Result.success(count)

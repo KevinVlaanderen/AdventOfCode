@@ -1,3 +1,3 @@
 package framework
 
-class Day(val title: String, val tasks: Map<Int, Task<*>>, val defaultResourcePath: String?)
+class Day(val title: String, val taskDescriptions: Map<Int, TaskDescription>, val defaultResourcePath: String?)

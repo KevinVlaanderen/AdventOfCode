@@ -8,8 +8,8 @@ object Task1 : Task<Int>() {
     override fun run(input: String): Result<Int> {
         val count = input
             .toBlocks()
-            .map { it.extractMap() }
-            .count { fields ->
+            .count { block ->
+                val fields = block.extractMap()
                 PassportField.values()
                     .filter { it.required }
                     .all { fields.containsKey(it.acronym) }

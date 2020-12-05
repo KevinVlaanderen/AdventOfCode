@@ -10,8 +10,10 @@ object Task2 : Task<Int>() {
 
         val count = input
             .toBlocks()
-            .map { block -> block.extractMap().mapKeys { PassportField.getPassportFieldByAcronym(it.key) } }
-            .count { fields -> requiredFields.all { fields.containsKey(it) } && fields.all { it.key.validate(it.value) } }
+            .count { block ->
+                val fields = block.extractMap().mapKeys { PassportField.getPassportFieldByAcronym(it.key) }
+                requiredFields.all { fields.containsKey(it) } && fields.all { it.key.validate(it.value) }
+            }
 
         return Result.success(count)
     }

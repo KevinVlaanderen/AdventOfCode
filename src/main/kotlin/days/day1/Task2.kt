@@ -6,7 +6,11 @@ import shared.toLines
 
 object Task2 : Task<Int>() {
     override fun run(input: String): Result<Int> {
-        val data = input.toLines().map { it.toInt() }
+        val data = input
+            .toLines()
+            .filter { it.isNotBlank() }
+            .map { it.toInt() }
+            .toList()
 
         for ((firstIndex, first) in data.withIndex())
             for ((secondIndex, second) in data.drop(firstIndex + 1).withIndex())

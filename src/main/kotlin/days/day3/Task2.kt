@@ -5,7 +5,7 @@ import shared.toLines
 
 object Task2 : Task<Long>() {
     override fun run(input: String): Result<Long> {
-        val data = input.toLines()
+        val data = input.toLines().toList()
 
         val result: Long =
             countTrees(data, 1, 1).toLong() *

@@ -1,8 +1,8 @@
 package framework
 
-import shared.readResource
+import shared.getResource
 
 object TaskRunner {
     fun <T : Any?> run(task: Task<T>, resourcePath: String): Result<T> =
-        task.run(readResource(resourcePath))
+        task.run(getResource(resourcePath))
 }

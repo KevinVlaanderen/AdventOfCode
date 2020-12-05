@@ -1,13 +1,17 @@
 package days.day2
 
 import framework.Task
+import java.net.URL
 
 object Task2 : Task<Int>() {
-    override fun run(input: String): Result<Int> {
+    override fun run(input: URL): Result<Int> {
         val regex = """(\d+)-(\d+) ([a-z]): (.*)""".toRegex()
 
-        val count = regex
-            .findAll(input)
+        val count = input
+            .openStream()
+            .bufferedReader()
+            .lineSequence()
+            .mapNotNull { line -> regex.find(line) }
             .count { matchResult ->
                 val groupValues = matchResult.groupValues
                 val firstIndex = groupValues[1].toInt() - 1

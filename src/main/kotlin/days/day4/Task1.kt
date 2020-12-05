@@ -3,10 +3,14 @@ package days.day4
 import framework.Task
 import shared.extractMap
 import shared.toBlocks
+import java.net.URL
 
 object Task1 : Task<Int>() {
-    override fun run(input: String): Result<Int> {
+    override fun run(input: URL): Result<Int> {
         val count = input
+            .openStream()
+            .bufferedReader()
+            .readText()
             .toBlocks()
             .count { block ->
                 val fields = block.extractMap()

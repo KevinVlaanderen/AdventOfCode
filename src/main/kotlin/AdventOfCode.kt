@@ -30,6 +30,13 @@ val daysList = mapOf(
             2 to TaskDescription(days.day4.Task2)
         ),
         "/day4"
+    ),
+    5 to Day(
+        "Passport Processing", mapOf(
+            1 to TaskDescription(days.day5.Task1),
+            2 to TaskDescription(days.day5.Task2)
+        ),
+        "/day4"
     )
 )
 

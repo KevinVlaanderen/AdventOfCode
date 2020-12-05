@@ -1,7 +1,9 @@
 package shared
 
-fun readResource(path: String): String =
-    when (val data = {}::class.java.getResource(path)?.readText(Charsets.UTF_8)) {
-        is String -> data
+import java.net.URL
+
+fun getResource(path: String): URL =
+    when (val url = {}::class.java.getResource(path)) {
+        is URL -> url
         else -> throw Exception("Failed to read resource $path")
     }

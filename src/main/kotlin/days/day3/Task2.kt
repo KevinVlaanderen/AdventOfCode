@@ -1,11 +1,14 @@
 package days.day3
 
 import framework.Task
-import shared.toLines
+import java.net.URL
 
 object Task2 : Task<Long>() {
-    override fun run(input: String): Result<Long> {
-        val data = input.toLines().toList()
+    override fun run(input: URL): Result<Long> {
+        val data = input
+            .openStream()
+            .bufferedReader()
+            .readLines()
 
         val result: Long =
             countTrees(data, 1, 1).toLong() *

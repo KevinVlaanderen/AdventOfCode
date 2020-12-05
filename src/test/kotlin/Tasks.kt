@@ -2,12 +2,12 @@ import framework.Task
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import shared.readResource
+import shared.getResource
 
 class Tasks {
     companion object {
         fun <T> testTask(task: Task<T>, resourcePath: String, expectedResult: T) {
-            val result = task.run(readResource(resourcePath))
+            val result = task.run(getResource(resourcePath))
             assertThat(result.getOrNull()).isEqualTo(expectedResult)
         }
     }
@@ -46,5 +46,14 @@ class Tasks {
 
         @Test
         fun task2() = testTask(days.day4.Task2, "/day4", 158)
+    }
+
+    @Nested
+    inner class Day5 {
+        @Test
+        fun task1() = testTask(days.day5.Task1, "/day5", 0)
+
+        @Test
+        fun task2() = testTask(days.day5.Task2, "/day5", 0)
     }
 }

@@ -54,6 +54,6 @@ class Tasks {
         fun task1() = testTask(days.day5.Task1, "/day5", 991)
 
         @Test
-        fun task2() = testTask(days.day5.Task2, "/day5", 0)
+        fun task2() = testTask(days.day5.Task2, "/day5", 534)
     }
 }

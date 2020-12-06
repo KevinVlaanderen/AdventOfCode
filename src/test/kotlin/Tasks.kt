@@ -56,4 +56,10 @@ class Tasks {
         @Test
         fun task2() = testTask(days.day5.Task2, "/day5", 534)
     }
+
+    @Nested
+    inner class Day56 {
+        @Test
+        fun task1() = testTask(days.day6.Task1, "/day6", 6633)
+    }
 }

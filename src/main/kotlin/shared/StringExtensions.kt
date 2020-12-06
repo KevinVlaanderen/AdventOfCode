@@ -6,12 +6,12 @@ fun String.toLines() = this
     .filter { it.isNotBlank() }
 
 fun String.toBlocks() = this
-    .splitToSequence("\n\n")
+    .splitToSequence(System.lineSeparator() + System.lineSeparator())
     .map { it.trim() }
     .filter { it.isNotBlank() }
 
 fun String.extractMap(separator: Char = ':') = this
-    .splitToSequence(' ', '\n')
+    .splitToSequence(" ", System.lineSeparator())
     .map { it.trim() }
     .filter { it.isNotBlank() }
     .associate { field ->

@@ -1,3 +1,4 @@
+import days.day8.machine.Instruction
 import framework.Task
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
@@ -79,5 +80,25 @@ class Tasks {
     inner class Day8 {
         @Test
         fun task1() = testTask(days.day8.Task1, "/day8", 2014)
+
+        @Test
+        fun task2() = testTask(days.day8.Task2, "/day8", 2251)
+
+        @Test
+        fun loadInstructions() {
+            val originalInput = getResource("/day8")
+                .openStream()
+                .bufferedReader()
+                .readText()
+
+            val instructions: List<Instruction> = getResource("/day8")
+                .openStream()
+                .bufferedReader()
+                .useLines { days.day8.loadInstructions(it) }
+
+            val output = instructions.joinToString("\n") { it.toString() }
+
+            assertThat(output.trim()).isEqualTo(originalInput.trim())
+        }
     }
 }

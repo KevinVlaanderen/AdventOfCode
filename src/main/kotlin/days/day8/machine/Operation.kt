@@ -1,4 +1,4 @@
-package days.day8
+package days.day8.machine
 
 enum class Operation(val keyword: String) {
     ACCUMULATE("acc"), JUMP("jmp"), NOOP("nop");

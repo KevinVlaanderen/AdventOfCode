@@ -3,7 +3,7 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 
-class Day4 {
+class PassportField {
     @TestFactory
     fun birthYear() = listOf(
         Pair(1920, true),

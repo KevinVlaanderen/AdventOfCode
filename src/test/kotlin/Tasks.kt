@@ -101,4 +101,10 @@ class Tasks {
             assertThat(output.trim()).isEqualTo(originalInput.trim())
         }
     }
+
+    @Nested
+    inner class Day9 {
+        @Test
+        fun task1() = testTask(days.day9.Task1, "/day9", 1504371145)
+    }
 }

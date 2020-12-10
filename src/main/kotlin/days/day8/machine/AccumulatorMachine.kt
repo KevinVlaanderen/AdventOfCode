@@ -26,7 +26,7 @@ object AccumulatorMachine {
 
             stack.add(nextInstruction)
 
-            if (stack.dropLast(1).contains(nextInstruction)) throw InfiniteLoopException(captureExecutionState())
+            if (stack.count { it == nextInstruction } > 1) throw InfiniteLoopException(captureExecutionState())
 
             executeInstruction(nextInstruction)
         }

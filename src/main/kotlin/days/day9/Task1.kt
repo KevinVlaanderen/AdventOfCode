@@ -1,6 +1,7 @@
 package days.day9
 
 import framework.Task
+import shared.generatePermutations
 import java.net.URL
 
 object Task1 : Task<Long>() {
@@ -14,15 +15,10 @@ object Task1 : Task<Long>() {
                 val target = window.last()
                 val preamble = window.dropLast(1)
 
-                generatePermutations(preamble).all { it.first + it.second != target }
+                preamble.generatePermutations().all { it.first + it.second != target }
             }
             .last()
 
         return Result.success(result)
     }
-}
-
-fun <T> generatePermutations(data: Collection<T>): Sequence<Pair<T, T>> = sequence {
-    for (first in data)
-        for (second in data.minus(first)) yield(Pair(first, second))
 }

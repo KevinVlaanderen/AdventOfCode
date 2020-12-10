@@ -65,6 +65,12 @@ val daysList = mapOf(
             2 to TaskDescription(days.day9.Task2)
         ),
         "/day9"
+    ),
+    10 to Day(
+        "Adapter Array", mapOf(
+            1 to TaskDescription(days.day10.Task1)
+        ),
+        "/day10"
     )
 )
 

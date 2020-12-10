@@ -11,7 +11,9 @@ object Task2 : Task<Long>() {
         val data = input
             .openStream()
             .bufferedReader()
-            .useLines { lines -> lines.map { it.toLong() }.toList() }
+            .lineSequence()
+            .map { it.toLong() }
+            .toList()
 
         generateSequence(2) { if (it < data.size) it + 1 else null }
             .forEach { windowSize ->

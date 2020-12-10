@@ -9,7 +9,9 @@ object Task1 : Task<Long>() {
         val result = input
             .openStream()
             .bufferedReader()
-            .useLines { lines -> lines.map { it.toLong() }.toList() }
+            .lineSequence()
+            .map { it.toLong() }
+            .toList()
             .windowed(26, 1)
             .first { window ->
                 val target = window.last()

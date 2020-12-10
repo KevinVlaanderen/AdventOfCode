@@ -11,12 +11,7 @@ object Task1 : Task<Int>() {
             .bufferedReader()
             .readText()
             .toBlocks()
-            .map { block ->
-                block
-                    .replace(System.lineSeparator(), "")
-                    .toSet()
-                    .size
-            }
+            .map { it.replace(System.lineSeparator(), "").toSet().size }
             .sum()
 
         return Result.success(result)

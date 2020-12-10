@@ -6,19 +6,16 @@ import java.net.URL
 
 object Task1 : Task<Int>() {
     override fun run(input: URL): Result<Int> {
-        input
+        val data = input
             .openStream()
             .bufferedReader()
-            .useLines { lines ->
-                val data = lines
-                    .filter { it.isNotBlank() }
-                    .map { it.toInt() }
-                    .toList()
+            .lineSequence()
+            .map { it.toInt() }
+            .toList()
 
-                for ((index, lower) in data.withIndex())
-                    for (upper in data.drop(index + 1)) {
-                        if (lower + upper == 2020) return Result.success(lower * upper)
-                    }
+        for ((index, lower) in data.withIndex())
+            for (upper in data.drop(index + 1)) {
+                if (lower + upper == 2020) return Result.success(lower * upper)
             }
 
         return Result.failure(AnswerNotFoundException())

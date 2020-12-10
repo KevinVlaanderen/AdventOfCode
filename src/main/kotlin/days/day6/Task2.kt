@@ -12,8 +12,8 @@ object Task2 : Task<Int>() {
             .bufferedReader()
             .readText()
             .toBlocks()
-            .map { block ->
-                block
+            .map {
+                it
                     .toLines()
                     .map { line -> line.toSet() }
                     .reduce { acc, set -> acc.intersect(set) }

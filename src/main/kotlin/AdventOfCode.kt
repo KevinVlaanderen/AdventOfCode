@@ -32,18 +32,39 @@ val daysList = mapOf(
         "/day4"
     ),
     5 to Day(
-        "Passport Processing", mapOf(
+        "Binary Boarding", mapOf(
             1 to TaskDescription(days.day5.Task1),
             2 to TaskDescription(days.day5.Task2)
         ),
-        "/day4"
+        "/day5"
     ),
     6 to Day(
-        "Passport Processing", mapOf(
-            1 to TaskDescription(days.day5.Task1),
-            2 to TaskDescription(days.day5.Task2)
+        "Custom Customs", mapOf(
+            1 to TaskDescription(days.day6.Task1),
+            2 to TaskDescription(days.day6.Task2)
         ),
-        "/day4"
+        "/day6"
+    ),
+    7 to Day(
+        "Handy Haversacks", mapOf(
+            1 to TaskDescription(days.day7.Task1),
+            2 to TaskDescription(days.day7.Task2)
+        ),
+        "/day7"
+    ),
+    8 to Day(
+        "Handheld Halting", mapOf(
+            1 to TaskDescription(days.day8.Task1),
+            2 to TaskDescription(days.day8.Task2)
+        ),
+        "/day8"
+    ),
+    9 to Day(
+        "Encoding Error", mapOf(
+            1 to TaskDescription(days.day9.Task1),
+            2 to TaskDescription(days.day9.Task2)
+        ),
+        "/day9"
     )
 )
 

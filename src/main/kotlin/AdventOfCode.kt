@@ -72,6 +72,13 @@ val daysList = mapOf(
             2 to TaskDescription(days.day10.Task2)
         ),
         "/day10"
+    ),
+    11 to Day(
+        "Seating System", mapOf(
+            1 to TaskDescription(days.day11.Task1),
+            2 to TaskDescription(days.day11.Task2),
+        ),
+        "/day11"
     )
 )
 

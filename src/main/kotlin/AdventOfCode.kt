@@ -83,6 +83,7 @@ val daysList = mapOf(
     12 to Day(
         "Rain Risk", mapOf(
             1 to TaskDescription(days.day12.Task1),
+            2 to TaskDescription(days.day12.Task2),
         ),
         "/day12"
     )

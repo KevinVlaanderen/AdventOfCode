@@ -10,13 +10,13 @@ fun extendGraphFromLine(
     line: String
 ) {
     val (fromBagName, remainder) = outerPattern.find(line)?.destructured ?: return
-    
-    graph.addNode(fromBagName)
+
+    val fromNode = graph.addNode(fromBagName)
 
     innerPattern.findAll(remainder).forEach {
         val (capacity, toBagName) = it.destructured
 
-        graph.addNode(toBagName)
-        graph.addEdge(fromBagName, toBagName, Capacity(capacity.toInt()))
+        val toNode = graph.addNode(toBagName)
+        graph.addEdge(fromNode, toNode, Capacity(capacity.toInt()))
     }
 }

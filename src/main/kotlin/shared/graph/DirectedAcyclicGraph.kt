@@ -9,7 +9,11 @@ class DirectedAcyclicGraph<N, E> {
     val edges: Set<Edge<N, E>>
         get() = _edges.toSet()
 
-    fun addNode(id: String, data: N? = null) = _nodes.add(Node(id, data))
+    fun addNode(id: String, data: N? = null): Node<N, E> {
+        val newNode = Node<N, E>(id, data)
+        val added = _nodes.add(newNode)
+        return if (added) newNode else _nodes.find { it.id == id }!!
+    }
 
     fun addEdge(from: String, to: String, data: E? = null) {
         val fromNode = _nodes.find { it.id == from }
@@ -18,9 +22,13 @@ class DirectedAcyclicGraph<N, E> {
         if (fromNode == null) throw RuntimeException("Node with id $from does not exist")
         if (toNode == null) throw RuntimeException("Node with id $to does not exist")
 
-        val edge = Edge(fromNode, toNode, data)
-        fromNode.addOutgoing(edge)
-        toNode.addIncoming(edge)
+        addEdge(fromNode, toNode, data)
+    }
+
+    fun addEdge(from: Node<N, E>, to: Node<N, E>, data: E? = null) {
+        val edge = Edge(from, to, data)
+        from.addOutgoing(edge)
+        to.addIncoming(edge)
         _edges.add(edge)
     }
 

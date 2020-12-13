@@ -122,11 +122,23 @@ class Tasks {
 
     @Nested
     inner class Day11 {
-        @Test
-        fun task1() = testTask(days.day11.Task1, "/day11", 2263)
+        @Nested
+        inner class Task1 {
+            @Test
+            fun solution() = testTask(days.day11.Task1, "/day11/input", 2263)
 
-        @Test
-        fun task2() = testTask(days.day11.Task2, "/day11", 2002)
+            @Test
+            fun example1() = testTask(days.day11.Task1, "/day11/task1/example1", 37)
+        }
+
+        @Nested
+        inner class Task2 {
+            @Test
+            fun solution() = testTask(days.day11.Task2, "/day11/input", 2002)
+
+            @Test
+            fun example1() = testTask(days.day11.Task2, "/day11/task1/example1", 26)
+        }
     }
 
     @Nested

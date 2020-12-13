@@ -90,6 +90,7 @@ val daysList = mapOf(
     13 to Day(
         "Shuttle Search", mapOf(
             1 to TaskDescription(days.day13.Task1),
+            2 to TaskDescription(days.day13.Task2),
         ),
         "/day13"
     )

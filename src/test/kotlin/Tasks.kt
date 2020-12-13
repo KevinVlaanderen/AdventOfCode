@@ -142,5 +142,11 @@ class Tasks {
     inner class Day13 {
         @Test
         fun task1() = testTask(days.day13.Task1, "/day13", 4722)
+
+        @Test
+        fun task2() = testTask(days.day13.Task2, "/day13", -1)
+
+        @Test
+        fun task2Short() = testTask(days.day13.Task2, "/day13short", -1)
     }
 }

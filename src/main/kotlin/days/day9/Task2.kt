@@ -4,10 +4,8 @@ import framework.Task
 import framework.exceptions.AnswerNotFoundException
 import java.net.URL
 
-object Task2 : Task<Long>() {
+class Task2(private val target: Long = 1504371145) : Task<Long>() {
     override fun run(input: URL): Result<Long> {
-        val target = 1504371145L
-
         val data = input
             .openStream()
             .bufferedReader()

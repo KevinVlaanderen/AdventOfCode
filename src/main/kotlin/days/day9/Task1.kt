@@ -4,7 +4,7 @@ import framework.Task
 import shared.generatePermutations
 import java.net.URL
 
-object Task1 : Task<Long>() {
+class Task1(private val preambleLength: Int = 25) : Task<Long>() {
     override fun run(input: URL): Result<Long> {
         val result = input
             .openStream()
@@ -12,7 +12,7 @@ object Task1 : Task<Long>() {
             .lineSequence()
             .map { it.toLong() }
             .toList()
-            .windowed(26, 1)
+            .windowed(preambleLength + 1, 1)
             .first { window ->
                 val target = window.last()
                 val preamble = window.dropLast(1)

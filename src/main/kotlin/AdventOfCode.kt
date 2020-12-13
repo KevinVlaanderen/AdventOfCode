@@ -61,8 +61,8 @@ val daysList = mapOf(
     ),
     9 to Day(
         "Encoding Error", mapOf(
-            1 to TaskDescription(days.day9.Task1),
-            2 to TaskDescription(days.day9.Task2)
+            1 to TaskDescription(days.day9.Task1()),
+            2 to TaskDescription(days.day9.Task2())
         ),
         "/day9"
     ),

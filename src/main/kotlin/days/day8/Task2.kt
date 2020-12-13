@@ -5,7 +5,7 @@ import framework.Task
 import shared.replace
 import java.net.URL
 
-object Task2 : Task<Int>() {
+class Task2 : Task<Int>() {
     override fun run(input: URL): Result<Int> {
         val instructions: List<Instruction> = input
             .openStream()
@@ -15,7 +15,7 @@ object Task2 : Task<Int>() {
         var executionState: ExecutionState? = null
 
         try {
-            executionState = AccumulatorMachine.run(instructions)
+            executionState = AccumulatorMachine().run(instructions)
         } catch (e: InfiniteLoopException) {
             e.state.stack
                 .filter { it.operation == Operation.JUMP || it.operation == Operation.NOOP }
@@ -34,7 +34,7 @@ object Task2 : Task<Int>() {
                     val newInstructions = instructions.replace(newInstruction) { it.pointer == lastJumpOrNoop.pointer }
 
                     try {
-                        executionState = AccumulatorMachine.run(newInstructions)
+                        executionState = AccumulatorMachine().run(newInstructions)
                         return@retry
                     } catch (e: Throwable) {
                     }

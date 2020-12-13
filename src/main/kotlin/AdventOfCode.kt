@@ -5,57 +5,57 @@ import framework.TaskRunner
 val daysList = mapOf(
     1 to Day(
         "Report Repair", mapOf(
-            1 to TaskDescription(days.day1.Task1),
-            2 to TaskDescription(days.day1.Task2)
+            1 to TaskDescription(days.day1.Task1()),
+            2 to TaskDescription(days.day1.Task2())
         ),
         "/day1"
     ),
     2 to Day(
         "Password Philosophy", mapOf(
-            1 to TaskDescription(days.day2.Task1),
-            2 to TaskDescription(days.day2.Task2)
+            1 to TaskDescription(days.day2.Task1()),
+            2 to TaskDescription(days.day2.Task2())
         ),
         "/day2"
     ),
     3 to Day(
         "Toboggan Trajectory", mapOf(
-            1 to TaskDescription(days.day3.Task1),
-            2 to TaskDescription(days.day3.Task2)
+            1 to TaskDescription(days.day3.Task1()),
+            2 to TaskDescription(days.day3.Task2())
         ),
         "/day3"
     ),
     4 to Day(
         "Passport Processing", mapOf(
-            1 to TaskDescription(days.day4.Task1),
-            2 to TaskDescription(days.day4.Task2)
+            1 to TaskDescription(days.day4.Task1()),
+            2 to TaskDescription(days.day4.Task2())
         ),
         "/day4"
     ),
     5 to Day(
         "Binary Boarding", mapOf(
-            1 to TaskDescription(days.day5.Task1),
-            2 to TaskDescription(days.day5.Task2)
+            1 to TaskDescription(days.day5.Task1()),
+            2 to TaskDescription(days.day5.Task2())
         ),
         "/day5"
     ),
     6 to Day(
         "Custom Customs", mapOf(
-            1 to TaskDescription(days.day6.Task1),
-            2 to TaskDescription(days.day6.Task2)
+            1 to TaskDescription(days.day6.Task1()),
+            2 to TaskDescription(days.day6.Task2())
         ),
         "/day6"
     ),
     7 to Day(
         "Handy Haversacks", mapOf(
-            1 to TaskDescription(days.day7.Task1),
-            2 to TaskDescription(days.day7.Task2)
+            1 to TaskDescription(days.day7.Task1()),
+            2 to TaskDescription(days.day7.Task2())
         ),
         "/day7"
     ),
     8 to Day(
         "Handheld Halting", mapOf(
-            1 to TaskDescription(days.day8.Task1),
-            2 to TaskDescription(days.day8.Task2)
+            1 to TaskDescription(days.day8.Task1()),
+            2 to TaskDescription(days.day8.Task2())
         ),
         "/day8"
     ),
@@ -68,29 +68,29 @@ val daysList = mapOf(
     ),
     10 to Day(
         "Adapter Array", mapOf(
-            1 to TaskDescription(days.day10.Task1),
-            2 to TaskDescription(days.day10.Task2)
+            1 to TaskDescription(days.day10.Task1()),
+            2 to TaskDescription(days.day10.Task2())
         ),
         "/day10"
     ),
     11 to Day(
         "Seating System", mapOf(
-            1 to TaskDescription(days.day11.Task1),
-            2 to TaskDescription(days.day11.Task2),
+            1 to TaskDescription(days.day11.Task1()),
+            2 to TaskDescription(days.day11.Task2()),
         ),
         "/day11"
     ),
     12 to Day(
         "Rain Risk", mapOf(
-            1 to TaskDescription(days.day12.Task1),
-            2 to TaskDescription(days.day12.Task2),
+            1 to TaskDescription(days.day12.Task1()),
+            2 to TaskDescription(days.day12.Task2()),
         ),
         "/day12"
     ),
     13 to Day(
         "Shuttle Search", mapOf(
-            1 to TaskDescription(days.day13.Task1),
-            2 to TaskDescription(days.day13.Task2),
+            1 to TaskDescription(days.day13.Task1()),
+            2 to TaskDescription(days.day13.Task2()),
         ),
         "/day13"
     )

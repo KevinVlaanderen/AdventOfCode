@@ -4,7 +4,7 @@ import framework.Task
 import framework.exceptions.AnswerNotFoundException
 import java.net.URL
 
-object Task1 : Task<Int>() {
+class Task1 : Task<Int>() {
     override fun run(input: URL): Result<Int> {
         val data = input
             .openStream()

@@ -4,7 +4,7 @@ import framework.Task
 import java.net.URL
 import kotlin.math.*
 
-object Task2 : Task<Int>() {
+class Task2 : Task<Int>() {
     override fun run(input: URL): Result<Int> {
         var shipX = 0
         var shipY = 0

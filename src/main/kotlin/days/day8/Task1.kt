@@ -6,7 +6,7 @@ import days.day8.machine.Instruction
 import framework.Task
 import java.net.URL
 
-object Task1 : Task<Int>() {
+class Task1 : Task<Int>() {
     override fun run(input: URL): Result<Int> {
         val instructions: List<Instruction> = input
             .openStream()
@@ -14,7 +14,7 @@ object Task1 : Task<Int>() {
             .useLines { loadInstructions(it) }
 
         try {
-            AccumulatorMachine.run(instructions)
+            AccumulatorMachine().run(instructions)
         } catch (e: InfiniteLoopException) {
             return Result.success(e.state.registers["acc"]!!)
         }

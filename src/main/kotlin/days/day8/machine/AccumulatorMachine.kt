@@ -1,6 +1,6 @@
 package days.day8.machine
 
-object AccumulatorMachine {
+class AccumulatorMachine {
     private var instructionPointer = 0
     private var stack = mutableListOf<Instruction>()
     private var registers = mutableMapOf("acc" to 0)

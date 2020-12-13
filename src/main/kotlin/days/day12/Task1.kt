@@ -4,7 +4,7 @@ import framework.Task
 import java.net.URL
 import kotlin.math.absoluteValue
 
-object Task1 : Task<Int>() {
+class Task1 : Task<Int>() {
     override fun run(input: URL): Result<Int> {
         var x = 0
         var y = 0

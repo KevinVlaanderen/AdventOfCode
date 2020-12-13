@@ -5,7 +5,7 @@ import shared.extractMap
 import shared.toBlocks
 import java.net.URL
 
-object Task2 : Task<Int>() {
+class Task2 : Task<Int>() {
     override fun run(input: URL): Result<Int> {
         val requiredFields = PassportField.values().filter { it.required }
 

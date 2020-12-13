@@ -5,7 +5,7 @@ import shared.graph.DirectedAcyclicGraph
 import shared.graph.Node
 import java.net.URL
 
-object Task2 : Task<Long>() {
+class Task2 : Task<Long>() {
     override fun run(input: URL): Result<Long> {
         val graph = DirectedAcyclicGraph<Nothing, Nothing>()
 

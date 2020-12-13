@@ -3,7 +3,7 @@ package days.day3
 import framework.Task
 import java.net.URL
 
-object Task2 : Task<Long>() {
+class Task2 : Task<Long>() {
     override fun run(input: URL): Result<Long> {
         val data = input
             .openStream()

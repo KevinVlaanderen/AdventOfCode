@@ -78,20 +78,32 @@ class Tasks {
 
     @Nested
     inner class Day8 {
-        @Test
-        fun task1() = testTask(days.day8.Task1, "/day8", 2014)
+        @Nested
+        inner class Task1 {
+            @Test
+            fun solution() = testTask(days.day8.Task1, "/day8/input", 2014)
 
-        @Test
-        fun task2() = testTask(days.day8.Task2, "/day8", 2251)
+            @Test
+            fun example1() = testTask(days.day8.Task1, "/day8/task1/example1", 5)
+        }
+
+        @Nested
+        inner class Task2 {
+            @Test
+            fun solution() = testTask(days.day8.Task2, "/day8/input", 2251)
+
+            @Test
+            fun example1() = testTask(days.day8.Task2, "/day8/task2/example1", 8)
+        }
 
         @Test
         fun loadInstructions() {
-            val originalInput = getResource("/day8")
+            val originalInput = getResource("/day8/input")
                 .openStream()
                 .bufferedReader()
                 .readText()
 
-            val instructions: List<Instruction> = getResource("/day8")
+            val instructions: List<Instruction> = getResource("/day8/input")
                 .openStream()
                 .bufferedReader()
                 .useLines { days.day8.loadInstructions(it) }
@@ -110,7 +122,7 @@ class Tasks {
             fun solution() = testTask(days.day9.Task1(), "/day9/input", 1504371145)
 
             @Test
-            fun example1() = testTask(days.day9.Task1(5), "/day9/task2/example1", 127)
+            fun example1() = testTask(days.day9.Task1(5), "/day9/task1/example1", 127)
         }
 
         @Nested

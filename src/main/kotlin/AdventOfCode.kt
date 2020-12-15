@@ -100,6 +100,12 @@ val daysList = mapOf(
             2 to TaskDescription(days.day14.Task2()),
         ),
         "/day14"
+    ),
+    15 to Day(
+        "Rambunctious Recitation", mapOf(
+            1 to TaskDescription(days.day15.Task1()),
+        ),
+        "/day15"
     )
 )
 

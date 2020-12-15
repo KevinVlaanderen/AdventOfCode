@@ -97,6 +97,7 @@ val daysList = mapOf(
     14 to Day(
         "Docking Data", mapOf(
             1 to TaskDescription(days.day14.Task1()),
+            2 to TaskDescription(days.day14.Task2()),
         ),
         "/day14"
     )

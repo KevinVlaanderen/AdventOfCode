@@ -111,6 +111,7 @@ val daysList = mapOf(
     16 to Day(
         "Ticket Translation", mapOf(
             1 to TaskDescription(days.day16.Task1()),
+            2 to TaskDescription(days.day16.Task2()),
         ),
         "/day16"
     )

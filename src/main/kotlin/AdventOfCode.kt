@@ -114,6 +114,12 @@ val daysList = mapOf(
             2 to TaskDescription(days.day16.Task2()),
         ),
         "/day16"
+    ),
+    17 to Day(
+        "Conway Cubes", mapOf(
+            1 to TaskDescription(days.day17.Task1()),
+        ),
+        "/day17"
     )
 )
 

@@ -8,70 +8,41 @@ class Task1 : Task<Long>() {
         val result = input.openStream()
             .bufferedReader()
             .lineSequence()
-            .map { lex(it).filter { token -> token.first != Token.WHITESPACE }.iterator() }
-            .map { parseExpression(it) }
-            .map { execute(it) }
-            .sum()
+            .map { line ->
+                var current = line
+                do {
+                    val previous = current
+                    current = solve(current)
+                } while (current != previous)
 
+                current.toLong()
+            }
+            .sum()
 
         return Result.success(result)
     }
 
-    private fun lex(line: String): Sequence<Pair<Token, String>> = sequence {
-        var index = 0
-        while (index < line.length) {
-            val (token, match) = Token.matchNextToken(line, index)
-            index = match.range.last + 1
-            yield(Pair(token, match.value))
-        }
+    private fun solve(text: String): String = listOf(
+        Pair(addPattern.find(text), replaceAdd),
+        Pair(multiplyPattern.find(text), replaceMultiply),
+        Pair(expressionPattern.find(text), replaceExpression)
+    )
+        .filter { it.first != null }
+        .minByOrNull { it.first!!.range.first }
+        ?.let { it.second(text, it.first!!) } ?: text
+
+    private val replaceAdd = fun(text: String, matchResult: MatchResult): String {
+        val (left, right) = matchResult.destructured
+        return addPattern.replaceFirst(text, (left.toLong() + right.toLong()).toString())
     }
 
-    private fun parseExpression(tokens: Iterator<Pair<Token, String>>, subExpression: Boolean = false): Expression {
-        var result: Expression? = null
-
-        while (tokens.hasNext()) {
-            val token = tokens.next()
-
-            result = when (token.first) {
-                Token.LEFT_PARENTHESIS -> parseExpression(tokens, true)
-                Token.RIGHT_PARENTHESIS -> if (result != null) return result else throw Exception("Unexpected ')'")
-                Token.NUMBER -> NumberExpression(token.second.toLong())
-                Token.ADD -> parseAddExpression(result, tokens)
-                Token.MULTIPLY -> {
-                    parseMultiplyExpression(result, tokens)
-                }
-                else -> throw Exception("Unexpected token ${token.first.name}")
-            }
-        }
-
-        if (subExpression) throw Exception("Expected ')'")
-
-        if (result == null) throw Exception("Expected expression") else return result
+    private val replaceMultiply = fun(text: String, matchResult: MatchResult): String {
+        val (left, right) = matchResult.destructured
+        return multiplyPattern.replaceFirst(text, (left.toLong() * right.toLong()).toString())
     }
 
-    private fun parseAddExpression(leftHand: Expression?, tokens: Iterator<Pair<Token, String>>): Expression {
-        if (leftHand == null) throw Exception("Unexpected '+'; expected expression")
-
-        val nextToken = if (tokens.hasNext()) tokens.next() else throw Exception("Expected expression")
-
-        return when (nextToken.first) {
-            Token.NUMBER -> AddExpression(leftHand, NumberExpression(nextToken.second.toLong()))
-            Token.LEFT_PARENTHESIS -> AddExpression(leftHand, parseExpression(tokens, true))
-            else -> throw Exception("Expected expression")
-        }
+    private val replaceExpression = fun(text: String, matchResult: MatchResult): String {
+        val (value) = matchResult.destructured
+        return expressionPattern.replaceFirst(text, value)
     }
-
-    private fun parseMultiplyExpression(leftHand: Expression?, tokens: Iterator<Pair<Token, String>>): Expression {
-        if (leftHand == null) throw Exception("Unexpected '+'; expected expression")
-
-        val nextToken = if (tokens.hasNext()) tokens.next() else throw Exception("Expected expression")
-
-        return when (nextToken.first) {
-            Token.NUMBER -> MultiplyExpression(leftHand, NumberExpression(nextToken.second.toLong()))
-            Token.LEFT_PARENTHESIS -> MultiplyExpression(leftHand, parseExpression(tokens, true))
-            else -> throw Exception("Expected expression")
-        }
-    }
-
-    private fun execute(expression: Expression) = expression.evaluate()
 }

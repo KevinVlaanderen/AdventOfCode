@@ -121,6 +121,12 @@ val daysList = mapOf(
             2 to TaskDescription(days.day17.Task2()),
         ),
         "/day17"
+    ),
+    18 to Day(
+        "Operation Order", mapOf(
+            1 to TaskDescription(days.day18.Task1()),
+        ),
+        "/day18"
     )
 )
 

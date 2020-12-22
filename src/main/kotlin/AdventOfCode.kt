@@ -132,6 +132,7 @@ val daysList = mapOf(
     19 to Day(
         "Monster Messages", mapOf(
             1 to TaskDescription(days.day19.Task1()),
+            2 to TaskDescription(days.day19.Task2()),
         ),
         "/day19"
     )

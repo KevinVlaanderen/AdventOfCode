@@ -142,6 +142,12 @@ val daysList = mapOf(
             2 to TaskDescription(days.day20.Task2()),
         ),
         "/day20"
+    ),
+    21 to Day(
+        "Allergen Assessment", mapOf(
+            1 to TaskDescription(days.day21.Task1()),
+        ),
+        "/day21"
     )
 )
 

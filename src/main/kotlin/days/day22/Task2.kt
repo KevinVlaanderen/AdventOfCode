@@ -4,7 +4,7 @@ import framework.Task
 import shared.toBlocks
 import java.net.URL
 
-class Task1 : Task<Int>() {
+class Task2 : Task<Int>() {
     override fun run(input: URL): Result<Int> {
         val decks = input.openStream()
             .bufferedReader()
@@ -13,7 +13,7 @@ class Task1 : Task<Int>() {
             .map { Deck.fromInput(it) }
             .toList()
 
-        val winningDeck = Combat(Pair(decks[0], decks[1])).play()
+        val winningDeck = RecursiveCombat(Pair(decks[0], decks[1])).play()
         val numberOfCards = winningDeck.cards.count()
 
         val result = winningDeck.cards.foldIndexed(0) { index, acc, card -> acc + card * (numberOfCards - index) }

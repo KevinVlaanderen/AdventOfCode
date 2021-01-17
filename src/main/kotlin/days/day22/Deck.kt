@@ -9,14 +9,15 @@ class Deck(val name: String, cards: List<Int>) {
     val hasCards: Boolean
         get() = _cards.isNotEmpty()
 
-    fun getTopCard(): Int {
+    fun drawTopCard(): Int {
         val topCard = cards.first()
         _cards = cards.drop(1)
         return topCard
     }
 
-    fun addCardToBottom(card: Int) {
+    fun addCardToBottom(card: Int): Deck {
         _cards = cards + card
+        return this
     }
 
     companion object {

@@ -1,13 +1,17 @@
 package days.day22
 
-class Combat(private val decks: List<Deck>) {
+class Combat(private val decks: Pair<Deck, Deck>) {
     fun play(): Deck {
-        while (decks.all { it.hasCards }) {
-            val topCards = decks.map { it.getTopCard() }
-            val winner = topCards.mapIndexed { index, card -> Pair(card, index) }.maxByOrNull { it.first }!!
-            topCards.sorted().reversed().forEach { decks[winner.second].addCardToBottom(it) }
+        while (decks.first.hasCards && decks.second.hasCards) {
+            val topCards = Pair(decks.first.drawTopCard(), decks.second.drawTopCard())
+
+            if (topCards.first > topCards.second) {
+                decks.first.addCardToBottom(topCards.first).addCardToBottom(topCards.second)
+            } else {
+                decks.second.addCardToBottom(topCards.second).addCardToBottom(topCards.first)
+            }
         }
 
-        return decks.find { it.hasCards }!!
+        return if (decks.first.hasCards) decks.first else decks.second
     }
 }

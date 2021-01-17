@@ -3,8 +3,8 @@ package days.day21
 import framework.Task
 import java.net.URL
 
-class Task1 : Task<Int>() {
-    override fun run(input: URL): Result<Int> {
+class Task2 : Task<String>() {
+    override fun run(input: URL): Result<String> {
         val food = input.openStream()
             .bufferedReader()
             .lineSequence()
@@ -13,11 +13,10 @@ class Task1 : Task<Int>() {
 
         val allergenAnalysis = AllergenAnalysis(food)
 
-        val result = allergenAnalysis.ingredientsWithoutAllergen.sumOf { ingredient ->
-            food.count { listing ->
-                listing.ingredients.contains(ingredient)
-            }
-        }
+        val result = allergenAnalysis.allergenPerIngredient
+            .toList()
+            .sortedBy { it.second }
+            .joinToString(",") { it.first }
 
         return Result.success(result)
     }

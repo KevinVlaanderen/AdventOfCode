@@ -547,5 +547,15 @@ class Tasks {
             @Test
             fun example1() = testTask(days.day21.Task1(), "/day21/task1/example1", 5)
         }
+
+        @Nested
+        inner class Task2 {
+            @Test
+            fun solution() =
+                testTask(days.day21.Task2(), "/day21/input", "vcckp,hjz,nhvprqb,jhtfzk,mgkhhc,qbgbmc,bzcrknb,zmh")
+
+            @Test
+            fun example1() = testTask(days.day21.Task2(), "/day21/task2/example1", "mxmxvkd,sqjhc,fvjkl")
+        }
     }
 }

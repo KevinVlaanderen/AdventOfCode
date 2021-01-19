@@ -170,7 +170,13 @@ val daysList = mapOf(
             2 to TaskDescription(days.day24.Task2()),
         ),
         "/day24"
-    )
+    ),
+    25 to Day(
+        "Combo Breaker", mapOf(
+            1 to TaskDescription(days.day25.Task1()),
+        ),
+        "/day25"
+    ),
 )
 
 fun main() {

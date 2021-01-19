@@ -23,10 +23,7 @@ class Task2 : Task<Int>() {
                         Side.BLACK -> blackNeighbors == 0 || blackNeighbors > 2
                         Side.WHITE -> blackNeighbors == 2
                     }
-                }.forEach { it.flip() }.also { _ ->
-                    val blackTiles = floor.tiles.count { it.side == Side.BLACK }
-                    println("Day ${it + 1}: $blackTiles")
-                }
+                }.forEach { it.flip() }
         }
 
         val result = floor.tiles.count { it.side == Side.BLACK }

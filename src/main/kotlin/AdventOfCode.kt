@@ -163,6 +163,12 @@ val daysList = mapOf(
             2 to TaskDescription(days.day23.Task2()),
         ),
         "/day23"
+    ),
+    24 to Day(
+        "Lobby Layout", mapOf(
+            1 to TaskDescription(days.day24.Task1()),
+        ),
+        "/day24"
     )
 )
 

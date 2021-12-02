@@ -1,9 +1,11 @@
 import { loadData } from "./util";
 import * as day1 from "./tasks/day1";
+import * as day2 from "./tasks/day2";
 import { Results } from "./types";
 
 const tasks = {
   day1,
+  day2,
 };
 
 const results = Object.entries(tasks).reduce(

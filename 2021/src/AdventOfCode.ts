@@ -1,9 +1,6 @@
 import { loadData } from "./util";
 import * as day1 from "./tasks/day1";
-
-interface Results<T> {
-  [name: string]: T;
-}
+import { Results } from "./types";
 
 const tasks = {
   day1,

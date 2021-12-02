@@ -5,3 +5,9 @@ export function loadData(path: string) {
     .split("\n")
     .filter((entry) => entry !== "");
 }
+
+export function* window<T>(array: T[], size: number): Generator<T[]> {
+  for (let index = 0; index <= array.length - size; index++) {
+    yield array.slice(index, index + size);
+  }
+}

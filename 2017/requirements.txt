@@ -1,0 +1,13 @@
+-e git+git@github.com:KevinVlaanderen/AdventOfCode2017.git@9d44f0c034242ec5030aa9e0af12b77b91bff1b3#egg=aoc
+attrs==17.3.0
+blessings==1.6
+click==6.7
+inquirer==2.2.0
+pluggy==0.6.0
+py==1.5.2
+pydevd==1.1.1
+pytest==3.3.1
+pytest-mock==1.6.3
+readchar==0.7
+-e git+ssh://git@github.com/KevinVlaanderen/RunIt.git@b04f9ee476543e43ac0a167de21be73b15b12dc8#egg=runit
+six==1.11.0

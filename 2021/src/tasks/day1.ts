@@ -1,4 +1,4 @@
-import { Task } from "../../types";
+import { Task } from "../types";
 
 export const task1: Task = (data) => {
   const measurements = data.map((entry) => parseInt(entry, 10));

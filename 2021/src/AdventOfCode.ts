@@ -1,15 +1,17 @@
-import { tasks } from "./tasks";
-import { readFileSync } from "fs";
+import { loadData } from "./util";
+import * as day1 from "./tasks/day1";
 
 interface Results<T> {
   [name: string]: T;
 }
 
+const tasks = {
+  day1,
+};
+
 const results = Object.entries(tasks).reduce(
   (dayResult: Results<Results<number>>, [dayName, tasks]) => {
-    const data = readFileSync(`data/${dayName}`, "utf-8")
-      .split("\n")
-      .filter((entry) => entry !== "");
+    const data = loadData("data/${dayName}");
 
     return {
       ...dayResult,

@@ -2,7 +2,10 @@ import { Task } from "../types";
 import { window } from "../util";
 
 export const task1: Task = (data) => {
-  const numbers = data.map((entry) => parseInt(entry, 10));
+  const numbers = data
+    .split("\n")
+    .filter((entry) => entry !== "")
+    .map((entry) => parseInt(entry, 10));
   let count = 0;
 
   for (const measurements of window(numbers, 2)) {
@@ -15,7 +18,10 @@ export const task1: Task = (data) => {
 };
 
 export const task2: Task = (data) => {
-  const numbers = data.map((entry) => parseInt(entry, 10));
+  const numbers = data
+    .split("\n")
+    .filter((entry) => entry !== "")
+    .map((entry) => parseInt(entry, 10));
   let previous,
     count = 0;
 

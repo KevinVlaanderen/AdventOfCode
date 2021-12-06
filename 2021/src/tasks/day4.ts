@@ -5,12 +5,33 @@ type Card = Array<Array<{ number: number; foundAt: number }>>;
 export const task1: Task = (data) => {
   const blocks = data.split("\n\n").map((block) => block.trim());
 
-  const numbers = blocks
-    .shift()!
-    .split(",")
-    .map((item) => parseInt(item, 10));
+  const numbers = parseNumbers(blocks.shift()!);
+  const cards: Array<Card> = parseCards(blocks, numbers);
+  const cardsInOrder = orderCards(cards);
 
-  const cards: Array<Card> = blocks.map((block) =>
+  const firstCard = cardsInOrder[0];
+
+  return calculateScore(firstCard, numbers);
+};
+
+export const task2: Task = (data) => {
+  const blocks = data.split("\n\n").map((block) => block.trim());
+
+  const numbers = parseNumbers(blocks.shift()!);
+  const cards: Array<Card> = parseCards(blocks, numbers);
+  const cardsInOrder = orderCards(cards);
+
+  const lastCard = cardsInOrder[cardsInOrder.length - 1];
+
+  return calculateScore(lastCard, numbers);
+};
+
+function parseNumbers(block: string) {
+  return block.split(",").map((item) => parseInt(item, 10));
+}
+
+function parseCards(blocks: string[], numbers: number[]) {
+  return blocks.map((block) =>
     block.split("\n").map((line) =>
       line.match(/\d+/g)!.map((item) => {
         const number = parseInt(item, 10);
@@ -18,8 +39,10 @@ export const task1: Task = (data) => {
       }, {})
     )
   );
+}
 
-  const cardsInOrder = cards
+function orderCards(cards: Array<Card>) {
+  return cards
     .map((card) => ({
       card: card,
       doneAt: Math.min(
@@ -36,12 +59,17 @@ export const task1: Task = (data) => {
       ),
     }))
     .sort((a, b) => a.doneAt - b.doneAt);
+}
 
+function calculateScore(
+  firstCard: { doneAt: number; card: Card },
+  numbers: number[]
+) {
   return (
-    cardsInOrder[0].card
+    firstCard.card
       .flatMap((line) => line)
-      .filter((item) => item.foundAt > cardsInOrder[0].doneAt)
+      .filter((item) => item.foundAt > firstCard.doneAt)
       .reduce((result, current) => result + current.number, 0) *
-    numbers[cardsInOrder[0].doneAt]
+    numbers[firstCard.doneAt]
   );
-};
+}

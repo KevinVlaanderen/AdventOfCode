@@ -1,7 +1,26 @@
 import { Task } from "../types";
+import { zip } from "../util";
+
+type LineData = {
+  from: { x: number; y: number };
+  to: { x: number; y: number };
+};
 
 export const task1: Task = (data) => {
-  const map = data
+  const lineData = extractLines(data).filter(
+    (line) => line.from.x === line.to.x || line.from.y === line.to.y
+  );
+
+  return calculateResult(drawLines(lineData));
+};
+
+export const task2: Task = (data) => {
+  const lineData = extractLines(data);
+  return calculateResult(drawLines(lineData));
+};
+
+function extractLines(data: string) {
+  return data
     .split("\n")
     .filter((line) => line !== "")
     .map((line) => {
@@ -10,29 +29,44 @@ export const task1: Task = (data) => {
         from: { x: parseInt(data[1], 10), y: parseInt(data[2], 10) },
         to: { x: parseInt(data[3], 10), y: parseInt(data[4], 10) },
       };
-    })
-    .filter((line) => line.from.x === line.to.x || line.from.y === line.to.y)
-    .reduce<{ [x: number]: { [y: number]: number } }>((result, current) => {
-      for (const x of range(current.from.x, current.to.x, 1)) {
-        for (const y of range(current.from.y, current.to.y, 1)) {
-          if (result[x] === undefined) {
-            result[x] = { [y]: 1 };
-          } else {
-            result[x][y] = result[x][y] ? result[x][y] + 1 : 1;
-          }
-        }
-      }
-      return result;
-    }, {});
-
-  return Object.values(map)
-    .flatMap((line) => Object.values(line))
-    .filter((count) => count >= 2).length;
-};
+    });
+}
 
 function range(start: number, stop: number, step: number) {
   return Array.from(
     { length: Math.abs(stop - start) / step + 1 },
-    (_, i) => (start > stop ? stop : start) + i * step
+    (_, i) => start + i * step * (start > stop ? -1 : 1)
   );
+}
+
+function drawLines(lineData: LineData[]) {
+  return lineData.reduce<{ [x: number]: { [y: number]: number } }>(
+    (result, current) => {
+      const rangeX = range(current.from.x, current.to.x, 1);
+      const rangeY = range(current.from.y, current.to.y, 1);
+
+      const pairs =
+        rangeX.length === rangeY.length
+          ? zip(rangeX, rangeY)
+          : rangeX.length > rangeY.length
+          ? rangeX.map((x) => [x, rangeY[0]])
+          : rangeY.map((y) => [rangeX[0], y]);
+
+      for (const [x, y] of pairs) {
+        if (result[x] === undefined) {
+          result[x] = { [y]: 1 };
+        } else {
+          result[x][y] = result[x][y] ? result[x][y] + 1 : 1;
+        }
+      }
+      return result;
+    },
+    {}
+  );
+}
+
+function calculateResult(map: { [p: number]: { [p: number]: number } }) {
+  return Object.values(map)
+    .flatMap((line) => Object.values(line))
+    .filter((count) => count >= 2).length;
 }

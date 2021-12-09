@@ -1,30 +1,26 @@
-import { Task } from "../types";
+import { withBlocks } from "../parsers";
 
 type Card = Array<Array<{ number: number; foundAt: number }>>;
 
-export const task1: Task = (data) => {
-  const blocks = data.split("\n\n").map((block) => block.trim());
-
-  const numbers = parseNumbers(blocks.shift()!);
-  const cards: Array<Card> = parseCards(blocks, numbers);
+export const task1 = withBlocks((data) => {
+  const numbers = parseNumbers(data.shift()!);
+  const cards: Array<Card> = parseCards(data, numbers);
   const cardsInOrder = orderCards(cards);
 
   const firstCard = cardsInOrder[0];
 
   return calculateScore(firstCard, numbers);
-};
+});
 
-export const task2: Task = (data) => {
-  const blocks = data.split("\n\n").map((block) => block.trim());
-
-  const numbers = parseNumbers(blocks.shift()!);
-  const cards: Array<Card> = parseCards(blocks, numbers);
+export const task2 = withBlocks((data) => {
+  const numbers = parseNumbers(data.shift()!);
+  const cards: Array<Card> = parseCards(data, numbers);
   const cardsInOrder = orderCards(cards);
 
   const lastCard = cardsInOrder[cardsInOrder.length - 1];
 
   return calculateScore(lastCard, numbers);
-};
+});
 
 function parseNumbers(block: string) {
   return block.split(",").map((item) => parseInt(item, 10));

@@ -1,31 +1,23 @@
-import { Task } from "../types";
 import { window } from "../util";
+import { withNumbers } from "../parsers";
 
-export const task1: Task = (data) => {
-  const numbers = data
-    .split("\n")
-    .filter((entry) => entry !== "")
-    .map((entry) => parseInt(entry, 10));
+export const task1 = withNumbers((data) => {
   let count = 0;
 
-  for (const measurements of window(numbers, 2)) {
+  for (const measurements of window(data, 2)) {
     if (measurements[1] > measurements[0]) {
       count += 1;
     }
   }
 
   return count;
-};
+});
 
-export const task2: Task = (data) => {
-  const numbers = data
-    .split("\n")
-    .filter((entry) => entry !== "")
-    .map((entry) => parseInt(entry, 10));
+export const task2 = withNumbers((data) => {
   let previous,
     count = 0;
 
-  for (const measurements of window(numbers, 3)) {
+  for (const measurements of window(data, 3)) {
     const sum = measurements.reduce(
       (result, measurement) => result + measurement
     );
@@ -36,4 +28,4 @@ export const task2: Task = (data) => {
   }
 
   return count;
-};
+});

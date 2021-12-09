@@ -1,19 +1,13 @@
-import { Task } from "../types";
 import { range } from "../util";
+import { withNumbers } from "../parsers";
 
-export const task1: Task = (data) => {
-  return breed(
-    data.split(",").map((item) => parseInt(item, 10)),
-    80
-  );
-};
+export const task1 = withNumbers((data) => {
+  return breed(data, 80);
+}, ",");
 
-export const task2: Task = (data) => {
-  return breed(
-    data.split(",").map((item) => parseInt(item, 10)),
-    256
-  );
-};
+export const task2 = withNumbers((data) => {
+  return breed(data, 256);
+}, ",");
 
 function breed(fish: number[], iterations: number) {
   const buckets = Array.from(

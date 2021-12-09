@@ -1,35 +1,32 @@
-import { Task } from "../types";
 import { range, zip } from "../util";
+import { withLines } from "../parsers";
 
 type LineData = {
   from: { x: number; y: number };
   to: { x: number; y: number };
 };
 
-export const task1: Task = (data) => {
+export const task1 = withLines((data) => {
   const lineData = extractLines(data).filter(
     (line) => line.from.x === line.to.x || line.from.y === line.to.y
   );
 
   return calculateResult(drawLines(lineData));
-};
+});
 
-export const task2: Task = (data) => {
+export const task2 = withLines((data) => {
   const lineData = extractLines(data);
   return calculateResult(drawLines(lineData));
-};
+});
 
-function extractLines(data: string) {
-  return data
-    .split("\n")
-    .filter((line) => line !== "")
-    .map((line) => {
-      const data = line.match(/(\d+),(\d+) -> (\d+),(\d+)/)!;
-      return {
-        from: { x: parseInt(data[1], 10), y: parseInt(data[2], 10) },
-        to: { x: parseInt(data[3], 10), y: parseInt(data[4], 10) },
-      };
-    });
+function extractLines(data: string[]) {
+  return data.map((line) => {
+    const data = line.match(/(\d+),(\d+) -> (\d+),(\d+)/)!;
+    return {
+      from: { x: parseInt(data[1], 10), y: parseInt(data[2], 10) },
+      to: { x: parseInt(data[3], 10), y: parseInt(data[4], 10) },
+    };
+  });
 }
 
 function drawLines(lineData: LineData[]) {

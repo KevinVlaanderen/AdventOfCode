@@ -1,10 +1,9 @@
-import { Task } from "../types";
 import { zip } from "../util";
+import { withLines } from "../parsers";
 
-export const task1: Task = (data) => {
-  const lines = data.split("\n").filter((entry) => entry !== "");
-  const amount = lines.length;
-  const sums = lines
+export const task1 = withLines((data) => {
+  const amount = data.length;
+  const sums = data
     .map((number) => Array.from(number).map((bit) => parseInt(bit, 2)))
     .reduce((previous, current) =>
       zip(previous, current).map(([a, b]) => a + b)
@@ -17,19 +16,18 @@ export const task1: Task = (data) => {
   const epsilon = parseInt(leastCommonBits.join(""), 2);
 
   return gamma * epsilon;
-};
+});
 
-export const task2: Task = (data) => {
-  const numbers = data
-    .split("\n")
-    .filter((entry) => entry !== "")
-    .map((number) => Array.from(number).map((bit) => parseInt(bit, 2)));
+export const task2 = withLines((data) => {
+  const numbers = data.map((number) =>
+    Array.from(number).map((bit) => parseInt(bit, 2))
+  );
 
   const oxygenGeneratorRating = parseInt(filter(numbers, "most").join(""), 2);
   const co2ScrubberRating = parseInt(filter(numbers, "least").join(""), 2);
 
   return oxygenGeneratorRating * co2ScrubberRating;
-};
+});
 
 function filter(
   data: Array<number[]>,

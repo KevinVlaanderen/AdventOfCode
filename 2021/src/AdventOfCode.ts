@@ -4,6 +4,7 @@ import * as day2 from "./tasks/day2";
 import * as day3 from "./tasks/day3";
 import * as day4 from "./tasks/day4";
 import * as day5 from "./tasks/day5";
+import * as day6 from "./tasks/day6";
 
 import { Results } from "./types";
 
@@ -13,6 +14,7 @@ const tasks = {
   day3,
   day4,
   day5,
+  day6,
 };
 
 const results = Object.entries(tasks).reduce(

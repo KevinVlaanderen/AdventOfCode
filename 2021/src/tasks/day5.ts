@@ -1,5 +1,5 @@
 import { Task } from "../types";
-import { zip } from "../util";
+import { range, zip } from "../util";
 
 type LineData = {
   from: { x: number; y: number };
@@ -30,13 +30,6 @@ function extractLines(data: string) {
         to: { x: parseInt(data[3], 10), y: parseInt(data[4], 10) },
       };
     });
-}
-
-function range(start: number, stop: number, step: number) {
-  return Array.from(
-    { length: Math.abs(stop - start) / step + 1 },
-    (_, i) => start + i * step * (start > stop ? -1 : 1)
-  );
 }
 
 function drawLines(lineData: LineData[]) {

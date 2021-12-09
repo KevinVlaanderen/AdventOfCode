@@ -1,4 +1,4 @@
-name: Java/Kotlin CI with Gradle
+name: 2020 tests
 
 on:
   push:

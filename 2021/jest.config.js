@@ -5,4 +5,5 @@ module.exports = {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
   modulePathIgnorePatterns: ["build"],
+  testResultsProcessor: "jest-junit",
 };

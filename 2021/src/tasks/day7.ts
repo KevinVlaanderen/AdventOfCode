@@ -1,20 +1,13 @@
-import { Task } from "../types";
 import { range } from "../util";
+import { withNumbers } from "../parsers";
 
-export const task1: Task = (data) => {
-  const positions = data.split(",").map((item) => parseInt(item, 10));
+export const task1 = withNumbers((data) => {
+  return calculateCosts(data, (distance) => distance)[0];
+}, ",");
 
-  return calculateCosts(positions, (distance) => distance)[0];
-};
-
-export const task2: Task = (data) => {
-  const positions = data.split(",").map((item) => parseInt(item, 10));
-
-  return calculateCosts(
-    positions,
-    (distance) => (distance * (distance + 1)) / 2
-  )[0];
-};
+export const task2 = withNumbers((data) => {
+  return calculateCosts(data, (distance) => (distance * (distance + 1)) / 2)[0];
+}, ",");
 
 function calculateCosts(
   positions: number[],

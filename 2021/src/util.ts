@@ -28,3 +28,7 @@ export function subtract<T>(a: Set<T>, ...b: Set<T>[]): Set<T> {
 export function equal<T>(a: Set<T>, b: Set<T>): boolean {
   return a.size === b.size && [...a].every((v) => b.has(v));
 }
+
+export function isDefined<T>(val: T | undefined | null): val is T {
+  return val !== undefined && val !== null;
+}

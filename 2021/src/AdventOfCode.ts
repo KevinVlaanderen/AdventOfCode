@@ -8,6 +8,7 @@ import * as day6 from "./tasks/day6";
 import * as day7 from "./tasks/day7";
 import * as day8 from "./tasks/day8";
 import * as day9 from "./tasks/day9";
+import * as day10 from "./tasks/day10";
 
 import { Results } from "./types";
 
@@ -21,6 +22,7 @@ const tasks = {
   day7,
   day8,
   day9,
+  day10,
 };
 
 const results = Object.entries(tasks).reduce(

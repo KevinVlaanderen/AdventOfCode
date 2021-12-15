@@ -6,14 +6,13 @@ interface Result {
 
 interface CorruptedResult extends Result {
   result: "corrupted";
-  reason: string;
   expected: string;
   received: string;
 }
 
 interface IncompleteResult extends Result {
   result: "incomplete";
-  reason: string;
+  expected: string[];
 }
 
 interface SuccessResult extends Result {
@@ -26,55 +25,68 @@ const pairs = [
   ["{", "}"],
   ["<", ">"],
 ];
-const openingChars = pairs.map((pair) => pair[0]);
-const closingChars = pairs.map((pair) => pair[1]);
+
+const openChars = pairs.map((pair) => pair[0]);
+const closeChars = pairs.map((pair) => pair[1]);
 
 export const task1 = withLines((data) => {
   return data
-    .map((line) => {
-      const stack: Array<string> = [];
-
-      for (const char of Array.from(line)) {
-        if (openingChars.includes(char)) {
-          stack.push(char);
-        } else {
-          const expectedPair = pairs.find(
-            (pair) => pair[0] === stack[stack.length - 1]
-          )!;
-
-          if (!closingChars.includes(char)) {
-            return corrupted("unknown character", expectedPair[1], char);
-          } else if (expectedPair[1] !== char) {
-            return corrupted("unexpected character", expectedPair[1], char);
-          } else {
-            stack.pop();
-          }
-        }
-      }
-
-      if (stack.length > 0) {
-        return incomplete(stack);
-      }
-
-      return success();
-    })
+    .map(checkLine)
     .filter(isCorrupted)
-    .map(mapResultToScore)
+    .map(mapCorruptedResultToScore)
     .reduce((result, current) => result + current, 0);
 });
 
-function corrupted(
-  reason: string,
-  expected: string,
-  received: string
-): CorruptedResult {
-  return { result: "corrupted", reason, expected, received };
+export const task2 = withLines((data) => {
+  const scores = data
+    .map(checkLine)
+    .filter(isIncomplete)
+    .map(mapIncompleteResultToScore)
+    .sort((a, b) => a - b);
+
+  return scores[(scores.length - 1) / 2];
+});
+
+function checkLine(line: string): Result {
+  const stack: Array<string> = [];
+
+  for (const char of Array.from(line)) {
+    if (openChars.includes(char)) {
+      stack.push(char);
+    } else if (closeChars.includes(char)) {
+      const expected = closingCharFor(stack[stack.length - 1]);
+
+      if (expected !== char) {
+        return corrupted(expected, char);
+      } else {
+        stack.pop();
+      }
+    }
+  }
+
+  if (stack.length > 0) {
+    return incomplete(stack);
+  }
+
+  return success();
+}
+
+function closingCharFor(openChar: string) {
+  const pair = pairs.find((pair) => pair[0] === openChar);
+  if (!pair) throw new Error();
+  return pair[1];
+}
+
+function corrupted(expected: string, received: string): CorruptedResult {
+  return { result: "corrupted", expected, received };
 }
 
 function incomplete(unclosedPairs: string[]): IncompleteResult {
   return {
     result: "incomplete",
-    reason: `unclosed pairs: ${unclosedPairs.join()}`,
+    expected: unclosedPairs
+      .reverse()
+      .map((char) => pairs.find((pair) => pair[0] === char)![1]),
   };
 }
 
@@ -86,7 +98,11 @@ function isCorrupted(result: Result): result is CorruptedResult {
   return result.result === "corrupted";
 }
 
-function mapResultToScore(result: CorruptedResult) {
+function isIncomplete(result: Result): result is IncompleteResult {
+  return result.result === "incomplete";
+}
+
+function mapCorruptedResultToScore(result: CorruptedResult): number {
   switch (result.received) {
     case ")":
       return 3;
@@ -99,4 +115,21 @@ function mapResultToScore(result: CorruptedResult) {
     default:
       throw new Error();
   }
+}
+
+function mapIncompleteResultToScore(result: IncompleteResult): number {
+  return result.expected.reduce((result, current) => {
+    switch (current) {
+      case ")":
+        return result * 5 + 1;
+      case "]":
+        return result * 5 + 2;
+      case "}":
+        return result * 5 + 3;
+      case ">":
+        return result * 5 + 4;
+      default:
+        throw new Error();
+    }
+  }, 0);
 }

@@ -5,5 +5,14 @@ module.exports = {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
   modulePathIgnorePatterns: ["build"],
-  testResultsProcessor: "jest-junit",
+  reporters: [
+    "default",
+    [
+      "jest-junit",
+      {
+        outputDirectory: "./build/test-results",
+        suiteNameTemplate: "{filename}",
+      },
+    ],
+  ],
 };

@@ -1,27 +1,12 @@
+import { realDataPath, test, testDataPath } from "../../testUtil";
 import { task1, task2 } from "../day6";
-import * as path from "path";
-import { loadData } from "../../util";
 
-describe("task1", () => {
-  it("gives the right answer for test data a", () => {
-    const data = loadData(path.resolve(__dirname, "data/day6a"));
-    expect(task1(data)).toBe(5934);
-  });
-
-  it("gives the right answer for the input", () => {
-    const data = loadData("data/day6");
-    expect(task1(data)).toBe(355386);
-  });
+describe("task 1", () => {
+  it("test data", test(task1, testDataPath("day6"), 5934));
+  it("real data", test(task1, realDataPath("day6"), 355386));
 });
 
-describe("task2", () => {
-  it("gives the right answer for test data a", () => {
-    const data = loadData(path.resolve(__dirname, "data/day6a"));
-    expect(task2(data)).toBe(26984457539);
-  });
-
-  it("gives the right answer for the input", () => {
-    const data = loadData("data/day6");
-    expect(task2(data)).toBe(1613415325809);
-  });
+describe("task 2", () => {
+  it("test data", test(task2, testDataPath("day6"), 26984457539));
+  it("real data", test(task2, realDataPath("day6"), 1613415325809));
 });

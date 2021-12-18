@@ -23,12 +23,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '17'
-      - run: npm install
-      - run: npm run test:ci
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
+      - run: npm ci
+      - run: npm test
+      - name: Unit Test Results
+        uses: dorny/test-reporter@v1
         if: always()
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          files: 2021/build/test-results/**/*.xml
-          report_individual_runs: true
+          name: 2021 test results
+          path: 2021/build/test-results/**/*.xml
+          reporter: jest-junit

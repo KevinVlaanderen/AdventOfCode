@@ -27,7 +27,7 @@ const tasks = {
 
 const results = Object.entries(tasks).reduce(
   (dayResult: Results<Results<number>>, [dayName, tasks]) => {
-    const data = loadData("data/${dayName}");
+    const data = loadData(`data/${dayName}`);
 
     return {
       ...dayResult,

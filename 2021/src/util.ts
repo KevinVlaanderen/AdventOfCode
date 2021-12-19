@@ -32,3 +32,14 @@ export function equal<T>(a: Set<T>, b: Set<T>): boolean {
 export function isDefined<T>(val: T | undefined | null): val is T {
   return val !== undefined && val !== null;
 }
+
+export function applyToMatrix<T>(
+  matrix: T[][],
+  action: (x: number, y: number, value?: T) => void
+): void {
+  for (const [y, row] of matrix.entries()) {
+    for (const [x] of row.entries()) {
+      action(x, y);
+    }
+  }
+}

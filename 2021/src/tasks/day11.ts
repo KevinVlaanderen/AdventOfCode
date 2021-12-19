@@ -1,5 +1,5 @@
 import { withLines } from "../parsers";
-import { range } from "../util";
+import { applyToMatrix, range } from "../util";
 
 export const task1 = withLines((data) => {
   const field = data.map((line) =>
@@ -8,23 +8,43 @@ export const task1 = withLines((data) => {
 
   let flashes = 0;
 
-  for (const _ in range(1, 100)) {
-    for (const [y, row] of field.entries()) {
-      for (const [x] of row.entries()) {
-        flashes += tryFlash(x, y, field);
+  for (const _ of range(1, 100)) {
+    applyToMatrix(field, (x, y) => {
+      flashes += tryFlash(x, y, field);
+    });
+    applyToMatrix(field, (x, y) => {
+      if (field[y][x] > 9) {
+        field[y][x] = 0;
       }
-    }
-
-    for (const [y, row] of field.entries()) {
-      for (const [x] of row.entries()) {
-        if (field[y][x] > 9) {
-          field[y][x] = 0;
-        }
-      }
-    }
+    });
   }
 
   return flashes;
+});
+
+export const task2 = withLines((data) => {
+  const field = data.map((line) =>
+    Array.from(line).map((item) => parseInt(item, 10))
+  );
+
+  let step = 1;
+
+  while (true) {
+    applyToMatrix(field, (x, y) => {
+      tryFlash(x, y, field);
+    });
+    applyToMatrix(field, (x, y) => {
+      if (field[y][x] > 9) {
+        field[y][x] = 0;
+      }
+    });
+
+    if (field.every((row) => row.every((col) => col === 0))) {
+      return step;
+    }
+
+    step += 1;
+  }
 });
 
 function tryFlash(x: number, y: number, field: number[][]): number {

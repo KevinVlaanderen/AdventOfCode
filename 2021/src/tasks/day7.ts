@@ -13,7 +13,7 @@ function calculateCosts(
   positions: number[],
   costFn: (distance: number) => number
 ) {
-  return range(0, Math.max(...positions), 1)
+  return range(0, Math.max(...positions))
     .map((index) =>
       positions.reduce(
         (result, current) => result + costFn(Math.abs(current - index)),

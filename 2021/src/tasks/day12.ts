@@ -8,9 +8,36 @@ const enum Size {
 type Cave = { size: Size; name: any; connections: string[] };
 
 export const task1 = withLines((data) => {
-  const connections = data.map((line) => line.split("-"));
+  const connections = getConnections(data);
+  const caves = getCaves(connections);
 
-  const caves = Array.from(
+  return findRoutes("start", "end", caves).length;
+});
+
+export const task2 = withLines((data) => {
+  const connections = getConnections(data);
+  const caves = getCaves(connections);
+
+  const smallCaves = Object.entries(caves)
+    .filter(
+      ([name, cave]) =>
+        cave.size === Size.SMALL && name !== "start" && name !== "end"
+    )
+    .map(([name]) => name);
+
+  return new Set(
+    smallCaves.flatMap((exception) =>
+      findRoutes("start", "end", caves, exception).map((path) => path.join(","))
+    )
+  ).size;
+});
+
+function getConnections(data: string[]) {
+  return data.map((line) => line.split("-"));
+}
+
+function getCaves(connections: string[][]): { [cave: string]: Cave } {
+  return Array.from(
     new Set(connections.flatMap((connection) => connection))
   ).reduce(
     (result, cave) => ({
@@ -26,14 +53,13 @@ export const task1 = withLines((data) => {
     }),
     {}
   );
-
-  return findRoutes("start", "end", caves).length;
-});
+}
 
 function findRoutes(
   from: string,
   to: string,
   caves: { [p: string]: Cave },
+  exception?: string,
   route: string[] = []
 ): Array<string[]> {
   return from === to
@@ -41,9 +67,12 @@ function findRoutes(
     : caves[from].connections
         .filter(
           (connection) =>
-            caves[connection].size === Size.LARGE || !route.includes(connection)
+            caves[connection].size === Size.LARGE ||
+            (connection === exception &&
+              route.filter((visited) => connection === visited).length <= 1) ||
+            !route.includes(connection)
         )
         .flatMap((connection) =>
-          findRoutes(connection, to, caves, [...route, from])
+          findRoutes(connection, to, caves, exception, [...route, from])
         );
 }

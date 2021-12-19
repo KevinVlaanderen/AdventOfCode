@@ -15,7 +15,7 @@ function breed(fish: number[], iterations: number) {
     (_, index) => fish.filter((item) => item === index).length
   );
 
-  range(1, iterations, 1).forEach(() => {
+  range(1, iterations).forEach(() => {
     const newFish = buckets.shift()!;
     buckets.push.apply(buckets, [newFish]);
     buckets[6] += newFish;

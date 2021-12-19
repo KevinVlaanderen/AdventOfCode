@@ -32,8 +32,8 @@ function extractLines(data: string[]) {
 function drawLines(lineData: LineData[]) {
   return lineData.reduce<{ [x: number]: { [y: number]: number } }>(
     (result, current) => {
-      const rangeX = range(current.from.x, current.to.x, 1);
-      const rangeY = range(current.from.y, current.to.y, 1);
+      const rangeX = range(current.from.x, current.to.x);
+      const rangeY = range(current.from.y, current.to.y);
 
       const pairs =
         rangeX.length === rangeY.length

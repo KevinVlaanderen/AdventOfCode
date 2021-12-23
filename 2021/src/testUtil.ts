@@ -1,11 +1,7 @@
 import { loadData } from "./util";
 import path from "path";
 
-export function test(
-  task: (data: string) => number,
-  path: string,
-  expected: number
-) {
+export function test<T>(task: (data: string) => T, path: string, expected: T) {
   return () => {
     const data = loadData(path);
     expect(task(data)).toBe(expected);

@@ -12,6 +12,7 @@ import * as day10 from "./tasks/day10";
 import * as day11 from "./tasks/day11";
 import * as day12 from "./tasks/day12";
 import * as day13 from "./tasks/day13";
+import * as day14 from "./tasks/day14";
 
 import { Results } from "./types";
 
@@ -29,16 +30,17 @@ const tasks = {
   day11,
   day12,
   day13,
+  day14,
 };
 
 const results = Object.entries(tasks).reduce(
-  (dayResult: Results<Results<number>>, [dayName, tasks]) => {
+  (dayResult: Results<Results<number | string>>, [dayName, tasks]) => {
     const data = loadData(`data/${dayName}`);
 
     return {
       ...dayResult,
       [dayName]: Object.entries(tasks).reduce(
-        (dayResult: Results<number>, [taskName, task]) => ({
+        (dayResult: Results<number | string>, [taskName, task]) => ({
           ...dayResult,
           [taskName]: task(data),
         }),

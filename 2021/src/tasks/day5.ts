@@ -1,25 +1,31 @@
 import { range, zip } from "../util";
 import { withLines } from "../parsers";
 
-type LineData = {
+type Line = {
   from: { x: number; y: number };
   to: { x: number; y: number };
 };
 
 export const task1 = withLines((data) => {
-  const lineData = extractLines(data).filter(
+  return solve(
+    data,
     (line) => line.from.x === line.to.x || line.from.y === line.to.y
   );
-
-  return calculateResult(drawLines(lineData));
 });
 
 export const task2 = withLines((data) => {
-  const lineData = extractLines(data);
-  return calculateResult(drawLines(lineData));
+  return solve(data);
 });
 
-function extractLines(data: string[]) {
+function solve(
+  data: string[],
+  filter: (line: Line) => boolean = () => true
+): number {
+  const lines = extractLines(data).filter(filter);
+  return calculateResult(drawLines(lines));
+}
+
+function extractLines(data: string[]): Line[] {
   return data.map((line) => {
     const data = line.match(/(\d+),(\d+) -> (\d+),(\d+)/)!;
     return {
@@ -29,7 +35,7 @@ function extractLines(data: string[]) {
   });
 }
 
-function drawLines(lineData: LineData[]) {
+function drawLines(lineData: Line[]) {
   return lineData.reduce<{ [x: number]: { [y: number]: number } }>(
     (result, current) => {
       const rangeX = range(current.from.x, current.to.x);

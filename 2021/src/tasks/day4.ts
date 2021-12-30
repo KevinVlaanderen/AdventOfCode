@@ -1,26 +1,34 @@
 import { withBlocks } from "../parsers";
 
 type Card = Array<Array<{ number: number; foundAt: number }>>;
+type CardOrder = {
+  card: Card;
+  doneAt: number;
+};
 
 export const task1 = withBlocks((data) => {
-  const numbers = parseNumbers(data.shift()!);
-  const cards: Array<Card> = parseCards(data, numbers);
-  const cardsInOrder = orderCards(cards);
-
-  const firstCard = cardsInOrder[0];
-
-  return calculateScore(firstCard, numbers);
+  return solve(data, (cards) => {
+    const cardsInOrder = orderCards(cards);
+    return cardsInOrder[0];
+  });
 });
 
 export const task2 = withBlocks((data) => {
+  return solve(data, (cards) => {
+    const cardsInOrder = orderCards(cards);
+    return cardsInOrder[cardsInOrder.length - 1];
+  });
+});
+
+function solve(
+  data: string[],
+  pickCard: (cards: Array<Card>) => CardOrder
+): number {
   const numbers = parseNumbers(data.shift()!);
   const cards: Array<Card> = parseCards(data, numbers);
-  const cardsInOrder = orderCards(cards);
 
-  const lastCard = cardsInOrder[cardsInOrder.length - 1];
-
-  return calculateScore(lastCard, numbers);
-});
+  return calculateScore(pickCard(cards), numbers);
+}
 
 function parseNumbers(block: string) {
   return block.split(",").map((item) => parseInt(item, 10));

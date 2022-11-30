@@ -1,4 +1,4 @@
-import { withLines } from "../parsers";
+import { withLines } from "../util/data";
 
 const enum commands {
   FORWARD = "forward",

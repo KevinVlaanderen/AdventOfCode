@@ -1,5 +1,5 @@
-import { withBlocks } from "../parsers";
-import { range } from "../util";
+import { withBlocks } from "../util/data";
+import { range } from "../util/array";
 
 enum Direction {
   UP,

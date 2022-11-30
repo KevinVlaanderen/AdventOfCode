@@ -1,5 +1,6 @@
-import { withLines } from "../parsers";
-import { applyToMatrix, range } from "../util";
+import { withLines } from "../util/data";
+import { range } from "../util/array";
+import { applyToMatrix } from "../util/matrix";
 
 export const task1 = withLines((data) => {
   const field = data.map((line) =>

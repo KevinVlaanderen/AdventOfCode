@@ -1,5 +1,5 @@
-import { loadData } from "./util";
 import path from "path";
+import { loadData } from "./data";
 
 export function test<T>(task: (data: string) => T, path: string, expected: T) {
   return () => {

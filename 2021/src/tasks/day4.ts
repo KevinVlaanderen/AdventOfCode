@@ -1,4 +1,4 @@
-import { withBlocks } from "../parsers";
+import { withBlocks } from "../util/data";
 
 type Card = Array<Array<{ number: number; foundAt: number }>>;
 type CardOrder = {

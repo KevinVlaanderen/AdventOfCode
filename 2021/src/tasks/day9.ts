@@ -1,5 +1,5 @@
-import { withLines } from "../parsers";
-import { isDefined } from "../util";
+import { withLines } from "../util/data";
+import { isDefined } from "../types";
 
 export const task1 = withLines((data) => {
   const input = data.map((line) =>

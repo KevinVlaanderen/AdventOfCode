@@ -1,4 +1,4 @@
-import { realDataPath, test, testDataPath } from "../../testUtil";
+import { realDataPath, test, testDataPath } from "../../util/test";
 import { task1, task2 } from "../day13";
 
 describe("task 1", () => {

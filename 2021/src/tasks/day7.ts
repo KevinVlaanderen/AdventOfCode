@@ -1,5 +1,5 @@
-import { range } from "../util";
-import { withNumbers } from "../parsers";
+import { withNumbers } from "../util/data";
+import { range } from "../util/array";
 
 export const task1 = withNumbers((data) => {
   return solve(data, (distance) => distance)[0];

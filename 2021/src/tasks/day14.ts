@@ -1,5 +1,5 @@
-import { withBlocks } from "../parsers";
-import { window } from "../util";
+import { withBlocks } from "../util/data";
+import { window } from "../util/array";
 
 type Rules = {
   between: { [key: string]: string };

@@ -1,5 +1,5 @@
-import { zip } from "../util";
-import { withLines } from "../parsers";
+import { withLines } from "../util/data";
+import { zip } from "../util/array";
 
 export const task1 = withLines((data) => {
   const amount = data.length;

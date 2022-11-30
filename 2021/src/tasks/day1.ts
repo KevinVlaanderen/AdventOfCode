@@ -1,5 +1,5 @@
-import { window } from "../util";
-import { withNumbers } from "../parsers";
+import { withNumbers } from "../util/data";
+import { window } from "../util/array";
 
 export const task1 = withNumbers((data) => {
   let count = 0;

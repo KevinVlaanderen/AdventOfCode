@@ -1,5 +1,5 @@
-import { withLines } from "../parsers";
-import { equal, subtract } from "../util";
+import { withLines } from "../util/data";
+import { equal, subtract } from "../util/set";
 
 const segmentsPerNumber = {
   0: 6,

@@ -1,5 +1,5 @@
-import { range, zip } from "../util";
-import { withLines } from "../parsers";
+import { withLines } from "../util/data";
+import { range, zip } from "../util/array";
 
 type Line = {
   from: { x: number; y: number };

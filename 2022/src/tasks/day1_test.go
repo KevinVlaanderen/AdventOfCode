@@ -1,26 +1,26 @@
 package tasks
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"testing"
 )
 
-func TestDay0(t *testing.T) {
+func TestDay1(t *testing.T) {
 	t.Run("task 1", func(t *testing.T) {
-		t.Run("test data", createTest(Day0{}.task1, testDataPath("day0"), 0))
-		t.Run("real data", createTest(Day0{}.task1, realDataPath("day0"), 1))
-	})
-	t.Run("task 2", func(t *testing.T) {
-		t.Run("test data", createTest(Day0{}.task1, testDataPath("day0"), 0))
-		t.Run("real data", createTest(Day0{}.task1, realDataPath("day0"), 1))
+		t.Run("test data", createTest(Day1{}.task1, testDataPath("day1"), 24000))
+		t.Run("real data", createTest(Day1{}.task1, realDataPath("day1"), 67027))
 	})
 }
 
 func createTest(task func(string) int, dataPath string, expected int) func(*testing.T) {
 	return func(t *testing.T) {
 		data := loadFile(dataPath)
+		result := task(data)
+
+		assertEqual(t, result, expected)
 		if task(data) != expected {
 			t.Fail()
 		}
@@ -45,4 +45,11 @@ func loadFile(path string) string {
 	}
 
 	return string(content)
+}
+
+func assertEqual(t *testing.T, a interface{}, b interface{}) {
+	if a == b {
+		return
+	}
+	t.Fatal(fmt.Sprintf("Got %v, expected %v", a, b))
 }

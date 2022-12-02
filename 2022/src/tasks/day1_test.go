@@ -9,31 +9,49 @@ import (
 )
 
 func TestDay1(t *testing.T) {
+	day := Day1{}
+
+	var testDataPath, realDataPath string
+	var err error
+
+	if testDataPath, err = createTestDataPath("day1"); err != nil {
+		t.Fail()
+	}
+	if realDataPath, err = createRealDataPath("day1"); err != nil {
+		t.Fail()
+	}
+
 	t.Run("task 1", func(t *testing.T) {
-		t.Run("test data", createTest(Day1{}.task1, testDataPath("day1"), 24000))
-		t.Run("real data", createTest(Day1{}.task1, realDataPath("day1"), 67027))
+		t.Run("test data", createTest(day.Task1, testDataPath, 24000))
+		t.Run("real data", createTest(day.Task1, realDataPath, 67027))
+	})
+
+	t.Run("task 2", func(t *testing.T) {
+		t.Run("test data", createTest(day.Task2, testDataPath, 45000))
+		t.Run("real data", createTest(day.Task2, realDataPath, 197291))
 	})
 }
 
-func createTest(task func(string) int, dataPath string, expected int) func(*testing.T) {
+func createTest(task func(string) (*int, error), dataPath string, expected int) func(*testing.T) {
 	return func(t *testing.T) {
-		data := loadFile(dataPath)
-		result := task(data)
+		var result *int
+		var err error
 
-		assertEqual(t, result, expected)
-		if task(data) != expected {
-			t.Fail()
+		if result, err = task(dataPath); err != nil {
+			t.Fatal(err)
 		}
+
+		assertEqual(t, *result, expected)
 	}
 }
 
-func testDataPath(name string) (path string) {
-	path = filepath.Join("testdata", name)
+func createTestDataPath(name string) (path string, err error) {
+	path, err = filepath.Abs(filepath.Join("testdata", name))
 	return
 }
 
-func realDataPath(name string) (path string) {
-	path = filepath.Join("../../data", name)
+func createRealDataPath(name string) (path string, err error) {
+	path, err = filepath.Abs(filepath.Join("../../data", name))
 	return
 }
 

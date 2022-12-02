@@ -12,10 +12,10 @@ func TestDay1(t *testing.T) {
 	var err error
 
 	if testDataPath, err = test.CreateTestDataPath("day1"); err != nil {
-		t.Fail()
+		t.Fatal(err)
 	}
 	if realDataPath, err = test.CreateRealDataPath("day1"); err != nil {
-		t.Fail()
+		t.Fatal(err)
 	}
 
 	t.Run("task 1", func(t *testing.T) {

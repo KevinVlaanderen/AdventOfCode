@@ -9,6 +9,8 @@ on:
     branches: [ "main" ]
     paths:
       - "2022/**"
+  workflow_dispatch:
+    branches: [ "main" ]
 
 defaults:
   run:

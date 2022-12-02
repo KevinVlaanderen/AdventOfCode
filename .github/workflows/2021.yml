@@ -2,13 +2,15 @@ name: 2021 tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
     paths:
       - "2021/**"
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
     paths:
       - "2021/**"
+  workflow_dispatch:
+    branches: [ "main" ]
 
 defaults:
   run:

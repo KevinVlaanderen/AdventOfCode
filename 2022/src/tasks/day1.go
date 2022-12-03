@@ -6,10 +6,9 @@ import (
 	"strconv"
 )
 
-type Day1 struct {
-}
+type Day1 struct{}
 
-func (d Day1) Task1(filePath string) (result *int, err error) {
+func (d Day1) Task1(filePath string) (result int, err error) {
 	data, err := framework.ReadLineBlocks(filePath)
 
 	var sums []int
@@ -19,7 +18,7 @@ func (d Day1) Task1(filePath string) (result *int, err error) {
 
 		for _, line := range block {
 			if value, err := strconv.Atoi(line); err != nil {
-				return nil, err
+				return -1, err
 			} else {
 				sum += value
 			}
@@ -30,10 +29,10 @@ func (d Day1) Task1(filePath string) (result *int, err error) {
 
 	sort.Sort(sort.Reverse(sort.IntSlice(sums)))
 
-	return &sums[0], nil
+	return sums[0], nil
 }
 
-func (d Day1) Task2(filePath string) (result *int, err error) {
+func (d Day1) Task2(filePath string) (result int, err error) {
 	data, err := framework.ReadLineBlocks(filePath)
 
 	var sums []int
@@ -43,7 +42,7 @@ func (d Day1) Task2(filePath string) (result *int, err error) {
 
 		for _, line := range block {
 			if value, err := strconv.Atoi(line); err != nil {
-				return nil, err
+				return -1, err
 			} else {
 				sum += value
 			}
@@ -53,16 +52,7 @@ func (d Day1) Task2(filePath string) (result *int, err error) {
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(sums)))
 
-	total := sum(sums[0:3])
-	result = &total
+	result = framework.Sum(sums[0:3])
 
 	return
-}
-
-func sum(array []int) int {
-	result := 0
-	for _, v := range array {
-		result += v
-	}
-	return result
 }

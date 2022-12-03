@@ -5,6 +5,26 @@ import (
 	"os"
 )
 
+func ReadLines(filePath string) (result []string, err error) {
+	f, err := os.Open(filePath)
+
+	defer func(f *os.File) {
+		if tempErr := f.Close(); err == nil {
+			err = tempErr
+		}
+	}(f)
+
+	scanner := bufio.NewScanner(f)
+	scanner.Split(bufio.ScanLines)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		result = append(result, line)
+	}
+
+	return
+}
+
 func ReadLineBlocks(filePath string) (result [][]string, err error) {
 	f, err := os.Open(filePath)
 

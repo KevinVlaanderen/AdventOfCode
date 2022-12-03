@@ -7,16 +7,16 @@ import (
 	"testing"
 )
 
-func CreateTest(task func(string) (*int, error), dataPath string, expected int) func(*testing.T) {
+func CreateTest(task func(string) (int, error), dataPath string, expected int) func(*testing.T) {
 	return func(t *testing.T) {
-		var result *int
+		var result int
 		var err error
 
 		if result, err = task(dataPath); err != nil {
 			t.Fatal(err)
 		}
 
-		AssertEqual(t, *result, expected)
+		AssertEqual(t, result, expected)
 	}
 }
 

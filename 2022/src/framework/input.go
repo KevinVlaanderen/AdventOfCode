@@ -19,7 +19,9 @@ func ReadLines(filePath string) (result []string, err error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		result = append(result, line)
+		if line != "" {
+			result = append(result, line)
+		}
 	}
 
 	return

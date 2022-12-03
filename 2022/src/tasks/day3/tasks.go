@@ -14,8 +14,12 @@ func Task1(filePath string) (result framework.TaskResult) {
 	}
 
 	for _, line := range data {
-		rucksack := NewRucksack(line)
-		if difference, err := Intersection([][]rune{rucksack.compartment1, rucksack.compartment2}); err != nil {
+		runes := []rune(line)
+		length := len(runes)
+		compartment1 := runes[:length/2]
+		compartment2 := runes[length/2:]
+
+		if difference, err := Intersection(compartment1, compartment2); err != nil {
 			return framework.TaskResult{Error: err}
 		} else {
 			if len(difference) != 1 {
@@ -30,28 +34,28 @@ func Task1(filePath string) (result framework.TaskResult) {
 }
 
 func Task2(filePath string) (result framework.TaskResult) {
-	_, err := framework.ReadLines(filePath)
+	data, err := framework.ReadLines(filePath)
 	if err != nil {
 		return framework.TaskResult{Error: err}
+	}
+
+	for i := 0; i < len(data)/3; i++ {
+		group := data[i*3 : i*3+3]
+		if difference, err := Intersection([]rune(group[0]), []rune(group[1]), []rune(group[2])); err != nil {
+			return framework.TaskResult{Error: err}
+		} else {
+			if len(difference) != 1 {
+				return framework.TaskResult{Error: fmt.Errorf("invalid number of differences in group %s", group)}
+			}
+
+			result.Value += GetPriority(difference[0])
+		}
 	}
 
 	return
 }
 
-type Rucksack struct {
-	compartment1 []rune
-	compartment2 []rune
-}
-
-func NewRucksack(content string) Rucksack {
-	runes := []rune(content)
-	return Rucksack{
-		compartment1: runes[:len(runes)/2],
-		compartment2: runes[len(runes)/2:],
-	}
-}
-
-func Intersection[T comparable](slices [][]T) (intersection []T, err error) {
+func Intersection[T comparable](slices ...[]T) (intersection []T, err error) {
 	num := len(slices)
 	if num > 64 {
 		return []T{}, fmt.Errorf("too many slices provides: %d", num)

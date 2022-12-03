@@ -1,4 +1,4 @@
-package tasks
+package day1
 
 import (
 	"2022/src/framework"
@@ -6,10 +6,11 @@ import (
 	"strconv"
 )
 
-type Day1 struct{}
-
-func (d Day1) Task1(filePath string) (result int, err error) {
+func Task1(filePath string) (result framework.TaskResult) {
 	data, err := framework.ReadLineBlocks(filePath)
+	if err != nil {
+		return framework.TaskResult{Error: err}
+	}
 
 	var sums []int
 
@@ -18,7 +19,7 @@ func (d Day1) Task1(filePath string) (result int, err error) {
 
 		for _, line := range block {
 			if value, err := strconv.Atoi(line); err != nil {
-				return -1, err
+				return framework.TaskResult{Error: err}
 			} else {
 				sum += value
 			}
@@ -29,11 +30,14 @@ func (d Day1) Task1(filePath string) (result int, err error) {
 
 	sort.Sort(sort.Reverse(sort.IntSlice(sums)))
 
-	return sums[0], nil
+	return framework.TaskResult{Value: sums[0]}
 }
 
-func (d Day1) Task2(filePath string) (result int, err error) {
+func Task2(filePath string) (result framework.TaskResult) {
 	data, err := framework.ReadLineBlocks(filePath)
+	if err != nil {
+		return framework.TaskResult{Error: err}
+	}
 
 	var sums []int
 
@@ -42,7 +46,7 @@ func (d Day1) Task2(filePath string) (result int, err error) {
 
 		for _, line := range block {
 			if value, err := strconv.Atoi(line); err != nil {
-				return -1, err
+				return framework.TaskResult{Error: err}
 			} else {
 				sum += value
 			}
@@ -52,7 +56,5 @@ func (d Day1) Task2(filePath string) (result int, err error) {
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(sums)))
 
-	result = framework.Sum(sums[0:3])
-
-	return
+	return framework.TaskResult{Value: framework.Sum(sums[0:3])}
 }

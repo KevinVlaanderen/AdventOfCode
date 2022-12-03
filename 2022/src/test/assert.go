@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func AssertEqual(t *testing.T, a interface{}, b interface{}) {
+func AssertEqual[Data comparable](t *testing.T, a Data, b Data) {
 	if a == b {
 		return
 	}

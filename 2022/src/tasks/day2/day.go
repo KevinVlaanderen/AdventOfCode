@@ -1,4 +1,4 @@
-package tasks
+package day2
 
 import (
 	"2022/src/framework"
@@ -35,38 +35,39 @@ var (
 	}
 )
 
-type Day2 struct{}
-
-func (d Day2) Task1(filePath string) (result int, err error) {
+func Task1(filePath string) (result framework.TaskResult) {
 	data, err := framework.ReadLines(filePath)
+	if err != nil {
+		return framework.TaskResult{Error: err}
+	}
 
 	for _, line := range data {
 		parts := strings.Split(line, " ")
 		if len(parts) != 2 {
-			return -1, fmt.Errorf("invalid input: %v", line)
+			return framework.TaskResult{Error: fmt.Errorf("invalid input: %v", line)}
 		}
 
 		opponentHand, ok := parseHand(parts[0], opponentHandMap)
 		if !ok {
-			return -1, fmt.Errorf("invalid value: %v", parts[0])
+			return framework.TaskResult{Error: fmt.Errorf("invalid value: %v", parts[0])}
 		}
 		playerHand, ok := parseHand(parts[1], playerHandMap)
 		if !ok {
-			return -1, fmt.Errorf("invalid value: %v", parts[1])
+			return framework.TaskResult{Error: fmt.Errorf("invalid value: %v", parts[1])}
 		}
 
 		roundResult, ok := determineResult(opponentHand, playerHand)
 		if !ok {
-			return -1, fmt.Errorf("invalid result: %v vs %v", opponentHand, playerHand)
+			return framework.TaskResult{Error: fmt.Errorf("invalid result: %v vs %v", opponentHand, playerHand)}
 		}
 
-		result += calculateScore(roundResult, playerHand)
+		result.Value += calculateScore(roundResult, playerHand)
 	}
 
 	return
 }
 
-func (d Day2) Task2(filePath string) (result int, err error) {
+func Task2(filePath string) (result framework.TaskResult) {
 	return
 }
 

@@ -12,12 +12,12 @@ func TestTask1(t *testing.T) {
 	if testDataPath, err = test.CreateTestDataPath("data"); err != nil {
 		t.Fatal(err)
 	}
-	if realDataPath, err = test.CreateRealDataPath("day1"); err != nil {
+	if realDataPath, err = test.CreateRealDataPath("day5"); err != nil {
 		t.Fatal(err)
 	}
 
-	t.Run("test data", test.CreateTest(Task1, testDataPath, 24000))
-	t.Run("real data", test.CreateTest(Task1, realDataPath, 67027))
+	t.Run("test data", test.CreateTest(Task1, testDataPath, "CMZ"))
+	t.Run("real data", test.CreateTest(Task1, realDataPath, "SHQWSRBDL"))
 }
 
 func TestTask2(t *testing.T) {
@@ -27,10 +27,10 @@ func TestTask2(t *testing.T) {
 	if testDataPath, err = test.CreateTestDataPath("data"); err != nil {
 		t.Fatal(err)
 	}
-	if realDataPath, err = test.CreateRealDataPath("day1"); err != nil {
+	if realDataPath, err = test.CreateRealDataPath("day5"); err != nil {
 		t.Fatal(err)
 	}
 
-	t.Run("test data", test.CreateTest(Task2, testDataPath, 45000))
-	t.Run("real data", test.CreateTest(Task2, realDataPath, 197291))
+	t.Run("test data", test.CreateTest(Task2, testDataPath, ""))
+	t.Run("real data", test.CreateTest(Task2, realDataPath, ""))
 }

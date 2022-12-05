@@ -24,3 +24,11 @@ func NewInstruction(line string) Instruction {
 		To:   to - 1,
 	}
 }
+
+func NewInstructions(lines []string) *[]Instruction {
+	createdInstructions := make([]Instruction, 0)
+	for _, instructionLine := range lines {
+		createdInstructions = append(createdInstructions, NewInstruction(instructionLine))
+	}
+	return &createdInstructions
+}

@@ -3,7 +3,12 @@ package day5
 import (
 	"2022/src/framework"
 	"2022/src/tasks/day5/model"
+	"2022/src/tasks/day5/mover"
 )
+
+type Mover interface {
+	Move(n int, from int, to int)
+}
 
 func Task1(filePath string) (result framework.TaskResult[string]) {
 	data, err := framework.ReadLineBlocks(filePath)
@@ -14,10 +19,11 @@ func Task1(filePath string) (result framework.TaskResult[string]) {
 
 	storage := model.NewStorage(data[0])
 
-	for _, instructionLine := range data[1] {
-		instruction := model.NewInstruction(instructionLine)
-		storage.ExecuteInstruction(instruction)
-	}
+	crateMover := mover.CrateMover9000{Storage: storage}
+	executor := Executor{mover: &crateMover}
+
+	instructions := model.NewInstructions(data[1])
+	executor.ExecuteInstructions(instructions)
 
 	for _, stack := range storage.Stacks {
 		result.Value += stack.Top().Label
@@ -27,10 +33,22 @@ func Task1(filePath string) (result framework.TaskResult[string]) {
 }
 
 func Task2(filePath string) (result framework.TaskResult[string]) {
-	_, err := framework.ReadLineBlocks(filePath)
+	data, err := framework.ReadLineBlocks(filePath)
 	if err != nil {
 		result.Error = err
 		return
+	}
+
+	storage := model.NewStorage(data[0])
+
+	crateMover := mover.CrateMover9001{Storage: storage}
+	executor := Executor{mover: &crateMover}
+
+	instructions := model.NewInstructions(data[1])
+	executor.ExecuteInstructions(instructions)
+
+	for _, stack := range storage.Stacks {
+		result.Value += stack.Top().Label
 	}
 
 	return

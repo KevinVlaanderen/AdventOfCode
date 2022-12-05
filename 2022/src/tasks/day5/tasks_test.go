@@ -31,6 +31,6 @@ func TestTask2(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Run("test data", test.CreateTest(Task2, testDataPath, ""))
-	t.Run("real data", test.CreateTest(Task2, realDataPath, ""))
+	t.Run("test data", test.CreateTest(Task2, testDataPath, "MCD"))
+	t.Run("real data", test.CreateTest(Task2, realDataPath, "CDTQZHBRS"))
 }

@@ -7,20 +7,23 @@ import (
 	"strings"
 )
 
-func Task1(filePath string) (result framework.TaskResult) {
+func Task1(filePath string) (result framework.TaskResult[int]) {
 	data, err := framework.ReadLines(filePath)
 	if err != nil {
-		return framework.TaskResult{Error: err}
+		result.Error = err
+		return
 	}
 
 	for _, line := range data {
 		parts := strings.Split(line, ",")
 		var assignment1, assignment2 Assignment
 		if assignment1, err = NewAssignment(parts[0]); err != nil {
-			return framework.TaskResult{Error: fmt.Errorf("failed to parse range for assignment 1: %v", err)}
+			result.Error = fmt.Errorf("failed to parse range for assignment 1: %v", err)
+			return
 		}
 		if assignment2, err = NewAssignment(parts[1]); err != nil {
-			return framework.TaskResult{Error: fmt.Errorf("failed to parse range for assignment 2: %v", err)}
+			result.Error = fmt.Errorf("failed to parse range for assignment 2: %v", err)
+			return
 		}
 
 		if assignment1.Contains(assignment2) || assignment2.Contains(assignment1) {
@@ -31,20 +34,23 @@ func Task1(filePath string) (result framework.TaskResult) {
 	return
 }
 
-func Task2(filePath string) (result framework.TaskResult) {
+func Task2(filePath string) (result framework.TaskResult[int]) {
 	data, err := framework.ReadLines(filePath)
 	if err != nil {
-		return framework.TaskResult{Error: err}
+		result.Error = err
+		return
 	}
 
 	for _, line := range data {
 		parts := strings.Split(line, ",")
 		var assignment1, assignment2 Assignment
 		if assignment1, err = NewAssignment(parts[0]); err != nil {
-			return framework.TaskResult{Error: fmt.Errorf("failed to parse range for assignment 1: %v", err)}
+			result.Error = fmt.Errorf("failed to parse range for assignment 1: %v", err)
+			return
 		}
 		if assignment2, err = NewAssignment(parts[1]); err != nil {
-			return framework.TaskResult{Error: fmt.Errorf("failed to parse range for assignment 2: %v", err)}
+			result.Error = fmt.Errorf("failed to parse range for assignment 2: %v", err)
+			return
 		}
 
 		if assignment1.OverlapsWith(assignment2) {

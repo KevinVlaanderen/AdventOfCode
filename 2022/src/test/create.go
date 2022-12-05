@@ -8,9 +8,9 @@ import (
 	"testing"
 )
 
-func CreateTest(task framework.Task, dataPath string, expected int) func(*testing.T) {
+func CreateTest[T comparable](task framework.Task[T], dataPath string, expected T) func(*testing.T) {
 	return func(t *testing.T) {
-		var result framework.TaskResult
+		var result framework.TaskResult[T]
 
 		if result = task(dataPath); result.Error != nil {
 			t.Fatal(result.Error)

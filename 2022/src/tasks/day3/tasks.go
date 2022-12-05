@@ -6,10 +6,11 @@ import (
 	"unicode"
 )
 
-func Task1(filePath string) (result framework.TaskResult) {
+func Task1(filePath string) (result framework.TaskResult[int]) {
 	data, err := framework.ReadLines(filePath)
 	if err != nil {
-		return framework.TaskResult{Error: err}
+		result.Error = err
+		return
 	}
 
 	for _, line := range data {
@@ -19,10 +20,12 @@ func Task1(filePath string) (result framework.TaskResult) {
 		compartment2 := runes[length/2:]
 
 		if difference, err := framework.Intersection(compartment1, compartment2); err != nil {
-			return framework.TaskResult{Error: err}
+			result.Error = err
+			return
 		} else {
 			if len(difference) != 1 {
-				return framework.TaskResult{Error: fmt.Errorf("invalid number of differences in %s", line)}
+				result.Error = fmt.Errorf("invalid number of differences in %s", line)
+				return
 			}
 
 			result.Value += GetPriority(difference[0])
@@ -32,19 +35,22 @@ func Task1(filePath string) (result framework.TaskResult) {
 	return
 }
 
-func Task2(filePath string) (result framework.TaskResult) {
+func Task2(filePath string) (result framework.TaskResult[int]) {
 	data, err := framework.ReadLines(filePath)
 	if err != nil {
-		return framework.TaskResult{Error: err}
+		result.Error = err
+		return
 	}
 
 	for i := 0; i < len(data)/3; i++ {
 		group := data[i*3 : i*3+3]
 		if difference, err := framework.Intersection([]rune(group[0]), []rune(group[1]), []rune(group[2])); err != nil {
-			return framework.TaskResult{Error: err}
+			result.Error = err
+			return
 		} else {
 			if len(difference) != 1 {
-				return framework.TaskResult{Error: fmt.Errorf("invalid number of differences in group %s", group)}
+				result.Error = fmt.Errorf("invalid number of differences in group %s", group)
+				return
 			}
 
 			result.Value += GetPriority(difference[0])

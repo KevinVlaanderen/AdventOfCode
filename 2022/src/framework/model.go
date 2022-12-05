@@ -1,8 +1,8 @@
 package framework
 
-type Task = func(fileName string) TaskResult
+type Task[T comparable] func(fileName string) TaskResult[T]
 
-type TaskResult struct {
-	Value int
+type TaskResult[T comparable] struct {
+	Value T
 	Error error
 }

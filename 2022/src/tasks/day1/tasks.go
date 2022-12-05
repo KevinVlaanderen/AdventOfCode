@@ -6,10 +6,11 @@ import (
 	"strconv"
 )
 
-func Task1(filePath string) (result framework.TaskResult) {
+func Task1(filePath string) (result framework.TaskResult[int]) {
 	data, err := framework.ReadLineBlocks(filePath)
 	if err != nil {
-		return framework.TaskResult{Error: err}
+		result.Error = err
+		return
 	}
 
 	var sums []int
@@ -19,7 +20,8 @@ func Task1(filePath string) (result framework.TaskResult) {
 
 		for _, line := range block {
 			if value, err := strconv.Atoi(line); err != nil {
-				return framework.TaskResult{Error: err}
+				result.Error = err
+				return
 			} else {
 				sum += value
 			}
@@ -30,13 +32,15 @@ func Task1(filePath string) (result framework.TaskResult) {
 
 	sort.Sort(sort.Reverse(sort.IntSlice(sums)))
 
-	return framework.TaskResult{Value: sums[0]}
+	result.Value = sums[0]
+	return
 }
 
-func Task2(filePath string) (result framework.TaskResult) {
+func Task2(filePath string) (result framework.TaskResult[int]) {
 	data, err := framework.ReadLineBlocks(filePath)
 	if err != nil {
-		return framework.TaskResult{Error: err}
+		result.Error = err
+		return
 	}
 
 	var sums []int
@@ -46,7 +50,8 @@ func Task2(filePath string) (result framework.TaskResult) {
 
 		for _, line := range block {
 			if value, err := strconv.Atoi(line); err != nil {
-				return framework.TaskResult{Error: err}
+				result.Error = err
+				return
 			} else {
 				sum += value
 			}
@@ -56,5 +61,6 @@ func Task2(filePath string) (result framework.TaskResult) {
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(sums)))
 
-	return framework.TaskResult{Value: framework.Sum(sums[0:3])}
+	result.Value = framework.Sum(sums[0:3])
+	return
 }

@@ -7,16 +7,18 @@ import (
 	"strings"
 )
 
-func Task1(filePath string) (result framework.TaskResult) {
+func Task1(filePath string) (result framework.TaskResult[int]) {
 	data, err := framework.ReadLines(filePath)
 	if err != nil {
-		return framework.TaskResult{Error: err}
+		result.Error = err
+		return
 	}
 
 	for _, line := range data {
 		parts := strings.Split(line, " ")
 		if len(parts) != 2 {
-			return framework.TaskResult{Error: fmt.Errorf("invalid input: %v", line)}
+			result.Error = fmt.Errorf("invalid input: %v", line)
+			return
 		}
 
 		round := model.NewRound(
@@ -25,7 +27,8 @@ func Task1(filePath string) (result framework.TaskResult) {
 		)
 
 		if score, err := round.ScoreFor(model.Player2); err != nil {
-			return framework.TaskResult{Error: err}
+			result.Error = err
+			return
 		} else {
 			result.Value += score
 		}
@@ -34,21 +37,24 @@ func Task1(filePath string) (result framework.TaskResult) {
 	return
 }
 
-func Task2(filePath string) (result framework.TaskResult) {
+func Task2(filePath string) (result framework.TaskResult[int]) {
 	data, err := framework.ReadLines(filePath)
 	if err != nil {
-		return framework.TaskResult{Error: err}
+		result.Error = err
+		return
 	}
 
 	for _, line := range data {
 		parts := strings.Split(line, " ")
 		if len(parts) != 2 {
-			return framework.TaskResult{Error: fmt.Errorf("invalid input: %v", line)}
+			result.Error = fmt.Errorf("invalid input: %v", line)
+			return
 		}
 
 		desiredResult := getDesiredResult(parts[1])
 		if desiredResult == invalid {
-			return framework.TaskResult{Error: fmt.Errorf("invalid desired result: %v", parts[1])}
+			result.Error = fmt.Errorf("invalid desired result: %v", parts[1])
+			return
 		}
 
 		player1Hand := model.ParseHandFor(model.Player1, parts[0])
@@ -57,7 +63,8 @@ func Task2(filePath string) (result framework.TaskResult) {
 		round := model.NewRound(player1Hand, player2Hand)
 
 		if score, err := round.ScoreFor(model.Player2); err != nil {
-			return framework.TaskResult{Error: err}
+			result.Error = err
+			return
 		} else {
 			result.Value += score
 		}

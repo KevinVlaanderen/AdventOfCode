@@ -3,7 +3,15 @@ package framework
 import (
 	"bufio"
 	"os"
+	"strings"
 )
+
+func ReadFull(filePath string) (result string, err error) {
+	data, err := os.ReadFile(filePath)
+	result = strings.TrimSuffix(string(data), "\n")
+
+	return
+}
 
 func ReadLines(filePath string) (result []string, err error) {
 	f, err := os.Open(filePath)

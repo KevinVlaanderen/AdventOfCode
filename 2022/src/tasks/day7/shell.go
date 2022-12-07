@@ -1,19 +1,16 @@
 package day7
 
 import (
-	"2022/src/tasks/day7/fs"
 	"path"
 	"strings"
 )
 
 type Shell struct {
-	fileSystem  *fs.FileSystem
 	currentPath string
 }
 
-func NewShell(fileSystem *fs.FileSystem) *Shell {
+func NewShell() *Shell {
 	return &Shell{
-		fileSystem:  fileSystem,
 		currentPath: "/",
 	}
 }
@@ -27,6 +24,6 @@ func (s *Shell) Execute(command string) {
 	}
 }
 
-func (s *Shell) CurrentDir() *fs.Directory {
-	return s.fileSystem.ResolveDir(s.currentPath)
+func (s *Shell) CurrentPath() string {
+	return s.currentPath
 }

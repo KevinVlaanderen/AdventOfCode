@@ -2,10 +2,11 @@ package day6
 
 import (
 	"2022/src/framework"
+	"2022/src/framework/test"
 	"math/bits"
 )
 
-func Task1(filePath string) (result framework.TaskResult[int]) {
+func Task1(filePath string) (result test.TaskResult[int]) {
 	data, err := framework.ReadFull(filePath)
 	if err != nil {
 		result.Error = err
@@ -14,10 +15,10 @@ func Task1(filePath string) (result framework.TaskResult[int]) {
 
 	marker := findMarker(data, 4)
 
-	return framework.TaskResult[int]{Value: marker}
+	return test.TaskResult[int]{Value: marker}
 }
 
-func Task2(filePath string) (result framework.TaskResult[int]) {
+func Task2(filePath string) (result test.TaskResult[int]) {
 	data, err := framework.ReadFull(filePath)
 	if err != nil {
 		result.Error = err
@@ -26,7 +27,7 @@ func Task2(filePath string) (result framework.TaskResult[int]) {
 
 	marker := findMarker(data, 14)
 
-	return framework.TaskResult[int]{Value: marker}
+	return test.TaskResult[int]{Value: marker}
 }
 
 func findMarker(data string, length int) int {

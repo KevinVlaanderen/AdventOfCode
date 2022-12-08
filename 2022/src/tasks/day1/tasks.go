@@ -2,11 +2,12 @@ package day1
 
 import (
 	"2022/src/framework"
+	"2022/src/framework/test"
 	"sort"
 	"strconv"
 )
 
-func Task1(filePath string) (result framework.TaskResult[int]) {
+func Task1(filePath string) (result test.TaskResult[int]) {
 	data, err := framework.ReadLineBlocks(filePath)
 	if err != nil {
 		result.Error = err
@@ -36,7 +37,7 @@ func Task1(filePath string) (result framework.TaskResult[int]) {
 	return
 }
 
-func Task2(filePath string) (result framework.TaskResult[int]) {
+func Task2(filePath string) (result test.TaskResult[int]) {
 	data, err := framework.ReadLineBlocks(filePath)
 	if err != nil {
 		result.Error = err

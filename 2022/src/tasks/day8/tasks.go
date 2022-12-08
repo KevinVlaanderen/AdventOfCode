@@ -2,10 +2,11 @@ package day8
 
 import (
 	"2022/src/framework"
+	"2022/src/framework/test"
 	"strconv"
 )
 
-func Task1(filePath string) (result framework.TaskResult[int]) {
+func Task1(filePath string) (result test.TaskResult[int]) {
 	data, err := framework.ReadLines(filePath)
 	if err != nil {
 		result.Error = err
@@ -26,21 +27,38 @@ func Task1(filePath string) (result framework.TaskResult[int]) {
 	return
 }
 
-func Task2(filePath string) (result framework.TaskResult[int]) {
-	_, err := framework.ReadLines(filePath)
+func Task2(filePath string) (result test.TaskResult[int]) {
+	data, err := framework.ReadLines(filePath)
 	if err != nil {
 		result.Error = err
 		return
+	}
+
+	grid := loadGrid(data)
+	scores := createMask(grid, 0)
+
+	for x, items := range grid {
+		for y := range items {
+			scores[x][y] = determineScore(x, y, grid)
+		}
+	}
+
+	for x, items := range scores {
+		for y := range items {
+			if scores[x][y] > result.Value {
+				result.Value = scores[x][y]
+			}
+		}
 	}
 
 	return
 }
 
 func determineVisibility(grid [][]int) [][]bool {
-	mask := createMask(grid)
+	mask := createMask(grid, false)
 
-	increasingRange := NewSlice(0, len(grid), 1)
-	decreasingRange := NewSlice(len(grid)-1, len(grid), -1)
+	increasingRange := framework.NewSlice(0, len(grid), 1)
+	decreasingRange := framework.NewSlice(len(grid)-1, len(grid), -1)
 
 	// Top to bottom
 	for _, x := range increasingRange {
@@ -89,6 +107,49 @@ func determineVisibility(grid [][]int) [][]bool {
 	return mask
 }
 
+func determineScore(x int, y int, grid [][]int) int {
+	leftRange := framework.NewSlice(x-1, x, -1)
+	rightRange := framework.NewSlice(x+1, len(grid)-x-1, 1)
+	topRange := framework.NewSlice(y-1, y, -1)
+	bottomRange := framework.NewSlice(y+1, len(grid[x])-y-1, 1)
+
+	var scoreLeft, scoreRight, scoreTop, scoreBottom int
+
+	// To top
+	for _, newY := range topRange {
+		scoreTop++
+		if grid[x][newY] >= grid[x][y] {
+			break
+		}
+	}
+
+	// To bottom
+	for _, newY := range bottomRange {
+		scoreBottom++
+		if grid[x][newY] >= grid[x][y] {
+			break
+		}
+	}
+
+	// To left
+	for _, newX := range leftRange {
+		scoreLeft++
+		if grid[newX][y] >= grid[x][y] {
+			break
+		}
+	}
+
+	// To right
+	for _, newX := range rightRange {
+		scoreRight++
+		if grid[newX][y] >= grid[x][y] {
+			break
+		}
+	}
+
+	return scoreLeft * scoreRight * scoreTop * scoreBottom
+}
+
 func loadGrid(data []string) [][]int {
 	var grid [][]int
 	for _, row := range data {
@@ -104,25 +165,16 @@ func loadGrid(data []string) [][]int {
 	return grid
 }
 
-func createMask[T any](data [][]T) [][]bool {
+func createMask[I any, O any](data [][]I, initial O) [][]O {
 	sizeA := len(data)
-	mask := make([][]bool, sizeA)
+	mask := make([][]O, sizeA)
 	for a, aValues := range data {
 		sizeB := len(data)
-		aNew := make([]bool, sizeB)
-		for b, _ := range aValues {
-			aNew[b] = false
+		aNew := make([]O, sizeB)
+		for b := range aValues {
+			aNew[b] = initial
 		}
 		mask[a] = aNew
 	}
 	return mask
-}
-
-func NewSlice(start, count, step int) []int {
-	s := make([]int, count)
-	for i := range s {
-		s[i] = start
-		start += step
-	}
-	return s
 }

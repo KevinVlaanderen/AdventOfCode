@@ -57,8 +57,8 @@ func Task2(filePath string) (result test.TaskResult[int]) {
 func determineVisibility(grid [][]int) [][]bool {
 	mask := createMask(grid, false)
 
-	increasingRange := framework.NewSlice(0, len(grid), 1)
-	decreasingRange := framework.NewSlice(len(grid)-1, len(grid), -1)
+	increasingRange := framework.Range(0, len(grid), 1)
+	decreasingRange := framework.Range(len(grid)-1, len(grid), -1)
 
 	// Top to bottom
 	for _, x := range increasingRange {
@@ -108,10 +108,10 @@ func determineVisibility(grid [][]int) [][]bool {
 }
 
 func determineScore(x int, y int, grid [][]int) int {
-	leftRange := framework.NewSlice(x-1, x, -1)
-	rightRange := framework.NewSlice(x+1, len(grid)-x-1, 1)
-	topRange := framework.NewSlice(y-1, y, -1)
-	bottomRange := framework.NewSlice(y+1, len(grid[x])-y-1, 1)
+	leftRange := framework.Range(x-1, x, -1)
+	rightRange := framework.Range(x+1, len(grid)-x-1, 1)
+	topRange := framework.Range(y-1, y, -1)
+	bottomRange := framework.Range(y+1, len(grid[x])-y-1, 1)
 
 	var scoreLeft, scoreRight, scoreTop, scoreBottom int
 

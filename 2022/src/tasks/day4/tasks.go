@@ -84,20 +84,12 @@ func (a Assignment) Contains(b Assignment) bool {
 }
 
 func (a Assignment) OverlapsWith(b Assignment) bool {
-	range1 := makeRange(a.low, a.high)
-	range2 := makeRange(b.low, b.high)
+	range1 := framework.Range(a.low, a.high-a.low+1, 1)
+	range2 := framework.Range(b.low, b.high-b.low+1, 1)
 
 	if intersection, err := framework.Intersection(range1, range2); err != nil {
 		return false
 	} else {
 		return len(intersection) > 0
 	}
-}
-
-func makeRange(min, max int) []int {
-	a := make([]int, max-min+1)
-	for i := range a {
-		a[i] = min + i
-	}
-	return a
 }

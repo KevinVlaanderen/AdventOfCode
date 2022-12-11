@@ -19,3 +19,14 @@ func TestTask1(t *testing.T) {
 	t.Run("test data", test.CreateTest(Task1, testDataPath, 13140))
 	t.Run("real data", test.CreateTest(Task1, realDataPath, 12740))
 }
+
+func TestTask2(t *testing.T) {
+	var realDataPath string
+	var err error
+
+	if realDataPath, err = test.CreateRealDataPath("day10"); err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("real data", test.CreateTest(Task2, realDataPath, "RBPARAGF"))
+}

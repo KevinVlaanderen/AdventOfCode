@@ -4,7 +4,7 @@ import "container/heap"
 
 type Item[T any] struct {
 	Value    T
-	Priority int
+	Priority float64
 	Index    int
 }
 
@@ -39,7 +39,7 @@ func (pq *PriorityQueue[T]) Pop() any {
 	return item
 }
 
-func (pq *PriorityQueue[T]) Update(item *Item[T], value T, priority int) {
+func (pq *PriorityQueue[T]) Update(item *Item[T], value T, priority float64) {
 	item.Value = value
 	item.Priority = priority
 	heap.Fix(pq, item.Index)

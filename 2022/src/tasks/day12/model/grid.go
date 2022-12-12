@@ -3,37 +3,38 @@ package model
 import (
 	"2022/src/framework"
 	"container/heap"
+	"errors"
 )
 
 type Grid struct {
-	squares     [][]int
+	Squares     [][]int
 	Start       Position
 	Destination Position
 }
 
 type Position struct {
-	x int
-	y int
+	X int
+	Y int
 }
 
 func ReadGrid(data []string) *Grid {
 	grid := Grid{}
-	grid.squares = make([][]int, len(data[0]))
-	for i := range grid.squares {
-		grid.squares[i] = make([]int, len(data))
+	grid.Squares = make([][]int, len(data[0]))
+	for i := range grid.Squares {
+		grid.Squares[i] = make([]int, len(data))
 	}
 
 	for y := range data {
 		for x, char := range []rune(data[y]) {
 			switch char {
 			case 'S':
-				grid.Start = Position{x: x, y: y}
-				grid.squares[x][y] = 1
+				grid.Start = Position{X: x, Y: y}
+				grid.Squares[x][y] = 1
 			case 'E':
-				grid.Destination = Position{x: x, y: y}
-				grid.squares[x][y] = 26
+				grid.Destination = Position{X: x, Y: y}
+				grid.Squares[x][y] = 26
 			default:
-				grid.squares[x][y] = int(char) - 96
+				grid.Squares[x][y] = int(char) - 96
 			}
 		}
 	}
@@ -41,26 +42,26 @@ func ReadGrid(data []string) *Grid {
 	return &grid
 }
 
-func (g *Grid) PathTo(position Position) map[Position]Position {
+func (g *Grid) PathTo(from Position, to Position) (cameFrom map[Position]Position, err error) {
 	frontier := make(framework.PriorityQueue[Position], 1)
 
 	frontier[0] = &framework.Item[Position]{
-		Value:    g.Start,
+		Value:    from,
 		Priority: 1,
 		Index:    0,
 	}
 
 	heap.Init(&frontier)
 
-	cameFrom := map[Position]Position{}
+	cameFrom = map[Position]Position{}
 	costSoFar := map[Position]int{}
 	//cameFrom[g.Start] = nil
-	costSoFar[g.Start] = 0
+	costSoFar[from] = 0
 
 	for frontier.Len() > 0 {
-		current := frontier.Pop().(*framework.Item[Position])
+		current := heap.Pop(&frontier).(*framework.Item[Position])
 
-		if current.Value == position {
+		if current.Value == to {
 			break
 		}
 
@@ -68,7 +69,7 @@ func (g *Grid) PathTo(position Position) map[Position]Position {
 			newCost := costSoFar[current.Value] + g.cost(current.Value, next)
 			if _, ok := costSoFar[next]; !ok || newCost < costSoFar[next] {
 				costSoFar[next] = newCost
-				priority := newCost + g.heuristic(g.Destination, next)
+				priority := 1 / float64(newCost+g.heuristic(to, next))
 				item := &framework.Item[Position]{
 					Value:    next,
 					Priority: priority,
@@ -81,21 +82,25 @@ func (g *Grid) PathTo(position Position) map[Position]Position {
 		}
 	}
 
-	return cameFrom
+	if _, found := cameFrom[to]; !found {
+		return nil, errors.New("no path found")
+	}
+
+	return cameFrom, nil
 }
 
 func (g *Grid) neighbours(position Position) (neighbours []Position) {
-	if position.x >= 1 && g.squares[position.x-1][position.y] <= g.squares[position.x][position.y]+1 {
-		neighbours = append(neighbours, Position{x: position.x - 1, y: position.y})
+	if position.X >= 1 && g.Squares[position.X-1][position.Y] <= g.Squares[position.X][position.Y]+1 {
+		neighbours = append(neighbours, Position{X: position.X - 1, Y: position.Y})
 	}
-	if position.x < len(g.squares)-1 && g.squares[position.x+1][position.y] <= g.squares[position.x][position.y]+1 {
-		neighbours = append(neighbours, Position{x: position.x + 1, y: position.y})
+	if position.X < len(g.Squares)-1 && g.Squares[position.X+1][position.Y] <= g.Squares[position.X][position.Y]+1 {
+		neighbours = append(neighbours, Position{X: position.X + 1, Y: position.Y})
 	}
-	if position.y >= 1 && g.squares[position.x][position.y-1] <= g.squares[position.x][position.y]+1 {
-		neighbours = append(neighbours, Position{x: position.x, y: position.y - 1})
+	if position.Y >= 1 && g.Squares[position.X][position.Y-1] <= g.Squares[position.X][position.Y]+1 {
+		neighbours = append(neighbours, Position{X: position.X, Y: position.Y - 1})
 	}
-	if position.y < len(g.squares[0])-1 && g.squares[position.x][position.y+1] <= g.squares[position.x][position.y]+1 {
-		neighbours = append(neighbours, Position{x: position.x, y: position.y + 1})
+	if position.Y < len(g.Squares[0])-1 && g.Squares[position.X][position.Y+1] <= g.Squares[position.X][position.Y]+1 {
+		neighbours = append(neighbours, Position{X: position.X, Y: position.Y + 1})
 	}
 	return
 }
@@ -105,5 +110,5 @@ func (g *Grid) cost(current Position, next Position) int {
 }
 
 func (g *Grid) heuristic(a Position, b Position) int {
-	return framework.AbsInt(a.x-b.x) + framework.AbsInt(a.y-b.y)
+	return framework.AbsInt(a.X-b.X) + framework.AbsInt(a.Y-b.Y)
 }

@@ -5,6 +5,7 @@ import (
 	"2022/src/framework/test"
 	"encoding/json"
 	"log"
+	"sort"
 )
 
 func Task1(filePath string) (result test.TaskResult[int]) {
@@ -29,11 +30,44 @@ func Task1(filePath string) (result test.TaskResult[int]) {
 }
 
 func Task2(filePath string) (result test.TaskResult[int]) {
-	_, err := framework.ReadLineBlocks(filePath)
+	data, err := framework.ReadLineBlocks(filePath)
 	if err != nil {
 		result.Error = err
 		return
 	}
+
+	divider1String := "[[2]]"
+	divider2String := "[[6]]"
+	var divider1, divider2 any
+	_ = json.Unmarshal([]byte(divider1String), &divider1)
+	_ = json.Unmarshal([]byte(divider2String), &divider2)
+
+	allPackets := []any{divider1, divider2}
+
+	for _, pair := range data {
+		var packet1, packet2 any
+		_ = json.Unmarshal([]byte(pair[0]), &packet1)
+		_ = json.Unmarshal([]byte(pair[1]), &packet2)
+		allPackets = append(allPackets, packet1, packet2)
+	}
+
+	sort.Slice(allPackets, func(i, j int) bool {
+		return compare(allPackets[i], allPackets[j]) < 0
+	})
+
+	var index1, index2 int
+	for index, packet := range allPackets {
+		if packetBytes, err := json.Marshal(packet); err == nil {
+			packetString := string(packetBytes)
+			if packetString == divider1String {
+				index1 = index + 1
+			} else if packetString == divider2String {
+				index2 = index + 1
+			}
+		}
+
+	}
+	result.Value = index1 * index2
 
 	return
 }

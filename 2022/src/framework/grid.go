@@ -2,7 +2,7 @@ package framework
 
 import "fmt"
 
-func DrawPointGrid[V comparable](data map[Point]V, mapping map[V]rune) {
+func DrawPointGrid[V comparable](data map[Point]V, mapping map[V]rune, fallback rune) {
 	initalized := false
 	var lowestX, lowestY, highestX, highestY int
 	for position := range data {
@@ -27,10 +27,10 @@ func DrawPointGrid[V comparable](data map[Point]V, mapping map[V]rune) {
 				if character, valueExists := mapping[value]; valueExists {
 					fmt.Print(string(character))
 				} else {
-					fmt.Print(".")
+					fmt.Print(string(fallback))
 				}
 			} else {
-				fmt.Print(".")
+				fmt.Print(string(fallback))
 			}
 		}
 		fmt.Print("\n")

@@ -15,30 +15,38 @@ func Task1(filePath string) (result test.TaskResult[int]) {
 
 	cave := model.NewCave(data)
 
-	spilling := false
-	for !spilling {
-		if cave.DropSand(framework.Point{X: 500, Y: 0}) {
-			result.Value++
-		} else {
-			spilling = true
-		}
+	for cave.DropSand(framework.Point{X: 500, Y: 0}) {
+		result.Value++
 	}
 
 	framework.DrawPointGrid(cave.Area, map[model.Material]rune{
 		model.ROCK: '#',
 		model.SAND: 'o',
-		model.AIR:  '.',
-	})
+	}, '.')
 
 	return
 }
 
 func Task2(filePath string) (result test.TaskResult[int]) {
-	_, err := framework.ReadLineBlocks(filePath)
+	data, err := framework.ReadLines(filePath)
 	if err != nil {
 		result.Error = err
 		return
 	}
+
+	cave := model.NewCave(data)
+	cave.AddRock(
+		framework.Point{X: cave.MinX - cave.MaxY, Y: cave.MaxY + 2},
+		framework.Point{X: cave.MaxX + cave.MaxY, Y: cave.MaxY + 2})
+
+	for cave.DropSand(framework.Point{X: 500, Y: 0}) {
+		result.Value++
+	}
+
+	framework.DrawPointGrid(cave.Area, map[model.Material]rune{
+		model.ROCK: '#',
+		model.SAND: 'o',
+	}, '.')
 
 	return
 }

@@ -15,8 +15,9 @@ const (
 )
 
 type Cave struct {
-	Area map[framework.Point]Material
-	maxY int
+	Area             map[framework.Point]Material
+	MinX, MaxX, MaxY int
+	initialized      bool
 }
 
 func NewCave(rockData []string) *Cave {
@@ -59,16 +60,27 @@ func (c *Cave) AddRock(from framework.Point, to framework.Point) {
 			c.Area[framework.Point{X: x, Y: from.Y}] = ROCK
 		}
 	}
-
-	maxY := framework.MaxInt(from.Y, to.Y)
-	if maxY > c.maxY {
-		c.maxY = maxY
+	minX := framework.MinInt(from.X, to.X)
+	if !c.initialized || minX < c.MinX {
+		c.MinX = minX
 	}
+	maxX := framework.MaxInt(from.X, to.X)
+	if !c.initialized || maxX > c.MaxX {
+		c.MaxX = maxX
+	}
+	maxY := framework.MaxInt(from.Y, to.Y)
+	if !c.initialized || maxY > c.MaxY {
+		c.MaxY = maxY
+	}
+	c.initialized = true
 }
 
 func (c *Cave) DropSand(position framework.Point) (comesToRest bool) {
+	if filled, _ := c.filled(framework.Point{X: position.X, Y: position.Y}); filled {
+		return false
+	}
 	for {
-		if position.Y >= c.maxY {
+		if position.Y >= c.MaxY {
 			return false
 		}
 		if filled, _ := c.filled(framework.Point{X: position.X, Y: position.Y + 1}); !filled {

@@ -1,7 +1,8 @@
 package model
 
 import (
-	"2022/src/framework"
+	"2022/src/framework/math"
+	"2022/src/framework/queues"
 	"container/heap"
 	"errors"
 )
@@ -17,35 +18,10 @@ type Position struct {
 	Y int
 }
 
-func ReadGrid(data []string) *Grid {
-	grid := Grid{}
-	grid.Squares = make([][]int, len(data[0]))
-	for i := range grid.Squares {
-		grid.Squares[i] = make([]int, len(data))
-	}
-
-	for y := range data {
-		for x, char := range []rune(data[y]) {
-			switch char {
-			case 'S':
-				grid.Start = Position{X: x, Y: y}
-				grid.Squares[x][y] = 1
-			case 'E':
-				grid.Destination = Position{X: x, Y: y}
-				grid.Squares[x][y] = 26
-			default:
-				grid.Squares[x][y] = int(char) - 96
-			}
-		}
-	}
-
-	return &grid
-}
-
 func (g *Grid) PathTo(from Position, to Position) (cameFrom map[Position]Position, err error) {
-	frontier := make(framework.PriorityQueue[Position], 1)
+	frontier := make(queues.PriorityQueue[Position], 1)
 
-	frontier[0] = &framework.Item[Position]{
+	frontier[0] = &queues.Item[Position]{
 		Value:    from,
 		Priority: 1,
 		Index:    0,
@@ -59,7 +35,7 @@ func (g *Grid) PathTo(from Position, to Position) (cameFrom map[Position]Positio
 	costSoFar[from] = 0
 
 	for frontier.Len() > 0 {
-		current := heap.Pop(&frontier).(*framework.Item[Position])
+		current := heap.Pop(&frontier).(*queues.Item[Position])
 
 		if current.Value == to {
 			break
@@ -70,7 +46,7 @@ func (g *Grid) PathTo(from Position, to Position) (cameFrom map[Position]Positio
 			if _, ok := costSoFar[next]; !ok || newCost < costSoFar[next] {
 				costSoFar[next] = newCost
 				priority := 1 / float64(newCost+g.heuristic(to, next))
-				item := &framework.Item[Position]{
+				item := &queues.Item[Position]{
 					Value:    next,
 					Priority: priority,
 				}
@@ -110,5 +86,5 @@ func (g *Grid) cost(current Position, next Position) int {
 }
 
 func (g *Grid) heuristic(a Position, b Position) int {
-	return framework.AbsInt(a.X-b.X) + framework.AbsInt(a.Y-b.Y)
+	return math.AbsInt(a.X-b.X) + math.AbsInt(a.Y-b.Y)
 }

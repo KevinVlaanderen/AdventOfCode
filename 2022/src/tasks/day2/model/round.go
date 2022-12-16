@@ -2,28 +2,20 @@ package model
 
 import "fmt"
 
-type Result int
-
-const (
-	Draw Result = iota
-	Win
-	Loss
-)
-
 type Round struct {
-	player1 Player
-	player2 Player
+	Player1 Player
+	Player2 Player
 }
 
 func NewRound(player1Hand Hand, player2Hand Hand) Round {
 	return Round{
-		player1: NewPlayer(Player1, player1Hand),
-		player2: NewPlayer(Player2, player2Hand),
+		Player1: NewPlayer(Player1, player1Hand),
+		Player2: NewPlayer(Player2, player2Hand),
 	}
 }
 
 func (g Round) ValidHands() bool {
-	return g.player1.hand != Invalid && g.player2.hand != Invalid
+	return g.Player1.Hand != Invalid && g.Player2.Hand != Invalid
 }
 
 func (g Round) ScoreFor(side PlayerSide) (score int, err error) {
@@ -41,7 +33,7 @@ func (g Round) ScoreFor(side PlayerSide) (score int, err error) {
 		score += 6
 	}
 
-	switch player.hand {
+	switch player.Hand {
 	case Rock:
 		score += 1
 	case Paper:
@@ -55,17 +47,17 @@ func (g Round) ScoreFor(side PlayerSide) (score int, err error) {
 
 func (g Round) getPlayer(side PlayerSide) Player {
 	if side == Player1 {
-		return g.player1
+		return g.Player1
 	} else {
-		return g.player2
+		return g.Player2
 	}
 }
 
 func (g Round) getOpponentFor(player Player) Player {
 	if player.side == Player1 {
-		return g.player2
+		return g.Player2
 	} else {
-		return g.player1
+		return g.Player1
 	}
 }
 
@@ -73,17 +65,17 @@ func (g Round) resultFor(player Player) Result {
 	opponent := g.getOpponentFor(player)
 
 	switch {
-	case player.hand == Rock && opponent.hand == Paper:
+	case player.Hand == Rock && opponent.Hand == Paper:
 		return Loss
-	case player.hand == Rock && opponent.hand == Scissors:
+	case player.Hand == Rock && opponent.Hand == Scissors:
 		return Win
-	case player.hand == Paper && opponent.hand == Rock:
+	case player.Hand == Paper && opponent.Hand == Rock:
 		return Win
-	case player.hand == Paper && opponent.hand == Scissors:
+	case player.Hand == Paper && opponent.Hand == Scissors:
 		return Loss
-	case player.hand == Scissors && opponent.hand == Rock:
+	case player.Hand == Scissors && opponent.Hand == Rock:
 		return Loss
-	case player.hand == Scissors && opponent.hand == Paper:
+	case player.Hand == Scissors && opponent.Hand == Paper:
 		return Win
 	}
 
@@ -92,9 +84,9 @@ func (g Round) resultFor(player Player) Result {
 
 func (g Round) handOf(player PlayerSide) (hand Hand) {
 	if player == Player1 {
-		hand = g.player1.hand
+		hand = g.Player1.Hand
 	} else {
-		hand = g.player2.hand
+		hand = g.Player2.Hand
 	}
 	return
 }

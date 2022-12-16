@@ -9,6 +9,15 @@ type FileSystem struct {
 	root *Directory
 }
 
+type Directory struct {
+	directories map[string]*Directory
+	files       map[string]*File
+}
+
+type File struct {
+	size int
+}
+
 func NewFileSystem() *FileSystem {
 	return &FileSystem{
 		root: &Directory{},
@@ -37,24 +46,6 @@ func (fs *FileSystem) CreateFile(p string, size int) {
 		return
 	}
 	directory.files[base] = &File{size: size}
-}
-
-func (fs *FileSystem) Directories(p string) []string {
-	directory := fs.resolveDir(p)
-	var dirNames []string
-	for name := range directory.directories {
-		dirNames = append(dirNames, name)
-	}
-	return dirNames
-}
-
-func (fs *FileSystem) Files(p string) []string {
-	directory := fs.resolveDir(p)
-	var fileNames []string
-	for name := range directory.files {
-		fileNames = append(fileNames, name)
-	}
-	return fileNames
 }
 
 func (fs *FileSystem) Size(p string) (int, map[string]int) {
@@ -92,13 +83,4 @@ func (fs *FileSystem) resolveDir(path string) *Directory {
 	}
 
 	return currentDir
-}
-
-type Directory struct {
-	directories map[string]*Directory
-	files       map[string]*File
-}
-
-type File struct {
-	size int
 }

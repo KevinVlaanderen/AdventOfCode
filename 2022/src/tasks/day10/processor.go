@@ -1,6 +1,7 @@
 package day10
 
 import (
+	"2022/src/tasks/day10/model"
 	"strconv"
 )
 
@@ -39,7 +40,7 @@ func NewProcessor(value int) *Processor {
 	return &Processor{State{value: value}}
 }
 
-func (p *Processor) Execute(instructions []Instruction) <-chan State {
+func (p *Processor) Execute(instructions []model.Instruction) <-chan State {
 	stateChannel := make(chan State)
 
 	if len(instructions) == 0 {
@@ -82,12 +83,12 @@ func (p *Processor) Execute(instructions []Instruction) <-chan State {
 	return stateChannel
 }
 
-func (p *Processor) createTask(instruction Instruction) Task {
+func (p *Processor) createTask(instruction model.Instruction) Task {
 	var task Task
 	switch instruction.Type {
-	case NOOP:
+	case model.NOOP:
 		task = createNoopTask()
-	case ADDX:
+	case model.ADDX:
 		param, _ := strconv.Atoi(instruction.Data[0])
 		task = createAddXTask(param)
 	}

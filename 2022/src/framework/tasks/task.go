@@ -1,4 +1,4 @@
-package test
+package tasks
 
 type Task[T comparable] func(fileName string) TaskResult[T]
 

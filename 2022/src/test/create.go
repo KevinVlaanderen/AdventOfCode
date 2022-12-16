@@ -3,14 +3,14 @@
 package test
 
 import (
-	"2022/src/framework/test"
+	"2022/src/framework/tasks"
 	"path/filepath"
 	"testing"
 )
 
-func CreateTest[T comparable](task test.Task[T], dataPath string, expected T) func(*testing.T) {
+func CreateTest[T comparable](task tasks.Task[T], dataPath string, expected T) func(*testing.T) {
 	return func(t *testing.T) {
-		var result test.TaskResult[T]
+		var result tasks.TaskResult[T]
 
 		if result = task(dataPath); result.Error != nil {
 			t.Fatal(result.Error)

@@ -1,4 +1,4 @@
-package framework
+package queues
 
 import "container/heap"
 

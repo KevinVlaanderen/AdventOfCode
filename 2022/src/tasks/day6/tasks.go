@@ -1,46 +1,29 @@
 package day6
 
 import (
-	"2022/src/framework"
-	"2022/src/framework/test"
-	"math/bits"
+	"2022/src/framework/tasks"
+	"2022/src/tasks/day6/model"
 )
 
-func Task1(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadFull(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task1(filePath string) (result tasks.TaskResult[int]) {
+	line := <- tasks.ReadStream(filePath, parser)
 
-	marker := findMarker(data, 4)
+	marker := line.FindMarker(4)
 
-	return test.TaskResult[int]{Value: marker}
+	return tasks.TaskResult[int]{Value: marker}
 }
 
-func Task2(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadFull(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task2(filePath string) (result tasks.TaskResult[int]) {
+	line := <- tasks.ReadStream(filePath, parser)
 
-	marker := findMarker(data, 14)
+	marker := line.FindMarker(14)
 
-	return test.TaskResult[int]{Value: marker}
+	return tasks.TaskResult[int]{Value: marker}
 }
 
-func findMarker(data string, length int) int {
-	for i := 0; i < len(data)-length; i++ {
-		slice := data[i : i+length]
-
-		var unique uint32
-		for _, char := range slice {
-			unique |= 1 << (int(char) - 97)
-		}
-		if bits.OnesCount32(unique) == length {
-			return i + length
-		}
+func parser(line string) (result model.Signal, hasResult bool, err error) {
+	if line == "" {
+		return result, false, nil
 	}
-	return -1
+	return model.Signal(line), true, nil
 }

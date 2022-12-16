@@ -1,120 +1,66 @@
 package day9
 
 import (
-	"2022/src/framework"
-	"2022/src/framework/test"
-	"fmt"
-	"os"
+	"2022/src/framework/generators"
+	"2022/src/framework/tasks"
+	"2022/src/tasks/day9/model"
 	"regexp"
 	"strconv"
 )
 
-func Task1(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task1(filePath string) (result tasks.TaskResult[int]) {
+	instructions := tasks.ReadStream(filePath, parser)
 
-	rope := NewRope(2)
-	visited := map[Position]bool{rope.TailPosition(): true}
+	rope := model.NewRope(2)
+	visitedGrid := model.Grid{rope.TailPosition(): true}
 
-	for _, instruction := range ParseInstructions(data) {
-		for range framework.Range(0, instruction.steps, 1) {
-			rope.Move(instruction.direction)
-			visited[rope.TailPosition()] = true
+	for instruction := range instructions {
+		for range generators.Range(0, instruction.Steps, 1) {
+			rope.Move(instruction.Direction)
+			visitedGrid[rope.TailPosition()] = true
 		}
 	}
 
-	result.Value = len(visited)
+	result.Value = len(visitedGrid)
 
-	if false {
-		printVisited(visited)
-	}
+	visitedGrid.PrintVisited()
 
 	return
 }
 
-func Task2(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task2(filePath string) (result tasks.TaskResult[int]) {
+	instructions := tasks.ReadStream(filePath, parser)
 
-	rope := NewRope(10)
-	visited := map[Position]bool{rope.TailPosition(): true}
+	rope := model.NewRope(10)
+	visitedGrid := model.Grid{rope.TailPosition(): true}
 
-	for _, instruction := range ParseInstructions(data) {
-		for range framework.Range(0, instruction.steps, 1) {
-			rope.Move(instruction.direction)
-			visited[rope.TailPosition()] = true
+	for instruction := range instructions {
+		for range generators.Range(0, instruction.Steps, 1) {
+			rope.Move(instruction.Direction)
+			visitedGrid[rope.TailPosition()] = true
 		}
 	}
 
-	result.Value = len(visited)
+	result.Value = len(visitedGrid)
 
-	if false {
-		printVisited(visited)
-	}
+	visitedGrid.PrintVisited()
 
 	return
-}
-
-func printVisited(visited map[Position]bool) {
-	var minX, maxX, minY, maxY int
-	for position := range visited {
-		if position.x < minX {
-			minX = position.x
-		} else if position.x > maxX {
-			maxX = position.x
-		}
-		if position.y < minY {
-			minY = position.y
-		} else if position.y > maxY {
-			maxY = position.y
-		}
-	}
-
-	grid := make([][]bool, maxY-minY+1)
-	for y := range grid {
-		grid[y] = make([]bool, maxX-minX+1)
-	}
-
-	for pos := range visited {
-		grid[pos.y-minY][pos.x-minX] = true
-	}
-
-	for _, gridY := range framework.Range(len(grid)-1, len(grid), -1) {
-		var line string
-		for _, gridX := range grid[gridY] {
-			value := "."
-			if gridX {
-				value = "#"
-			}
-			line += value
-		}
-		_, _ = fmt.Fprintln(os.Stdout, line)
-	}
-}
-
-type Instruction struct {
-	direction Direction
-	steps     int
 }
 
 var linePattern = regexp.MustCompile(`^([LRUD]) (\d+)$`)
 
-func ParseInstructions(data []string) (instructions []Instruction) {
-	for _, line := range data {
-		matches := linePattern.FindStringSubmatch(line)
-		direction := ToDirection(matches[1])
-		number, _ := strconv.Atoi(matches[2])
-
-		instructions = append(instructions, Instruction{
-			direction: direction,
-			steps:     number,
-		})
+func parser(line string) (result model.Instruction, hasResult bool, err error) {
+	if line == "" {
+		return result, false, nil
 	}
-	return
+
+	matches := linePattern.FindStringSubmatch(line)
+	direction := model.ToDirection(matches[1])
+	number, _ := strconv.Atoi(matches[2])
+
+	return model.Instruction{
+		Direction: direction,
+		Steps:     number,
+	}, true, nil
 }

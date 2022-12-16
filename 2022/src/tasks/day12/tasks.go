@@ -1,21 +1,14 @@
 package day12
 
 import (
-	"2022/src/framework"
-	"2022/src/framework/test"
+	"2022/src/framework/tasks"
 	"2022/src/tasks/day12/model"
 	"log"
 	"sort"
 )
 
-func Task1(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
-
-	grid := model.ReadGrid(data)
+func Task1(filePath string) (result tasks.TaskResult[int]) {
+	grid := tasks.Read(filePath, createParser())[0]
 
 	cameFrom, err := grid.PathTo(grid.Start, grid.Destination)
 	if err != nil {
@@ -35,14 +28,8 @@ func Task1(filePath string) (result test.TaskResult[int]) {
 	return
 }
 
-func Task2(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
-
-	grid := model.ReadGrid(data)
+func Task2(filePath string) (result tasks.TaskResult[int]) {
+	grid := tasks.Read(filePath, createParser())[0]
 
 	var startingPoints []model.Position
 	for x := range grid.Squares {
@@ -79,4 +66,38 @@ func Task2(filePath string) (result test.TaskResult[int]) {
 	result.Value = pathLengths[0]
 
 	return
+}
+
+func createParser() func(line string) (result *model.Grid, hasResult bool, err error) {
+	var lines []string
+
+	return func(line string) (result *model.Grid, hasResult bool, err error) {
+		if line != "" {
+			lines = append(lines, line)
+			return result, false, nil
+		}
+
+		grid := model.Grid{}
+		grid.Squares = make([][]int, len(lines[0]))
+		for i := range grid.Squares {
+			grid.Squares[i] = make([]int, len(lines))
+		}
+
+		for y := range lines {
+			for x, char := range []rune(lines[y]) {
+				switch char {
+				case 'S':
+					grid.Start = model.Position{X: x, Y: y}
+					grid.Squares[x][y] = 1
+				case 'E':
+					grid.Destination = model.Position{X: x, Y: y}
+					grid.Squares[x][y] = 26
+				default:
+					grid.Squares[x][y] = int(char) - 96
+				}
+			}
+		}
+
+		return &grid, true, nil
+	}
 }

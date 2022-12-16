@@ -1,7 +1,7 @@
-package day9
+package model
 
 import (
-	"2022/src/framework"
+	"2022/src/framework/math"
 	"fmt"
 )
 
@@ -31,10 +31,6 @@ func ToDirection(value string) Direction {
 
 type Rope struct {
 	knots []knot
-}
-
-type Position struct {
-	x, y int
 }
 
 func NewRope(length int) *Rope {
@@ -69,23 +65,23 @@ type knot struct {
 }
 
 func (k *knot) distanceTo(other *knot) int {
-	return framework.MaxInt(framework.AbsInt(k.x-other.x), framework.AbsInt(k.y-other.y))
+	return math.MaxInt(math.AbsInt(k.X-other.X), math.AbsInt(k.Y-other.Y))
 }
 
 func (k *knot) alignedWith(other *knot) bool {
-	return k.x == other.x || k.y == other.y
+	return k.X == other.X || k.Y == other.Y
 }
 
 func (k *knot) move(direction Direction) {
 	switch direction {
 	case LEFT:
-		k.x -= 1
+		k.X -= 1
 	case RIGHT:
-		k.x += 1
+		k.X += 1
 	case UP:
-		k.y += 1
+		k.Y += 1
 	case DOWN:
-		k.y -= 1
+		k.Y -= 1
 	}
 }
 
@@ -94,14 +90,14 @@ func (k *knot) moveToward(other *knot) {
 		return
 	}
 
-	if other.x > k.x {
+	if other.X > k.X {
 		k.move(RIGHT)
-	} else if other.x < k.x {
+	} else if other.X < k.X {
 		k.move(LEFT)
 	}
-	if other.y > k.y {
+	if other.Y > k.Y {
 		k.move(UP)
-	} else if other.y < k.y {
+	} else if other.Y < k.Y {
 		k.move(DOWN)
 	}
 }

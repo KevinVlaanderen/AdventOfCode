@@ -1,62 +1,41 @@
 package day13
 
 import (
-	"2022/src/framework"
-	"2022/src/framework/test"
+	"2022/src/framework/tasks"
+	"2022/src/tasks/day13/model"
 	"encoding/json"
-	"log"
 	"sort"
 )
 
-func Task1(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLineBlocks(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task1(filePath string) (result tasks.TaskResult[int]) {
+	pairs := tasks.ReadStream(filePath, createTask1Parser())
 
-	for index, pair := range data {
-		var packet1, packet2 any
-		_ = json.Unmarshal([]byte(pair[0]), &packet1)
-		_ = json.Unmarshal([]byte(pair[1]), &packet2)
-
-		if compare(packet1, packet2) < 0 {
-			log.Printf("pair %v is in the right order\n", index+1)
-			result.Value += index + 1
+	for pair := range pairs {
+		if model.Compare(pair.Packet1, pair.Packet2) < 0 {
+			result.Value += pair.Index
 		}
 	}
 
 	return
 }
 
-func Task2(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLineBlocks(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task2(filePath string) (result tasks.TaskResult[int]) {
+	packets := tasks.Read(filePath, task2Parser)
 
 	divider1String := "[[2]]"
 	divider2String := "[[6]]"
-	var divider1, divider2 any
+	var divider1, divider2 model.Packet
 	_ = json.Unmarshal([]byte(divider1String), &divider1)
 	_ = json.Unmarshal([]byte(divider2String), &divider2)
 
-	allPackets := []any{divider1, divider2}
+	packets = append(packets, divider1, divider2)
 
-	for _, pair := range data {
-		var packet1, packet2 any
-		_ = json.Unmarshal([]byte(pair[0]), &packet1)
-		_ = json.Unmarshal([]byte(pair[1]), &packet2)
-		allPackets = append(allPackets, packet1, packet2)
-	}
-
-	sort.Slice(allPackets, func(i, j int) bool {
-		return compare(allPackets[i], allPackets[j]) < 0
+	sort.Slice(packets, func(i, j int) bool {
+		return model.Compare(packets[i], packets[j]) < 0
 	})
 
 	var index1, index2 int
-	for index, packet := range allPackets {
+	for index, packet := range packets {
 		if packetBytes, err := json.Marshal(packet); err == nil {
 			packetString := string(packetBytes)
 			if packetString == divider1String {
@@ -65,54 +44,44 @@ func Task2(filePath string) (result test.TaskResult[int]) {
 				index2 = index + 1
 			}
 		}
-
 	}
 	result.Value = index1 * index2
 
 	return
 }
 
-func compare(a any, b any) int {
-	aSlice, aIsList := a.([]any)
-	bSlice, bIsList := b.([]any)
+func createTask1Parser() func(line string) (result model.Pair, hasResult bool, err error) {
+	index := 1
+	var lines []string
 
-	if !aIsList && !bIsList {
-		return int(a.(float64) - b.(float64))
-	} else {
-		if aIsList && !bIsList {
-			bSlice = []any{b}
-		} else if !aIsList && bIsList {
-			aSlice = []any{a}
+	return func(line string) (result model.Pair, hasResult bool, err error) {
+		if line != "" {
+			lines = append(lines, line)
+			return result, false, err
+		} else if line == "" && len(lines) == 0 {
+			return result, false, err
 		}
 
-		if len(aSlice) == 0 && len(bSlice) == 0 {
-			return 0
-		} else if len(aSlice) == 0 {
-			return -1
-		} else if len(bSlice) == 0 {
-			return 1
-		}
+		var packet1, packet2 model.Packet
+		_ = json.Unmarshal([]byte(lines[0]), &packet1)
+		_ = json.Unmarshal([]byte(lines[1]), &packet2)
 
-		for index := range aSlice {
-			if index >= len(bSlice) {
-				return 1
-			}
+		pair := model.Pair{Index: index, Packet1: packet1, Packet2: packet2}
 
-			itemA := aSlice[index]
-			itemB := bSlice[index]
+		index++
+		lines = nil
 
-			switch result := compare(itemA, itemB); {
-			case result > 0:
-				return 1
-			case result < 0:
-				return -1
-			}
-		}
+		return pair, true, nil
+	}
+}
 
-		if len(bSlice) > len(aSlice) {
-			return -1
-		}
+func task2Parser(line string) (result model.Packet, hasResult bool, err error) {
+	if line == "" {
+		return result, false, err
 	}
 
-	return 0
+	var packet model.Packet
+	_ = json.Unmarshal([]byte(line), &packet)
+
+	return packet, true, nil
 }

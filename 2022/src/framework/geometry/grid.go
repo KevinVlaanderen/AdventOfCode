@@ -1,6 +1,9 @@
-package framework
+package geometry
 
-import "fmt"
+import (
+	"2022/src/framework/generators"
+	"fmt"
+)
 
 func DrawPointGrid[V comparable](data map[Point]V, mapping map[V]rune, fallback rune) {
 	initalized := false
@@ -21,8 +24,8 @@ func DrawPointGrid[V comparable](data map[Point]V, mapping map[V]rune, fallback 
 		initalized = true
 	}
 
-	for _, y := range Range(lowestY, highestY-lowestY+1, 1) {
-		for _, x := range Range(lowestX, highestX-lowestX+1, 1) {
+	for _, y := range generators.Range(lowestY, highestY-lowestY+1, 1) {
+		for _, x := range generators.Range(lowestX, highestX-lowestX+1, 1) {
 			if value, positionExists := data[Point{X: x, Y: y}]; positionExists {
 				if character, valueExists := mapping[value]; valueExists {
 					fmt.Print(string(character))

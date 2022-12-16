@@ -1,4 +1,4 @@
-package framework
+package math
 
 func Sum(array []int) int {
 	result := 0

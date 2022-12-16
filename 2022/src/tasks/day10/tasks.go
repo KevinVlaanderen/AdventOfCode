@@ -1,20 +1,16 @@
 package day10
 
 import (
-	"2022/src/framework"
-	"2022/src/framework/test"
+	"2022/src/framework/tasks"
+	"2022/src/tasks/day10/model"
 	"fmt"
 	"log"
+	"strings"
 )
 
-func Task1(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task1(filePath string) (result tasks.TaskResult[int]) {
+	instructions := tasks.Read(filePath, parser)
 
-	instructions := Parse(data)
 	processor := NewProcessor(1)
 	for state := range processor.Execute(instructions) {
 		log.Printf("value at tick %v: %v ", state.tick+1, processor.value)
@@ -27,16 +23,11 @@ func Task1(filePath string) (result test.TaskResult[int]) {
 	return
 }
 
-func Task2(filePath string) (result test.TaskResult[string]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task2(filePath string) (result tasks.TaskResult[string]) {
+	instructions := tasks.Read(filePath, parser)
 
 	var outputLine string
 
-	instructions := Parse(data)
 	processor := NewProcessor(1)
 	for state := range processor.Execute(instructions) {
 		column := state.tick % 40
@@ -56,4 +47,22 @@ func Task2(filePath string) (result test.TaskResult[string]) {
 	result.Value = "RBPARAGF"
 
 	return
+}
+
+func parser(line string) (result model.Instruction, hasResult bool, err error) {
+	if line == "" {
+		return result, false, nil
+	}
+
+	parts := strings.Split(line, " ")
+	instructionType, _ := model.MapWordToInstructionType(parts[0])
+	instruction := model.Instruction{Type: instructionType}
+
+	switch parts[0] {
+	case "noop":
+	case "addx":
+		instruction.Data = parts[1:]
+	}
+
+	return instruction, true, nil
 }

@@ -1,4 +1,4 @@
-package framework
+package generators
 
 func Range(start, count, step int) []int {
 	s := make([]int, count)

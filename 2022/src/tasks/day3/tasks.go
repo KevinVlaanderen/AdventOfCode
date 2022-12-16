@@ -1,70 +1,75 @@
 package day3
 
 import (
-	"2022/src/framework"
-	"2022/src/framework/test"
+	"2022/src/framework/sets"
+	"2022/src/framework/tasks"
+	"2022/src/tasks/day3/model"
 	"fmt"
-	"unicode"
 )
 
-func Task1(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task1(filePath string) (result tasks.TaskResult[int]) {
+	rucksacks := tasks.ReadStream(filePath, task1Parser)
 
-	for _, line := range data {
-		runes := []rune(line)
-		length := len(runes)
-		compartment1 := runes[:length/2]
-		compartment2 := runes[length/2:]
-
-		if difference, err := framework.Intersection(compartment1, compartment2); err != nil {
+	for rucksack := range rucksacks {
+		if difference, err := sets.Intersection(rucksack.Compartment1(), rucksack.Compartment2()); err != nil {
 			result.Error = err
 			return
 		} else {
 			if len(difference) != 1 {
-				result.Error = fmt.Errorf("invalid number of differences in %s", line)
+				result.Error = fmt.Errorf("invalid number of differences in %s", string(rucksack))
 				return
 			}
 
-			result.Value += GetPriority(difference[0])
+			result.Value += difference[0].GetPriority()
 		}
 	}
 
 	return
 }
 
-func Task2(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
-	}
+func Task2(filePath string) (result tasks.TaskResult[int]) {
+	groups := tasks.ReadStream(filePath, createTask2Parser())
 
-	for i := 0; i < len(data)/3; i++ {
-		group := data[i*3 : i*3+3]
-		if difference, err := framework.Intersection([]rune(group[0]), []rune(group[1]), []rune(group[2])); err != nil {
+	for group := range groups {
+		if difference, err := sets.Intersection(group[0], group[1], group[2]); err != nil {
 			result.Error = err
 			return
 		} else {
 			if len(difference) != 1 {
-				result.Error = fmt.Errorf("invalid number of differences in group %s", group)
+				result.Error = fmt.Errorf("invalid number of differences in group %v", group)
 				return
 			}
 
-			result.Value += GetPriority(difference[0])
+			result.Value += difference[0].GetPriority()
 		}
 	}
 
 	return
 }
 
-func GetPriority(item rune) int {
-	if unicode.IsLower(item) {
-		return int(item) - 96
-	} else {
-		return int(item) - 38
+func task1Parser(line string) (result model.Rucksack, hasResult bool, err error) {
+	if line == "" {
+		return result, false, nil
+	}
+	return model.Rucksack(line), true, nil
+}
+
+func createTask2Parser() func(line string) (result model.Group, hasResult bool, err error) {
+	var group model.Group
+
+	return func(line string) (result model.Group, hasResult bool, err error) {
+		if line == "" {
+			return result, false, nil
+		}
+
+		group = append(group, model.Rucksack(line))
+		if len(group) == 3 {
+			result = group
+			group = nil
+			return result, true, nil
+		} else {
+			return result, false, nil
+		}
 	}
 }
+

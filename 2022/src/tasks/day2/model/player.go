@@ -9,9 +9,9 @@ const (
 
 type Player struct {
 	side PlayerSide
-	hand Hand
+	Hand Hand
 }
 
 func NewPlayer(side PlayerSide, hand Hand) (player Player) {
-	return Player{side: side, hand: hand}
+	return Player{side: side, Hand: hand}
 }

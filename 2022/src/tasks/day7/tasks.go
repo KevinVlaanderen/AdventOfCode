@@ -1,22 +1,37 @@
 package day7
 
 import (
-	"2022/src/framework"
-	"2022/src/framework/test"
+	"2022/src/framework/tasks"
+	"2022/src/tasks/day7/model"
 	"path"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-func Task1(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
+func Task1(filePath string) (result tasks.TaskResult[int]) {
+	inputs := tasks.ReadStream(filePath, parser)
+
+	fileSystem := NewFileSystem()
+	shell := NewShell()
+
+	for input := range inputs {
+		switch input.InputType {
+		case model.COMMAND:
+			shell.Execute(input.Data)
+		case model.CONTENT:
+			parts := strings.Split(input.Data, " ")
+			switch parts[0] {
+			case "dir":
+				fileSystem.CreateDir(path.Join(shell.currentPath, parts[1]))
+			default:
+				size, _ := strconv.Atoi(parts[0])
+				fileSystem.CreateFile(path.Join(shell.currentPath, parts[1]), size)
+			}
+		}
 	}
 
-	_, allSizes := run(data)
+	_, allSizes := fileSystem.Size("/")
 
 	for _, size := range allSizes {
 		if size <= 100000 {
@@ -27,14 +42,30 @@ func Task1(filePath string) (result test.TaskResult[int]) {
 	return
 }
 
-func Task2(filePath string) (result test.TaskResult[int]) {
-	data, err := framework.ReadLines(filePath)
-	if err != nil {
-		result.Error = err
-		return
+func Task2(filePath string) (result tasks.TaskResult[int]) {
+	inputs := tasks.ReadStream(filePath, parser)
+
+	fileSystem := NewFileSystem()
+	shell := NewShell()
+
+	for input := range inputs {
+		switch input.InputType {
+		case model.COMMAND:
+			shell.Execute(input.Data)
+		case model.CONTENT:
+			parts := strings.Split(input.Data, " ")
+			switch parts[0] {
+			case "dir":
+				fileSystem.CreateDir(path.Join(shell.currentPath, parts[1]))
+			default:
+				size, _ := strconv.Atoi(parts[0])
+				fileSystem.CreateFile(path.Join(shell.currentPath, parts[1]), size)
+			}
+		}
 	}
 
-	totalSize, allSizes := run(data)
+	totalSize, allSizes := fileSystem.Size("/")
+
 	remainingSize := 70000000 - totalSize
 	requiredSize := 30000000 - remainingSize
 
@@ -51,27 +82,20 @@ func Task2(filePath string) (result test.TaskResult[int]) {
 	return
 }
 
-func run(data []string) (totalSize int, allSizes map[string]int) {
-	fileSystem := NewFileSystem()
-	shell := NewShell()
-
-	inputs := Parse(data)
-
-	for _, input := range inputs {
-		switch input.InputType {
-		case COMMAND:
-			shell.Execute(input.data)
-		case CONTENT:
-			parts := strings.Split(input.data, " ")
-			switch parts[0] {
-			case "dir":
-				fileSystem.CreateDir(path.Join(shell.currentPath, parts[1]))
-			default:
-				size, _ := strconv.Atoi(parts[0])
-				fileSystem.CreateFile(path.Join(shell.currentPath, parts[1]), size)
-			}
-		}
+func parser(line string) (result model.Input, hasResult bool, err error) {
+	if line == "" {
+		return result, false, nil
 	}
 
-	return fileSystem.Size("/")
+	if line[0] == '$' {
+		return model.Input{
+			InputType: model.COMMAND,
+			Data:      line[2:],
+		}, true, nil
+	} else {
+		return model.Input{
+			InputType: model.CONTENT,
+			Data:      line,
+		}, true, nil
+	}
 }

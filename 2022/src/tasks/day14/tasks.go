@@ -15,7 +15,7 @@ func Task1(filePath string) (result tasks.TaskResult[int]) {
 		result.Value++
 	}
 
-	geometry.DrawPointGrid(cave.Area, map[model.Material]rune{
+	cave.Area.DrawPointGrid(map[model.Material]rune{
 		model.ROCK: '#',
 		model.SAND: 'o',
 	}, '.')
@@ -34,7 +34,7 @@ func Task2(filePath string) (result tasks.TaskResult[int]) {
 		result.Value++
 	}
 
-	geometry.DrawPointGrid(cave.Area, map[model.Material]rune{
+	cave.Area.DrawPointGrid(map[model.Material]rune{
 		model.ROCK: '#',
 		model.SAND: 'o',
 	}, '.')

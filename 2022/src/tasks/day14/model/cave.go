@@ -15,7 +15,7 @@ const (
 )
 
 type Cave struct {
-	Area             map[geometry.Point]Material
+	Area             geometry.Grid[Material]
 	MinX, MaxX, MaxY int
 	initialized      bool
 }

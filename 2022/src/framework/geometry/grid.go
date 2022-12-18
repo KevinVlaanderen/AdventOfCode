@@ -5,28 +5,35 @@ import (
 	"fmt"
 )
 
-func DrawPointGrid[V comparable](data map[Point]V, mapping map[V]rune, fallback rune) {
-	initalized := false
-	var lowestX, lowestY, highestX, highestY int
-	for position := range data {
-		if !initalized || position.X < lowestX {
-			lowestX = position.X
-		}
-		if !initalized || position.X > highestX {
-			highestX = position.X
-		}
-		if !initalized || position.Y < lowestY {
-			lowestY = position.Y
-		}
-		if !initalized || position.Y > highestY {
-			highestY = position.Y
-		}
-		initalized = true
-	}
+type Grid[T comparable] map[Point]T
 
-	for _, y := range generators.Range(lowestY, highestY-lowestY+1, 1) {
-		for _, x := range generators.Range(lowestX, highestX-lowestX+1, 1) {
-			if value, positionExists := data[Point{X: x, Y: y}]; positionExists {
+func (g Grid[T]) Boundaries() (int, int, int, int) {
+	initialized := false
+	var xMin, xMax, yMin, yMax int
+	for position := range g {
+		if !initialized || position.X < xMin {
+			xMin = position.X
+		}
+		if !initialized || position.X > xMax {
+			xMax = position.X
+		}
+		if !initialized || position.Y < yMin {
+			yMin = position.Y
+		}
+		if !initialized || position.Y > yMax {
+			yMax = position.Y
+		}
+		initialized = true
+	}
+	return xMin, xMax, yMin, yMax
+}
+
+func (g Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
+	xMin, xMax, yMin, yMax := g.Boundaries()
+
+	for _, y := range generators.Range(yMin, yMax-yMin+1, 1) {
+		for _, x := range generators.Range(xMin, xMax-xMin+1, 1) {
+			if value, positionExists := g[Point{X: x, Y: y}]; positionExists {
 				if character, valueExists := mapping[value]; valueExists {
 					fmt.Print(string(character))
 				} else {

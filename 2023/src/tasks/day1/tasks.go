@@ -1,7 +1,7 @@
 package day1
 
 import (
-	"2023/src/framework/parser"
+	"2023/src/framework/parse"
 	"2023/src/framework/task"
 	"fmt"
 	"golang.org/x/exp/maps"
@@ -35,7 +35,7 @@ var words = map[string]int{
 func Task1(filePath string) (result task.Result[int]) {
 	lookup := digits
 
-	for line := range task.ReadStream(filePath, parser.Lines) {
+	for line := range task.ReadStream(filePath, parse.Lines) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return
@@ -45,7 +45,7 @@ func Task2(filePath string) (result task.Result[int]) {
 	lookup := digits
 	maps.Copy(lookup, words)
 
-	for line := range task.ReadStream(filePath, parser.Lines) {
+	for line := range task.ReadStream(filePath, parse.Lines) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return

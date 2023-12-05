@@ -1,8 +1,8 @@
 package task
 
-type Task[T comparable] func(fileName string) TaskResult[T]
+type Task[T comparable] func(fileName string) Result[T]
 
-type TaskResult[T comparable] struct {
+type Result[T comparable] struct {
 	Value T
 	Error error
 }

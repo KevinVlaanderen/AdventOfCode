@@ -3,7 +3,9 @@ package day2
 import (
 	"2023/src/framework/task"
 	"errors"
-	"fmt"
+	"github.com/samber/lo"
+	lop "github.com/samber/lo/parallel"
+	"log"
 	"regexp"
 	"strconv"
 	"strings"
@@ -14,6 +16,25 @@ func Task1(filePath string) (result task.Result[int]) {
 		if game.valid() {
 			result.Value += game.id
 		}
+	}
+	return
+}
+
+func Task2(filePath string) (result task.Result[int]) {
+	for game := range task.ReadStream(filePath, parser) {
+		var minRed, minGreen, minBlue int
+		for _, hand := range game.hands {
+			if hand.red > minRed {
+				minRed = hand.red
+			}
+			if hand.green > minGreen {
+				minGreen = hand.green
+			}
+			if hand.blue > minBlue {
+				minBlue = hand.blue
+			}
+		}
+		result.Value += Hand{minRed, minGreen, minBlue}.power()
 	}
 	return
 }
@@ -41,6 +62,10 @@ type Hand struct {
 	red, green, blue int
 }
 
+func (hand Hand) power() int {
+	return hand.red * hand.green * hand.blue
+}
+
 func parser(line string) (game Game, hasResult bool, err error) {
 	if line == "" {
 		return
@@ -58,14 +83,14 @@ func parser(line string) (game Game, hasResult bool, err error) {
 		return
 	}
 
-	for _, handString := range handStrings {
+	game.hands = lo.FlatMap(handStrings, func(handString string, index int) []Hand {
 		handMatches := handPattern.FindAllStringSubmatch(strings.TrimSpace(handString), -1)
 
-		for _, handMatch := range handMatches {
+		return lop.Map(handMatches, func(handMatch []string, index int) Hand {
 			var red, green, blue, n int
 			n, err = strconv.Atoi(handMatch[1])
 			if err != nil {
-				return
+				panic(err)
 			}
 
 			switch handMatch[2] {
@@ -76,13 +101,12 @@ func parser(line string) (game Game, hasResult bool, err error) {
 			case "blue":
 				blue = n
 			default:
-				err = fmt.Errorf("unknown color %v", handMatch[2])
-				return
+				log.Panicf("unknown color %v", handMatch[2])
 			}
 
-			game.hands = append(game.hands, Hand{red, green, blue})
-		}
-	}
+			return Hand{red, green, blue}
+		})
+	})
 
 	hasResult = true
 	return

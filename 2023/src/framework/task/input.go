@@ -6,9 +6,11 @@ import (
 	"os"
 )
 
+type Parser[T any] func(line string) (result T, hasResult bool, err error)
+
 func ReadStream[T any](
 	filePath string,
-	parser func(line string) (result T, hasResult bool, err error),
+	parser Parser[T],
 ) (data <-chan T) {
 	outputChannel := make(chan T)
 
@@ -52,7 +54,7 @@ func ReadStream[T any](
 
 func Read[T any](
 	filePath string,
-	parser func(line string) (result T, hasResult bool, err error),
+	parser Parser[T],
 ) (output []T) {
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -86,4 +88,23 @@ func Read[T any](
 	handler(parser(""))
 
 	return
+}
+
+func ReadLines(path string) []string {
+	file, err := os.Open(path)
+	if err != nil {
+		log.Panic(err)
+	}
+	defer func(file *os.File) {
+		if err = file.Close(); err != nil {
+			log.Panic(err)
+		}
+	}(file)
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines
 }

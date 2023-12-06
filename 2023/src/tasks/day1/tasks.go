@@ -35,7 +35,7 @@ var words = map[string]int{
 func Task1(filePath string) (result task.Result[int]) {
 	lookup := digits
 
-	for line := range task.ReadStream(filePath, parse.Lines) {
+	for line := range task.ReadStream(filePath, parse.Lines()) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return
@@ -45,7 +45,7 @@ func Task2(filePath string) (result task.Result[int]) {
 	lookup := digits
 	maps.Copy(lookup, words)
 
-	for line := range task.ReadStream(filePath, parse.Lines) {
+	for line := range task.ReadStream(filePath, parse.Lines()) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return

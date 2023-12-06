@@ -3,6 +3,7 @@ package day3
 import (
 	"2023/src/framework/task"
 	"2023/src/tasks/day3/model"
+	"golang.org/x/exp/slices"
 )
 
 func Task1(filePath string) (result task.Result[int]) {
@@ -15,6 +16,30 @@ func Task1(filePath string) (result task.Result[int]) {
 				result.Value += number.Value
 				break Lookup
 			}
+		}
+	}
+
+	return
+}
+
+func Task2(filePath string) (result task.Result[int]) {
+	schematic := <-task.ReadStream(filePath, createParser())
+
+	for _, symbol := range schematic.Symbols {
+		if symbol.Value != '*' {
+			continue
+		}
+		
+		numbers := make([]model.Number, 0)
+
+		for _, coordinate := range symbol.Position.Neighbors() {
+			if number, found := schematic.NumberAt(coordinate); found && !slices.Contains(numbers, number) {
+				numbers = append(numbers, number)
+			}
+		}
+
+		if len(numbers) == 2 {
+			result.Value += numbers[0].Value * numbers[1].Value
 		}
 	}
 

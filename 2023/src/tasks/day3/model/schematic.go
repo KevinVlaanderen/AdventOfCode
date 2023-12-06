@@ -35,3 +35,12 @@ func (s *Schematic) SymbolAt(location geometry.Point) (Symbol, bool) {
 	}
 	return Symbol{}, false
 }
+
+func (s *Schematic) NumberAt(location geometry.Point) (Number, bool) {
+	for _, number := range s.Numbers {
+		if number.Area.Contains(location) {
+			return number, true
+		}
+	}
+	return Number{}, false
+}

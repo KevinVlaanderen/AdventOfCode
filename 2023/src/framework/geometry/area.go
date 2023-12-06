@@ -18,3 +18,7 @@ func (a Area) Neighbors() (points []Point) {
 	}
 	return
 }
+
+func (a Area) Contains(point Point) bool {
+	return point.X >= a.From.X && point.X <= a.To.X && point.Y >= a.From.Y && point.Y <= a.To.Y
+}

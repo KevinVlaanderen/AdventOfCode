@@ -1,6 +1,7 @@
 package day4
 
 import (
+	"2023/src/framework/generators"
 	"2023/src/framework/task"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
@@ -16,6 +17,24 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
+func Task2(filePath string) (result task.Result[int]) {
+	cards := task.Read(filePath, parser)
+	pile := lo.Map(cards, func(item Card, index int) int {
+		return 1
+	})
+	for index, count := range pile {
+		score := cards[index].Correct()
+		for _, nextIndex := range generators.Range(index+1, score, 1) {
+			if nextIndex < len(cards) {
+				pile[nextIndex] += count
+			}
+		}
+	}
+
+	result.Value = lo.Sum(pile)
+	return
+}
+
 var cardPattern = regexp.MustCompile(`Card\s+(\d+): ([\d\s]+) \| ([\d\s]+)`)
 var numberPattern = regexp.MustCompile(`\d+`)
 
@@ -26,10 +45,8 @@ type Card struct {
 }
 
 func (c Card) Score() int {
-	correct := lo.CountBy(c.yourNumbers, func(item int) bool {
-		return slices.Contains(c.winningNumbers, item)
-	})
-	switch correct {
+	correct := c.Correct()
+	switch c.Correct() {
 	case 0:
 		return 0
 	case 1:
@@ -37,6 +54,12 @@ func (c Card) Score() int {
 	default:
 		return 1 << (correct - 1)
 	}
+}
+
+func (c Card) Correct() int {
+	return lo.CountBy(c.yourNumbers, func(item int) bool {
+		return slices.Contains(c.winningNumbers, item)
+	})
 }
 
 func parser(line string) (card Card, hasResult bool, err error) {

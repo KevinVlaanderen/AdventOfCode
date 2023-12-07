@@ -16,8 +16,8 @@ func TestTask1(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Run("test data", test.CreateTest(Task1, testDataPath, 142))
-	t.Run("real data", test.CreateTest(Task1, realDataPath, 54081))
+	t.Run("test data", test.CreateTest(Task1, testDataPath, 142, false))
+	t.Run("real data", test.CreateTest(Task1, realDataPath, 54081, false))
 }
 
 func TestTask2(t *testing.T) {
@@ -31,6 +31,6 @@ func TestTask2(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Run("test data", test.CreateTest(Task2, testDataPath, 281))
-	t.Run("real data", test.CreateTest(Task2, realDataPath, 54649))
+	t.Run("test data", test.CreateTest(Task2, testDataPath, 281, false))
+	t.Run("real data", test.CreateTest(Task2, realDataPath, 54649, false))
 }

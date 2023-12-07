@@ -8,8 +8,11 @@ import (
 	"testing"
 )
 
-func CreateTest[T comparable](task _task.Task[T], dataPath string, expected T) func(*testing.T) {
+func CreateTest[T comparable](task _task.Task[T], dataPath string, expected T, skip bool) func(*testing.T) {
 	return func(t *testing.T) {
+		if skip {
+			t.SkipNow()
+		}
 		var result _task.Result[T]
 
 		if result = task(dataPath); result.Error != nil {

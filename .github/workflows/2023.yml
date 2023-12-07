@@ -1,0 +1,42 @@
+name: 2023 tests
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "2023/**"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "2023/**"
+  workflow_dispatch:
+    branches: [ "main" ]
+
+defaults:
+  run:
+    working-directory: "2023"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: "2023/go.mod"
+
+    - name: Install dependencies
+      run: go install github.com/jstemmer/go-junit-report/v2@latest
+
+    - name: Test
+      run: go test -v -tags testing 2>&1 2023/... | go-junit-report -set-exit-code -subtest-mode exclude-parents > ./report.xml
+
+    - name: Unit Test Results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: 2023 test results
+        path: 2023/report.xml
+        reporter: java-junit

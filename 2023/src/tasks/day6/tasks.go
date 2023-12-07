@@ -15,7 +15,11 @@ func Task1(filePath string) (result task.Result[int]) {
 	races := parseRaces(data, false)
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
-		return result * lo.CountBy(generators.Range(0, race.time+1, 1), func(time int) bool {
+		times := make([]int, race.time+1)
+		for time := range generators.RangeGen(0, race.time+1, 1) {
+			times[time] = time
+		}
+		return result * lo.CountBy(times, func(time int) bool {
 			return time*(race.time-time) > race.distance
 		})
 	}, 1)

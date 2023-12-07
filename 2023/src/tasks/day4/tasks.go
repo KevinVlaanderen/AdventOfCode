@@ -24,7 +24,7 @@ func Task2(filePath string) (result task.Result[int]) {
 	})
 	for index, count := range pile {
 		score := cards[index].Correct()
-		for _, nextIndex := range generators.Range(index+1, score, 1) {
+		for nextIndex := range generators.RangeGen(index+1, score, 1) {
 			if nextIndex < len(cards) {
 				pile[nextIndex] += count
 			}

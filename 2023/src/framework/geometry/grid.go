@@ -31,8 +31,8 @@ func (g Grid[T]) Boundaries() (int, int, int, int) {
 func (g Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
 	xMin, xMax, yMin, yMax := g.Boundaries()
 
-	for _, y := range generators.Range(yMin, yMax-yMin+1, 1) {
-		for _, x := range generators.Range(xMin, xMax-xMin+1, 1) {
+	for y := range generators.RangeGen(yMin, yMax-yMin+1, 1) {
+		for x := range generators.RangeGen(xMin, xMax-xMin+1, 1) {
 			if value, positionExists := g[Point{X: x, Y: y}]; positionExists {
 				if character, valueExists := mapping[value]; valueExists {
 					fmt.Print(string(character))

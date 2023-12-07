@@ -42,7 +42,7 @@ func Task2(filePath string) (result task.Result[int]) {
 	location := -1
 
 	lop.ForEach(lo.Chunk(seedNumbers, 2), func(pair []int, pairIndex int) {
-		for _, seed := range generators.Range(pair[0], pair[1], 1) {
+		for seed := range generators.RangeGen(pair[0], pair[1], 1) {
 			value := almanac.MapToNextStep("seed", seed)
 			if location == -1 || value < location {
 				location = value

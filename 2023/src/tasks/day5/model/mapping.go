@@ -2,7 +2,6 @@ package model
 
 import (
 	"2023/src/framework/number"
-	"strings"
 )
 
 type Mapping struct {
@@ -20,7 +19,7 @@ func NewMapping(block []string) (source string, target string, mapping Mapping) 
 			source = nameMatch[1]
 			target = nameMatch[2]
 		} else {
-			numbers := number.StringsToInts(strings.Split(line, " "))
+			numbers := number.ExtractNumbers(line)
 			mapping.ranges = append(mapping.ranges, NewRange(numbers[0], numbers[1], numbers[2]))
 		}
 	}

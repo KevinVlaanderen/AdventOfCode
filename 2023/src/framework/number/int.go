@@ -2,6 +2,7 @@ package number
 
 import (
 	"github.com/samber/lo"
+	"regexp"
 	"strconv"
 )
 
@@ -17,8 +18,10 @@ func Length(i int) int {
 	return count
 }
 
-func StringsToInts(s []string) []int {
-	return lo.Map(s, func(item string, index int) int {
+var numberPattern = regexp.MustCompile(`\d+`)
+
+func ExtractNumbers(line string) []int {
+	return lo.Map(numberPattern.FindAllString(line, -1), func(item string, index int) int {
 		if number, err := strconv.Atoi(item); err != nil {
 			panic(err)
 		} else {

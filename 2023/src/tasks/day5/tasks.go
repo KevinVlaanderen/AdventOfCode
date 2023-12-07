@@ -9,7 +9,6 @@ import (
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 	"regexp"
-	"strings"
 )
 
 var seedsPattern = regexp.MustCompile(`seeds: ([\d\s]+)`)
@@ -19,7 +18,7 @@ func Task1(filePath string) (result task.Result[int]) {
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])
-	seedNumbers := number.StringsToInts(strings.Split(seedsMatch[1], " "))
+	seedNumbers := number.ExtractNumbers(seedsMatch[1])
 	seeds := seedNumbers
 
 	location := -1
@@ -39,7 +38,7 @@ func Task2(filePath string) (result task.Result[int]) {
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])
-	seedNumbers := number.StringsToInts(strings.Split(seedsMatch[1], " "))
+	seedNumbers := number.ExtractNumbers(seedsMatch[1])
 	location := -1
 
 	lop.ForEach(lo.Chunk(seedNumbers, 2), func(pair []int, pairIndex int) {

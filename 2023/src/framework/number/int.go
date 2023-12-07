@@ -1,5 +1,10 @@
 package number
 
+import (
+	"github.com/samber/lo"
+	"strconv"
+)
+
 func Length(i int) int {
 	if i == 0 {
 		return 1
@@ -10,4 +15,14 @@ func Length(i int) int {
 		count++
 	}
 	return count
+}
+
+func StringsToInts(s []string) []int {
+	return lo.Map(s, func(item string, index int) int {
+		if number, err := strconv.Atoi(item); err != nil {
+			panic(err)
+		} else {
+			return number
+		}
+	})
 }

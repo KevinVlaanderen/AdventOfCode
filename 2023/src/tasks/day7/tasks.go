@@ -9,10 +9,10 @@ import (
 )
 
 func Task1(filePath string) (result task.Result[int]) {
-	hands := task.Read(filePath, parse)
+	hands := task.Read(filePath, createParser(&cardMap1))
 
 	slices.SortFunc(hands, func(a, b Hand) int {
-		return a.Compare(b)
+		return a.Compare(b, false)
 	})
 
 	result.Value = lo.Reduce(hands, func(agg int, hand Hand, index int) int {
@@ -22,27 +22,58 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
-func parse(line string) (hand Hand, hasResult bool, err error) {
-	if line == "" {
-		return
-	}
+func Task2(filePath string) (result task.Result[int]) {
+	hands := task.Read(filePath, createParser(&cardMap2))
 
-	parts := strings.Split(line, " ")
-	hand.cards = lo.Map(strings.Split(parts[0], ""), func(item string, index int) Card {
-		return Card(item)
+	slices.SortFunc(hands, func(a, b Hand) int {
+		return a.Compare(b, true)
 	})
-	hand.bid, err = strconv.Atoi(parts[1])
-	hasResult = true
+
+	result.Value = lo.Reduce(hands, func(agg int, hand Hand, index int) int {
+		return agg + (index+1)*hand.bid
+	}, 0)
+
 	return
 }
 
-type Hand struct {
-	cards []Card
-	bid   int
+func createParser(cardMap *map[string]int) task.Parser[Hand] {
+	return func(line string) (hand Hand, hasResult bool, err error) {
+		if line == "" {
+			return
+		}
+
+		parts := strings.Split(line, " ")
+		hand.cards = lo.Map(strings.Split(parts[0], ""), func(item string, index int) Card {
+			return Card(item)
+		})
+		hand.bid, err = strconv.Atoi(parts[1])
+		hand.cardMap = cardMap
+
+		hasResult = true
+		return
+	}
 }
 
-func (h Hand) Type() HandType {
+type Hand struct {
+	cardMap *map[string]int
+	cards   []Card
+	bid     int
+}
+
+func (h Hand) Type(withJokers bool) HandType {
 	cardCount := lo.CountValues(h.cards)
+
+	jokers := cardCount["J"]
+	if withJokers && jokers > 0 {
+		withoutJ := lo.Filter(lo.Entries(cardCount), func(item lo.Entry[Card, int], index int) bool {
+			return item.Key != "J"
+		})
+		most := lo.MaxBy(withoutJ, func(entry lo.Entry[Card, int], max lo.Entry[Card, int]) bool {
+			return entry.Key != "J" && entry.Value >= max.Value
+		}).Key
+		delete(cardCount, "J")
+		cardCount[most] += jokers
+	}
 
 	switch {
 	case len(cardCount) == 1:
@@ -62,15 +93,15 @@ func (h Hand) Type() HandType {
 	}
 }
 
-func (h Hand) Compare(other Hand) int {
-	thisType, otherType := h.Type(), other.Type()
+func (h Hand) Compare(other Hand, withJokers bool) int {
+	thisType, otherType := h.Type(withJokers), other.Type(withJokers)
 	if thisType < otherType {
 		return -1
 	} else if thisType > otherType {
 		return 1
 	}
 	for _, cards := range lo.Zip2(h.cards, other.cards) {
-		aValue, bValue := cards.A.Value(), cards.B.Value()
+		aValue, bValue := cards.A.Value(h.cardMap), cards.B.Value(h.cardMap)
 		if aValue < bValue {
 			return -1
 		} else if aValue > bValue {
@@ -82,11 +113,11 @@ func (h Hand) Compare(other Hand) int {
 
 type Card string
 
-func (c Card) Value() int {
-	return cardMap[string(c)]
+func (c Card) Value(cardMap *map[string]int) int {
+	return (*cardMap)[string(c)]
 }
 
-var cardMap = map[string]int{
+var cardMap1 = map[string]int{
 	"A": 14,
 	"K": 13,
 	"Q": 12,
@@ -100,6 +131,22 @@ var cardMap = map[string]int{
 	"4": 4,
 	"3": 3,
 	"2": 2,
+}
+
+var cardMap2 = map[string]int{
+	"A": 14,
+	"K": 13,
+	"Q": 12,
+	"T": 10,
+	"9": 9,
+	"8": 8,
+	"7": 7,
+	"6": 6,
+	"5": 5,
+	"4": 4,
+	"3": 3,
+	"2": 2,
+	"J": 1,
 }
 
 type HandType int

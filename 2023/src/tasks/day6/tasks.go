@@ -7,11 +7,25 @@ import (
 	"2023/src/framework/task"
 	"github.com/samber/lo"
 	"regexp"
+	"strings"
 )
 
 func Task1(filePath string) (result task.Result[int]) {
 	data := task.Read(filePath, parse.Blocks())[0]
-	races := parseRaces(data)
+	races := parseRaces(data, false)
+
+	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
+		return result * lo.CountBy(generators.Range(0, race.time+1, 1), func(time int) bool {
+			return time*(race.time-time) > race.distance
+		})
+	}, 1)
+
+	return
+}
+
+func Task2(filePath string) (result task.Result[int]) {
+	data := task.Read(filePath, parse.Blocks())[0]
+	races := parseRaces(data, true)
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
 		return result * lo.CountBy(generators.Range(0, race.time+1, 1), func(time int) bool {
@@ -24,12 +38,19 @@ func Task1(filePath string) (result task.Result[int]) {
 
 var linePattern = regexp.MustCompile(`.+:\s+(.*)`)
 
-func parseRaces(data []string) []Race {
+func parseRaces(data []string, combine bool) []Race {
 	timeMatch := linePattern.FindStringSubmatch(data[0])
 	distanceMatch := linePattern.FindStringSubmatch(data[1])
 
-	times := number.ExtractNumbers(timeMatch[1])
-	distances := number.ExtractNumbers(distanceMatch[1])
+	var times, distances []int
+
+	if combine {
+		times = number.ExtractNumbers(strings.ReplaceAll(timeMatch[1], " ", ""))
+		distances = number.ExtractNumbers(strings.ReplaceAll(distanceMatch[1], " ", ""))
+	} else {
+		times = number.ExtractNumbers(timeMatch[1])
+		distances = number.ExtractNumbers(distanceMatch[1])
+	}
 
 	return lo.Map(lo.Zip2(times, distances), func(item lo.Tuple2[int, int], index int) Race {
 		return Race{item.A, item.B}

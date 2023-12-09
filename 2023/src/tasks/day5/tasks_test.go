@@ -32,5 +32,5 @@ func TestTask2(t *testing.T) {
 	}
 
 	t.Run("test data", test.CreateTest(Task2, testDataPath, 46, false))
-	t.Run("real data", test.CreateTest(Task2, realDataPath, 46294175, true))
+	t.Run("real data", test.CreateTest(Task2, realDataPath, 46294175, false))
 }

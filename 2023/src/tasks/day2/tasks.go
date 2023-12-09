@@ -1,7 +1,7 @@
 package day2
 
 import (
-	"2023/src/framework/task"
+	"2023/src/framework"
 	"errors"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
@@ -11,8 +11,8 @@ import (
 	"strings"
 )
 
-func Task1(filePath string) (result task.Result[int]) {
-	for game := range task.ReadStream(filePath, parser) {
+func Task1(filePath string) (result framework.Result[int]) {
+	for game := range framework.ReadStream(filePath, parser) {
 		if game.valid() {
 			result.Value += game.id
 		}
@@ -20,8 +20,8 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	for game := range task.ReadStream(filePath, parser) {
+func Task2(filePath string) (result framework.Result[int]) {
+	for game := range framework.ReadStream(filePath, parser) {
 		var minRed, minGreen, minBlue int
 		for _, hand := range game.hands {
 			if hand.red > minRed {

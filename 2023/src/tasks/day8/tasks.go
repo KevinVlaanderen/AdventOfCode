@@ -1,14 +1,14 @@
 package day8
 
 import (
+	"2023/src/framework"
 	"2023/src/framework/math"
-	"2023/src/framework/task"
 	"2023/src/tasks/day8/model"
 	lop "github.com/samber/lo/parallel"
 )
 
-func Task1(filePath string) (result task.Result[int]) {
-	lines := task.ReadLines(filePath)
+func Task1(filePath string) (result framework.Result[int]) {
+	lines := framework.ReadLines(filePath)
 	network := model.NewNetwork(lines[0], lines[2:])
 
 	start := network.IndexOf("AAA")
@@ -20,8 +20,8 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	lines := task.ReadLines(filePath)
+func Task2(filePath string) (result framework.Result[int]) {
+	lines := framework.ReadLines(filePath)
 	network := model.NewNetwork(lines[0], lines[2:])
 
 	startList := network.IndicesBy(func(item string, index int) bool {

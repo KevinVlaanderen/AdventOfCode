@@ -1,15 +1,15 @@
 package day7
 
 import (
-	"2023/src/framework/task"
+	"2023/src/framework"
 	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
 	"strconv"
 	"strings"
 )
 
-func Task1(filePath string) (result task.Result[int]) {
-	hands := task.Read(filePath, createParser(&cardMap1))
+func Task1(filePath string) (result framework.Result[int]) {
+	hands := framework.Read(filePath, createParser(&cardMap1))
 
 	slices.SortFunc(hands, func(a, b Hand) int {
 		return a.Compare(b, false)
@@ -22,8 +22,8 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	hands := task.Read(filePath, createParser(&cardMap2))
+func Task2(filePath string) (result framework.Result[int]) {
+	hands := framework.Read(filePath, createParser(&cardMap2))
 
 	slices.SortFunc(hands, func(a, b Hand) int {
 		return a.Compare(b, true)
@@ -36,7 +36,7 @@ func Task2(filePath string) (result task.Result[int]) {
 	return
 }
 
-func createParser(cardMap *map[string]int) task.Parser[Hand] {
+func createParser(cardMap *map[string]int) framework.Parser[Hand] {
 	return func(line string) (hand Hand, hasResult bool, err error) {
 		if line == "" {
 			return

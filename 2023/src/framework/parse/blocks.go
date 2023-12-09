@@ -1,8 +1,10 @@
 package parse
 
-import "2023/src/framework/task"
+import (
+	"2023/src/framework"
+)
 
-func Blocks() task.Parser[[]string] {
+func Blocks() framework.Parser[[]string] {
 	lines := make([]string, 0)
 	return func(line string) (value []string, hasResult bool, err error) {
 		if line == "" {

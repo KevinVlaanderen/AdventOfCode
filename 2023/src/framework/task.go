@@ -1,4 +1,4 @@
-package task
+package framework
 
 type Task[T comparable] func(fileName string) Result[T]
 

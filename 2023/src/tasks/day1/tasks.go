@@ -1,9 +1,10 @@
 package day1
 
 import (
+	"2023/src/framework"
 	"2023/src/framework/parse"
-	"2023/src/framework/task"
 	"fmt"
+	"github.com/samber/lo"
 	"golang.org/x/exp/maps"
 	"strconv"
 	"strings"
@@ -32,20 +33,19 @@ var words = map[string]int{
 	"nine":  9,
 }
 
-func Task1(filePath string) (result task.Result[int]) {
+func Task1(filePath string) (result framework.Result[int]) {
 	lookup := digits
 
-	for line := range task.ReadStream(filePath, parse.Lines()) {
+	for line := range framework.ReadStream(filePath, parse.Lines()) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	lookup := digits
-	maps.Copy(lookup, words)
+func Task2(filePath string) (result framework.Result[int]) {
+	lookup := lo.Assign(digits, words)
 
-	for line := range task.ReadStream(filePath, parse.Lines()) {
+	for line := range framework.ReadStream(filePath, parse.Lines()) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return

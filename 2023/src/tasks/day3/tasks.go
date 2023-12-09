@@ -1,13 +1,13 @@
 package day3
 
 import (
-	"2023/src/framework/task"
+	"2023/src/framework"
 	"2023/src/tasks/day3/model"
 	"golang.org/x/exp/slices"
 )
 
-func Task1(filePath string) (result task.Result[int]) {
-	schematic := <-task.ReadStream(filePath, createParser())
+func Task1(filePath string) (result framework.Result[int]) {
+	schematic := <-framework.ReadStream(filePath, createParser())
 
 	for _, number := range schematic.Numbers {
 	Lookup:
@@ -22,14 +22,14 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	schematic := <-task.ReadStream(filePath, createParser())
+func Task2(filePath string) (result framework.Result[int]) {
+	schematic := <-framework.ReadStream(filePath, createParser())
 
 	for _, symbol := range schematic.Symbols {
 		if symbol.Value != '*' {
 			continue
 		}
-		
+
 		numbers := make([]model.Number, 0)
 
 		for _, coordinate := range symbol.Position.Neighbors() {
@@ -46,7 +46,7 @@ func Task2(filePath string) (result task.Result[int]) {
 	return
 }
 
-func createParser() task.Parser[model.Schematic] {
+func createParser() framework.Parser[model.Schematic] {
 	schematic := model.NewSchematic()
 
 	return func(line string) (result model.Schematic, hasResult bool, err error) {

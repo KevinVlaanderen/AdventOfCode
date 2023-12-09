@@ -1,9 +1,9 @@
 package day5
 
 import (
+	"2023/src/framework"
 	"2023/src/framework/number"
 	"2023/src/framework/parse"
-	"2023/src/framework/task"
 	"2023/src/tasks/day5/model"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
@@ -13,8 +13,8 @@ import (
 
 var seedsPattern = regexp.MustCompile(`seeds: ([\d\s]+)`)
 
-func Task1(filePath string) (result task.Result[int]) {
-	blocks := task.Read(filePath, parse.Blocks())
+func Task1(filePath string) (result framework.Result[int]) {
+	blocks := framework.Read(filePath, parse.Blocks())
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])
@@ -29,8 +29,8 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	blocks := task.Read(filePath, parse.Blocks())
+func Task2(filePath string) (result framework.Result[int]) {
+	blocks := framework.Read(filePath, parse.Blocks())
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])

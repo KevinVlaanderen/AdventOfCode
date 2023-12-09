@@ -1,15 +1,15 @@
 package day9
 
 import (
+	"2023/src/framework"
 	"2023/src/framework/generators"
 	"2023/src/framework/number"
-	"2023/src/framework/task"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 )
 
-func Task1(filePath string) (result task.Result[int]) {
-	reports := task.Read(filePath, parse)
+func Task1(filePath string) (result framework.Result[int]) {
+	reports := framework.Read(filePath, parse)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
 		return findNextNumber(report)
@@ -18,8 +18,8 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	reports := task.Read(filePath, parse)
+func Task2(filePath string) (result framework.Result[int]) {
+	reports := framework.Read(filePath, parse)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
 		return findPreviousNumber(report)

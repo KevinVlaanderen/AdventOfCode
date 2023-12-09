@@ -5,36 +5,26 @@ import (
 	"testing"
 )
 
-func TestTask1(t *testing.T) {
-	var testDataPath1, testDataPath2, realDataPath string
-	var err error
-
-	if testDataPath1, err = test.CreateTestDataPath("data"); err != nil {
-		t.Fatal(err)
-	}
-	if testDataPath2, err = test.CreateTestDataPath("data2"); err != nil {
-		t.Fatal(err)
-	}
-	if realDataPath, err = test.CreateRealDataPath("day8"); err != nil {
-		t.Fatal(err)
-	}
-
-	t.Run("test data", test.CreateTest(Task1, testDataPath1, 2, false))
-	t.Run("test data", test.CreateTest(Task1, testDataPath2, 6, false))
-	t.Run("real data", test.CreateTest(Task1, realDataPath, 14893, false))
+var taskDefinitions = []test.TaskDefinition[int]{
+	{
+		Task: Task1,
+		TestData: []test.TaskTestDefinition[int]{
+			{"data", 2},
+			{"data2", 6},
+		},
+		RealData: []test.TaskTestDefinition[int]{{"day8", 14893}},
+	},
+	{
+		Task:     Task2,
+		TestData: []test.TaskTestDefinition[int]{{"data3", 6}},
+		RealData: []test.TaskTestDefinition[int]{{"day8", 10241191004509}},
+	},
 }
 
-func TestTask2(t *testing.T) {
-	var testDataPath, realDataPath string
-	var err error
+func TestDay8(t *testing.T) {
+	test.RunTests(t, taskDefinitions)
+}
 
-	if testDataPath, err = test.CreateTestDataPath("data3"); err != nil {
-		t.Fatal(err)
-	}
-	if realDataPath, err = test.CreateRealDataPath("day8"); err != nil {
-		t.Fatal(err)
-	}
-
-	t.Run("test data", test.CreateTest(Task2, testDataPath, 6, false))
-	t.Run("real data", test.CreateTest(Task2, realDataPath, 10241191004509, false))
+func BenchmarkDay8(b *testing.B) {
+	test.RunBenchmarks(b, taskDefinitions)
 }

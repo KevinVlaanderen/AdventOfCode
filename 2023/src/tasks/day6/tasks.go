@@ -1,17 +1,17 @@
 package day6
 
 import (
+	"2023/src/framework"
 	"2023/src/framework/generators"
 	"2023/src/framework/number"
 	"2023/src/framework/parse"
-	"2023/src/framework/task"
 	"github.com/samber/lo"
 	"regexp"
 	"strings"
 )
 
-func Task1(filePath string) (result task.Result[int]) {
-	data := task.Read(filePath, parse.Blocks())[0]
+func Task1(filePath string) (result framework.Result[int]) {
+	data := framework.Read(filePath, parse.Blocks())[0]
 	races := parseRaces(data, false)
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
@@ -27,8 +27,8 @@ func Task1(filePath string) (result task.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	data := task.Read(filePath, parse.Blocks())[0]
+func Task2(filePath string) (result framework.Result[int]) {
+	data := framework.Read(filePath, parse.Blocks())[0]
 	races := parseRaces(data, true)
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {

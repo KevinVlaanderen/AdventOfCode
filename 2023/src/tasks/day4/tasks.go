@@ -1,8 +1,8 @@
 package day4
 
 import (
+	"2023/src/framework"
 	"2023/src/framework/generators"
-	"2023/src/framework/task"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 	"golang.org/x/exp/slices"
@@ -10,15 +10,15 @@ import (
 	"strconv"
 )
 
-func Task1(filePath string) (result task.Result[int]) {
-	for card := range task.ReadStream(filePath, parser) {
+func Task1(filePath string) (result framework.Result[int]) {
+	for card := range framework.ReadStream(filePath, parser) {
 		result.Value += card.Score()
 	}
 	return
 }
 
-func Task2(filePath string) (result task.Result[int]) {
-	cards := task.Read(filePath, parser)
+func Task2(filePath string) (result framework.Result[int]) {
+	cards := framework.Read(filePath, parser)
 	pile := lo.Map(cards, func(item Card, index int) int {
 		return 1
 	})

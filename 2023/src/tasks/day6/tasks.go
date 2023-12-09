@@ -30,12 +30,13 @@ func Task1(filePath string) (result framework.Result[int]) {
 func Task2(filePath string) (result framework.Result[int]) {
 	data := framework.Read(filePath, parse.Blocks())[0]
 	races := parseRaces(data, true)
+	race := races[0]
 
-	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
-		return result * lo.CountBy(generators.Range(0, race.time+1, 1), func(time int) bool {
-			return time*(race.time-time) > race.distance
-		})
-	}, 1)
+	for time := 0; time < race.time; time++ {
+		if time*(race.time-time) > race.distance {
+			result.Value++
+		}
+	}
 
 	return
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func Task1(filePath string) (result framework.Result[int]) {
-	schematic := <-framework.ReadStream(filePath, createParser())
+	schematic := <-framework.ParseLines(filePath, createParser())
 
 	for _, number := range schematic.Numbers {
 	Lookup:
@@ -23,7 +23,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 }
 
 func Task2(filePath string) (result framework.Result[int]) {
-	schematic := <-framework.ReadStream(filePath, createParser())
+	schematic := <-framework.ParseLines(filePath, createParser())
 
 	for _, symbol := range schematic.Symbols {
 		if symbol.Value != '*' {

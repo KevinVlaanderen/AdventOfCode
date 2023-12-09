@@ -11,7 +11,7 @@ import (
 )
 
 func Task1(filePath string) (result framework.Result[int]) {
-	data := framework.Read(filePath, parse.Blocks())[0]
+	data := framework.ParseAllLines(filePath, parse.Blocks())[0]
 	races := parseRaces(data, false)
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
@@ -28,7 +28,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 }
 
 func Task2(filePath string) (result framework.Result[int]) {
-	data := framework.Read(filePath, parse.Blocks())[0]
+	data := framework.ParseAllLines(filePath, parse.Blocks())[0]
 	races := parseRaces(data, true)
 	race := races[0]
 

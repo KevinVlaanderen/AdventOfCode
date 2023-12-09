@@ -9,7 +9,7 @@ import (
 )
 
 func Task1(filePath string) (result framework.Result[int]) {
-	reports := framework.Read(filePath, parse)
+	reports := framework.ParseAllLines(filePath, parse)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
 		return findNextNumber(report)
@@ -19,7 +19,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 }
 
 func Task2(filePath string) (result framework.Result[int]) {
-	reports := framework.Read(filePath, parse)
+	reports := framework.ParseAllLines(filePath, parse)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
 		return findPreviousNumber(report)

@@ -14,7 +14,7 @@ import (
 var seedsPattern = regexp.MustCompile(`seeds: ([\d\s]+)`)
 
 func Task1(filePath string) (result framework.Result[int]) {
-	blocks := framework.Read(filePath, parse.Blocks())
+	blocks := framework.ParseAllLines(filePath, parse.Blocks())
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])
@@ -30,7 +30,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 }
 
 func Task2(filePath string) (result framework.Result[int]) {
-	blocks := framework.Read(filePath, parse.Blocks())
+	blocks := framework.ParseAllLines(filePath, parse.Blocks())
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])

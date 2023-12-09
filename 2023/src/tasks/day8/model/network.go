@@ -7,15 +7,13 @@ import (
 	"strings"
 )
 
-var nodePattern = regexp.MustCompile(`(\w+) = \((\w+), (\w+)\)`)
-
 type Network struct {
 	steps     []Direction
 	nodeNames []string
 	nodes     []lo.Tuple2[int, int]
 }
 
-func NewNetwork(stepData string, nodeData []string) Network {
+func NewNetwork(stepData string, nodeData string) Network {
 	steps := parseSteps(stepData)
 	nodes := parseNodes(nodeData)
 
@@ -48,9 +46,12 @@ func parseSteps(line string) []Direction {
 	})
 }
 
-func parseNodes(lines []string) []lo.Tuple3[string, string, string] {
-	return lo.Map(lines, func(line string, index int) lo.Tuple3[string, string, string] {
-		match := nodePattern.FindAllStringSubmatch(line, -1)[0]
+var nodePattern = regexp.MustCompile(`(?m)^(\w+) = \((\w+), (\w+)\)$`)
+
+func parseNodes(data string) []lo.Tuple3[string, string, string] {
+	matches := nodePattern.FindAllStringSubmatch(data, -1)
+
+	return lo.Map(matches, func(match []string, index int) lo.Tuple3[string, string, string] {
 		return lo.Tuple3[string, string, string]{A: match[1], B: match[2], C: match[3]}
 	})
 }

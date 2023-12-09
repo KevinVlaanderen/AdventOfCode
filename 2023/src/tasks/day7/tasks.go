@@ -9,7 +9,7 @@ import (
 )
 
 func Task1(filePath string) (result framework.Result[int]) {
-	hands := framework.Read(filePath, createParser(&cardMap1))
+	hands := framework.ParseAllLines(filePath, createParser(&cardMap1))
 
 	slices.SortFunc(hands, func(a, b Hand) int {
 		return a.Compare(b, false)
@@ -23,7 +23,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 }
 
 func Task2(filePath string) (result framework.Result[int]) {
-	hands := framework.Read(filePath, createParser(&cardMap2))
+	hands := framework.ParseAllLines(filePath, createParser(&cardMap2))
 
 	slices.SortFunc(hands, func(a, b Hand) int {
 		return a.Compare(b, true)

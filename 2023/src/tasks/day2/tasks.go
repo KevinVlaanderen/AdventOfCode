@@ -12,7 +12,8 @@ import (
 )
 
 func Task1(filePath string) (result framework.Result[int]) {
-	for game := range framework.ReadStream(filePath, parser) {
+	for line := range framework.ReadLines(filePath) {
+		game := parse(line)
 		if game.valid() {
 			result.Value += game.id
 		}
@@ -21,7 +22,8 @@ func Task1(filePath string) (result framework.Result[int]) {
 }
 
 func Task2(filePath string) (result framework.Result[int]) {
-	for game := range framework.ReadStream(filePath, parser) {
+	for line := range framework.ReadLines(filePath) {
+		game := parse(line)
 		var minRed, minGreen, minBlue int
 		for _, hand := range game.hands {
 			if hand.red > minRed {
@@ -66,21 +68,17 @@ func (hand Hand) power() int {
 	return hand.red * hand.green * hand.blue
 }
 
-func parser(line string) (game Game, hasResult bool, err error) {
-	if line == "" {
-		return
-	}
-
+func parse(line string) (game Game) {
 	gameMatch := gamePattern.FindStringSubmatch(line)
+	var err error
 
 	if game.id, err = strconv.Atoi(gameMatch[1]); err != nil {
-		return
+		panic(err)
 	}
 
 	handStrings := strings.Split(gameMatch[2], ";")
 	if len(handStrings) == 0 {
-		err = errors.New("no hands found")
-		return
+		panic(errors.New("no hands found"))
 	}
 
 	game.hands = lo.FlatMap(handStrings, func(handString string, index int) []Hand {
@@ -108,6 +106,5 @@ func parser(line string) (game Game, hasResult bool, err error) {
 		})
 	})
 
-	hasResult = true
 	return
 }

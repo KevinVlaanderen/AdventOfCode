@@ -4,12 +4,13 @@ import (
 	"2023/src/framework"
 	"2023/src/framework/math"
 	"2023/src/tasks/day8/model"
+	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 )
 
 func Task1(filePath string) (result framework.Result[int]) {
-	lines := framework.ReadLines(filePath)
-	network := model.NewNetwork(lines[0], lines[2:])
+	blocks := lo.ChannelToSlice(framework.ReadBlocks(filePath))
+	network := model.NewNetwork(blocks[0], blocks[1])
 
 	start := network.IndexOf("AAA")
 
@@ -21,8 +22,8 @@ func Task1(filePath string) (result framework.Result[int]) {
 }
 
 func Task2(filePath string) (result framework.Result[int]) {
-	lines := framework.ReadLines(filePath)
-	network := model.NewNetwork(lines[0], lines[2:])
+	blocks := lo.ChannelToSlice(framework.ReadBlocks(filePath))
+	network := model.NewNetwork(blocks[0], blocks[1])
 
 	startList := network.IndicesBy(func(item string, index int) bool {
 		return item[2] == 'A'

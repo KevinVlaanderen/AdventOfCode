@@ -11,14 +11,14 @@ import (
 )
 
 func Task1(filePath string) (result framework.Result[int]) {
-	for card := range framework.ReadStream(filePath, parser) {
+	for card := range framework.ParseLines(filePath, parser) {
 		result.Value += card.Score()
 	}
 	return
 }
 
 func Task2(filePath string) (result framework.Result[int]) {
-	cards := framework.Read(filePath, parser)
+	cards := framework.ParseAllLines(filePath, parser)
 	pile := lo.Map(cards, func(item Card, index int) int {
 		return 1
 	})

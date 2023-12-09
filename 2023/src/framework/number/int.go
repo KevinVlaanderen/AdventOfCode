@@ -18,7 +18,7 @@ func Length(i int) int {
 	return count
 }
 
-var numberPattern = regexp.MustCompile(`\d+`)
+var numberPattern = regexp.MustCompile(`-?\d+`)
 
 func ExtractNumbers(line string) []int {
 	return lo.Map(numberPattern.FindAllString(line, -1), func(item string, index int) int {

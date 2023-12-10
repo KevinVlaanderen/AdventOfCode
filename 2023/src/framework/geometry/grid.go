@@ -5,73 +5,65 @@ import (
 	"fmt"
 )
 
-type Grid[T comparable] map[Point]T
+type Grid[T comparable] struct {
+	points                 map[Point]T
+	xMin, xMax, yMin, yMax int
+}
 
-func (g Grid[T]) Boundaries() (int, int, int, int) {
-	var xMin, xMax, yMin, yMax int
-	var xMinSet, xMaxSet, yMinSet, yMaxSet bool
-	for position := range g {
-		if !xMinSet || position.X < xMin {
-			xMin = position.X
-			xMinSet = true
-		}
-		if !xMaxSet || position.X > xMax {
-			xMax = position.X
-			xMaxSet = true
-		}
-		if !yMinSet || position.Y < yMin {
-			yMin = position.Y
-			yMinSet = true
-		}
-		if !yMaxSet || position.Y > yMax {
-			yMax = position.Y
-			yMaxSet = true
+func NewGrid[T comparable]() Grid[T] {
+	return Grid[T]{
+		points: make(map[Point]T),
+	}
+}
+
+func (g *Grid[T]) Get(key Point) (value T, found bool) {
+	value, found = g.points[key]
+	return
+}
+
+func (g *Grid[T]) Add(key Point, value T) {
+	g.points[key] = value
+	if len(g.points) == 0 || key.X < g.xMin {
+		g.xMin = key.X
+	}
+	if len(g.points) == 0 || key.X > g.xMax {
+		g.xMax = key.X
+	}
+	if len(g.points) == 0 || key.Y < g.yMin {
+		g.yMin = key.Y
+	}
+	if len(g.points) == 0 || key.Y > g.yMax {
+		g.yMax = key.Y
+	}
+}
+
+func (g *Grid[T]) Neighbours(point Point) (neighbours []Point) {
+	for x := point.X - 1; x <= point.X+1; x++ {
+		for y := point.Y - 1; y <= point.Y+1; y++ {
+			if x < g.xMin || x > g.xMax || y < g.yMin || y > g.yMax || (x == point.X && y == point.Y) {
+				continue
+			}
+			neighbours = append(neighbours, Point{x, y})
 		}
 	}
-	return xMin, xMax, yMin, yMax
+
+	return
 }
 
-func (g Grid[T]) Neighbours(point Point) <-chan Point {
-	c := make(chan Point)
-
-	xMin, xMax, yMin, yMax := g.Boundaries()
-
-	go func() {
-		defer close(c)
-		for x := point.X - 1; x <= point.X+1; x++ {
-			for y := point.Y - 1; y <= point.Y+1; y++ {
-				if x < xMin || x > xMax || y < yMin || y > yMax || (x == point.X && y == point.Y) {
-					continue
-				}
-				c <- Point{x, y}
-			}
+func (g *Grid[T]) NeighboursBy(point Point, filter func(neighbour Point) bool) (neighbours []Point) {
+	for _, n := range g.Neighbours(point) {
+		if filter(n) {
+			neighbours = append(neighbours, n)
 		}
-	}()
+	}
 
-	return c
+	return
 }
 
-func (g Grid[T]) NeighboursBy(point Point, filter func(neighbour Point) bool) <-chan Point {
-	c := make(chan Point)
-
-	go func() {
-		defer close(c)
-		for n := range g.Neighbours(point) {
-			if filter(n) {
-				c <- n
-			}
-		}
-	}()
-
-	return c
-}
-
-func (g Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
-	xMin, xMax, yMin, yMax := g.Boundaries()
-
-	for y := range generators.RangeGen(yMin, yMax-yMin+1, 1) {
-		for x := range generators.RangeGen(xMin, xMax-xMin+1, 1) {
-			if value, positionExists := g[Point{X: x, Y: y}]; positionExists {
+func (g *Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
+	for y := range generators.RangeGen(g.yMin, g.yMax-g.yMin+1, 1) {
+		for x := range generators.RangeGen(g.xMin, g.xMax-g.xMin+1, 1) {
+			if value, positionExists := g.points[Point{X: x, Y: y}]; positionExists {
 				if character, valueExists := mapping[value]; valueExists {
 					fmt.Print(string(character))
 				} else {

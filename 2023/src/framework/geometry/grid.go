@@ -28,6 +28,41 @@ func (g Grid[T]) Boundaries() (int, int, int, int) {
 	return xMin, xMax, yMin, yMax
 }
 
+func (g Grid[T]) Neighbours(point Point) <-chan Point {
+	c := make(chan Point)
+
+	xMin, xMax, yMin, yMax := g.Boundaries()
+
+	go func() {
+		defer close(c)
+		for x := point.X - 1; x <= point.X+1; x++ {
+			for y := point.Y - 1; y <= point.Y+1; y++ {
+				if x < xMin || x > xMax || y < yMin || y > yMax || (x == point.X && y == point.Y) {
+					continue
+				}
+				c <- Point{x, y}
+			}
+		}
+	}()
+
+	return c
+}
+
+func (g Grid[T]) NeighboursBy(point Point, filter func(neighbour Point) bool) <-chan Point {
+	c := make(chan Point)
+
+	go func() {
+		defer close(c)
+		for n := range g.Neighbours(point) {
+			if filter(n) {
+				c <- n
+			}
+		}
+	}()
+
+	return c
+}
+
 func (g Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
 	xMin, xMax, yMin, yMax := g.Boundaries()
 

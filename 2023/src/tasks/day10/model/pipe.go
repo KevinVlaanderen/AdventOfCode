@@ -4,7 +4,7 @@ type Pipe struct {
 	Type PipeType
 }
 
-func NewPipe(data rune) Pipe {
+func NewPipeFromRune(data rune) Pipe {
 	var pipeType PipeType
 	var found bool
 
@@ -13,6 +13,25 @@ func NewPipe(data rune) Pipe {
 	}
 
 	return Pipe{Type: pipeType}
+}
+
+func NewPipeFromDirections(top, right, bottom, left bool) Pipe {
+	switch {
+	case top && bottom:
+		return Pipe{Type: TopBottom}
+	case left && right:
+		return Pipe{Type: LeftRight}
+	case top && right:
+		return Pipe{Type: TopRight}
+	case bottom && right:
+		return Pipe{Type: BottomRight}
+	case top && left:
+		return Pipe{Type: TopLeft}
+	case bottom && left:
+		return Pipe{Type: BottomLeft}
+	default:
+		panic("cannot create pipe from directions")
+	}
 }
 
 func (p Pipe) Top() bool {

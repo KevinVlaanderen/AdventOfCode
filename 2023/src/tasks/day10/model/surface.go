@@ -26,7 +26,7 @@ func NewSurface(data string) Surface {
 			surface.start = current
 		case '.':
 		default:
-			surface.Grid.Add(current, NewPipe(r))
+			surface.Grid.Add(current, NewPipeFromRune(r))
 		}
 		current.X++
 	}
@@ -38,94 +38,71 @@ func NewSurface(data string) Surface {
 
 func (s Surface) calculateStartPipe() Pipe {
 	var top, right, bottom, left bool
-	var neighbourPoint geometry.Point
 
-	neighbourPoint = geometry.Point{X: s.start.X, Y: s.start.Y - 1}
-	if neighbour, ok := s.Grid.Get(neighbourPoint); ok && neighbour.Bottom() {
+	if neighbour, ok := s.Grid.Get(s.start.Up()); ok && neighbour.Bottom() {
 		top = true
 	}
-	neighbourPoint = geometry.Point{X: s.start.X + 1, Y: s.start.Y}
-	if neighbour, ok := s.Grid.Get(neighbourPoint); ok && neighbour.Left() {
+	if neighbour, ok := s.Grid.Get(s.start.Right()); ok && neighbour.Left() {
 		right = true
 	}
-	neighbourPoint = geometry.Point{X: s.start.X, Y: s.start.Y + 1}
-	if neighbour, ok := s.Grid.Get(neighbourPoint); ok && neighbour.Top() {
+	if neighbour, ok := s.Grid.Get(s.start.Down()); ok && neighbour.Top() {
 		bottom = true
 	}
-	neighbourPoint = geometry.Point{X: s.start.X - 1, Y: s.start.Y}
-	if neighbour, ok := s.Grid.Get(neighbourPoint); ok && neighbour.Right() {
+	if neighbour, ok := s.Grid.Get(s.start.Left()); ok && neighbour.Right() {
 		left = true
 	}
 
-	switch {
-	case top && bottom:
-		return NewPipe('|')
-	case left && right:
-		return NewPipe('-')
-	case top && right:
-		return NewPipe('L')
-	case bottom && right:
-		return NewPipe('F')
-	case top && left:
-		return NewPipe('J')
-	case bottom && left:
-		return NewPipe('7')
-	}
-
-	panic("invalid starting point")
+	return NewPipeFromDirections(top, right, bottom, left)
 }
 
 func (s Surface) FindLoop() []Segment {
-	startPipe, _ := s.Grid.Get(s.start)
+	currentPipe, _ := s.Grid.Get(s.start)
 	loop := []Segment{{
-		Pipe:  &startPipe,
+		Pipe:  &currentPipe,
 		Point: &s.start,
 	}}
 
 	currentPoint, previousPoint := s.start, geometry.Point{X: -1, Y: -1}
-	for {
-		neighbourPoint := s.Grid.NeighboursBy(currentPoint, func(neighbourPoint geometry.Point) bool {
-			if currentPoint.X != neighbourPoint.X && currentPoint.Y != neighbourPoint.Y {
-				return false
-			}
 
-			current, ok := s.Grid.Get(currentPoint)
-			if !ok {
-				return false
-			}
-			neighbour, ok := s.Grid.Get(neighbourPoint)
-			if !ok {
-				return false
+	for {
+		var neighbourPoint geometry.Point
+		var neighbourPipe Pipe
+
+		for _, point := range s.Grid.OrthogonalNeighbours(currentPoint, true) {
+			if point == previousPoint {
+				continue
 			}
 
 			var side Direction
 			switch {
-			case neighbourPoint.Y < currentPoint.Y:
+			case point.Y < currentPoint.Y:
 				side = Top
-			case neighbourPoint.X > currentPoint.X:
+			case point.X > currentPoint.X:
 				side = Right
-			case neighbourPoint.Y > currentPoint.Y:
+			case point.Y > currentPoint.Y:
 				side = Bottom
-			case neighbourPoint.X < currentPoint.X:
+			case point.X < currentPoint.X:
 				side = Left
 			}
 
-			return current.ConnectsTo(neighbour, side) && neighbourPoint != previousPoint
-		})[0]
+			if neighbour, ok := s.Grid.Get(point); !ok {
+				panic("neighbour not found")
+			} else if currentPipe.ConnectsTo(neighbour, side) {
+				neighbourPoint = point
+				neighbourPipe = neighbour
+				break
+			}
+		}
+
 		if neighbourPoint == s.start {
 			break
-		} else {
-			neighbourPipe, ok := s.Grid.Get(neighbourPoint)
-			if !ok {
-				panic("neighbour pipe not found")
-			}
-
-			loop = append(loop, Segment{
-				Pipe:  &neighbourPipe,
-				Point: &neighbourPoint,
-			})
-			currentPoint, previousPoint = neighbourPoint, currentPoint
 		}
+		
+		loop = append(loop, Segment{
+			Pipe:  &neighbourPipe,
+			Point: &neighbourPoint,
+		})
+		currentPoint, previousPoint, currentPipe = neighbourPoint, currentPoint, neighbourPipe
 	}
 	return loop
 }
@@ -194,20 +171,14 @@ func (s Surface) FindAllPointsInsideLoop(loop []Segment) []geometry.Point {
 }
 
 func (s Surface) findPointsInsideLoop(loop []Segment, point geometry.Point, found *[]geometry.Point) {
-	if _, ok := s.Grid.Get(point); ok && lo.ContainsBy(loop, func(item Segment) bool {
-		return *item.Point == point
-	}) {
-		return
-	}
-
-	if lo.Contains(*found, point) {
+	if _, ok := s.Grid.Get(point); ok || lo.Contains(*found, point) {
 		return
 	}
 
 	*found = append(*found, point)
 
-	lo.ForEach(s.Grid.Neighbours(point), func(neighbour geometry.Point, index int) {
-		s.findPointsInsideLoop(loop, neighbour, found)
+	lo.ForEach(s.Grid.Neighbours(point, false), func(neighbourPoint geometry.Point, index int) {
+		s.findPointsInsideLoop(loop, neighbourPoint, found)
 	})
 }
 

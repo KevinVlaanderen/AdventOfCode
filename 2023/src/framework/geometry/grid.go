@@ -3,6 +3,7 @@ package geometry
 import (
 	"2023/src/framework/generators"
 	"fmt"
+	"github.com/samber/lo"
 )
 
 type Grid[T comparable] struct {
@@ -14,6 +15,10 @@ func NewGrid[T comparable]() Grid[T] {
 	return Grid[T]{
 		points: make(map[Point]T),
 	}
+}
+
+func (g *Grid[T]) Keys() []Point {
+	return lo.Keys(g.points)
 }
 
 func (g *Grid[T]) Get(key Point) (value T, found bool) {
@@ -37,26 +42,45 @@ func (g *Grid[T]) Add(key Point, value T) {
 	}
 }
 
-func (g *Grid[T]) Neighbours(point Point) (neighbours []Point) {
+func (g *Grid[T]) Delete(key Point) {
+	delete(g.points, key)
+}
+
+func (g *Grid[T]) Neighbours(point Point, mustExist bool) (neighbours []Point) {
 	for x := point.X - 1; x <= point.X+1; x++ {
 		for y := point.Y - 1; y <= point.Y+1; y++ {
 			if x < g.xMin || x > g.xMax || y < g.yMin || y > g.yMax || (x == point.X && y == point.Y) {
 				continue
 			}
-			neighbours = append(neighbours, Point{x, y})
+			neighbour := Point{x, y}
+			if mustExist {
+				if _, ok := g.points[neighbour]; !ok {
+					continue
+				}
+			}
+			neighbours = append(neighbours, neighbour)
 		}
 	}
-
 	return
 }
 
-func (g *Grid[T]) NeighboursBy(point Point, filter func(neighbour Point) bool) (neighbours []Point) {
-	for _, n := range g.Neighbours(point) {
-		if filter(n) {
-			neighbours = append(neighbours, n)
-		}
+func (g *Grid[T]) OrthogonalNeighbours(point Point, mustExist bool) (neighbours []Point) {
+	top := Point{point.X, point.Y - 1}
+	if _, ok := g.points[top]; (ok || !mustExist) && g.inBounds(top) {
+		neighbours = append(neighbours, top)
 	}
-
+	right := Point{point.X + 1, point.Y}
+	if _, ok := g.points[right]; (ok || !mustExist) && g.inBounds(right) {
+		neighbours = append(neighbours, right)
+	}
+	bottom := Point{point.X, point.Y + 1}
+	if _, ok := g.points[bottom]; (ok || !mustExist) && g.inBounds(bottom) {
+		neighbours = append(neighbours, bottom)
+	}
+	left := Point{point.X - 1, point.Y}
+	if _, ok := g.points[left]; (ok || !mustExist) && g.inBounds(left) {
+		neighbours = append(neighbours, left)
+	}
 	return
 }
 
@@ -75,4 +99,8 @@ func (g *Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
 		}
 		fmt.Print("\n")
 	}
+}
+
+func (g *Grid[T]) inBounds(point Point) bool {
+	return point.X >= g.xMin && point.X <= g.xMax && point.Y >= g.yMin && point.Y <= g.yMax
 }

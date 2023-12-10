@@ -62,7 +62,7 @@ func (p Pipe) Rotation(comingFrom Direction) Rotation {
 		return CW
 	case comingFrom == Bottom && p.Type == BottomLeft:
 		return CCW
-	case comingFrom == Left && p.Type == BottomRight:
+	case comingFrom == Left && p.Type == BottomLeft:
 		return CW
 	case comingFrom == Left && p.Type == TopLeft:
 		return CCW

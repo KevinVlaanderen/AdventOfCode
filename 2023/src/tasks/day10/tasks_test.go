@@ -18,7 +18,7 @@ var taskDefinitions = []test.TaskDefinition[int]{
 		Task: Task2,
 		TestData: []test.TaskTestDefinition[int]{
 			{"data3", 4},
-			//{"data4", 8},
+			{"data4", 8},
 			{"data5", 10},
 		},
 		RealData: []test.TaskTestDefinition[int]{{"day10", 523}},

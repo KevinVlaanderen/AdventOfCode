@@ -8,22 +8,25 @@ import (
 type Grid[T comparable] map[Point]T
 
 func (g Grid[T]) Boundaries() (int, int, int, int) {
-	initialized := false
 	var xMin, xMax, yMin, yMax int
+	var xMinSet, xMaxSet, yMinSet, yMaxSet bool
 	for position := range g {
-		if !initialized || position.X < xMin {
+		if !xMinSet || position.X < xMin {
 			xMin = position.X
+			xMinSet = true
 		}
-		if !initialized || position.X > xMax {
+		if !xMaxSet || position.X > xMax {
 			xMax = position.X
+			xMaxSet = true
 		}
-		if !initialized || position.Y < yMin {
+		if !yMinSet || position.Y < yMin {
 			yMin = position.Y
+			yMinSet = true
 		}
-		if !initialized || position.Y > yMax {
+		if !yMaxSet || position.Y > yMax {
 			yMax = position.Y
+			yMaxSet = true
 		}
-		initialized = true
 	}
 	return xMin, xMax, yMin, yMax
 }

@@ -7,13 +7,13 @@ import (
 )
 
 type Grid[T comparable] struct {
-	points                 map[Point]T
+	points                 map[Point]*T
 	xMin, xMax, yMin, yMax int
 }
 
 func NewGrid[T comparable]() Grid[T] {
 	return Grid[T]{
-		points: make(map[Point]T),
+		points: make(map[Point]*T),
 	}
 }
 
@@ -21,12 +21,12 @@ func (g *Grid[T]) Keys() []Point {
 	return lo.Keys(g.points)
 }
 
-func (g *Grid[T]) Get(key Point) (value T, found bool) {
+func (g *Grid[T]) Get(key Point) (value *T, found bool) {
 	value, found = g.points[key]
 	return
 }
 
-func (g *Grid[T]) Add(key Point, value T) {
+func (g *Grid[T]) Add(key Point, value *T) {
 	g.points[key] = value
 	if len(g.points) == 0 || key.X < g.xMin {
 		g.xMin = key.X
@@ -68,7 +68,9 @@ func (g *Grid[T]) Neighbours(point Point, mustExist bool) (neighbours []Point) {
 	return
 }
 
-func (g *Grid[T]) OrthogonalNeighbours(point Point, mustExist bool) (neighbours []Point) {
+func (g *Grid[T]) OrthogonalNeighbours(point Point, mustExist bool) []Point {
+	neighbours := make([]Point, 0, 4)
+
 	top := Point{point.X, point.Y - 1}
 	if _, ok := g.points[top]; (ok || !mustExist) && g.inBounds(top) {
 		neighbours = append(neighbours, top)
@@ -85,14 +87,14 @@ func (g *Grid[T]) OrthogonalNeighbours(point Point, mustExist bool) (neighbours 
 	if _, ok := g.points[left]; (ok || !mustExist) && g.inBounds(left) {
 		neighbours = append(neighbours, left)
 	}
-	return
+	return neighbours
 }
 
 func (g *Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
 	for y := range framework.RangeGen(g.yMin, g.yMax-g.yMin+1, 1) {
 		for x := range framework.RangeGen(g.xMin, g.xMax-g.xMin+1, 1) {
 			if value, positionExists := g.points[Point{X: x, Y: y}]; positionExists {
-				if character, valueExists := mapping[value]; valueExists {
+				if character, valueExists := mapping[*value]; valueExists {
 					fmt.Print(string(character))
 				} else {
 					fmt.Print(string(fallback))

@@ -1,10 +1,11 @@
 package model
 
 type Pipe struct {
-	Type PipeType
+	Type       PipeType
+	PartOfLoop bool
 }
 
-func NewPipeFromRune(data rune) Pipe {
+func NewPipeFromRune(data rune) *Pipe {
 	var pipeType PipeType
 	var found bool
 
@@ -12,23 +13,23 @@ func NewPipeFromRune(data rune) Pipe {
 		panic("unknown character")
 	}
 
-	return Pipe{Type: pipeType}
+	return &Pipe{Type: pipeType}
 }
 
-func NewPipeFromDirections(top, right, bottom, left bool) Pipe {
+func NewPipeFromDirections(top, right, bottom, left bool) *Pipe {
 	switch {
 	case top && bottom:
-		return Pipe{Type: TopBottom}
+		return &Pipe{Type: TopBottom}
 	case left && right:
-		return Pipe{Type: LeftRight}
+		return &Pipe{Type: LeftRight}
 	case top && right:
-		return Pipe{Type: TopRight}
+		return &Pipe{Type: TopRight}
 	case bottom && right:
-		return Pipe{Type: BottomRight}
+		return &Pipe{Type: BottomRight}
 	case top && left:
-		return Pipe{Type: TopLeft}
+		return &Pipe{Type: TopLeft}
 	case bottom && left:
-		return Pipe{Type: BottomLeft}
+		return &Pipe{Type: BottomLeft}
 	default:
 		panic("cannot create pipe from directions")
 	}
@@ -87,6 +88,66 @@ func (p Pipe) Rotation(comingFrom Direction) Rotation {
 		return CCW
 	}
 	return Straight
+}
+
+func (p Pipe) EndpointDelta(comingFrom Direction) (int, int) {
+	switch {
+	case comingFrom == Top && p.Type == TopLeft:
+		return -1, 0
+	case comingFrom == Top && p.Type == TopRight:
+		return 1, 0
+	case comingFrom == Top && p.Type == TopBottom:
+		return 0, 1
+	case comingFrom == Right && p.Type == TopRight:
+		return 0, -1
+	case comingFrom == Right && p.Type == BottomRight:
+		return 0, 1
+	case comingFrom == Right && p.Type == LeftRight:
+		return -1, 0
+	case comingFrom == Bottom && p.Type == BottomRight:
+		return 1, 0
+	case comingFrom == Bottom && p.Type == BottomLeft:
+		return -1, 0
+	case comingFrom == Bottom && p.Type == TopBottom:
+		return 0, -1
+	case comingFrom == Left && p.Type == BottomLeft:
+		return 0, 1
+	case comingFrom == Left && p.Type == TopLeft:
+		return 0, -1
+	case comingFrom == Left && p.Type == LeftRight:
+		return 1, 0
+	}
+	panic("cannot determine delta")
+}
+
+func (p Pipe) OtherSide(comingFrom Direction) Direction {
+	switch {
+	case comingFrom == Top && p.Type == TopLeft:
+		return Left
+	case comingFrom == Top && p.Type == TopRight:
+		return Right
+	case comingFrom == Top && p.Type == TopBottom:
+		return Bottom
+	case comingFrom == Right && p.Type == TopRight:
+		return Top
+	case comingFrom == Right && p.Type == BottomRight:
+		return Bottom
+	case comingFrom == Right && p.Type == LeftRight:
+		return Left
+	case comingFrom == Bottom && p.Type == BottomRight:
+		return Right
+	case comingFrom == Bottom && p.Type == BottomLeft:
+		return Left
+	case comingFrom == Bottom && p.Type == TopBottom:
+		return Top
+	case comingFrom == Left && p.Type == BottomLeft:
+		return Bottom
+	case comingFrom == Left && p.Type == TopLeft:
+		return Top
+	case comingFrom == Left && p.Type == LeftRight:
+		return Right
+	}
+	panic("cannot determine other side")
 }
 
 type PipeType uint8

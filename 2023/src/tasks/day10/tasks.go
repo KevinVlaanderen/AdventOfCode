@@ -2,9 +2,8 @@ package day10
 
 import (
 	"2023/src/framework"
-	"2023/src/framework/geometry"
 	"2023/src/tasks/day10/model"
-	"github.com/samber/lo"
+	lop "github.com/samber/lo/parallel"
 )
 
 func Task1(data string) (result framework.Result[int]) {
@@ -21,17 +20,11 @@ func Task2(data string) (result framework.Result[int]) {
 	surface := model.NewSurface(data)
 
 	loop := surface.FindLoop()
-	loopPoints := lo.Map(loop, func(item model.Segment, index int) geometry.Point {
-		return *item.Point
+	lop.ForEach(loop, func(item model.Segment, index int) {
+		item.Pipe.PartOfLoop = true
 	})
-	for _, point := range surface.Grid.Keys() {
-		if !lo.Contains(loopPoints, point) {
-			surface.Grid.Delete(point)
-		}
-	}
-	found := surface.FindAllPointsInsideLoop(loop)
 
-	result.Value = len(found)
+	result.Value = len(surface.FindAllPointsInsideLoop(loop))
 
 	return
 }

@@ -6,8 +6,8 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-func Task1(filePath string) (result framework.Result[int]) {
-	schematic := <-framework.ParseLines(filePath, createParser())
+func Task1(data string) (result framework.Result[int]) {
+	schematic := parse(data)
 
 	for _, number := range schematic.Numbers {
 	Lookup:
@@ -22,8 +22,8 @@ func Task1(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result framework.Result[int]) {
-	schematic := <-framework.ParseLines(filePath, createParser())
+func Task2(data string) (result framework.Result[int]) {
+	schematic := parse(data)
 
 	for _, symbol := range schematic.Symbols {
 		if symbol.Value != '*' {
@@ -46,15 +46,12 @@ func Task2(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func createParser() framework.Parser[model.Schematic] {
+func parse(data string) model.Schematic {
 	schematic := model.NewSchematic()
 
-	return func(line string) (result model.Schematic, hasResult bool, err error) {
-		if line == "" {
-			return schematic, true, nil
-		}
-
+	for _, line := range framework.Lines(data) {
 		schematic.Add(line)
-		return schematic, false, nil
 	}
+
+	return schematic
 }

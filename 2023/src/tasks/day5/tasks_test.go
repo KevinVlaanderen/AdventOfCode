@@ -1,7 +1,7 @@
 package day5
 
 import (
-	"2023/src/test"
+	"2023/src/framework/test"
 	"testing"
 )
 

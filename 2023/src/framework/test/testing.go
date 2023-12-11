@@ -5,7 +5,9 @@ package test
 import (
 	"2023/src/framework"
 	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -27,7 +29,8 @@ func RunTests(t *testing.T, taskDefinitions []TaskDefinition[int]) {
 				if path, err := CreateTestDataPath(testDefinition.Path); err != nil {
 					tTask.Fatal(err)
 				} else {
-					test := CreateTest(taskDefinition.Task, path, testDefinition.Expected)
+					data := strings.TrimSpace(ReadAll(path))
+					test := CreateTest(taskDefinition.Task, data, testDefinition.Expected)
 					tTask.Run(fmt.Sprintf("TestData(%v)", testDefinition.Path), test)
 				}
 			}
@@ -35,7 +38,8 @@ func RunTests(t *testing.T, taskDefinitions []TaskDefinition[int]) {
 				if path, err := CreateRealDataPath(testDefinition.Path); err != nil {
 					tTask.Fatal(err)
 				} else {
-					test := CreateTest(taskDefinition.Task, path, testDefinition.Expected)
+					data := strings.TrimSpace(ReadAll(path))
+					test := CreateTest(taskDefinition.Task, data, testDefinition.Expected)
 					tTask.Run(fmt.Sprintf("RealData(%v)", testDefinition.Path), test)
 				}
 			}
@@ -50,7 +54,8 @@ func RunBenchmarks(b *testing.B, taskDefinitions []TaskDefinition[int]) {
 				if path, err := CreateTestDataPath(testDefinition.Path); err != nil {
 					bTask.Fatal(err)
 				} else {
-					test := CreateBenchmark(taskDefinition.Task, path)
+					data := strings.TrimSpace(ReadAll(path))
+					test := CreateBenchmark(taskDefinition.Task, data)
 					bTask.Run(fmt.Sprintf("TestData(%v)", testDefinition.Path), test)
 				}
 			}
@@ -58,7 +63,8 @@ func RunBenchmarks(b *testing.B, taskDefinitions []TaskDefinition[int]) {
 				if path, err := CreateRealDataPath(testDefinition.Path); err != nil {
 					bTask.Fatal(err)
 				} else {
-					test := CreateBenchmark(taskDefinition.Task, path)
+					data := strings.TrimSpace(ReadAll(path))
+					test := CreateBenchmark(taskDefinition.Task, data)
 					bTask.Run(fmt.Sprintf("RealData(%v)", testDefinition.Path), test)
 				}
 			}
@@ -66,9 +72,9 @@ func RunBenchmarks(b *testing.B, taskDefinitions []TaskDefinition[int]) {
 	}
 }
 
-func CreateTest[T comparable](task framework.Task[T], dataPath string, expected T) func(*testing.T) {
+func CreateTest[T comparable](task framework.Task[T], data string, expected T) func(*testing.T) {
 	return func(t *testing.T) {
-		if result := task(dataPath); result.Error != nil {
+		if result := task(data); result.Error != nil {
 			t.Fatal(result.Error)
 		} else {
 			AssertEqual(t, result.Value, expected)
@@ -76,11 +82,11 @@ func CreateTest[T comparable](task framework.Task[T], dataPath string, expected 
 	}
 }
 
-func CreateBenchmark[T comparable](task framework.Task[T], dataPath string) func(*testing.B) {
+func CreateBenchmark[T comparable](task framework.Task[T], data string) func(*testing.B) {
 	return func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			task(dataPath)
+			task(data)
 		}
 	}
 }
@@ -93,4 +99,12 @@ func CreateTestDataPath(name string) (path string, err error) {
 func CreateRealDataPath(name string) (path string, err error) {
 	path, err = filepath.Abs(filepath.Join("../../../data", name))
 	return
+}
+
+func ReadAll(path string) string {
+	if bytes, err := os.ReadFile(path); err != nil {
+		panic(err)
+	} else {
+		return string(bytes)
+	}
 }

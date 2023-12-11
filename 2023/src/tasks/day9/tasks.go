@@ -7,8 +7,8 @@ import (
 	lop "github.com/samber/lo/parallel"
 )
 
-func Task1(filePath string) (result framework.Result[int]) {
-	reports := framework.ParseAllLines(filePath, parse)
+func Task1(data string) (result framework.Result[int]) {
+	reports := parse(data)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
 		return findNextNumber(report)
@@ -17,8 +17,8 @@ func Task1(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result framework.Result[int]) {
-	reports := framework.ParseAllLines(filePath, parse)
+func Task2(data string) (result framework.Result[int]) {
+	reports := parse(data)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
 		return findPreviousNumber(report)
@@ -27,11 +27,10 @@ func Task2(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func parse(line string) (result []int, hasResult bool, err error) {
-	if line == "" {
-		return
-	}
-	return math.ExtractNumbers(line), true, nil
+func parse(data string) [][]int {
+	return lo.Map(framework.Lines(data), func(item string, index int) []int {
+		return math.ExtractNumbers(item)
+	})
 }
 
 func findNextNumber(input []int) int {

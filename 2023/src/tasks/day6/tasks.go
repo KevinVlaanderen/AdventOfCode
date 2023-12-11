@@ -3,15 +3,14 @@ package day6
 import (
 	"2023/src/framework"
 	"2023/src/framework/math"
-	"2023/src/framework/parse"
 	"github.com/samber/lo"
 	"regexp"
 	"strings"
 )
 
-func Task1(filePath string) (result framework.Result[int]) {
-	data := framework.ParseAllLines(filePath, parse.Blocks())[0]
-	races := parseRaces(data, false)
+func Task1(data string) (result framework.Result[int]) {
+	lines := framework.Lines(data)
+	races := parseRaces(lines, false)
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
 		times := make([]int, race.time+1)
@@ -26,9 +25,9 @@ func Task1(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result framework.Result[int]) {
-	data := framework.ParseAllLines(filePath, parse.Blocks())[0]
-	races := parseRaces(data, true)
+func Task2(data string) (result framework.Result[int]) {
+	lines := framework.Lines(data)
+	races := parseRaces(lines, true)
 	race := races[0]
 
 	for time := 0; time < race.time; time++ {

@@ -11,16 +11,16 @@ type Galaxy struct {
 	id int
 }
 
-func Task1(filePath string) (result framework.Result[int]) {
-	universe := NewUniverse(framework.ReadAllLines(filePath))
+func Task1(data string) (result framework.Result[int]) {
+	universe := NewUniverse(framework.Lines(data))
 
 	result.Value = universe.CalculateDistances(2)
 
 	return
 }
 
-func Task2(filePath string) (result framework.Result[int]) {
-	universe := NewUniverse(framework.ReadAllLines(filePath))
+func Task2(data string) (result framework.Result[int]) {
+	universe := NewUniverse(framework.Lines(data))
 
 	result.Value = universe.CalculateDistances(1000000)
 

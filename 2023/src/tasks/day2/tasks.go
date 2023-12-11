@@ -11,23 +11,23 @@ import (
 	"strings"
 )
 
-func Task1(filePath string) (result framework.Result[int]) {
+func Task1(data string) (result framework.Result[int]) {
 	numWorkers := 4
 
-	lineChannel := framework.ReadLines(filePath)
-	inputChannels := lo.ChannelDispatcher(lineChannel, numWorkers, 0, lo.DispatchingStrategyRoundRobin[string])
+	games := parseAll(data)
+	gameChannel := lo.SliceToChannel(0, games)
+	inputChannels := lo.ChannelDispatcher(gameChannel, numWorkers, 0, lo.DispatchingStrategyRoundRobin[Game])
 
 	resultChannels := make([]<-chan int, numWorkers)
 
 	for index := 0; index < numWorkers; index++ {
-		resultChannels[index] = func(lines <-chan string) <-chan int {
+		resultChannels[index] = func(games <-chan Game) <-chan int {
 			c := make(chan int)
 
 			go func() {
 				defer close(c)
 
-				for line := range lines {
-					game := parse(line)
+				for game := range games {
 					if game.valid() {
 						c <- game.id
 					}
@@ -47,23 +47,49 @@ func Task1(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result framework.Result[int]) {
-	for line := range framework.ReadLines(filePath) {
-		game := parse(line)
-		var minRed, minGreen, minBlue int
-		for _, hand := range game.hands {
-			if hand.red > minRed {
-				minRed = hand.red
-			}
-			if hand.green > minGreen {
-				minGreen = hand.green
-			}
-			if hand.blue > minBlue {
-				minBlue = hand.blue
-			}
-		}
-		result.Value += Hand{minRed, minGreen, minBlue}.power()
+func Task2(data string) (result framework.Result[int]) {
+	numWorkers := 4
+
+	games := parseAll(data)
+	gameChannel := lo.SliceToChannel(0, games)
+	inputChannels := lo.ChannelDispatcher(gameChannel, numWorkers, 0, lo.DispatchingStrategyRoundRobin[Game])
+
+	resultChannels := make([]<-chan int, numWorkers)
+
+	for index := 0; index < numWorkers; index++ {
+		resultChannels[index] = func(games <-chan Game) <-chan int {
+			c := make(chan int)
+
+			go func() {
+				defer close(c)
+
+				for game := range games {
+					var minRed, minGreen, minBlue int
+					for _, hand := range game.hands {
+						if hand.red > minRed {
+							minRed = hand.red
+						}
+						if hand.green > minGreen {
+							minGreen = hand.green
+						}
+						if hand.blue > minBlue {
+							minBlue = hand.blue
+						}
+					}
+					c <- Hand{minRed, minGreen, minBlue}.power()
+				}
+			}()
+
+			return c
+		}(inputChannels[index])
 	}
+
+	resultsChannel := lo.FanIn(0, resultChannels...)
+
+	for value := range resultsChannel {
+		result.Value += value
+	}
+
 	return
 }
 
@@ -91,36 +117,14 @@ func (hand Hand) power() int {
 	return hand.red * hand.green * hand.blue
 }
 
-var gamePattern = regexp.MustCompile(`Game (\d+): (.*)`)
-var allGamePattern = regexp.MustCompile(`(?m)^Game (\d+): (.*)$`)
-
+var gamePattern = regexp.MustCompile(`(?m)^Game (\d+): (.*)$`)
 var handPattern = regexp.MustCompile(`(\d+) (red|green|blue)`)
 
-func parse(line string) (game Game) {
-	gameMatch := gamePattern.FindStringSubmatch(line)
-	return parseGameMatch(gameMatch)
-}
-
 func parseAll(data string) []Game {
-	gameMatches := allGamePattern.FindAllStringSubmatch(data, -1)
+	gameMatches := gamePattern.FindAllStringSubmatch(data, -1)
 	return lop.Map(gameMatches, func(gameMatch []string, index int) Game {
 		return parseGameMatch(gameMatch)
 	})
-}
-
-func parseAllChan(data string) <-chan Game {
-	c := make(chan Game)
-
-	gameMatches := allGamePattern.FindAllStringSubmatch(data, -1)
-	go func() {
-		defer close(c)
-
-		lop.ForEach(gameMatches, func(gameMatch []string, index int) {
-			c <- parseGameMatch(gameMatch)
-		})
-	}()
-
-	return c
 }
 
 func parseGameMatch(gameMatch []string) (game Game) {

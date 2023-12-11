@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func Task1(filePath string) (result framework.Result[int]) {
-	hands := framework.ParseAllLines(filePath, createParser(&cardMap1))
+func Task1(data string) (result framework.Result[int]) {
+	hands := parseHands(data, &cardMap1)
 
 	slices.SortFunc(hands, func(a, b Hand) int {
 		return a.Compare(b, false)
@@ -22,8 +22,8 @@ func Task1(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result framework.Result[int]) {
-	hands := framework.ParseAllLines(filePath, createParser(&cardMap2))
+func Task2(data string) (result framework.Result[int]) {
+	hands := parseHands(data, &cardMap2)
 
 	slices.SortFunc(hands, func(a, b Hand) int {
 		return a.Compare(b, true)
@@ -36,28 +36,30 @@ func Task2(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func createParser(cardMap *map[string]int) framework.Parser[Hand] {
-	return func(line string) (hand Hand, hasResult bool, err error) {
-		if line == "" {
-			return
+func parseHands(data string, cardMap *map[string]int) []Hand {
+	return lo.Map(framework.Lines(data), func(item string, index int) Hand {
+		if hand, err := NewHand(item, cardMap); err != nil {
+			panic(err)
+		} else {
+			return hand
 		}
-
-		parts := strings.Split(line, " ")
-		hand.cards = lo.Map(strings.Split(parts[0], ""), func(item string, index int) Card {
-			return Card(item)
-		})
-		hand.bid, err = strconv.Atoi(parts[1])
-		hand.cardMap = cardMap
-
-		hasResult = true
-		return
-	}
+	})
 }
 
 type Hand struct {
 	cardMap *map[string]int
 	cards   []Card
 	bid     int
+}
+
+func NewHand(data string, cardMap *map[string]int) (hand Hand, err error) {
+	parts := strings.Split(data, " ")
+	hand.cards = lo.Map(strings.Split(parts[0], ""), func(item string, index int) Card {
+		return Card(item)
+	})
+	hand.bid, err = strconv.Atoi(parts[1])
+	hand.cardMap = cardMap
+	return
 }
 
 func (h Hand) Type(withJokers bool) HandType {

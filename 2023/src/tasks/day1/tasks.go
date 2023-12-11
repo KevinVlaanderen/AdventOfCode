@@ -32,19 +32,19 @@ var words = map[string]int{
 	"nine":  9,
 }
 
-func Task1(filePath string) (result framework.Result[int]) {
+func Task1(data string) (result framework.Result[int]) {
 	lookup := digits
 
-	for line := range framework.ReadLines(filePath) {
+	for _, line := range framework.Lines(data) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return
 }
 
-func Task2(filePath string) (result framework.Result[int]) {
+func Task2(data string) (result framework.Result[int]) {
 	lookup := lo.Assign(digits, words)
 
-	for line := range framework.ReadLines(filePath) {
+	for _, line := range framework.Lines(data) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return

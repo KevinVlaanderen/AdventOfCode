@@ -7,8 +7,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(filePath string) (result framework.Result[int]) {
-	data := framework.ReadAll(filePath)
+func Task1(data string) (result framework.Result[int]) {
 	surface := model.NewSurface(data)
 
 	loop := surface.FindLoop()
@@ -18,8 +17,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(filePath string) (result framework.Result[int]) {
-	data := framework.ReadAll(filePath)
+func Task2(data string) (result framework.Result[int]) {
 	surface := model.NewSurface(data)
 
 	loop := surface.FindLoop()

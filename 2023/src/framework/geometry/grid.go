@@ -1,7 +1,7 @@
 package geometry
 
 import (
-	"2023/src/framework/generators"
+	"2023/src/framework"
 	"fmt"
 	"github.com/samber/lo"
 )
@@ -46,6 +46,10 @@ func (g *Grid[T]) Delete(key Point) {
 	delete(g.points, key)
 }
 
+func (g *Grid[T]) Boundaries() (int, int, int, int) {
+	return g.xMin, g.xMax, g.yMin, g.yMax
+}
+
 func (g *Grid[T]) Neighbours(point Point, mustExist bool) (neighbours []Point) {
 	for x := point.X - 1; x <= point.X+1; x++ {
 		for y := point.Y - 1; y <= point.Y+1; y++ {
@@ -85,8 +89,8 @@ func (g *Grid[T]) OrthogonalNeighbours(point Point, mustExist bool) (neighbours 
 }
 
 func (g *Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
-	for y := range generators.RangeGen(g.yMin, g.yMax-g.yMin+1, 1) {
-		for x := range generators.RangeGen(g.xMin, g.xMax-g.xMin+1, 1) {
+	for y := range framework.RangeGen(g.yMin, g.yMax-g.yMin+1, 1) {
+		for x := range framework.RangeGen(g.xMin, g.xMax-g.xMin+1, 1) {
 			if value, positionExists := g.points[Point{X: x, Y: y}]; positionExists {
 				if character, valueExists := mapping[value]; valueExists {
 					fmt.Print(string(character))

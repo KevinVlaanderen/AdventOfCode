@@ -99,6 +99,20 @@ func ReadAll(path string) string {
 	}
 }
 
+func ReadAllLines(path string) (lines []string) {
+	file := MustOpenFile(path)
+	defer MustCloseFile(file)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	if err := scanner.Err(); err != nil {
+		panic(err)
+	}
+	return
+}
+
 func ReadLines(path string) <-chan string {
 	c := make(chan string)
 

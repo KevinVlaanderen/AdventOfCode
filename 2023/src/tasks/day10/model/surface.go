@@ -97,7 +97,7 @@ func (s Surface) FindLoop() []Segment {
 		if neighbourPoint == s.start {
 			break
 		}
-		
+
 		loop = append(loop, Segment{
 			Pipe:  &neighbourPipe,
 			Point: &neighbourPoint,

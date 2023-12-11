@@ -2,7 +2,6 @@ package day4
 
 import (
 	"2023/src/framework"
-	"2023/src/framework/generators"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 	"golang.org/x/exp/slices"
@@ -24,7 +23,7 @@ func Task2(filePath string) (result framework.Result[int]) {
 	})
 	for index, count := range pile {
 		score := cards[index].Correct()
-		for nextIndex := range generators.RangeGen(index+1, score, 1) {
+		for nextIndex := range framework.RangeGen(index+1, score, 1) {
 			if nextIndex < len(cards) {
 				pile[nextIndex] += count
 			}

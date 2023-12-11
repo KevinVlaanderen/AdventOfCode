@@ -2,7 +2,7 @@ package model
 
 import (
 	"2023/src/framework/geometry"
-	"2023/src/framework/number"
+	"2023/src/framework/math"
 	"log"
 	"strconv"
 )
@@ -13,7 +13,7 @@ type Number struct {
 }
 
 func (n Number) Length() int {
-	return number.Length(n.Value)
+	return math.Length(n.Value)
 }
 
 func ExtractNumbers(line string, y int) (numbers []Number) {

@@ -2,8 +2,7 @@ package day6
 
 import (
 	"2023/src/framework"
-	"2023/src/framework/generators"
-	"2023/src/framework/number"
+	"2023/src/framework/math"
 	"2023/src/framework/parse"
 	"github.com/samber/lo"
 	"regexp"
@@ -16,7 +15,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
 		times := make([]int, race.time+1)
-		for time := range generators.RangeGen(0, race.time+1, 1) {
+		for time := range framework.RangeGen(0, race.time+1, 1) {
 			times[time] = time
 		}
 		return result * lo.CountBy(times, func(time int) bool {
@@ -50,11 +49,11 @@ func parseRaces(data []string, combine bool) []Race {
 	var times, distances []int
 
 	if combine {
-		times = number.ExtractNumbers(strings.ReplaceAll(timeMatch[1], " ", ""))
-		distances = number.ExtractNumbers(strings.ReplaceAll(distanceMatch[1], " ", ""))
+		times = math.ExtractNumbers(strings.ReplaceAll(timeMatch[1], " ", ""))
+		distances = math.ExtractNumbers(strings.ReplaceAll(distanceMatch[1], " ", ""))
 	} else {
-		times = number.ExtractNumbers(timeMatch[1])
-		distances = number.ExtractNumbers(distanceMatch[1])
+		times = math.ExtractNumbers(timeMatch[1])
+		distances = math.ExtractNumbers(distanceMatch[1])
 	}
 
 	return lo.Map(lo.Zip2(times, distances), func(item lo.Tuple2[int, int], index int) Race {

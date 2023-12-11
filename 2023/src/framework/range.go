@@ -1,4 +1,4 @@
-package generators
+package framework
 
 func RangeGen(start, count, step int) <-chan int {
 	c := make(chan int, count)

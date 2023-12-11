@@ -2,7 +2,7 @@ package day5
 
 import (
 	"2023/src/framework"
-	"2023/src/framework/number"
+	"2023/src/framework/math"
 	"2023/src/framework/parse"
 	"2023/src/tasks/day5/model"
 	"github.com/samber/lo"
@@ -18,7 +18,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])
-	seedNumbers := number.ExtractNumbers(seedsMatch[1])
+	seedNumbers := math.ExtractNumbers(seedsMatch[1])
 
 	result.Value = lo.MinBy(lop.Map(seedNumbers, func(seed int, index int) int {
 		return almanac.MapToValue(seed)
@@ -34,7 +34,7 @@ func Task2(filePath string) (result framework.Result[int]) {
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])
-	seedNumbers := number.ExtractNumbers(seedsMatch[1])
+	seedNumbers := math.ExtractNumbers(seedsMatch[1])
 	seedRanges := lo.Map(lo.Chunk(seedNumbers, 2), func(item []int, index int) model.SeedRange {
 		return model.NewSeedRange(item[0], item[1])
 	})

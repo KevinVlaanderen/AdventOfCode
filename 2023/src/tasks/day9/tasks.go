@@ -2,8 +2,7 @@ package day9
 
 import (
 	"2023/src/framework"
-	"2023/src/framework/generators"
-	"2023/src/framework/number"
+	"2023/src/framework/math"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 )
@@ -32,7 +31,7 @@ func parse(line string) (result []int, hasResult bool, err error) {
 	if line == "" {
 		return
 	}
-	return number.ExtractNumbers(line), true, nil
+	return math.ExtractNumbers(line), true, nil
 }
 
 func findNextNumber(input []int) int {
@@ -74,7 +73,7 @@ func extrapolate(numbers []int, direction Direction) int {
 }
 
 func findDiff(input []int) (diff []int, done bool) {
-	for index := range generators.RangeGen(0, len(input)-1, 1) {
+	for index := range framework.RangeGen(0, len(input)-1, 1) {
 		diff = append(diff, input[index+1]-input[index])
 	}
 	done = lo.EveryBy(diff, func(item int) bool {

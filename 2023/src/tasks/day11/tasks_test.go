@@ -11,6 +11,10 @@ var taskDefinitions = []test.TaskDefinition[int]{
 		TestData: []test.TaskTestDefinition[int]{{"data", 374}},
 		RealData: []test.TaskTestDefinition[int]{{"day11", 9418609}},
 	},
+	{
+		Task:     Task2,
+		RealData: []test.TaskTestDefinition[int]{{"day11", 593821230983}},
+	},
 }
 
 func TestDay11(t *testing.T) {

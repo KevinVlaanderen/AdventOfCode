@@ -12,29 +12,47 @@ type Galaxy struct {
 }
 
 func Task1(filePath string) (result framework.Result[int]) {
-	universe := geometry.NewGrid[Galaxy]()
+	universe := NewUniverse(framework.ReadAllLines(filePath))
 
-	var x, y int
-	n := 1
-	for line := range framework.ReadLines(filePath) {
-		for _, char := range line {
+	result.Value = universe.CalculateDistances(2)
+
+	return
+}
+
+func Task2(filePath string) (result framework.Result[int]) {
+	universe := NewUniverse(framework.ReadAllLines(filePath))
+
+	result.Value = universe.CalculateDistances(1000000)
+
+	return
+}
+
+type Universe geometry.Grid[bool]
+
+func NewUniverse(data []string) Universe {
+	universe := geometry.NewGrid[bool]()
+
+	for y, line := range data {
+		for x, char := range line {
 			if char == '#' {
-				universe.Add(geometry.Point{X: x, Y: y}, Galaxy{n})
-				n++
+				universe.Add(geometry.Point{X: x, Y: y}, true)
 			}
-			x++
 		}
-		y++
-		x = 0
 	}
+	return Universe(universe)
+}
 
-	xMin, xMax, yMin, yMax := universe.Boundaries()
+func (universe Universe) CalculateDistances(factor int) int {
+	var result int
+	grid := geometry.Grid[bool](universe)
+
+	xMin, xMax, yMin, yMax := grid.Boundaries()
 	var emptyRows, emptyCols []int
 
-	for x = xMin + 1; x < xMax; x++ {
+	for x := xMin + 1; x < xMax; x++ {
 		colEmpty := true
-		for y = yMin; y <= yMax; y++ {
-			if _, found := universe.Get(geometry.Point{X: x, Y: y}); found {
+		for y := yMin; y <= yMax; y++ {
+			if _, found := grid.Get(geometry.Point{X: x, Y: y}); found {
 				colEmpty = false
 				break
 			}
@@ -43,10 +61,10 @@ func Task1(filePath string) (result framework.Result[int]) {
 			emptyCols = append(emptyCols, x)
 		}
 	}
-	for y = yMin + 1; y < yMax; y++ {
+	for y := yMin + 1; y < yMax; y++ {
 		rowEmpty := true
-		for x = xMin; x <= xMax; x++ {
-			if _, found := universe.Get(geometry.Point{X: x, Y: y}); found {
+		for x := xMin; x <= xMax; x++ {
+			if _, found := grid.Get(geometry.Point{X: x, Y: y}); found {
 				rowEmpty = false
 				break
 			}
@@ -56,7 +74,7 @@ func Task1(filePath string) (result framework.Result[int]) {
 		}
 	}
 
-	galaxies := universe.Keys()
+	galaxies := grid.Keys()
 	for i := 0; i < len(galaxies)-1; i++ {
 		for j := i + 1; j < len(galaxies); j++ {
 			currentPoint, nextPoint := galaxies[i], galaxies[j]
@@ -69,10 +87,10 @@ func Task1(filePath string) (result framework.Result[int]) {
 			})
 
 			distance := math.AbsInt(nextPoint.X-currentPoint.X) + math.AbsInt(nextPoint.Y-currentPoint.Y)
-			value := distance + emptyColsBetween + emptyRowsBetween
-			result.Value += value
+			value := distance + (emptyColsBetween * (factor - 1)) + (emptyRowsBetween * (factor - 1))
+
+			result += value
 		}
 	}
-
-	return
+	return result
 }

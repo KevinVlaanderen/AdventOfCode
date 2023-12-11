@@ -30,8 +30,8 @@ func NewMapping(block []string) (source string, target string, mapping Mapping) 
 	return source, target, mapping
 }
 
-func (c Mapping) MapToValue(value int) int {
-	for _, r := range c.ranges {
+func (m Mapping) MapToValue(value int) int {
+	for _, r := range m.ranges {
 		if newValue, ok := r.MapToNewValue(value); ok {
 			return newValue
 		}

@@ -1,41 +1,31 @@
 package day1
 
 import (
-	"2023/src/framework/test"
+	"2023/src/framework/tests"
 	"testing"
 )
 
-var taskDefinitions = []test.TaskDefinition[int]{
+var taskDefinitions = []tests.TaskDefinition[int]{
 	{
-		Task:     Task1,
-		TestData: []test.TaskTestDefinition[int]{{"data", 142}},
-		RealData: []test.TaskTestDefinition[int]{{"day1", 54081}},
+		Task: Task1,
+		Tests: []tests.TestDefinition[int]{
+			{"data", 142, tests.TestData},
+			{"day1", 54081, tests.RealData},
+		},
 	},
 	{
-		Task:     Task2,
-		TestData: []test.TaskTestDefinition[int]{{"data2", 281}},
-		RealData: []test.TaskTestDefinition[int]{{"day1", 54649}},
+		Task: Task2,
+		Tests: []tests.TestDefinition[int]{
+			{"data2", 281, tests.TestData},
+			{"day1", 54649, tests.RealData},
+		},
 	},
-}
-
-var data map[string]string
-
-func ReadData(taskDefinitions []test.TaskDefinition[int]) (data map[string]string) {
-	for _, taskDefinition := range taskDefinitions {
-		for _, testDataDefinition := range taskDefinition.TestData {
-			data[testDataDefinition.Path] = test.ReadAll(testDataDefinition.Path)
-		}
-		for _, realDataDefinition := range taskDefinition.RealData {
-			data[realDataDefinition.Path] = test.ReadAll(realDataDefinition.Path)
-		}
-	}
-	return
 }
 
 func TestDay1(t *testing.T) {
-	test.RunTests(t, taskDefinitions)
+	tests.RunTests(t, taskDefinitions)
 }
 
 func BenchmarkDay1(b *testing.B) {
-	test.RunBenchmarks(b, taskDefinitions)
+	tests.RunBenchmarks(b, taskDefinitions)
 }

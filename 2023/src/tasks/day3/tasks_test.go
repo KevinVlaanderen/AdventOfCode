@@ -1,27 +1,31 @@
 package day3
 
 import (
-	"2023/src/framework/test"
+	"2023/src/framework/tests"
 	"testing"
 )
 
-var taskDefinitions = []test.TaskDefinition[int]{
+var taskDefinitions = []tests.TaskDefinition[int]{
 	{
-		Task:     Task1,
-		TestData: []test.TaskTestDefinition[int]{{"data", 4361}},
-		RealData: []test.TaskTestDefinition[int]{{"day3", 546312}},
+		Task: Task1,
+		Tests: []tests.TestDefinition[int]{
+			{"data", 4361, tests.TestData},
+			{"day3", 546312, tests.RealData},
+		},
 	},
 	{
-		Task:     Task2,
-		TestData: []test.TaskTestDefinition[int]{{"data", 467835}},
-		RealData: []test.TaskTestDefinition[int]{{"day3", 87449461}},
+		Task: Task2,
+		Tests: []tests.TestDefinition[int]{
+			{"data", 467835, tests.TestData},
+			{"day3", 87449461, tests.RealData},
+		},
 	},
 }
 
 func TestDay3(t *testing.T) {
-	test.RunTests(t, taskDefinitions)
+	tests.RunTests(t, taskDefinitions)
 }
 
 func BenchmarkDay3(b *testing.B) {
-	test.RunBenchmarks(b, taskDefinitions)
+	tests.RunBenchmarks(b, taskDefinitions)
 }

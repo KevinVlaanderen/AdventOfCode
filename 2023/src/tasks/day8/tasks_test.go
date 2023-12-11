@@ -1,32 +1,32 @@
 package day8
 
 import (
-	"2023/src/framework/tests"
+	_testing "2023/src/framework/testing"
 	"testing"
 )
 
-var taskDefinitions = []tests.TaskDefinition[int]{
+var taskDefinitions = []_testing.TaskDefinition[int]{
 	{
 		Task: Task1,
-		Tests: []tests.TestDefinition[int]{
-			{"data", 2, tests.TestData},
-			{"data2", 6, tests.TestData},
-			{"day8", 14893, tests.RealData},
+		Tests: []_testing.TestDefinition[int]{
+			{"data", 2, _testing.TestData},
+			{"data2", 6, _testing.TestData},
+			{"day8", 14893, _testing.RealData},
 		},
 	},
 	{
 		Task: Task2,
-		Tests: []tests.TestDefinition[int]{
-			{"data3", 6, tests.TestData},
-			{"day8", 10241191004509, tests.RealData},
+		Tests: []_testing.TestDefinition[int]{
+			{"data3", 6, _testing.TestData},
+			{"day8", 10241191004509, _testing.RealData},
 		},
 	},
 }
 
 func TestDay8(t *testing.T) {
-	tests.RunTests(t, taskDefinitions)
+	_testing.RunTests(t, taskDefinitions)
 }
 
 func BenchmarkDay8(b *testing.B) {
-	tests.RunBenchmarks(b, taskDefinitions)
+	_testing.RunBenchmarks(b, taskDefinitions)
 }

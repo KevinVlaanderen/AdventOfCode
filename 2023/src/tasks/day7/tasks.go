@@ -9,10 +9,10 @@ import (
 )
 
 func Task1(data string) (result framework.Result[int]) {
-	hands := parseHands(data, &cardMap1)
+	hands := parseHands(data, &cardMap1, false)
 
 	slices.SortFunc(hands, func(a, b Hand) int {
-		return a.Compare(b, false)
+		return a.Compare(b)
 	})
 
 	result.Value = lo.Reduce(hands, func(agg int, hand Hand, index int) int {
@@ -23,10 +23,10 @@ func Task1(data string) (result framework.Result[int]) {
 }
 
 func Task2(data string) (result framework.Result[int]) {
-	hands := parseHands(data, &cardMap2)
+	hands := parseHands(data, &cardMap2, true)
 
 	slices.SortFunc(hands, func(a, b Hand) int {
-		return a.Compare(b, true)
+		return a.Compare(b)
 	})
 
 	result.Value = lo.Reduce(hands, func(agg int, hand Hand, index int) int {
@@ -36,9 +36,9 @@ func Task2(data string) (result framework.Result[int]) {
 	return
 }
 
-func parseHands(data string, cardMap *map[string]int) []Hand {
+func parseHands(data string, cardMap *map[string]int, withJokers bool) []Hand {
 	return lo.Map(framework.Lines(data), func(item string, index int) Hand {
-		if hand, err := NewHand(item, cardMap); err != nil {
+		if hand, err := NewHand(item, cardMap, withJokers); err != nil {
 			panic(err)
 		} else {
 			return hand
@@ -47,56 +47,70 @@ func parseHands(data string, cardMap *map[string]int) []Hand {
 }
 
 type Hand struct {
-	cardMap *map[string]int
-	cards   []Card
-	bid     int
+	cardMap  *map[string]int
+	cards    []Card
+	bid      int
+	handType HandType
 }
 
-func NewHand(data string, cardMap *map[string]int) (hand Hand, err error) {
-	parts := strings.Split(data, " ")
-	hand.cards = lo.Map(strings.Split(parts[0], ""), func(item string, index int) Card {
+func NewHand(data string, cardMap *map[string]int, withJokers bool) (hand Hand, err error) {
+	cardsData := data[:5]
+	bidData := data[6:]
+	hand.cards = lo.Map(strings.Split(cardsData, ""), func(item string, index int) Card {
 		return Card(item)
 	})
-	hand.bid, err = strconv.Atoi(parts[1])
+	hand.bid, err = strconv.Atoi(bidData)
 	hand.cardMap = cardMap
+	hand.handType = calculateType(hand.cards, withJokers)
 	return
 }
 
-func (h Hand) Type(withJokers bool) HandType {
-	cardCount := lo.CountValues(h.cards)
+func calculateType(cards []Card, withJokers bool) HandType {
+	cardCount := lo.CountValues(cards)
 
 	jokers := cardCount["J"]
 	if withJokers && jokers > 0 {
-		withoutJ := lo.Filter(lo.Entries(cardCount), func(item lo.Entry[Card, int], index int) bool {
-			return item.Key != "J"
-		})
-		most := lo.MaxBy(withoutJ, func(entry lo.Entry[Card, int], max lo.Entry[Card, int]) bool {
-			return entry.Key != "J" && entry.Value >= max.Value
-		}).Key
+		var most Card
+		var mostCount int
+
+		for key, value := range cardCount {
+			if key == "J" {
+				continue
+			}
+
+			if value >= mostCount {
+				most = key
+				mostCount = value
+			}
+		}
+
 		delete(cardCount, "J")
 		cardCount[most] += jokers
 	}
 
+	count := len(cardCount)
+	values := lo.Values(cardCount)
+
 	switch {
-	case len(cardCount) == 1:
+	case count == 1:
 		return FiveOfAKind
-	case len(cardCount) == 2 && lo.Contains(lo.Values(cardCount), 4):
+	case count == 2 && lo.Contains(values, 4):
 		return FourOfAKind
-	case len(cardCount) == 2 && lo.Contains(lo.Values(cardCount), 3):
+	case count == 2 && lo.Contains(values, 3):
 		return FullHouse
-	case len(cardCount) == 3 && lo.Contains(lo.Values(cardCount), 3):
+	case count == 3 && lo.Contains(values, 3):
 		return ThreeOfAKind
-	case len(cardCount) == 3 && lo.Contains(lo.Values(cardCount), 2):
+	case count == 3 && lo.Contains(values, 2):
 		return TwoPair
-	case len(cardCount) == 4:
+	case count == 4:
 		return OnePair
 	default:
 		return HighCard
 	}
 }
 
-func (h Hand) Compare(other Hand, withJokers bool) int {
-	thisType, otherType := h.Type(withJokers), other.Type(withJokers)
+func (h Hand) Compare(other Hand) int {
+	thisType, otherType := h.handType, other.handType
 	if thisType < otherType {
 		return -1
 	} else if thisType > otherType {

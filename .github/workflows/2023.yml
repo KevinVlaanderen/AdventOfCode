@@ -4,6 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
+      - ".github/workflows/2023.yml"
       - "2023/**"
   pull_request:
     branches: [ "main" ]
@@ -40,3 +41,34 @@ jobs:
         name: 2023 test results
         path: 2023/report.xml
         reporter: java-junit
+        
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: "2023/go.mod"
+
+    - name: Install dependencies
+      run: go install github.com/jstemmer/go-junit-report/v2@latest
+
+    - name: Run benchmark
+      run: go test -v -tags testing ./... -bench . -run ^$ -benchmem | tee output.txt
+
+    - name: Download previous benchmark data
+      uses: actions/cache@v3
+      with:
+        path: ./cache
+        key: ${{ runner.os }}-benchmark
+
+    - name: Store benchmark result
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        tool: 'go'
+        output-file-path: ./2023/output.txt
+        external-data-json-path: ./cache/benchmark-data.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        summary-always: true

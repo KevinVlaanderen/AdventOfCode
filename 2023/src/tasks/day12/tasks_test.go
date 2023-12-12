@@ -13,6 +13,13 @@ var taskDefinitions = []_testing.TaskDefinition[int]{
 			{"day12", 7653, _testing.RealData},
 		},
 	},
+	{
+		Task: Task2,
+		Tests: []_testing.TestDefinition[int]{
+			{"data", 525152, _testing.TestData},
+			{"day12", 60681419004564, _testing.RealData},
+		},
+	},
 }
 
 func TestDay12(t *testing.T) {

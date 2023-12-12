@@ -3,8 +3,11 @@ package day12
 import (
 	"2023/src/framework"
 	"2023/src/framework/math"
+	"bytes"
+	"crypto/sha512"
 	"github.com/samber/lo"
-	"golang.org/x/exp/slices"
+	lop "github.com/samber/lo/parallel"
+	"strconv"
 	"strings"
 )
 
@@ -16,114 +19,100 @@ func Task1(data string) (result framework.Result[int]) {
 		conditions := recordData[0]
 		sizes := math.ExtractNumbers(recordData[1])
 
-		matches := countFits(conditions, sizes, 0, 0)
+		cache := framework.NewSafeCache[int]()
+
+		matches := countFits(conditions, sizes, cache)
 		result.Value += matches
 	}
 
 	return
 }
 
-func countFits(conditions string, sizes []int, conditionIndex int, sizeIndex int) int {
-	isLast := sizeIndex == len(sizes)-1
-	currentSize := sizes[sizeIndex]
+func Task2(data string) (result framework.Result[int]) {
+	lines := framework.Lines(data)
 
-	requiredSpace := lo.Sum(sizes[sizeIndex:]) + len(sizes[sizeIndex:]) - 1
-	if requiredSpace > len(conditions[conditionIndex:]) {
-		return 0
-	}
+	cache := framework.NewSafeCache[int]()
 
-	matches := 0
+	lop.ForEach(lines, func(line string, index int) {
+		recordData := strings.Split(line, " ")
+		conditions := framework.RepeatString(recordData[0], 5, "?")
+		sizes := framework.RepeatSlice(math.ExtractNumbers(recordData[1]), 5)
 
-	for i := conditionIndex; i <= len(conditions)-requiredSpace; i++ {
-		if conditions[i] == '.' {
-			continue
-		}
+		matches := countFits(conditions, sizes, cache)
+		result.Value += matches
+	})
 
-		if slices.Contains([]rune(conditions[i:i+currentSize]), '.') {
-			continue
-		} else if slices.Contains([]rune(conditions[conditionIndex:i]), '#') {
-			break
-		} else if i+currentSize < len(conditions) && conditions[i+currentSize] == '#' {
-			continue
-		}
-
-		nextIndex := i + currentSize + 1
-		remaining := conditions[nextIndex-1:]
-
-		if isLast {
-			if strings.ContainsRune(remaining, '#') {
-				continue
-			} else {
-				matches++
-			}
-		} else {
-			matches += countFits(conditions, sizes, nextIndex, sizeIndex+1)
-		}
-	}
-	return matches
+	return
 }
 
-//func countFits(groupConditions []GroupCondition, groupSizes []int) int {
-//	count := 0
-//
-//	return count
-//}
-//
-//type Setup struct {
-//	groupConditions []GroupCondition
-//	groupSizes      []int
-//}
-//
-//func NewRecord(data string) Setup {
-//	parts := strings.Split(data, " ")
-//	groupConditionsData := parts[0]
-//	groupSizesData := parts[1]
-//
-//	return Setup{groupConditions: parseGroupConditions(groupConditionsData), groupSizes: parseGroupSizes(groupSizesData)}
-//}
-//
-//func parseGroupConditions(data string) []GroupCondition {
-//	groupConditions := make([]GroupCondition, 0)
-//
-//	currentGroupCondition := GroupCondition{}
-//	for _, char := range data {
-//		switch char {
-//		case '.':
-//			if len(currentGroupCondition) > 0 {
-//				groupConditions = append(groupConditions, currentGroupCondition)
-//				currentGroupCondition = GroupCondition{}
-//			}
-//		case '#':
-//			currentGroupCondition = append(currentGroupCondition, Operational)
-//		case '?':
-//			currentGroupCondition = append(currentGroupCondition, Unknown)
-//		}
-//	}
-//	if len(currentGroupCondition) > 0 {
-//		groupConditions = append(groupConditions, currentGroupCondition)
-//		currentGroupCondition = GroupCondition{}
-//	}
-//	return groupConditions
-//}
-//
-//func parseGroupSizes(data string) []int {
-//	groupSizes := make([]int, len(data)/2+1)
-//
-//	lo.ForEach(strings.Split(data, ","), func(item string, index int) {
-//		if n, err := strconv.Atoi(item); err != nil {
-//			panic(err)
-//		} else {
-//			groupSizes = append(groupSizes, n)
-//		}
-//	})
-//	return groupSizes
-//}
-//
-//type GroupCondition []SpringCondition
-//type SpringCondition uint8
-//
-//const (
-//	Operational SpringCondition = iota
-//	Unknown
-//	Damaged
-//)
+func countFits(conditions string, sizes []int, cache *framework.SafeCache[int]) int {
+	numConditions := len(conditions)
+	totalDashes := lo.Count([]rune(conditions), '#')
+
+	var innerCountFits func(conditionIndex int, sizeIndex int, dashesFound int) int
+	innerCountFits = func(conditionIndex int, sizeIndex int, dashesFound int) int {
+		if matches, ok := cache.Get(computeHashForResult(conditions[conditionIndex:], sizes[sizeIndex:])); ok {
+			return matches
+		}
+
+		isLast := sizeIndex == len(sizes)-1
+
+		currentSize := sizes[sizeIndex]
+
+		requiredSpace := lo.Sum(sizes[sizeIndex:]) + len(sizes) - sizeIndex - 1
+		if requiredSpace > numConditions-conditionIndex {
+			return 0
+		}
+
+		matches := 0
+
+	ConditionLoop:
+		for i := conditionIndex; i <= numConditions-requiredSpace; i++ {
+			currentDashesFound := dashesFound
+
+			if conditions[i] == '.' {
+				continue
+			}
+
+			for j := conditionIndex; j < i; j++ {
+				if conditions[j] == '#' {
+					break ConditionLoop
+				}
+			}
+
+			for j := i; j < i+currentSize; j++ {
+				if conditions[j] == '.' {
+					continue ConditionLoop
+				} else if conditions[j] == '#' {
+					currentDashesFound++
+				}
+			}
+
+			if i+currentSize < numConditions && conditions[i+currentSize] == '#' {
+				continue
+			}
+
+			if isLast {
+				if currentDashesFound < totalDashes {
+					continue
+				}
+				matches++
+			} else {
+				matches += innerCountFits(i+currentSize+1, sizeIndex+1, currentDashesFound)
+			}
+		}
+		cache.Set(computeHashForResult(conditions[conditionIndex:], sizes[sizeIndex:]), matches)
+		return matches
+	}
+
+	return innerCountFits(0, 0, 0)
+}
+
+func computeHashForResult(remaining string, sizes []int) [64]byte {
+	var buffer bytes.Buffer
+	for i := range sizes {
+		buffer.WriteString(strconv.Itoa(sizes[i]))
+		buffer.WriteString(",")
+	}
+	return sha512.Sum512([]byte(remaining + "|" + buffer.String()))
+}

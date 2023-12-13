@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-type Hash [64]byte
+type Hash64 [64]byte
 
-func ComputeHash(data interface{}) Hash {
+func ComputeHash64(data interface{}) Hash64 {
 	return sha512.Sum512([]byte(fmt.Sprint(data)))
 }

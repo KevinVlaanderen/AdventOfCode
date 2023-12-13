@@ -16,7 +16,7 @@ func Task1(data string) (result framework.Result[int]) {
 		conditions := recordData[0]
 		sizes := math.ExtractNumbers(recordData[1])
 
-		cache := framework.NewSafeCache[int]()
+		cache := framework.NewSafeCache[framework.Hash64, int]()
 
 		matches := countFits(conditions, sizes, cache)
 		result.Value += matches
@@ -28,7 +28,7 @@ func Task1(data string) (result framework.Result[int]) {
 func Task2(data string) (result framework.Result[int]) {
 	lines := framework.Lines(data)
 
-	cache := framework.NewSafeCache[int]()
+	cache := framework.NewSafeCache[framework.Hash64, int]()
 
 	lop.ForEach(lines, func(line string, index int) {
 		recordData := strings.Split(line, " ")
@@ -42,13 +42,13 @@ func Task2(data string) (result framework.Result[int]) {
 	return
 }
 
-func countFits(conditions string, sizes []int, cache *framework.SafeCache[int]) int {
+func countFits(conditions string, sizes []int, cache *framework.SafeCache[framework.Hash64, int]) int {
 	numConditions := len(conditions)
 	totalDashes := lo.Count([]rune(conditions), '#')
 
 	var innerCountFits func(conditionIndex int, sizeIndex int, dashesFound int) int
 	innerCountFits = func(conditionIndex int, sizeIndex int, dashesFound int) int {
-		if matches, ok := cache.Get(framework.ComputeHash(HashItem{conditions[conditionIndex:], sizes[sizeIndex:]})); ok {
+		if matches, ok := cache.Get(framework.ComputeHash64(HashItem{conditions[conditionIndex:], sizes[sizeIndex:]})); ok {
 			return matches
 		}
 
@@ -98,7 +98,7 @@ func countFits(conditions string, sizes []int, cache *framework.SafeCache[int]) 
 				matches += innerCountFits(i+currentSize+1, sizeIndex+1, currentDashesFound)
 			}
 		}
-		cache.Set(framework.ComputeHash(HashItem{conditions[conditionIndex:], sizes[sizeIndex:]}), matches)
+		cache.Set(framework.ComputeHash64(HashItem{conditions[conditionIndex:], sizes[sizeIndex:]}), matches)
 		return matches
 	}
 

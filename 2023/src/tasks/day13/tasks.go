@@ -8,9 +8,10 @@ import (
 
 func Task1(data string) (result framework.Result[int]) {
 	blocks := framework.LineBlocks(data)
+	cache := framework.NewSafeCache[string, *HashGroup]()
 
 	lop.ForEach(blocks, func(block []string, index int) {
-		direction, index := findReflection(block, false)
+		direction, index := findReflection(block, false, cache)
 		switch direction {
 		case Horizontal:
 			result.Value += index * 100
@@ -24,9 +25,10 @@ func Task1(data string) (result framework.Result[int]) {
 
 func Task2(data string) (result framework.Result[int]) {
 	blocks := framework.LineBlocks(data)
+	cache := framework.NewSafeCache[string, *HashGroup]()
 
 	lop.ForEach(blocks, func(block []string, index int) {
-		direction, index := findReflection(block, true)
+		direction, index := findReflection(block, true, cache)
 		switch direction {
 		case Horizontal:
 			result.Value += index * 100
@@ -38,11 +40,10 @@ func Task2(data string) (result framework.Result[int]) {
 	return
 }
 
-func findReflection(block []string, checkVariants bool) (Direction, int) {
+func findReflection(block []string, checkVariants bool, cache *framework.SafeCache[string, *HashGroup]) (Direction, int) {
 	rows, columns := parseBlock(block)
-
-	rowHashes := calculateHashes(rows, checkVariants)
-	columnHashes := calculateHashes(columns, checkVariants)
+	rowHashes := calculateHashes(rows, checkVariants, cache)
+	columnHashes := calculateHashes(columns, checkVariants, cache)
 
 	if found, index := reflectionFound(columnHashes, checkVariants); found {
 		return Vertical, index
@@ -53,43 +54,45 @@ func findReflection(block []string, checkVariants bool) (Direction, int) {
 	panic("no reflection found")
 }
 
-func parseBlock(block []string) ([][]bool, [][]bool) {
+func parseBlock(block []string) ([]string, []string) {
 	width, height := len(block[0]), len(block)
 
-	rows := make([][]bool, height)
-	columns := make([][]bool, width)
+	rows := make([]string, 0, height)
+	columns := make([]string, width)
 
-	for y, line := range block {
-		if rows[y] == nil {
-			rows[y] = make([]bool, width)
-		}
+	for _, line := range block {
+		rows = append(rows, line)
 		for x, char := range line {
-			if columns[x] == nil {
-				columns[x] = make([]bool, height)
-			}
-			rows[y][x] = char == '#'
-			columns[x][y] = char == '#'
+			columns[x] += string(char)
 		}
 	}
 	return rows, columns
 }
 
-func calculateHashes(data [][]bool, checkVariants bool) []HashGroup {
-	return lo.Map(data, func(item []bool, index int) (hashGroup HashGroup) {
-		hashGroup.original = framework.ComputeHash(item)
-		if checkVariants {
-			hashGroup.variants = lo.Map(item, func(_ bool, index int) framework.Hash {
-				newRow := make([]bool, len(item))
-				copy(newRow, item)
-				newRow[index] = !item[index]
-				return framework.ComputeHash(newRow)
-			})
+func calculateHashes(data []string, checkVariants bool, cache *framework.SafeCache[string, *HashGroup]) []*HashGroup {
+	return lo.Map(data, func(item string, index int) *HashGroup {
+		if group, found := cache.Get(item); found {
+			return group
+		} else {
+			hashGroup := HashGroup{original: item}
+			if checkVariants {
+				hashGroup.variants = lo.Map([]rune(item), func(_ rune, index int) string {
+					newRow := []rune(item)
+					if item[index] == '#' {
+						newRow[index] = '.'
+					} else {
+						newRow[index] = '#'
+					}
+					return string(newRow)
+				})
+			}
+			cache.Set(item, &hashGroup)
+			return &hashGroup
 		}
-		return
 	})
 }
 
-func reflectionFound(hashes []HashGroup, checkVariants bool) (bool, int) {
+func reflectionFound(hashes []*HashGroup, checkVariants bool) (bool, int) {
 	size := len(hashes)
 
 	for mid := 0; mid < size-1; mid++ {
@@ -118,15 +121,15 @@ func reflectionFound(hashes []HashGroup, checkVariants bool) (bool, int) {
 	return false, 0
 }
 
-func compareLeftRight(originalIndex, variantIndex int, hashes []HashGroup) bool {
-	return lo.ContainsBy(hashes[variantIndex].variants, func(variant framework.Hash) bool {
+func compareLeftRight(originalIndex, variantIndex int, hashes []*HashGroup) bool {
+	return lo.ContainsBy(hashes[variantIndex].variants, func(variant string) bool {
 		return variant == hashes[originalIndex].original
 	})
 }
 
 type HashGroup struct {
-	original framework.Hash
-	variants []framework.Hash
+	original string
+	variants []string
 }
 
 type Direction uint8

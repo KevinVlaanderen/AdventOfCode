@@ -3,11 +3,8 @@ package day12
 import (
 	"2023/src/framework"
 	"2023/src/framework/math"
-	"bytes"
-	"crypto/sha512"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
-	"strconv"
 	"strings"
 )
 
@@ -51,7 +48,7 @@ func countFits(conditions string, sizes []int, cache *framework.SafeCache[int]) 
 
 	var innerCountFits func(conditionIndex int, sizeIndex int, dashesFound int) int
 	innerCountFits = func(conditionIndex int, sizeIndex int, dashesFound int) int {
-		if matches, ok := cache.Get(computeHashForResult(conditions[conditionIndex:], sizes[sizeIndex:])); ok {
+		if matches, ok := cache.Get(framework.ComputeHash(HashItem{conditions[conditionIndex:], sizes[sizeIndex:]})); ok {
 			return matches
 		}
 
@@ -101,18 +98,14 @@ func countFits(conditions string, sizes []int, cache *framework.SafeCache[int]) 
 				matches += innerCountFits(i+currentSize+1, sizeIndex+1, currentDashesFound)
 			}
 		}
-		cache.Set(computeHashForResult(conditions[conditionIndex:], sizes[sizeIndex:]), matches)
+		cache.Set(framework.ComputeHash(HashItem{conditions[conditionIndex:], sizes[sizeIndex:]}), matches)
 		return matches
 	}
 
 	return innerCountFits(0, 0, 0)
 }
 
-func computeHashForResult(remaining string, sizes []int) [64]byte {
-	var buffer bytes.Buffer
-	for i := range sizes {
-		buffer.WriteString(strconv.Itoa(sizes[i]))
-		buffer.WriteString(",")
-	}
-	return sha512.Sum512([]byte(remaining + "|" + buffer.String()))
+type HashItem struct {
+	conditions string
+	sizes      []int
 }

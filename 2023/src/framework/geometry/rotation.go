@@ -1,4 +1,4 @@
-package model
+package geometry
 
 type Rotation uint8
 

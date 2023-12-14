@@ -1,4 +1,4 @@
-package model
+package geometry
 
 type Direction int
 

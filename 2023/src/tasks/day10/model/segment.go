@@ -7,16 +7,16 @@ type Segment struct {
 	Point *geometry.Point
 }
 
-func (s Segment) DirectionOf(other Segment) Direction {
+func (s Segment) DirectionOf(other Segment) geometry.Orientation {
 	switch {
 	case other.Point.Y < s.Point.Y:
-		return Top
+		return geometry.North
 	case other.Point.X > s.Point.X:
-		return Right
+		return geometry.East
 	case other.Point.Y > s.Point.Y:
-		return Bottom
+		return geometry.South
 	case other.Point.X < s.Point.X:
-		return Left
+		return geometry.West
 	}
 	panic("invalid direction")
 }

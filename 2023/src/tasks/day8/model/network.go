@@ -1,6 +1,7 @@
 package model
 
 import (
+	"2023/src/framework/geometry"
 	"github.com/samber/lo"
 	"github.com/samber/lo/parallel"
 	"regexp"
@@ -8,7 +9,7 @@ import (
 )
 
 type Network struct {
-	steps     []Direction
+	steps     []geometry.Direction
 	nodeNames []string
 	nodes     []lo.Tuple2[int, int]
 }
@@ -33,13 +34,13 @@ func NewNetwork(stepData string, nodeData string) Network {
 	}
 }
 
-func parseSteps(line string) []Direction {
-	return lo.Map(strings.Split(line, ""), func(direction string, index int) Direction {
+func parseSteps(line string) []geometry.Direction {
+	return lo.Map(strings.Split(line, ""), func(direction string, index int) geometry.Direction {
 		switch direction {
 		case "L":
-			return Left
+			return geometry.Left
 		case "R":
-			return Right
+			return geometry.Right
 		default:
 			panic("unknown direction")
 		}
@@ -62,11 +63,11 @@ func (n Network) IndicesBy(filter func(item string, index int) bool) []int {
 	})
 }
 
-func (n Network) Next(current int, direction Direction) int {
+func (n Network) Next(current int, direction geometry.Direction) int {
 	switch direction {
-	case Left:
+	case geometry.Left:
 		return n.nodes[current].A
-	case Right:
+	case geometry.Right:
 		return n.nodes[current].B
 	}
 	panic("unknown direction")

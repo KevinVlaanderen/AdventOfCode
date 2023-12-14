@@ -55,20 +55,20 @@ func (s Surface) calculateStartPipe() *Pipe {
 	return NewPipeFromDirections(top, right, bottom, left)
 }
 
-func (s Surface) pickStartingDirection() Direction {
+func (s Surface) pickStartingDirection() geometry.Orientation {
 	start, found := s.Grid.Get(s.start)
 	if !found {
 		panic("starting pipe not found")
 	}
 	switch {
 	case start.Top():
-		return Top
+		return geometry.North
 	case start.Right():
-		return Right
+		return geometry.East
 	case start.Bottom():
-		return Bottom
+		return geometry.South
 	case start.Left():
-		return Left
+		return geometry.West
 	}
 	panic("starting pipe invalid")
 }
@@ -105,7 +105,7 @@ func (s Surface) FindLoop() []Segment {
 			Pipe:  neighbourPipe,
 			Point: &neighbourPoint,
 		})
-		currentPoint, currentPipe, comingFrom = neighbourPoint, neighbourPipe, OppositeDirection[currentPipe.OtherSide(comingFrom)]
+		currentPoint, currentPipe, comingFrom = neighbourPoint, neighbourPipe, geometry.OppositeOrientation[currentPipe.OtherSide(comingFrom)]
 	}
 	return loop
 }
@@ -125,47 +125,47 @@ func (s Surface) FindAllPointsInsideLoop(loop []Segment) []geometry.Point {
 		direction := previous.DirectionOf(current)
 
 		switch {
-		case direction == Top && current.Pipe.Type == TopBottom && loopRotation == CW:
+		case direction == geometry.North && current.Pipe.Type == TopBottom && loopRotation == geometry.CW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-		case direction == Top && current.Pipe.Type == TopBottom && loopRotation == CCW:
+		case direction == geometry.North && current.Pipe.Type == TopBottom && loopRotation == geometry.CCW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
-		case direction == Top && current.Pipe.Type == BottomLeft && loopRotation == CW:
+		case direction == geometry.North && current.Pipe.Type == BottomLeft && loopRotation == geometry.CW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
-		case direction == Top && current.Pipe.Type == BottomRight && loopRotation == CCW:
+		case direction == geometry.North && current.Pipe.Type == BottomRight && loopRotation == geometry.CCW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
 
-		case direction == Right && current.Pipe.Type == LeftRight && loopRotation == CW:
+		case direction == geometry.East && current.Pipe.Type == LeftRight && loopRotation == geometry.CW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-		case direction == Right && current.Pipe.Type == LeftRight && loopRotation == CCW:
+		case direction == geometry.East && current.Pipe.Type == LeftRight && loopRotation == geometry.CCW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
-		case direction == Right && current.Pipe.Type == TopLeft && loopRotation == CW:
+		case direction == geometry.East && current.Pipe.Type == TopLeft && loopRotation == geometry.CW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-		case direction == Right && current.Pipe.Type == BottomLeft && loopRotation == CCW:
+		case direction == geometry.East && current.Pipe.Type == BottomLeft && loopRotation == geometry.CCW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
 
-		case direction == Bottom && current.Pipe.Type == TopBottom && loopRotation == CW:
+		case direction == geometry.South && current.Pipe.Type == TopBottom && loopRotation == geometry.CW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
-		case direction == Bottom && current.Pipe.Type == TopBottom && loopRotation == CCW:
+		case direction == geometry.South && current.Pipe.Type == TopBottom && loopRotation == geometry.CCW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-		case direction == Bottom && current.Pipe.Type == TopLeft && loopRotation == CCW:
+		case direction == geometry.South && current.Pipe.Type == TopLeft && loopRotation == geometry.CCW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-		case direction == Bottom && current.Pipe.Type == TopRight && loopRotation == CW:
+		case direction == geometry.South && current.Pipe.Type == TopRight && loopRotation == geometry.CW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
 
-		case direction == Left && current.Pipe.Type == LeftRight && loopRotation == CW:
+		case direction == geometry.West && current.Pipe.Type == LeftRight && loopRotation == geometry.CW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
-		case direction == Left && current.Pipe.Type == LeftRight && loopRotation == CCW:
+		case direction == geometry.West && current.Pipe.Type == LeftRight && loopRotation == geometry.CCW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-		case direction == Left && current.Pipe.Type == BottomRight && loopRotation == CW:
+		case direction == geometry.West && current.Pipe.Type == BottomRight && loopRotation == geometry.CW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
-		case direction == Left && current.Pipe.Type == TopRight && loopRotation == CCW:
+		case direction == geometry.West && current.Pipe.Type == TopRight && loopRotation == geometry.CCW:
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
 			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
 		}
@@ -185,7 +185,7 @@ func (s Surface) findPointsInsideLoop(loop []Segment, point geometry.Point, foun
 	})
 }
 
-func (s Surface) calculateLoopRotation(loop []Segment) Rotation {
+func (s Surface) calculateLoopRotation(loop []Segment) geometry.Rotation {
 	var nCW, nCCW int
 	for index := 0; index < len(loop); index++ {
 		currentIndex, nextIndex := index, index+1
@@ -194,20 +194,20 @@ func (s Surface) calculateLoopRotation(loop []Segment) Rotation {
 		}
 
 		current, next := loop[currentIndex], loop[nextIndex]
-		comingFrom := OppositeDirection[current.DirectionOf(next)]
+		comingFrom := geometry.OppositeOrientation[current.DirectionOf(next)]
 
 		switch next.Pipe.Rotation(comingFrom) {
-		case CW:
+		case geometry.CW:
 			nCW++
-		case CCW:
+		case geometry.CCW:
 			nCCW++
 		default:
 		}
 	}
 
 	if nCW > nCCW {
-		return CW
+		return geometry.CW
 	} else {
-		return CCW
+		return geometry.CCW
 	}
 }

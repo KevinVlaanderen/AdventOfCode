@@ -1,11 +1,12 @@
 package framework
 
-func Range(start, count, step int) (result []int) {
+func Range(start, count, step int) []int {
+	result := make([]int, 0, count)
 	for i := 0; i < count; i++ {
 		result = append(result, start)
 		start += step
 	}
-	return
+	return result
 }
 
 func RangeGen(start, count, step int) <-chan int {

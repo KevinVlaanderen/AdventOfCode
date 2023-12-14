@@ -1,6 +1,15 @@
 package framework
 
-import "strings"
+import (
+	"github.com/samber/lo"
+	"strings"
+)
+
+func CharLines(data string) [][]rune {
+	return lo.Map(strings.Split(data, "\n"), func(item string, index int) []rune {
+		return []rune(item)
+	})
+}
 
 func Lines(data string) []string {
 	return strings.Split(data, "\n")

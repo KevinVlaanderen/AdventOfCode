@@ -90,17 +90,24 @@ func (g *Grid[T]) OrthogonalNeighbours(point Point, mustExist bool) []Point {
 	return neighbours
 }
 
-func (g *Grid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
+func (g *Grid[T]) DrawPointGrid(fn func(value *T, x int, y int) (rune, bool), fallback map[T]rune) {
 	for y := range framework.RangeGen(g.yMin, g.yMax-g.yMin+1, 1) {
 		for x := range framework.RangeGen(g.xMin, g.xMax-g.xMin+1, 1) {
-			if value, positionExists := g.points[Point{X: x, Y: y}]; positionExists {
-				if character, valueExists := mapping[*value]; valueExists {
-					fmt.Print(string(character))
-				} else {
-					fmt.Print(string(fallback))
-				}
+			value := g.points[Point{X: x, Y: y}]
+			if char, ok := fn(value, x, y); ok {
+				fmt.Print(string(char))
+				continue
+			}
+
+			if value == nil {
+				fmt.Print(" ")
+				continue
+			}
+
+			if character, valueExists := fallback[*value]; valueExists {
+				fmt.Print(string(character))
 			} else {
-				fmt.Print(string(fallback))
+				fmt.Print(" ")
 			}
 		}
 		fmt.Print("\n")

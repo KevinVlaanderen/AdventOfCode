@@ -2,6 +2,7 @@ package day3
 
 import (
 	"2023/src/framework"
+	"2023/src/framework/geometry"
 	"2023/src/tasks/day3/model"
 	"golang.org/x/exp/slices"
 )
@@ -32,7 +33,7 @@ func Task2(data string) (result framework.Result[int]) {
 
 		numbers := make([]model.Number, 0)
 
-		for _, coordinate := range symbol.Position.Neighbors() {
+		for _, coordinate := range symbol.Position.Neighbors(geometry.All) {
 			if number, found := schematic.NumberAt(coordinate); found && !slices.Contains(numbers, number) {
 				numbers = append(numbers, number)
 			}

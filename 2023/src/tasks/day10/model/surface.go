@@ -2,17 +2,18 @@ package model
 
 import (
 	"2023/src/framework/geometry"
+	"2023/src/framework/geometry/grid"
 	"github.com/samber/lo"
 )
 
 type Surface struct {
 	start geometry.Point
-	Grid  geometry.Grid[Pipe]
+	Grid  grid.SparseGrid[Pipe]
 }
 
 func NewSurface(data string) Surface {
 	surface := Surface{
-		Grid: geometry.NewGrid[Pipe](),
+		Grid: grid.NewSparseGrid[Pipe](),
 	}
 
 	current := geometry.Point{}
@@ -39,16 +40,16 @@ func NewSurface(data string) Surface {
 func (s Surface) calculateStartPipe() *Pipe {
 	var top, right, bottom, left bool
 
-	if neighbour, ok := s.Grid.Get(s.start.Up()); ok && neighbour.Bottom() {
+	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geometry.North)); ok && neighbour.Bottom() {
 		top = true
 	}
-	if neighbour, ok := s.Grid.Get(s.start.Right()); ok && neighbour.Left() {
+	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geometry.East)); ok && neighbour.Left() {
 		right = true
 	}
-	if neighbour, ok := s.Grid.Get(s.start.Down()); ok && neighbour.Top() {
+	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geometry.South)); ok && neighbour.Top() {
 		bottom = true
 	}
-	if neighbour, ok := s.Grid.Get(s.start.Left()); ok && neighbour.Right() {
+	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geometry.West)); ok && neighbour.Right() {
 		left = true
 	}
 
@@ -180,7 +181,7 @@ func (s Surface) findPointsInsideLoop(loop []Segment, point geometry.Point, foun
 
 	*found = append(*found, point)
 
-	lo.ForEach(s.Grid.Neighbours(point, false), func(neighbourPoint geometry.Point, index int) {
+	lo.ForEach(point.Neighbors(geometry.All), func(neighbourPoint geometry.Point, index int) {
 		s.findPointsInsideLoop(loop, neighbourPoint, found)
 	})
 }

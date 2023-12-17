@@ -15,7 +15,7 @@ func ComputeHash64(data interface{}) Hash64 {
 
 func ComputeSliceHash64[T any](list []T) Hash64 {
 	var buffer bytes.Buffer
-	for i, _ := range list {
+	for i := range list {
 		buffer.WriteString(fmt.Sprintf("%v,", list[i]))
 	}
 	return sha512.Sum512([]byte(buffer.String()))

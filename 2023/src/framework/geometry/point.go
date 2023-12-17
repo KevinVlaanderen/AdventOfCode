@@ -1,36 +1,91 @@
 package geometry
 
 import (
-	"2023/src/framework"
+	"fmt"
+	"github.com/samber/lo"
+	"golang.org/x/exp/slices"
+	"hash/fnv"
 )
 
 type Point struct {
 	X, Y int
 }
 
-func (p Point) Neighbors() (points []Point) {
-	for x := range framework.RangeGen(p.X-1, 3, 1) {
-		for y := range framework.RangeGen(p.Y-1, 3, 1) {
-			if x != p.X || y != p.Y {
-				points = append(points, Point{x, y})
-			}
-		}
+func (p Point) ID() int64 {
+	h := fnv.New64()
+	_, _ = h.Write([]byte(p.Hash()))
+	return int64(h.Sum64() >> 1)
+}
+
+func (p Point) Neighbors(mode NeighbourMode) (points []Point) {
+	var orientations []Orientation
+	switch mode {
+	case All:
+		orientations = allNeighbourOrientations
+	case Orthogonal:
+		orientations = orthogonalNeighbourOrientations
 	}
-	return
+	return lo.Map(orientations, func(orientation Orientation, index int) Point {
+		return p.Neighbour(orientation)
+	})
 }
 
-func (p Point) Up() Point {
-	return Point{p.X, p.Y - 1}
+func (p Point) Neighbour(orientation Orientation) Point {
+	if orientation < 0 || int(orientation) >= len(allNeighbourOffsets) {
+		panic("unknown orientation")
+	}
+	offset := allNeighbourOffsets[orientation]
+	return Point{p.X + offset.X, p.Y + offset.Y}
 }
 
-func (p Point) Right() Point {
-	return Point{p.X + 1, p.Y}
+func (p Point) NeighbourOffsets(mode NeighbourMode) []Point {
+	switch mode {
+	case All:
+		return allNeighbourOffsets
+	case Orthogonal:
+		return orthogonalNeighbourOffsets
+	}
+	panic("unknown mode")
 }
 
-func (p Point) Down() Point {
-	return Point{p.X, p.Y + 1}
+func (p Point) OrientationOf(other Point) (Orientation, bool) {
+	x := other.X - p.X
+	y := other.Y - p.Y
+	offset := Point{x, y}
+	if index := slices.Index(allNeighbourOffsets, offset); index >= 0 {
+		return allNeighbourOrientations[index], true
+	}
+	return 0, false
 }
 
-func (p Point) Left() Point {
-	return Point{p.X - 1, p.Y}
+func (p Point) Hash() string {
+	return fmt.Sprint(p)
 }
+
+var allNeighbourOrientations = []Orientation{North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest}
+var orthogonalNeighbourOrientations = []Orientation{North, East, South, West}
+
+var allNeighbourOffsets = []Point{
+	{0, -1},
+	{1, -1},
+	{1, 0},
+	{1, 1},
+	{0, 1},
+	{-1, 1},
+	{-1, 0},
+	{-1, -1},
+}
+
+var orthogonalNeighbourOffsets = []Point{
+	{0, -1},
+	{1, 0},
+	{0, 1},
+	{-1, 0},
+}
+
+type NeighbourMode uint8
+
+const (
+	All NeighbourMode = iota
+	Orthogonal
+)

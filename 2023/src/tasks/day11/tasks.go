@@ -3,6 +3,7 @@ package day11
 import (
 	"2023/src/framework"
 	"2023/src/framework/geometry"
+	"2023/src/framework/geometry/grid"
 	"2023/src/framework/math"
 	"github.com/samber/lo"
 )
@@ -27,10 +28,10 @@ func Task2(data string) (result framework.Result[int]) {
 	return
 }
 
-type Universe geometry.Grid[bool]
+type Universe grid.SparseGrid[bool]
 
 func NewUniverse(data []string) Universe {
-	universe := geometry.NewGrid[bool]()
+	universe := grid.NewSparseGrid[bool]()
 
 	for y, line := range data {
 		for x, char := range line {
@@ -45,15 +46,15 @@ func NewUniverse(data []string) Universe {
 
 func (universe Universe) CalculateDistances(factor int) int {
 	var result int
-	grid := geometry.Grid[bool](universe)
+	g := grid.SparseGrid[bool](universe)
 
-	xMin, xMax, yMin, yMax := grid.Boundaries()
+	xMin, xMax, yMin, yMax := g.Boundaries()
 	var emptyRows, emptyCols []int
 
 	for x := xMin + 1; x < xMax; x++ {
 		colEmpty := true
 		for y := yMin; y <= yMax; y++ {
-			if _, found := grid.Get(geometry.Point{X: x, Y: y}); found {
+			if _, found := g.Get(geometry.Point{X: x, Y: y}); found {
 				colEmpty = false
 				break
 			}
@@ -65,7 +66,7 @@ func (universe Universe) CalculateDistances(factor int) int {
 	for y := yMin + 1; y < yMax; y++ {
 		rowEmpty := true
 		for x := xMin; x <= xMax; x++ {
-			if _, found := grid.Get(geometry.Point{X: x, Y: y}); found {
+			if _, found := g.Get(geometry.Point{X: x, Y: y}); found {
 				rowEmpty = false
 				break
 			}
@@ -75,7 +76,7 @@ func (universe Universe) CalculateDistances(factor int) int {
 		}
 	}
 
-	galaxies := grid.Keys()
+	galaxies := g.Keys()
 	for i := 0; i < len(galaxies)-1; i++ {
 		for j := i + 1; j < len(galaxies); j++ {
 			currentPoint, nextPoint := galaxies[i], galaxies[j]

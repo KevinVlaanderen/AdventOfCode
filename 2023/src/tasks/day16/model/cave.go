@@ -3,13 +3,14 @@ package model
 import (
 	"2023/src/framework"
 	"2023/src/framework/geometry"
+	"2023/src/framework/geometry/grid"
 	"github.com/samber/lo"
 )
 
-type Cave geometry.Grid[Tile]
+type Cave grid.SparseGrid[Tile]
 
 func NewCave(data string) Cave {
-	tiles := geometry.NewGrid[Tile]()
+	tiles := grid.NewSparseGrid[Tile]()
 	for y, line := range framework.Lines(data) {
 		for x, char := range line {
 			switch char {
@@ -30,8 +31,8 @@ func NewCave(data string) Cave {
 
 func (c Cave) CountEnergized(position geometry.Point, orientation geometry.Orientation) int {
 	steps := map[Step]bool{}
-	grid := geometry.Grid[Tile](c)
-	c.followPath(&grid, position, orientation, &steps)
+	g := grid.SparseGrid[Tile](c)
+	c.followPath(&g, position, orientation, &steps)
 
 	found := lo.Associate(lo.Keys(steps), func(item Step) (geometry.Point, bool) {
 		return item.Position, true
@@ -41,11 +42,11 @@ func (c Cave) CountEnergized(position geometry.Point, orientation geometry.Orien
 }
 
 func (c Cave) Boundaries() (int, int, int, int) {
-	grid := geometry.Grid[Tile](c)
-	return grid.Boundaries()
+	g := grid.SparseGrid[Tile](c)
+	return g.Boundaries()
 }
 
-func (c Cave) followPath(grid *geometry.Grid[Tile], current geometry.Point, orientation geometry.Orientation, steps *map[Step]bool) {
+func (c Cave) followPath(grid *grid.SparseGrid[Tile], current geometry.Point, orientation geometry.Orientation, steps *map[Step]bool) {
 	xMin, xMax, yMin, yMax := grid.Boundaries()
 
 	for {
@@ -61,7 +62,7 @@ func (c Cave) followPath(grid *geometry.Grid[Tile], current geometry.Point, orie
 		(*steps)[step] = true
 
 		if tile, found := grid.Get(current); !found {
-			current = nextPosition(current, orientation)
+			current = current.Neighbour(orientation)
 		} else {
 			switch tile.TileType {
 			case MirrorLeft:
@@ -74,8 +75,10 @@ func (c Cave) followPath(grid *geometry.Grid[Tile], current geometry.Point, orie
 					orientation = geometry.East
 				case geometry.West:
 					orientation = geometry.North
+				default:
+					panic("invalid orientation")
 				}
-				current = nextPosition(current, orientation)
+				current = current.Neighbour(orientation)
 			case MirrorRight:
 				switch orientation {
 				case geometry.North:
@@ -86,40 +89,28 @@ func (c Cave) followPath(grid *geometry.Grid[Tile], current geometry.Point, orie
 					orientation = geometry.West
 				case geometry.West:
 					orientation = geometry.South
+				default:
+					panic("invalid orientation")
 				}
-				current = nextPosition(current, orientation)
+				current = current.Neighbour(orientation)
 			case SplitterHorizontal:
 				if orientation == geometry.East || orientation == geometry.West {
-					current = nextPosition(current, orientation)
+					current = current.Neighbour(orientation)
 					continue
 				}
-				c.followPath(grid, nextPosition(current, geometry.East), geometry.East, steps)
-				c.followPath(grid, nextPosition(current, geometry.West), geometry.West, steps)
+				c.followPath(grid, current.Neighbour(geometry.East), geometry.East, steps)
+				c.followPath(grid, current.Neighbour(geometry.West), geometry.West, steps)
 				return
 			case SplitterVertical:
 				if orientation == geometry.North || orientation == geometry.South {
-					current = nextPosition(current, orientation)
+					current = current.Neighbour(orientation)
 					continue
 				}
-				c.followPath(grid, nextPosition(current, geometry.North), geometry.North, steps)
-				c.followPath(grid, nextPosition(current, geometry.South), geometry.South, steps)
+				c.followPath(grid, current.Neighbour(geometry.North), geometry.North, steps)
+				c.followPath(grid, current.Neighbour(geometry.South), geometry.South, steps)
 				return
 			}
 		}
 	}
 	return
-}
-
-func nextPosition(position geometry.Point, orientation geometry.Orientation) geometry.Point {
-	switch orientation {
-	case geometry.North:
-		position.Y--
-	case geometry.East:
-		position.X++
-	case geometry.South:
-		position.Y++
-	case geometry.West:
-		position.X--
-	}
-	return position
 }

@@ -22,6 +22,11 @@ func (g *SparseGrid[T]) Keys() []geometry.Point {
 	return lo.Keys(g.points)
 }
 
+func (g *SparseGrid[T]) Has(key geometry.Point) (found bool) {
+	_, found = g.Get(key)
+	return
+}
+
 func (g *SparseGrid[T]) Get(key geometry.Point) (value T, found bool) {
 	value, found = g.points[key]
 	return

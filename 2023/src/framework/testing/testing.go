@@ -77,7 +77,7 @@ func runTest[T comparable](t *testing.T, taskDefinition TaskDefinition[T], testD
 	t.Run(testDefinition.name(), test)
 }
 
-func RunBenchmarks(b *testing.B, taskDefinitions []TaskDefinition[int]) {
+func RunBenchmarks[T comparable](b *testing.B, taskDefinitions []TaskDefinition[T]) {
 	for taskIndex, taskDefinition := range taskDefinitions {
 		b.Run(fmt.Sprintf("Task%v", taskIndex+1), func(bTask *testing.B) {
 			for _, testDefinition := range taskDefinition.Tests {

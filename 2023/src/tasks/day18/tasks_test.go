@@ -5,12 +5,19 @@ import (
 	"testing"
 )
 
-var taskDefinitions = []_testing.TaskDefinition[int]{
+var taskDefinitions = []_testing.TaskDefinition[int64]{
 	{
 		Task: Task1,
-		Tests: []_testing.TestDefinition[int]{
+		Tests: []_testing.TestDefinition[int64]{
 			{"data", 62, _testing.TestData},
 			{"day18", 70026, _testing.RealData},
+		},
+	},
+	{
+		Task: Task2,
+		Tests: []_testing.TestDefinition[int64]{
+			{"data", 952408144115, _testing.TestData},
+			{"day18", 68548301037382, _testing.RealData},
 		},
 	},
 }

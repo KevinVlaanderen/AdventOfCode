@@ -1,6 +1,7 @@
 package geometry
 
 import (
+	math2 "2023/src/framework/math"
 	"fmt"
 	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
@@ -51,6 +52,12 @@ func (p Point) NeighbourOffsets(mode NeighbourMode) []Point {
 func (p Point) OrientationOf(other Point) (Orientation, bool) {
 	x := other.X - p.X
 	y := other.Y - p.Y
+	if x != 0 {
+		x /= math2.AbsInt(x)
+	}
+	if y != 0 {
+		y /= math2.AbsInt(y)
+	}
 	offset := Point{x, y}
 	if index := slices.Index(allNeighbourOffsets, offset); index >= 0 {
 		return allNeighbourOrientations[index], true

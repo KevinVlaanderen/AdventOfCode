@@ -15,13 +15,13 @@ func NewCave(data string) Cave {
 		for x, char := range line {
 			switch char {
 			case '/':
-				tiles.Add(geometry.Point{X: x, Y: y}, &Tile{MirrorRight})
+				tiles.Add(geometry.Point{X: x, Y: y}, Tile{MirrorRight})
 			case '\\':
-				tiles.Add(geometry.Point{X: x, Y: y}, &Tile{MirrorLeft})
+				tiles.Add(geometry.Point{X: x, Y: y}, Tile{MirrorLeft})
 			case '|':
-				tiles.Add(geometry.Point{X: x, Y: y}, &Tile{SplitterVertical})
+				tiles.Add(geometry.Point{X: x, Y: y}, Tile{SplitterVertical})
 			case '-':
-				tiles.Add(geometry.Point{X: x, Y: y}, &Tile{SplitterHorizontal})
+				tiles.Add(geometry.Point{X: x, Y: y}, Tile{SplitterHorizontal})
 			}
 		}
 	}

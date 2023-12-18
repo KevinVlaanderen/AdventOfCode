@@ -36,8 +36,7 @@ func NewUniverse(data []string) Universe {
 	for y, line := range data {
 		for x, char := range line {
 			if char == '#' {
-				value := true
-				universe.Add(geometry.Point{X: x, Y: y}, &value)
+				universe.Add(geometry.Point{X: x, Y: y}, true)
 			}
 		}
 	}

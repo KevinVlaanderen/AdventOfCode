@@ -8,12 +8,12 @@ import (
 
 type Surface struct {
 	start geometry.Point
-	Grid  grid.SparseGrid[Pipe]
+	Grid  grid.SparseGrid[*Pipe]
 }
 
 func NewSurface(data string) Surface {
 	surface := Surface{
-		Grid: grid.NewSparseGrid[Pipe](),
+		Grid: grid.NewSparseGrid[*Pipe](),
 	}
 
 	current := geometry.Point{}

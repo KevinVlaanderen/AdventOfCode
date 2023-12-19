@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -10,32 +11,34 @@ func ParseCondition(data string) Condition {
 	if err != nil {
 		panic(err)
 	}
-	switch data[1] {
-	case '<':
-		return LessThan(category, n)
-	case '>':
-		return GreaterThan(category, n)
+	return Condition{category, Operator(data[1]), n}
+
+}
+
+type Condition struct {
+	Category Category
+	Operator Operator
+	N        int
+}
+
+func (c Condition) Opposite() *Condition {
+	switch c.Operator {
+	case LessThan:
+		return &Condition{c.Category, GreaterThan, c.N - 1}
+	case GreaterThan:
+		return &Condition{c.Category, LessThan, c.N + 1}
 	default:
 		panic("unknown operator")
 	}
 }
 
-type Condition func(state *State) bool
-
-func Always() Condition {
-	return func(state *State) bool {
-		return true
-	}
+func (c Condition) String() string {
+	return fmt.Sprintf("%v %v %v", c.Category, c.Operator, c.N)
 }
 
-func LessThan(category Category, n int) Condition {
-	return func(state *State) bool {
-		return state.Part.Ratings[category] < n
-	}
-}
+type Operator string
 
-func GreaterThan(category Category, n int) Condition {
-	return func(state *State) bool {
-		return state.Part.Ratings[category] > n
-	}
-}
+const (
+	LessThan    Operator = "<"
+	GreaterThan          = ">"
+)

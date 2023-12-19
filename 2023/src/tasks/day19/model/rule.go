@@ -5,8 +5,8 @@ import (
 )
 
 type Rule struct {
-	Condition   Condition
-	Instruction Instruction
+	Condition *Condition
+	Next      string
 }
 
 func ParseRules(data string) []Rule {
@@ -16,10 +16,11 @@ func ParseRules(data string) []Rule {
 		ruleParts := strings.Split(ruleString, ":")
 		switch len(ruleParts) {
 		case 1:
-			rule := Rule{Always(), ParseInstruction(ruleParts[0])}
+			rule := Rule{nil, ruleParts[0]}
 			rules[ruleIndex] = rule
 		case 2:
-			rule := Rule{ParseCondition(ruleParts[0]), ParseInstruction(ruleParts[1])}
+			condition := ParseCondition(ruleParts[0])
+			rule := Rule{&condition, ruleParts[1]}
 			rules[ruleIndex] = rule
 		}
 	}

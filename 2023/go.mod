@@ -3,6 +3,7 @@ module 2023
 go 1.21
 
 require (
+	github.com/deckarep/golang-set/v2 v2.5.0
 	github.com/dominikbraun/graph v0.23.0
 	github.com/elliotchance/orderedmap/v2 v2.2.0
 	github.com/oleiade/lane/v2 v2.0.0

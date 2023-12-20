@@ -10,7 +10,9 @@ func NewFlipFlop(name string, system *model.System) *FlipFlop {
 	return &FlipFlop{DefaultModule: NewDefaultModule(name, system)}
 }
 
-func (f *FlipFlop) Receive(_ model.Module, value bool) bool {
+func (f *FlipFlop) Receive(source model.Module, value bool) bool {
+	f.DefaultModule.Receive(source, value)
+
 	if value {
 		return false
 	}

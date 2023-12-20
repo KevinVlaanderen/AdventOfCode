@@ -22,20 +22,23 @@ func (d *DefaultModule) Value() bool {
 	return d.value
 }
 
+func (d *DefaultModule) Output() bool {
+	return d.value
+}
+
+func (d *DefaultModule) Sinks() []model.Module {
+	return d.sinks
+}
+
+func (d *DefaultModule) Receive(_ model.Module, value bool) bool {
+	d.system.SetResult(d.name, value)
+	return true
+}
+
 func (d *DefaultModule) RegisterSource(sink model.Module) {
 	d.sources = append(d.sources, sink)
 }
 
 func (d *DefaultModule) RegisterSink(sink model.Module) {
 	d.sinks = append(d.sinks, sink)
-}
-
-func (d *DefaultModule) Receive(_ model.Module, _ bool) bool {
-	return true
-}
-
-func (d *DefaultModule) Send() {
-	for _, sink := range d.sinks {
-		d.system.RegisterSignal(d, sink, d.value)
-	}
 }

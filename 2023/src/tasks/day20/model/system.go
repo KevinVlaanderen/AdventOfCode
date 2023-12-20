@@ -1,66 +1,73 @@
 package model
 
-import (
-	"github.com/oleiade/lane/v2"
-	"github.com/samber/lo"
-)
+import "github.com/samber/lo"
 
-type State struct{ LowCount, HighCount int }
+type State struct {
+	LowCount, HighCount int
+	Results             map[string]bool
+}
 
 type System struct {
-	modules           map[string]Module
-	registeredSignals *lane.Queue[lo.Tuple3[Module, Module, bool]]
-	state             State
+	modules map[string]Module
+	state   *State
+	queue   []Module
 }
 
 func NewSystem() System {
-	return System{registeredSignals: lane.NewQueue[lo.Tuple3[Module, Module, bool]](), modules: make(map[string]Module)}
+	return System{
+		modules: make(map[string]Module),
+		queue:   make([]Module, 0, 100),
+		state:   &State{Results: make(map[string]bool)},
+	}
 }
 
-func (s *System) AddModules(modules map[string]Module) {
-	for name, module := range modules {
-		s.modules[name] = module
-	}
+func (s *System) SetModules(modules map[string]Module) {
+	s.modules = modules
+	s.state.Results = make(map[string]bool, len(lo.Keys(modules)))
 }
 
 func (s *System) Module(name string) Module {
 	return s.modules[name]
 }
 
-func (s *System) State() State {
+func (s *System) State() *State {
 	return s.state
 }
 
-func (s *System) Tick() {
-	for s.registeredSignals.Size() > 0 {
-		registeredSignal, _ := s.registeredSignals.Dequeue()
-		doSend := registeredSignal.B.Receive(registeredSignal.A, registeredSignal.C)
+func (s *System) ActivateModule(module Module) {
+	currentModule := module
+	s.queue = append(s.queue, module)
+	for len(s.queue) > 0 {
+		currentModule = s.queue[0]
+		s.queue = s.queue[1:]
+		output := currentModule.Output()
+		for _, sink := range currentModule.Sinks() {
+			//valueString := "low"
+			//if output {
+			//	valueString = "high"
+			//}
+			//fmt.Printf("%v -%v-> %v\n", currentModule.Name(), valueString, sink.Name())
 
-		//valueString := "low"
-		//if registeredSignal.C {
-		//	valueString = "high"
-		//}
-		//fmt.Printf("%v -%v-> %v (new value = %v)\n", registeredSignal.A.Name(), valueString, registeredSignal.B.Name(), registeredSignal.B.Value())
-
-		if doSend {
-			registeredSignal.B.Send()
+			if output {
+				s.state.HighCount++
+			} else {
+				s.state.LowCount++
+			}
+			if sink.Receive(currentModule, output) {
+				s.queue = append(s.queue, sink)
+			}
 		}
 	}
 }
 
-func (s *System) RegisterSignal(from Module, to Module, value bool) {
-	s.registeredSignals.Enqueue(lo.Tuple3[Module, Module, bool]{A: from, B: to, C: value})
-	if value {
-		s.state.HighCount++
-	} else {
-		s.state.LowCount++
-	}
+func (s *System) SetResult(name string, value bool) {
+	s.state.Results[name] = value
 }
 
 type Module interface {
 	Name() string
-	Value() bool
-	Send()
+	Sinks() []Module
+	Output() bool
 	Receive(source Module, value bool) bool
 	RegisterSource(sink Module)
 	RegisterSink(sink Module)

@@ -4,31 +4,25 @@ import "2023/src/tasks/day20/model"
 
 type Conjunction struct {
 	*DefaultModule
-	memValues map[string]bool
+	memValues map[model.Module]bool
 }
 
 func NewConjunction(name string, system *model.System) *Conjunction {
-	return &Conjunction{DefaultModule: NewDefaultModule(name, system), memValues: make(map[string]bool)}
+	return &Conjunction{DefaultModule: NewDefaultModule(name, system), memValues: make(map[model.Module]bool)}
 }
 
 func (c *Conjunction) Receive(source model.Module, value bool) bool {
-	c.memValues[source.Name()] = value
+	c.DefaultModule.Receive(source, value)
+
+	c.memValues[source] = value
 	return true
 }
 
-func (c *Conjunction) Send() {
-	allHigh := true
+func (c *Conjunction) Output() bool {
 	for _, module := range c.sources {
-		latestValue, found := c.memValues[module.Name()]
-		if !found {
-			latestValue = module.Value()
-		}
-		if !latestValue {
-			allHigh = false
-			break
+		if latestValue, found := c.memValues[module]; !found || !latestValue {
+			return true
 		}
 	}
-	for _, sink := range c.sinks {
-		c.system.RegisterSignal(c, sink, !allHigh)
-	}
+	return false
 }

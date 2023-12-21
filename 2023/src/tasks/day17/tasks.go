@@ -4,6 +4,7 @@ import (
 	"2023/src/framework"
 	"2023/src/framework/geometry"
 	"2023/src/framework/pathfinding"
+	"go/types"
 	"gonum.org/v1/gonum/graph/simple"
 	"math"
 	"strconv"
@@ -34,7 +35,7 @@ func (g *Graph) Neighbours(point pathfinding.PointWithDirection, _ geometry.Neig
 	return points
 }
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	g, width, height := parse(data)
 
 	graph := &Graph{g}

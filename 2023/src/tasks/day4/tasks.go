@@ -4,12 +4,13 @@ import (
 	"2023/src/framework"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
+	"go/types"
 	"golang.org/x/exp/slices"
 	"regexp"
 	"strconv"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	cards, err := parse(data)
 	if err != nil {
 		result.Error = err
@@ -21,7 +22,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	cards, err := parse(data)
 	if err != nil {
 		result.Error = err

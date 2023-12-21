@@ -5,9 +5,10 @@ import (
 	"2023/src/framework/math"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
+	"go/types"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	reports := parse(data)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
@@ -17,7 +18,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	reports := parse(data)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {

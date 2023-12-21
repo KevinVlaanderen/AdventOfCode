@@ -2,22 +2,23 @@ package day9
 
 import (
 	_testing "2023/src/framework/testing"
+	"go/types"
 	"testing"
 )
 
-var taskDefinitions = []_testing.TaskDefinition[int]{
+var taskDefinitions = []_testing.TaskDefinition[int, types.Nil]{
 	{
 		Task: Task1,
-		Tests: []_testing.TestDefinition[int]{
-			{"data", 114, _testing.TestData},
-			{"day9", 1993300041, _testing.RealData},
+		Tests: []_testing.TestDefinition[int, types.Nil]{
+			{Path: "data", Expected: 114, Type: _testing.TestData},
+			{Path: "day9", Expected: 1993300041, Type: _testing.RealData},
 		},
 	},
 	{
 		Task: Task2,
-		Tests: []_testing.TestDefinition[int]{
-			{"data", 2, _testing.TestData},
-			{"day9", 1038, _testing.RealData},
+		Tests: []_testing.TestDefinition[int, types.Nil]{
+			{Path: "data", Expected: 2, Type: _testing.TestData},
+			{Path: "day9", Expected: 1038, Type: _testing.RealData},
 		},
 	},
 }

@@ -4,6 +4,7 @@ import (
 	"2023/src/framework"
 	"fmt"
 	"github.com/samber/lo"
+	"go/types"
 	"golang.org/x/exp/maps"
 	"strconv"
 	"strings"
@@ -32,7 +33,7 @@ var words = map[string]int{
 	"nine":  9,
 }
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	lookup := digits
 
 	for _, line := range framework.Lines(data) {
@@ -41,7 +42,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	lookup := lo.Assign(digits, words)
 
 	for _, line := range framework.Lines(data) {

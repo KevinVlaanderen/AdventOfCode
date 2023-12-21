@@ -4,10 +4,11 @@ import (
 	"2023/src/framework"
 	"2023/src/framework/geometry"
 	"2023/src/tasks/day3/model"
+	"go/types"
 	"golang.org/x/exp/slices"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	schematic := parse(data)
 
 	for _, number := range schematic.Numbers {
@@ -23,7 +24,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	schematic := parse(data)
 
 	for _, symbol := range schematic.Symbols {

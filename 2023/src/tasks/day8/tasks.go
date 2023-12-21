@@ -5,9 +5,10 @@ import (
 	"2023/src/framework/math"
 	"2023/src/tasks/day8/model"
 	lop "github.com/samber/lo/parallel"
+	"go/types"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	blocks := framework.Blocks(data)
 	network := model.NewNetwork(blocks[0], blocks[1])
 
@@ -20,7 +21,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	blocks := framework.Blocks(data)
 	network := model.NewNetwork(blocks[0], blocks[1])
 

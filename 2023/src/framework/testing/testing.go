@@ -18,18 +18,19 @@ const (
 	RealData
 )
 
-type TaskDefinition[T comparable] struct {
-	Task  framework.Task[T]
-	Tests []TestDefinition[T]
+type TaskDefinition[T comparable, P any] struct {
+	Task  framework.Task[T, P]
+	Tests []TestDefinition[T, P]
 }
 
-type TestDefinition[T comparable] struct {
+type TestDefinition[T comparable, P any] struct {
 	Path     string
 	Expected T
 	Type     TestType
+	Param    P
 }
 
-func (t TestDefinition[T]) name() string {
+func (t TestDefinition[T, P]) name() string {
 	switch t.Type {
 	case TestData:
 		return fmt.Sprintf("TestData(%v)", t.Path)
@@ -39,7 +40,7 @@ func (t TestDefinition[T]) name() string {
 	panic(fmt.Errorf("unknown test type %v", t.Type))
 }
 
-func (t TestDefinition[T]) dataPath() string {
+func (t TestDefinition[T, P]) dataPath() string {
 	var path string
 	var err error
 
@@ -59,7 +60,7 @@ func (t TestDefinition[T]) dataPath() string {
 	}
 }
 
-func RunTests[T comparable](t *testing.T, taskDefinitions []TaskDefinition[T]) {
+func RunTests[T comparable, P any](t *testing.T, taskDefinitions []TaskDefinition[T, P]) {
 	t.Parallel()
 
 	for taskIndex, taskDefinition := range taskDefinitions {
@@ -71,13 +72,13 @@ func RunTests[T comparable](t *testing.T, taskDefinitions []TaskDefinition[T]) {
 	}
 }
 
-func runTest[T comparable](t *testing.T, taskDefinition TaskDefinition[T], testDefinition TestDefinition[T]) {
+func runTest[T comparable, P any](t *testing.T, taskDefinition TaskDefinition[T, P], testDefinition TestDefinition[T, P]) {
 	data := strings.TrimSpace(ReadAll(testDefinition.dataPath()))
-	test := CreateTest(taskDefinition.Task, data, testDefinition.Expected)
+	test := CreateTest(taskDefinition.Task, data, testDefinition.Param, testDefinition.Expected)
 	t.Run(testDefinition.name(), test)
 }
 
-func RunBenchmarks[T comparable](b *testing.B, taskDefinitions []TaskDefinition[T]) {
+func RunBenchmarks[T comparable, P any](b *testing.B, taskDefinitions []TaskDefinition[T, P]) {
 	for taskIndex, taskDefinition := range taskDefinitions {
 		b.Run(fmt.Sprintf("Task%v", taskIndex+1), func(bTask *testing.B) {
 			for _, testDefinition := range taskDefinition.Tests {
@@ -87,15 +88,15 @@ func RunBenchmarks[T comparable](b *testing.B, taskDefinitions []TaskDefinition[
 	}
 }
 
-func runBenchmark[T comparable](b *testing.B, taskDefinition TaskDefinition[T], testDefinition TestDefinition[T]) {
+func runBenchmark[T comparable, P any](b *testing.B, taskDefinition TaskDefinition[T, P], testDefinition TestDefinition[T, P]) {
 	data := strings.TrimSpace(ReadAll(testDefinition.dataPath()))
-	test := CreateBenchmark(taskDefinition.Task, data)
+	test := CreateBenchmark(taskDefinition.Task, data, testDefinition.Param)
 	b.Run(testDefinition.name(), test)
 }
 
-func CreateTest[T comparable](task framework.Task[T], data string, expected T) func(*testing.T) {
+func CreateTest[T comparable, P any](task framework.Task[T, P], data string, param P, expected T) func(*testing.T) {
 	return func(t *testing.T) {
-		if result := task(data); result.Error != nil {
+		if result := task(data, param); result.Error != nil {
 			t.Fatal(result.Error)
 		} else {
 			AssertEqual(t, result.Value, expected)
@@ -103,11 +104,11 @@ func CreateTest[T comparable](task framework.Task[T], data string, expected T) f
 	}
 }
 
-func CreateBenchmark[T comparable](task framework.Task[T], data string) func(*testing.B) {
+func CreateBenchmark[T comparable, P any](task framework.Task[T, P], data string, param P) func(*testing.B) {
 	return func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
-			task(data)
+			task(data, param)
 		}
 	}
 }

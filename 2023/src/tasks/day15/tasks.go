@@ -5,10 +5,11 @@ import (
 	"2023/src/tasks/day15/model"
 	"github.com/elliotchance/orderedmap/v2"
 	"github.com/samber/lo"
+	"go/types"
 	"strings"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	words := strings.Split(framework.Lines(data)[0], ",")
 	hashCalculator := createHashCalculator()
 
@@ -19,7 +20,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	hashCalculator := createHashCalculator()
 	instructions := lo.Map(strings.Split(framework.Lines(data)[0], ","), func(word string, index int) model.Instruction {
 		return model.NewInstruction(word, hashCalculator)

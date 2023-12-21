@@ -3,12 +3,13 @@ package day7
 import (
 	"2023/src/framework"
 	"github.com/samber/lo"
+	"go/types"
 	"golang.org/x/exp/slices"
 	"strconv"
 	"strings"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	hands := parseHands(data, &cardMap1, false)
 
 	slices.SortFunc(hands, func(a, b Hand) int {
@@ -22,7 +23,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	hands := parseHands(data, &cardMap2, true)
 
 	slices.SortFunc(hands, func(a, b Hand) int {

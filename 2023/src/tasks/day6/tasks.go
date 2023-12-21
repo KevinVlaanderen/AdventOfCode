@@ -4,12 +4,13 @@ import (
 	"2023/src/framework"
 	_math "2023/src/framework/math"
 	"github.com/samber/lo"
+	"go/types"
 	"math"
 	"regexp"
 	"strings"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	lines := framework.Lines(data)
 	races := parseRaces(lines, false)
 
@@ -26,7 +27,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	lines := framework.Lines(data)
 	races := parseRaces(lines, true)
 	race := races[0]

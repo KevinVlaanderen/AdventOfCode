@@ -4,9 +4,10 @@ import (
 	"2023/src/framework"
 	"2023/src/tasks/day19/model"
 	"github.com/samber/lo"
+	"go/types"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	blocks := framework.Blocks(data)
 	workflows, parts := model.ParseWorkflows(blocks[0]), model.ParseParts(blocks[1])
 	system := model.NewSystem(workflows)
@@ -25,7 +26,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	blocks := framework.Blocks(data)
 	workflows := model.ParseWorkflows(blocks[0])
 	system := model.NewSystem(workflows)

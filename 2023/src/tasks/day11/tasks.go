@@ -6,13 +6,14 @@ import (
 	"2023/src/framework/geometry/grid"
 	"2023/src/framework/math"
 	"github.com/samber/lo"
+	"go/types"
 )
 
 type Galaxy struct {
 	id int
 }
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	universe := NewUniverse(framework.Lines(data))
 
 	result.Value = universe.CalculateDistances(2)
@@ -20,7 +21,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	universe := NewUniverse(framework.Lines(data))
 
 	result.Value = universe.CalculateDistances(1000000)

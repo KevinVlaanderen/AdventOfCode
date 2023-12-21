@@ -5,13 +5,14 @@ import (
 	"errors"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
+	"go/types"
 	"log"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	numWorkers := 4
 
 	games := parseAll(data)
@@ -47,7 +48,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	numWorkers := 4
 
 	games := parseAll(data)

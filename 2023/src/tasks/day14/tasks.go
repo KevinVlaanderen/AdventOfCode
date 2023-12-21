@@ -3,9 +3,10 @@ package day14
 import (
 	"2023/src/framework"
 	"github.com/samber/lo"
+	"go/types"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	rocks := framework.CharLines(data)
 
 	moveNorth(&rocks)
@@ -16,7 +17,7 @@ func Task1(data string) (result framework.Result[int]) {
 
 const MaxIterations = 1000000000
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	rocks := framework.CharLines(data)
 
 	var previousHashes = make([]framework.Hash64, 0)

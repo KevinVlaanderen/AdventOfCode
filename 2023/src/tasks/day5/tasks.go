@@ -5,13 +5,14 @@ import (
 	"2023/src/framework/math"
 	"2023/src/tasks/day5/model"
 	"github.com/samber/lo"
+	"go/types"
 	"golang.org/x/exp/slices"
 	"regexp"
 )
 
 var seedsPattern = regexp.MustCompile(`seeds: ([\d\s]+)`)
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	blocks := framework.LineBlocks(data)
 	almanac := model.NewAlmanac(blocks[1:])
 
@@ -27,7 +28,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	blocks := framework.LineBlocks(data)
 	almanac := model.NewAlmanac(blocks[1:])
 

@@ -4,9 +4,10 @@ import (
 	"2023/src/framework"
 	"2023/src/tasks/day10/model"
 	lop "github.com/samber/lo/parallel"
+	"go/types"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	surface := model.NewSurface(data)
 
 	loop := surface.FindLoop()
@@ -16,7 +17,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	surface := model.NewSurface(data)
 
 	loop := surface.FindLoop()

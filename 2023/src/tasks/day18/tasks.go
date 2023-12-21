@@ -5,12 +5,13 @@ import (
 	"2023/src/framework/geometry"
 	_math "2023/src/framework/math"
 	"github.com/samber/lo"
+	"go/types"
 	"math"
 	"regexp"
 	"strconv"
 )
 
-func Task1(data string) (result framework.Result[int64]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	instructions := parse1(data)
 	vertices := findVertices(instructions, geometry.Point{})
 	result.Value = calculateArea(vertices)
@@ -18,7 +19,7 @@ func Task1(data string) (result framework.Result[int64]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int64]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	instructions := parse2(data)
 	vertices := findVertices(instructions, geometry.Point{})
 	result.Value = calculateArea(vertices)
@@ -92,8 +93,8 @@ func findVertices(instructions []Instruction, start geometry.Point) []geometry.P
 	return vertices
 }
 
-func calculateArea(vertices []geometry.Point) int64 {
-	var totalArea int64
+func calculateArea(vertices []geometry.Point) int {
+	var totalArea int
 
 	maxY := lo.MaxBy(vertices, func(a geometry.Point, b geometry.Point) bool {
 		return a.Y > b.Y
@@ -113,7 +114,7 @@ func calculateArea(vertices []geometry.Point) int64 {
 		}
 
 		width := _math.AbsInt(current.X - next.X)
-		area := int64(width * (maxY - current.Y))
+		area := width * (maxY - current.Y)
 
 		switch {
 		case current.X < next.X:
@@ -123,7 +124,7 @@ func calculateArea(vertices []geometry.Point) int64 {
 		}
 	}
 
-	return int64(math.Abs(float64(totalArea)))
+	return int(math.Abs(float64(totalArea)))
 }
 
 type Instruction struct {

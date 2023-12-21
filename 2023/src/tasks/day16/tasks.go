@@ -4,10 +4,11 @@ import (
 	"2023/src/framework"
 	"2023/src/framework/geometry"
 	"2023/src/tasks/day16/model"
+	"go/types"
 	"sync"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	cave := model.NewCave(data)
 
 	result.Value = cave.CountEnergized(geometry.Point{}, geometry.East)
@@ -15,7 +16,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	cave := model.NewCave(data)
 
 	var mu sync.RWMutex

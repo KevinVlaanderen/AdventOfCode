@@ -9,11 +9,12 @@ import (
 	"github.com/deckarep/golang-set/v2"
 	"github.com/dominikbraun/graph"
 	"github.com/samber/lo"
+	"go/types"
 	"regexp"
 	"strings"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	descriptions := CreateDescriptions(data)
 	system := CreateSystem(descriptions)
 
@@ -26,7 +27,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	descriptions := CreateDescriptions(data)
 
 	g := graph.New(graph.StringHash, graph.Rooted(), graph.Directed())

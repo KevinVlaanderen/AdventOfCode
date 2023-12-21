@@ -5,10 +5,11 @@ import (
 	"2023/src/framework/math"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
+	"go/types"
 	"strings"
 )
 
-func Task1(data string) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	lines := framework.Lines(data)
 
 	for _, line := range lines {
@@ -25,7 +26,7 @@ func Task1(data string) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	lines := framework.Lines(data)
 
 	cache := framework.NewSafeCache[framework.Hash64, int]()

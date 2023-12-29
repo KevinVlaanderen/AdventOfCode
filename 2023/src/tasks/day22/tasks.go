@@ -5,6 +5,7 @@ import (
 	"2023/src/framework/geometry"
 	"2023/src/framework/geometry/grid"
 	"2023/src/tasks/day22/model"
+	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/samber/lo"
 	"github.com/tidwall/pinhole"
 	"go/types"
@@ -18,6 +19,68 @@ import (
 func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	bricks := parse(data)
 
+	dropBricks(bricks)
+
+	result.Value = lo.CountBy(bricks, func(brick *model.Brick) bool {
+		if brick.Supports.Cardinality() == 0 {
+			return true
+		}
+		for _, supported := range brick.Supports.ToSlice() {
+			if supported.SupportedBy.Cardinality() == 1 {
+				return false
+			}
+		}
+		return true
+	})
+
+	return
+}
+
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+	bricks := parse(data)
+
+	dropBricks(bricks)
+
+	result.Value = lo.SumBy(bricks, func(brick *model.Brick) int {
+		fallen := mapset.NewSet[*model.Brick]()
+		return countFalling(brick, bricks, &fallen)
+	})
+
+	return
+}
+
+func countFalling(brick *model.Brick, bricks []*model.Brick, fallen *mapset.Set[*model.Brick]) int {
+	falling := lo.Filter(brick.Supports.ToSlice(), func(fallingBrick *model.Brick, index int) bool {
+		if (*fallen).Contains(fallingBrick) {
+			return false
+		}
+		if fallingBrick.SupportedBy.Cardinality() == 1 {
+			return true
+		}
+		for supportingBrick := range fallingBrick.SupportedBy.Iter() {
+			if supportingBrick != brick && !(*fallen).Contains(supportingBrick) {
+				return false
+			}
+		}
+		return true
+	})
+
+	result := len(falling)
+
+	if result == 0 {
+		return 0
+	}
+
+	(*fallen).Append(falling...)
+
+	result += lo.SumBy(falling, func(fallingBrick *model.Brick) int {
+		return countFalling(fallingBrick, bricks, fallen)
+	})
+
+	return result
+}
+
+func dropBricks(bricks []*model.Brick) {
 	sizeX, sizeY, _ := calculateDimensions(bricks)
 
 	//seed := uint64(time.Now().Second())
@@ -53,20 +116,6 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	//rand.Seed(seed)
 	//sizeX, sizeY, sizeZ = calculateDimensions(bricks)
 	//drawBricks(bricks, sizeX, sizeY, sizeZ, "after")
-
-	result.Value = lo.CountBy(bricks, func(brick *model.Brick) bool {
-		if brick.Supports.Cardinality() == 0 {
-			return true
-		}
-		for _, supported := range brick.Supports.ToSlice() {
-			if supported.SupportedBy.Cardinality() == 1 {
-				return false
-			}
-		}
-		return true
-	})
-
-	return
 }
 
 func parse(data string) []*model.Brick {

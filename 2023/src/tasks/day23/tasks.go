@@ -11,7 +11,45 @@ import (
 func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	g := parse(data)
 
-	startingPoints := []StartingPoint{{geometry.Point{X: 1}, geometry.South}}
+	startingPoints := []PointWithHeading{{geometry.Point{X: 1}, geometry.South}}
+	startingPoints = append(startingPoints, findSlopes(&g)...)
+
+	segments := lo.Associate(startingPoints, func(startingPoint PointWithHeading) (geometry.Point, Segment) {
+		return calculateSegment(&g, startingPoint, true, func(terrain Terrain, heading geometry.Orientation) bool {
+			return !(heading == geometry.North && terrain&SlopeSouth != 0) &&
+				!(heading == geometry.East && terrain&SlopeWest != 0) &&
+				!(heading == geometry.South && terrain&SlopeNorth != 0) &&
+				!(heading == geometry.West && terrain&SlopeEast != 0)
+		})
+	})
+
+	startingSegment := segments[geometry.Point{X: 1}]
+
+	result.Value = lo.Max(calculatePathLengths(&startingSegment, segments)) - 1
+
+	return
+}
+
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+	g := parse(data)
+
+	startingPoints := []PointWithHeading{{geometry.Point{X: 1}, geometry.South}}
+	startingPoints = append(startingPoints, findStartingPoints(&g)...)
+
+	segments := lo.Associate(startingPoints, func(startingPoint PointWithHeading) (geometry.Point, Segment) {
+		return calculateSegment(&g, startingPoint, false, func(terrain Terrain, heading geometry.Orientation) bool { return true })
+	})
+
+	startingSegment := segments[geometry.Point{X: 1}]
+
+	seenEndPoints := make([]geometry.Point, 0)
+	result.Value = lo.Max(calculatePathLengths2(&startingSegment, segments, seenEndPoints)) - 1
+
+	return
+}
+
+func findSlopes(g *grid.SparseGrid[Terrain]) []PointWithHeading {
+	slopes := make([]PointWithHeading, 0)
 
 	lo.ForEach(g.Keys(), func(point geometry.Point, index int) {
 		if terrain, found := g.Get(point); !found {
@@ -19,42 +57,74 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 		} else if terrain&Slope != 0 {
 			switch {
 			case terrain&SlopeNorth != 0:
-				startingPoints = append(startingPoints, StartingPoint{point, geometry.North})
+				slopes = append(slopes, PointWithHeading{point, geometry.North})
 			case terrain&SlopeEast != 0:
-				startingPoints = append(startingPoints, StartingPoint{point, geometry.East})
+				slopes = append(slopes, PointWithHeading{point, geometry.East})
 			case terrain&SlopeSouth != 0:
-				startingPoints = append(startingPoints, StartingPoint{point, geometry.South})
+				slopes = append(slopes, PointWithHeading{point, geometry.South})
 			case terrain&SlopeWest != 0:
-				startingPoints = append(startingPoints, StartingPoint{point, geometry.West})
+				slopes = append(slopes, PointWithHeading{point, geometry.West})
 			}
 		}
 	})
-
-	segments := lo.Associate(startingPoints, func(startingPoint StartingPoint) (geometry.Point, Segment) {
-		return calculateSegment(&g, startingPoint)
-	})
-
-	startingSegment := segments[geometry.Point{X: 1}]
-
-	result.Value = lo.Max(calculateLengths(&startingSegment, segments)) - 1
-
-	return
+	return slopes
 }
 
-func calculateLengths(start *Segment, segments map[geometry.Point]Segment) []int {
+func findStartingPoints(g *grid.SparseGrid[Terrain]) []PointWithHeading {
+	startingPoints := make([]PointWithHeading, 0)
+
+	lo.ForEach(g.Keys(), func(point geometry.Point, index int) {
+		neighbours := make([]PointWithHeading, 0, 4)
+
+		for _, offset := range point.NeighbourOffsets(geometry.Orthogonal) {
+			next := geometry.Point{X: point.X + offset.X, Y: point.Y + offset.Y}
+			if _, found := g.Get(next); found {
+				heading, _ := point.OrientationOf(next)
+				neighbours = append(neighbours, PointWithHeading{next, heading})
+			}
+		}
+
+		if len(neighbours) > 2 {
+			startingPoints = append(startingPoints, neighbours...)
+		}
+	})
+	return startingPoints
+}
+
+func calculatePathLengths(start *Segment, segments map[geometry.Point]Segment) []int {
 	if len(start.Next) == 0 {
 		return []int{start.Length}
 	}
 
 	return lo.FlatMap(start.Next, func(nextPoint geometry.Point, index int) []int {
 		nextSegment := segments[nextPoint]
-		return lo.Map(calculateLengths(&nextSegment, segments), func(length int, index int) int {
+		return lo.Map(calculatePathLengths(&nextSegment, segments), func(length int, index int) int {
 			return length + start.Length
 		})
 	})
 }
 
-func calculateSegment(g *grid.SparseGrid[Terrain], startingPoint StartingPoint) (geometry.Point, Segment) {
+func calculatePathLengths2(start *Segment, segments map[geometry.Point]Segment, seenEndpoints []geometry.Point) []int {
+	if len(start.Next) == 0 {
+		return []int{start.Length}
+	}
+
+	seenEndpoints = append(seenEndpoints, start.End)
+	currentSeenEndpoint := seenEndpoints
+
+	return lo.FlatMap(lo.Filter(lo.Map(start.Next, func(nextPoint geometry.Point, index int) Segment {
+		return segments[nextPoint]
+	}), func(nextSegment Segment, index int) bool {
+		return !lo.Contains(seenEndpoints, nextSegment.End)
+	}), func(nextSegment Segment, index int) []int {
+		seenEndpoints = currentSeenEndpoint
+		return lo.Map(calculatePathLengths2(&nextSegment, segments, seenEndpoints), func(length int, index int) int {
+			return length + start.Length
+		})
+	})
+}
+
+func calculateSegment(g *grid.SparseGrid[Terrain], startingPoint PointWithHeading, slippery bool, canMoveTo func(Terrain, geometry.Orientation) bool) (geometry.Point, Segment) {
 	length := 1
 	current := startingPoint.Point
 	heading := startingPoint.Direction
@@ -68,16 +138,7 @@ func calculateSegment(g *grid.SparseGrid[Terrain], startingPoint StartingPoint) 
 			for _, offset := range current.NeighbourOffsets(geometry.Orthogonal) {
 				next := geometry.Point{X: current.X + offset.X, Y: current.Y + offset.Y}
 				nextHeading, _ := current.OrientationOf(next)
-				if nextHeading == geometry.OppositeOrientation[heading] {
-					continue
-				}
-				if terrain, found := g.Get(next); found {
-					if nextHeading == geometry.North && terrain&SlopeSouth != 0 ||
-						nextHeading == geometry.East && terrain&SlopeWest != 0 ||
-						nextHeading == geometry.South && terrain&SlopeNorth != 0 ||
-						nextHeading == geometry.West && terrain&SlopeEast != 0 {
-						continue
-					}
+				if terrain, found := g.Get(next); found && nextHeading != geometry.OppositeOrientation[heading] && canMoveTo(terrain, nextHeading) {
 					validNextSteps = append(validNextSteps, next)
 				}
 			}
@@ -88,7 +149,7 @@ func calculateSegment(g *grid.SparseGrid[Terrain], startingPoint StartingPoint) 
 			return startingPoint.Point, Segment{startingPoint.Point, current, length, []geometry.Point{}}
 		case 1:
 			next := validNextSteps[0]
-			if terrain, found := g.Get(next); found && terrain&Slope != 0 {
+			if terrain, found := g.Get(next); found && slippery && terrain&Slope != 0 {
 				return startingPoint.Point, Segment{startingPoint.Point, current, length, []geometry.Point{next}}
 			}
 			heading, _ = current.OrientationOf(next)
@@ -109,13 +170,13 @@ func parse(data string) grid.SparseGrid[Terrain] {
 			case '.':
 				g.Add(geometry.Point{X: x, Y: y}, Path)
 			case '^':
-				g.Add(geometry.Point{X: x, Y: y}, Slope|SlopeNorth)
+				g.Add(geometry.Point{X: x, Y: y}, Path|Slope|SlopeNorth)
 			case '>':
-				g.Add(geometry.Point{X: x, Y: y}, Slope|SlopeEast)
+				g.Add(geometry.Point{X: x, Y: y}, Path|Slope|SlopeEast)
 			case 'v':
-				g.Add(geometry.Point{X: x, Y: y}, Slope|SlopeSouth)
+				g.Add(geometry.Point{X: x, Y: y}, Path|Slope|SlopeSouth)
 			case '<':
-				g.Add(geometry.Point{X: x, Y: y}, Slope|SlopeWest)
+				g.Add(geometry.Point{X: x, Y: y}, Path|Slope|SlopeWest)
 			}
 		}
 	}
@@ -133,7 +194,7 @@ const (
 	SlopeWest          = 1 << 5
 )
 
-type StartingPoint struct {
+type PointWithHeading struct {
 	Point     geometry.Point
 	Direction geometry.Orientation
 }
@@ -142,4 +203,9 @@ type Segment struct {
 	Start, End geometry.Point
 	Length     int
 	Next       []geometry.Point
+}
+
+type Junction struct {
+	Point      geometry.Point
+	Neighbours map[geometry.Orientation]geometry.Point
 }

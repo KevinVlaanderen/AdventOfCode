@@ -4,17 +4,18 @@ import Testing
 final class Day1Tests {
     @Test(arguments: [
         (Day1.example1, (), 11),
-        (Day1.data, (), 2264607)
+        (Day1.data, (), 1151792)
     ])
     func task1(data: String, param: Day1.P1, result: Day1.R1) throws {
         try #expect(Day1.task1(data: data, param: param) == result)
     }
     
-    @Test(arguments: [])
+    @Test(arguments: [
+        (Day1.example1, (), 31),
+        (Day1.data, (), 21790168)
+    ])
     func task2(data: String, param: Day1.P2, result: Day1.R2) throws {
-        #expect(throws: AoCError.notImplemented.self) {
-            try Day1.task2(data: data, param: param)
-        }
+        try #expect(Day1.task2(data: data, param: param) == result)
     }
 }
 

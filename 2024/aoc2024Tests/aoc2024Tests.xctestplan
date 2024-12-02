@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "E822AC67-A3F1-4A3B-B7B2-A8FD08B006DE",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:aoc2024.xcodeproj",
+        "identifier" : "9786B92D2CFB6AA90041D520",
+        "name" : "aoc2024Tests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -12,7 +12,7 @@ final class Day2Tests {
     
     @Test(arguments: [
         (Day2.example1, (), 4),
-        (Day2.data, (), -1)
+        (Day2.data, (), 493)
     ])
     func task2(data: String, param: Day2.P2, result: Day2.R2) throws {
         try #expect(Day2.task2(data: data, param: param) == result)

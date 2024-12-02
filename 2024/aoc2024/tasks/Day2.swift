@@ -8,21 +8,32 @@ struct Day2: Day {
     static func task1(data: String, param: P1) throws -> R1 {
         let reports = parse(data: data)
 
-        return reports.count { report in
-            let diffs = report.adjacentPairs().map({ $0.0 - $0.1})
-            return diffs.allSatisfy({ abs($0) >= 1 && abs($0) <= 3}) &&
-                   diffs.dropFirst().allSatisfy({ $0.signum() == diffs.first!.signum() })
-        }
+        return reports.count(where: checkReport)
     }
     
     static func task2(data: String, param: P2) throws -> R2 {
         let reports = parse(data: data)
 
         return reports.count { report in
-            let diffs = report.adjacentPairs().map({ $0.0 - $0.1})
-            return diffs.allSatisfy({ abs($0) >= 1 && abs($0) <= 3}) &&
-                   diffs.dropFirst().allSatisfy({ $0.signum() == diffs.first!.signum() })
+            if checkReport(report) {
+                return true
+            }
+            
+            for i in 0..<report.count {
+                var reportCopy = report
+                reportCopy.remove(at: i)
+                if checkReport(reportCopy) {
+                    return true
+                }
+            }
+            return false
         }
+    }
+    
+    private static func checkReport(_ report: [Int]) -> Bool {
+        let diffs = report.adjacentPairs().map({ $0.0 - $0.1})
+        return diffs.allSatisfy({ abs($0) >= 1 && abs($0) <= 3}) &&
+               diffs.dropFirst().allSatisfy({ $0.signum() == diffs.first!.signum() })
     }
     
     private static func parse(data: String) -> ([[Int]]) {

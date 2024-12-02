@@ -34,6 +34,13 @@
 			);
 			target = 9786B9252CFB6AA90041D520 /* aoc2024 */;
 		};
+		97ECFA6C2CFE47330026FC76 /* Exceptions for "aoc2024Tests" folder in "aoc2024Tests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				aoc2024Tests.xctestplan,
+			);
+			target = 9786B92D2CFB6AA90041D520 /* aoc2024Tests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -47,6 +54,9 @@
 		};
 		9786B9322CFB6AA90041D520 /* aoc2024Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				97ECFA6C2CFE47330026FC76 /* Exceptions for "aoc2024Tests" folder in "aoc2024Tests" target */,
+			);
 			path = aoc2024Tests;
 			sourceTree = "<group>";
 		};

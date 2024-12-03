@@ -29,3 +29,7 @@ extension Day1 {
 3   3
 """
 }
+
+struct TestCase {
+    
+}

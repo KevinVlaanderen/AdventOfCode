@@ -5,15 +5,63 @@ struct Day3: Day {
     typealias R1 = Int
     typealias R2 = Int
     
+    private static let mulPattern = /mul\((\d+),(\d+)\)/
+    private static let doPattern = /do\(\)/
+    private static let dontPattern = /don't\(\)/
+    
     static func task1(data: String, param: P1) throws -> R1 {
-        let pattern = /mul\((\d+),(\d+)\)/
-        return data.matches(of: pattern).reduce(0) { result, match in
-            return result + Int(match.output.1)! * Int(match.output.2)!
-        }
+        return execute(parse1(data))
     }
     
     static func task2(data: String, param: P2) throws -> R2 {
-        return 0
+        return execute(parse2(data))
+    }
+    
+    private static func parse1(_ data: String) -> [Instructions] {
+        return data.indices.reduce(into: []) { result, index in
+            if let match = data.suffix(from: index).prefixMatch(of: mulPattern) {
+                result.append(Instructions.mul(Int(match.output.1)!, Int(match.output.2)!))
+            }
+        }
+    }
+    
+    private static func parse2(_ data: String) -> [Instructions] {
+        return data.indices.reduce(into: []) { result, index in
+            if let match = data.suffix(from: index).prefixMatch(of: mulPattern) {
+                result.append(Instructions.mul(Int(match.output.1)!, Int(match.output.2)!))
+            } else if data.suffix(from: index).starts(with: doPattern) {
+                result.append(Instructions.enable)
+            } else if data.suffix(from: index).starts(with: dontPattern) {
+                result.append(Instructions.disable)
+            }
+        }
+    }
+    
+    private enum Instructions {
+        case mul(Int, Int)
+        case enable
+        case disable
+    }
+    
+    private struct State {
+        var enabled: Bool = true
+        var total: Int = 0
+    }
+    
+    private static func execute(_ instructions: [Instructions]) -> Int {
+        return instructions.reduce(into: State()) { state, instruction in
+            switch instruction {
+            case let .mul(a, b):
+                if state.enabled {
+                    state.total += a*b
+                }
+            case .enable:
+                state.enabled = true
+            case .disable:
+                state.enabled = false
+            }
+            
+        }.total
     }
 }
 

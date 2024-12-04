@@ -14,7 +14,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:aoc2024Tests.xctestplan"
+            reference = "container:aoc2024Tests/aoc2024Tests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>

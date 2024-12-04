@@ -1,11 +1,6 @@
-struct Point {
+struct Point: Hashable {
     var x, y: Int
 
-//    init(x: Int, y: Int) {
-//        self.x = x
-//        self.y = y
-//    }
-    
     func neighbour(direction: Direction) -> Point {
         var neighbour = self
         let offset = direction.asPoint()

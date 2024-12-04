@@ -3,6 +3,7 @@ internal import Algorithms
 
 struct Day4: Day {
     typealias P1 = String
+    typealias P2 = String
     typealias R1 = Int
     typealias R2 = Int
 
@@ -14,7 +15,6 @@ struct Day4: Day {
             for direction in Direction.allCases {
                 if wordFound(grid: grid, word: param, position: position, direction: direction) {
                     count += 1
-                    print("Found \(param) at (x: \(position.x), y: \(position.y), dir: \(direction)) - count: \(count)")
                 }
             }
         }
@@ -23,7 +23,22 @@ struct Day4: Day {
     }
     
     static func task2(data: String, param: P2) throws -> R2 {
-        return 0
+        let grid = parse(data)
+        var count = 0
+        
+        var crossed: [Point: Int] = [:]
+        
+        for position in grid.filter(param.first!) {
+            for direction in [Direction.NE, Direction.SE, Direction.SW, Direction.NW] {
+                if wordFound(grid: grid, word: param, position: position, direction: direction) {
+                    let center = position.neighbour(direction: direction)
+                    let current = crossed[center] ?? 0
+                    crossed[center] = current+1
+                }
+            }
+        }
+
+        return crossed.count(where: { $0.value == 2 })
     }
     
     private static func parse(_ data: String) -> ArrayGrid<Character> {

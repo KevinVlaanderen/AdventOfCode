@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		97162C672D0170EE005ACCA9 /* SwiftGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 97162C662D0170ED005ACCA9 /* SwiftGraph */; };
 		971CF2862CFC6A4800C6D41E /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 971CF2852CFC6A4800C6D41E /* Algorithms */; };
 		9786B92F2CFB6AA90041D520 /* aoc2024.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9786B9262CFB6AA90041D520 /* aoc2024.framework */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				971CF2862CFC6A4800C6D41E /* Algorithms in Frameworks */,
+				97162C672D0170EE005ACCA9 /* SwiftGraph in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +134,7 @@
 			name = aoc2024;
 			packageProductDependencies = (
 				971CF2852CFC6A4800C6D41E /* Algorithms */,
+				97162C662D0170ED005ACCA9 /* SwiftGraph */,
 			);
 			productName = aoc2024;
 			productReference = 9786B9262CFB6AA90041D520 /* aoc2024.framework */;
@@ -190,6 +193,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				971CF2842CFC6A4800C6D41E /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				97162C652D0170ED005ACCA9 /* XCRemoteSwiftPackageReference "SwiftGraph" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9786B9272CFB6AA90041D520 /* Products */;
@@ -497,6 +501,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		97162C652D0170ED005ACCA9 /* XCRemoteSwiftPackageReference "SwiftGraph" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/davecom/SwiftGraph";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
 		971CF2842CFC6A4800C6D41E /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-algorithms.git";
@@ -508,6 +520,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		97162C662D0170ED005ACCA9 /* SwiftGraph */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97162C652D0170ED005ACCA9 /* XCRemoteSwiftPackageReference "SwiftGraph" */;
+			productName = SwiftGraph;
+		};
 		971CF2852CFC6A4800C6D41E /* Algorithms */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 971CF2842CFC6A4800C6D41E /* XCRemoteSwiftPackageReference "swift-algorithms" */;

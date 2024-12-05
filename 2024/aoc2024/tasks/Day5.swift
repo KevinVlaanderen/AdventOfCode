@@ -9,23 +9,31 @@ struct Day5: Day {
     static func task1(data: String, param: P1) throws -> R1 {
         let (orderPairs, updates) = parse(data)
         
-        return updates.filter { update in
-            let graph = SwiftGraph.UnweightedUniqueElementsGraph<Int>(vertices: update)
+        return updates.reduce(0) { result, update in
+            let graph = buildGraph(update: update, orderPairs: orderPairs)
+            let sortOrder = graph.topologicalSort()!
             
-            for orderPair in orderPairs {
-                graph.addEdge(from: orderPair.0, to: orderPair.1, directed: true)
+            if isSorted(update: update, sortOrder: sortOrder) {
+                return result + update[update.count/2]
+            } else {
+                return result
             }
-            
-            guard let sortOrder = graph.topologicalSort() else {
-                return false
-            }
-            
-            return update.adjacentPairs().allSatisfy({ sortOrder.firstIndex(of: $0)! < sortOrder.firstIndex(of: $1)! })
-        }.reduce(0, { $0 + $1[$1.count/2] })
+        }
     }
     
     static func task2(data: String, param: P2) throws -> R2 {
-        return 0
+        let (orderPairs, updates) = parse(data)
+        
+        return updates.reduce(0) { result, update in
+            let graph = buildGraph(update: update, orderPairs: orderPairs)
+            let sortOrder = graph.topologicalSort()!
+            
+            if !isSorted(update: update, sortOrder: sortOrder) {
+                return result + sortOrder[sortOrder.count/2]
+            } else {
+                return result
+            }
+        }
     }
     
     private static func parse(_ data: String) -> ([(Int, Int)], [[Int]]) {
@@ -41,6 +49,20 @@ struct Day5: Day {
         }
         
         return (orderPairs, updates)
+    }
+    
+    private static func buildGraph(update: [Int], orderPairs: [(Int, Int)]) -> UnweightedUniqueElementsGraph<Int> {
+        let graph = SwiftGraph.UnweightedUniqueElementsGraph<Int>(vertices: update)
+        
+        for orderPair in orderPairs {
+            graph.addEdge(from: orderPair.0, to: orderPair.1, directed: true)
+        }
+        
+        return graph
+    }
+    
+    private static func isSorted(update: [Int], sortOrder: [Int]) -> Bool {
+        return update.adjacentPairs().allSatisfy({ sortOrder.firstIndex(of: $0)! < sortOrder.firstIndex(of: $1)! })
     }
 }
 

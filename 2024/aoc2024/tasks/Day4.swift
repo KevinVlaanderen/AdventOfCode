@@ -24,7 +24,6 @@ struct Day4: Day {
     
     static func task2(data: String, param: P2) throws -> R2 {
         let grid = parse(data)
-        var count = 0
         
         var crossed: [Point: Int] = [:]
         

@@ -9,6 +9,14 @@ final class Day5Tests {
     func task1(data: String, param: Day5.P1, result: Day5.R1) throws {
         try #expect(Day5.task1(data: data, param: param) == result)
     }
+    
+    @Test(arguments: [
+        (Day5.example1, (), 123),
+        (Day5.data, (), 4655)
+    ])
+    func task2(data: String, param: Day5.P2, result: Day5.R2) throws {
+        try #expect(Day5.task2(data: data, param: param) == result)
+    }
 }
 
 extension Day5 {

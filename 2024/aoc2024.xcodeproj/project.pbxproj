@@ -28,8 +28,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		97162C902D01E828005ACCA9 /* Exceptions for "aoc2024" folder in "aoc2024Tests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				library/framework/Testing.swift,
+			);
+			target = 9786B92D2CFB6AA90041D520 /* aoc2024Tests */;
+		};
 		9786B9362CFB6AA90041D520 /* Exceptions for "aoc2024" folder in "aoc2024" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				library/framework/Testing.swift,
+			);
 			publicHeaders = (
 				aoc2024.h,
 			);
@@ -49,6 +59,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				9786B9362CFB6AA90041D520 /* Exceptions for "aoc2024" folder in "aoc2024" target */,
+				97162C902D01E828005ACCA9 /* Exceptions for "aoc2024" folder in "aoc2024Tests" target */,
 			);
 			path = aoc2024;
 			sourceTree = "<group>";
@@ -376,6 +387,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -435,6 +447,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};

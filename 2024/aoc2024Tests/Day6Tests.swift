@@ -13,8 +13,8 @@ final class Day6Tests: TestSuite {
     }
     
     @Test(arguments: [
-        TestCase(day: D(), data: \.example1, param: (), expected: -1),
-        TestCase(day: D(), data: \.data, param: (), expected: -1)
+        TestCase(day: D(), data: \.example1, param: (), expected: 6),
+        TestCase(day: D(), data: \.data, param: (), expected: 1482)
     ])
     func task2(testCase: TestCase<D>) throws {
         try testCase.execute(testCase.day.task2)

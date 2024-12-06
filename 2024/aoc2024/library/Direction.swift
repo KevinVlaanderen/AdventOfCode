@@ -3,7 +3,7 @@ enum Direction: CaseIterable {
 }
 
 enum DirectionChange: CaseIterable {
-    case CW90, CCW90
+    case CW90, CCW90, Invert
 }
 
 extension Direction {
@@ -62,6 +62,22 @@ extension Direction {
             return .S
         case (.NW, .CCW90):
             return .SW
+        case (.N, .Invert):
+            return .S
+        case (.NE, .Invert):
+            return .SW
+        case (.E, .Invert):
+            return .W
+        case (.SE, .Invert):
+            return .NW
+        case (.S, .Invert):
+            return .N
+        case (.SW, .Invert):
+            return .NE
+        case (.W, .Invert):
+            return .E
+        case (.NW, .Invert):
+            return .SE
         }
     }
 }

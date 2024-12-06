@@ -45,33 +45,33 @@ struct ArrayGrid<T: Equatable>: Grid, Sequence {
         }
     }
     
-    func makeIterator() -> GridItemIterator<T> {
+    func makeIterator() -> GridItemIterator {
         return GridItemIterator(grid: self)
     }
-}
-
-struct GridItemIterator<T: Equatable>: IteratorProtocol {
-    let grid: ArrayGrid<T>
-    var current = Point(x: 0, y: 0)
     
-    init(grid: ArrayGrid<T>) {
-        self.grid = grid
-    }
-    
-    mutating func next() -> GridItem<T>? {
-        if current.x < grid.width-1 {
-            current.x += 1
-        } else if current.y < grid.height-1 {
-            current.x = 0
-            current.y += 1
-        } else {
-            return nil
+    struct GridItemIterator: IteratorProtocol {
+        let grid: ArrayGrid<T>
+        var current = Point(x: 0, y: 0)
+        
+        init(grid: ArrayGrid<T>) {
+            self.grid = grid
         }
         
-        if let gridValue = grid[current] {
-            return GridItem(position: current, value: gridValue)
-        } else {
-            return nil
+        mutating func next() -> GridItem<T>? {
+            if current.x < grid.width-1 {
+                current.x += 1
+            } else if current.y < grid.height-1 {
+                current.x = 0
+                current.y += 1
+            } else {
+                return nil
+            }
+            
+            if let gridValue = grid[current] {
+                return GridItem(position: current, value: gridValue)
+            } else {
+                return nil
+            }
         }
     }
 }

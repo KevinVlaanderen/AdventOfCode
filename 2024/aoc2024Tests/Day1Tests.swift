@@ -8,16 +8,16 @@ struct Day1Tests: TestSuite {
         TestCase(day: D(), data: \.example1, param: (), expected: 11),
         TestCase(day: D(), data: \.data, param: (), expected: 1151792)
     ])
-    func task1(testCase: TestCase<D>) throws {
-        try testCase.execute(testCase.day.task1)
+    func task1(testCase: TestCase<D>) async throws {
+        try await testCase.execute(testCase.day.task1)
     }
     
     @Test(arguments: [
         TestCase(day: D(), data: \.example1, param: (), expected: 31),
         TestCase(day: D(), data: \.data, param: (), expected: 21790168)
     ])
-    func task2(testCase: TestCase<D>) throws {
-        try testCase.execute(testCase.day.task2)
+    func task2(testCase: TestCase<D>) async throws {
+        try await testCase.execute(testCase.day.task2)
     }
 }
 

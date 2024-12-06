@@ -8,16 +8,16 @@ final class Day3Tests: TestSuite {
         TestCase(day: D(), data: \.example1, param: (), expected: 161),
         TestCase(day: D(), data: \.data, param: (), expected: 180233229)
     ])
-    func task1(testCase: TestCase<D>) throws {
-        try testCase.execute(testCase.day.task1)
+    func task1(testCase: TestCase<D>) async throws {
+        try await testCase.execute(testCase.day.task1)
     }
     
     @Test(arguments: [
         TestCase(day: D(), data: \.example2, param: (), expected: 48),
         TestCase(day: D(), data: \.data, param: (), expected: 95411583)
     ])
-    func task2(testCase: TestCase<D>) throws {
-        try testCase.execute(testCase.day.task2)
+    func task2(testCase: TestCase<D>) async throws {
+        try await testCase.execute(testCase.day.task2)
     }
 }
 

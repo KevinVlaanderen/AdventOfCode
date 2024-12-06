@@ -21,6 +21,8 @@ struct Day4: Day {
     }
     
     func task2(data: String, param: P) throws -> R {
+        precondition(param.count % 2 == 1)
+        
         let grid = parse(data)
         
         var crossed: [Point: Int] = [:]
@@ -28,14 +30,14 @@ struct Day4: Day {
         for item in grid.filter({ $0.value == param.first! }) {
             for direction in [Direction.NE, Direction.SE, Direction.SW, Direction.NW] {
                 if wordFound(grid: grid, word: param, position: item.position, direction: direction) {
-                    let center = item.position.neighbour(direction: direction)
+                    let center = item.position.neighbour(direction: direction, distance: param.count / 2)
                     let current = crossed[center] ?? 0
                     crossed[center] = current+1
                 }
             }
         }
 
-        return crossed.count(where: { $0.value == 2 })
+        return crossed.count(where: { $0.value >= 2 })
     }
     
     private func parse(_ data: String) -> ArrayGrid<Character> {

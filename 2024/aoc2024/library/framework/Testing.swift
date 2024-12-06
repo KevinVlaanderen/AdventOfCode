@@ -4,8 +4,8 @@ import Testing
 protocol TestSuite {
     associatedtype D: Day
     
-    func task1(testCase: TestCase<D>) throws
-    func task2(testCase: TestCase<D>) throws
+    func task1(testCase: TestCase<D>) async throws
+    func task2(testCase: TestCase<D>) async throws
 }
 
 struct TestCase<D: Day>: CustomTestStringConvertible {
@@ -18,7 +18,7 @@ struct TestCase<D: Day>: CustomTestStringConvertible {
         return "\(data)"
     }
     
-    func execute(_ method: (String, D.P) throws -> D.R) throws {
-        try #expect(method(day[keyPath: data], param) == expected)
+    func execute(_ method: (String, D.P) async throws -> D.R) async throws {
+        try await #expect(method(day[keyPath: data], param) == expected)
     }
 }

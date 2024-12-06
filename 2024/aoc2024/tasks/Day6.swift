@@ -3,56 +3,45 @@ internal import Algorithms
 internal import SwiftGraph
 
 struct Day6: Day {
+    typealias P = Direction
     typealias R = Int
 
     func task1(data: String, param: P) throws -> R {
-        let grid = parse(data)
-        
-        guard let guardItem = grid.first(where: { $0.value == .patrolGuard(.N) }) else {
+        let grid: any Grid<Content> = parse(data)
+
+        guard let guardItem = grid.first(where: { $0.value == .patrolGuard(param) }) else {
             fatalError("no guard found")
         }
 
-        return PathTracker(grid: grid, start: guardItem.position, direction: Direction.N)
-            .map({ $0.position })
+        return PathTracker(grid: grid, startPosition: guardItem.position, startDirection: param)
+            .map { step in step.position }
             .uniqued()
-            .count(where: { _ in true })
+            .count { _ in true }
     }
     
     func task2(data: String, param: P) throws -> R {
-        let grid = parse(data)
+        var grid: any Grid<Content> = parse(data)
         
-        guard let guardItem = grid.first(where: { $0.value == .patrolGuard(.N) }) else {
+        guard let guardItem = grid.first(where: { $0.value == .patrolGuard(param) }) else {
             fatalError("no guard found")
         }
-        
-        return PathTracker(grid: grid, start: guardItem.position, direction: Direction.N)
-            .map({ $0.position.neighbour(direction: $0.direction)})
-            .filter({ $0 != guardItem.position && grid[$0] != nil })
-            .uniqued()
-            .count { newObstructionPosition in
-                var newGrid = grid
-                newGrid[newObstructionPosition] = .obstruction
-                
-                var seen: [Step] = []
-                for step in PathTracker(grid: newGrid, start: guardItem.position, direction: Direction.N) {
-                    let positionAhead = step.position.neighbour(direction: step.direction)
-                    if newGrid[positionAhead] == .obstruction {
-                        if seen.contains(step) {
-                            return true
-                        } else {
-                            seen.append(step)
-                        }
-                    }
+
+        return PathTracker(grid: grid, startPosition: guardItem.position, startDirection: param)
+            .map { step in step.position.neighbour(direction: step.direction) }
+            .filter { position in
+                guard let content = grid[position], content != .obstruction else {
+                    return false
                 }
-                
-                return false
+                return position != guardItem.position
             }
+            .uniqued()
+            .count { position in checkForLoop(grid: &grid, obstructionPosition: position, startPosition: guardItem.position, startDirection: param) }
     }
     
-    private func parse(_ data: String) -> ArrayGrid<Day6.Content> {
-        return ArrayGrid(data.split(whereSeparator: \.isNewline).map { line in
-            Array(line).map({
-                switch $0 {
+    private func parse(_ data: String) -> some Grid<Content> {
+        ArrayGrid(data.split(whereSeparator: \.isNewline).map { line in
+            Array(line).map { charater in
+                switch charater {
                 case ".":
                     return .empty
                 case "#":
@@ -60,10 +49,36 @@ struct Day6: Day {
                 case "^":
                     return .patrolGuard(.N)
                 default:
-                    fatalError("unknown grid item: \($0)")
+                    fatalError("unknown grid item: \(charater)")
                 }
-            })
+            }
         })
+    }
+    
+    private func checkForLoop(grid: inout any Grid<Content>, obstructionPosition: Point, startPosition: Point, startDirection: Direction) -> Bool {
+        if grid[obstructionPosition] == .obstruction {
+            return false
+        }
+        
+        grid[obstructionPosition] = .obstruction
+        
+        var seen: [Step] = []
+        var result = false
+        
+        for step in PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection) {
+            let positionAhead = step.position.neighbour(direction: step.direction)
+            if grid[positionAhead] == .obstruction {
+                if seen.contains(step) {
+                    result = true
+                    break
+                } else {
+                    seen.append(step)
+                }
+            }
+        }
+        
+        grid[obstructionPosition] = .empty
+        return result
     }
     
     enum Content: Equatable {
@@ -77,37 +92,37 @@ struct Day6: Day {
     }
     
     struct PathTracker: Sequence {
-        let grid: ArrayGrid<Content>
-        let start: Point
-        let direction: Direction
+        let grid: any Grid<Content>
+        let startPosition: Point
+        let startDirection: Direction
         
         func makeIterator() -> PathIterator {
-            return PathIterator(grid: grid, current: start, direction: direction)
+            return PathIterator(grid: grid, currentPosition: startPosition, currentDirection: startDirection)
         }
         
         struct PathIterator: IteratorProtocol {
-            let grid: ArrayGrid<Content>
-            var current: Point
-            var direction: Direction
+            let grid: any Grid<Content>
+            var currentPosition: Point
+            var currentDirection: Direction
             var started = false
             
             mutating func next() -> Step? {
                 if !started {
                     started = true
-                    return Step(position: current, direction: direction)
+                    return Step(position: currentPosition, direction: currentDirection)
                 }
 
-                let nextPosition = current.neighbour(direction: direction)
+                let nextPosition = currentPosition.neighbour(direction: currentDirection)
 
                 switch grid[nextPosition] {
                 case .obstruction:
-                    direction = direction.rotate(.CW90)
-                    return Step(position: current, direction: direction)
+                    currentDirection = currentDirection.rotate(.CW90)
+                    return Step(position: currentPosition, direction: currentDirection)
                 case nil:
                     return nil
                 default:
-                    current = nextPosition
-                    return Step(position: current, direction: direction)
+                    currentPosition = nextPosition
+                    return Step(position: currentPosition, direction: currentDirection)
                 }
             }
         }

@@ -5,16 +5,16 @@ final class Day6Tests: TestSuite {
     typealias D = Day6
     
     @Test(arguments: [
-        TestCase(day: D(), data: \.example1, param: .N, expected: 41),
-        TestCase(day: D(), data: \.data, param: .N, expected: 4973)
+        TestCase(day: D(), data: \.example1, param: (), expected: 41),
+        TestCase(day: D(), data: \.data, param: (), expected: 4973)
     ])
     func task1(testCase: TestCase<D>) async throws {
         try await testCase.execute(testCase.day.task1)
     }
     
     @Test(arguments: [
-        TestCase(day: D(), data: \.example1, param: .N, expected: 6),
-        TestCase(day: D(), data: \.data, param: .N, expected: 1482)
+        TestCase(day: D(), data: \.example1, param: (), expected: 6),
+        TestCase(day: D(), data: \.data, param: (), expected: 1482)
     ])
     func task2(testCase: TestCase<D>) async throws {
         try await testCase.execute(testCase.day.task2)

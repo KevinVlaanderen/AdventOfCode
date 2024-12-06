@@ -3,17 +3,16 @@ internal import Algorithms
 internal import SwiftGraph
 
 struct Day6: Day {
-    typealias P = Direction
     typealias R = Int
 
     func task1(data: String, param: P) throws -> R {
         let grid: any Grid<Content> = parse(data)
 
-        guard let guardItem = grid.first(where: { $0.value == .patrolGuard(param) }) else {
+        guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
             fatalError("no guard found")
         }
 
-        return PathTracker(grid: grid, startPosition: guardItem.position, startDirection: param)
+        return PathTracker(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
             .map { step in step.position }
             .uniqued()
             .count { _ in true }
@@ -22,20 +21,20 @@ struct Day6: Day {
     func task2(data: String, param: P) throws -> R {
         var grid: any Grid<Content> = parse(data)
         
-        guard let guardItem = grid.first(where: { $0.value == .patrolGuard(param) }) else {
+        guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
             fatalError("no guard found")
         }
 
-        return PathTracker(grid: grid, startPosition: guardItem.position, startDirection: param)
+        return PathTracker(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
             .map { step in step.position.neighbour(direction: step.direction) }
             .filter { position in
                 guard let content = grid[position], content != .obstruction else {
                     return false
                 }
-                return position != guardItem.position
+                return position != guardPosition
             }
             .uniqued()
-            .count { position in checkForLoop(grid: &grid, obstructionPosition: position, startPosition: guardItem.position, startDirection: param) }
+            .count { position in checkForLoop(grid: &grid, obstructionPosition: position, startPosition: guardPosition, startDirection: guardDirection) }
     }
     
     private func parse(_ data: String) -> some Grid<Content> {
@@ -53,6 +52,21 @@ struct Day6: Day {
                 }
             }
         })
+    }
+    
+    private func findGuard(grid: any Grid<Content>) -> (Point, Direction)? {
+        guard let guardItem = grid.first(where: { item in
+            guard case Content.patrolGuard(_) = item.value else {
+                return false
+            }
+            return true
+        }) else {
+            return nil
+        }
+        guard case let Content.patrolGuard(guardDirection) = guardItem.value else {
+            return nil
+        }
+        return (guardItem.position, guardDirection)
     }
     
     private func checkForLoop(grid: inout any Grid<Content>, obstructionPosition: Point, startPosition: Point, startDirection: Direction) -> Bool {

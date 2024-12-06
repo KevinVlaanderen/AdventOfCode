@@ -9,9 +9,9 @@ struct Day4: Day {
         let grid = parse(data)
         var count = 0
         
-        for position in grid.filter(param.first!) {
+        for item in grid.filter({ $0.value == param.first! }) {
             for direction in Direction.allCases {
-                if wordFound(grid: grid, word: param, position: position, direction: direction) {
+                if wordFound(grid: grid, word: param, position: item.position, direction: direction) {
                     count += 1
                 }
             }
@@ -25,10 +25,10 @@ struct Day4: Day {
         
         var crossed: [Point: Int] = [:]
         
-        for position in grid.filter(param.first!) {
+        for item in grid.filter({ $0.value == param.first! }) {
             for direction in [Direction.NE, Direction.SE, Direction.SW, Direction.NW] {
-                if wordFound(grid: grid, word: param, position: position, direction: direction) {
-                    let center = position.neighbour(direction: direction)
+                if wordFound(grid: grid, word: param, position: item.position, direction: direction) {
+                    let center = item.position.neighbour(direction: direction)
                     let current = crossed[center] ?? 0
                     crossed[center] = current+1
                 }
@@ -46,7 +46,7 @@ struct Day4: Day {
         guard let currentCharacter = word.first else {
             return true
         }
-        guard let gridCharacter = grid.get(position) else {
+        guard let gridCharacter = grid[position] else {
             return false
         }
         

@@ -18,23 +18,17 @@ struct Day6: Day {
             .count { _ in true }
     }
     
-    func task2(data: String, param: P) throws -> R {
-        var grid: any Grid<Content> = parse(data)
+    func task2(data: String, param: P) async throws -> R {
+        let grid: any Grid<Content> = parse(data)
         
         guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
             fatalError("no guard found")
         }
 
         return PathTracker(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
-            .map { step in step.position.neighbour(direction: step.direction) }
-            .filter { position in
-                guard let content = grid[position], content != .obstruction else {
-                    return false
-                }
-                return position != guardPosition
-            }
-            .uniqued()
-            .count { position in checkForLoop(grid: &grid, obstructionPosition: position, startPosition: guardPosition, startDirection: guardDirection) }
+            .filter(isValidTargetForObstruction(grid: grid, guardPosition: guardPosition))
+            .uniqued(on: nextPosition)
+            .count(where: entersLoop(grid: grid))
     }
     
     private func parse(_ data: String) -> some Grid<Content> {
@@ -55,44 +49,48 @@ struct Day6: Day {
     }
     
     private func findGuard(grid: any Grid<Content>) -> (Point, Direction)? {
-        guard let guardItem = grid.first(where: { item in
-            guard case Content.patrolGuard(_) = item.value else {
-                return false
+        for item in grid {
+            if case let .patrolGuard(guardDirection) = item.value {
+                return (item.position, guardDirection)
             }
-            return true
-        }) else {
-            return nil
         }
-        guard case let Content.patrolGuard(guardDirection) = guardItem.value else {
-            return nil
-        }
-        return (guardItem.position, guardDirection)
+        return nil
     }
     
-    private func checkForLoop(grid: inout any Grid<Content>, obstructionPosition: Point, startPosition: Point, startDirection: Direction) -> Bool {
-        if grid[obstructionPosition] == .obstruction {
-            return false
+    private func isValidTargetForObstruction(grid: any Grid<Content>, guardPosition: Point) -> (Step) -> Bool {
+        return { step in
+            let nextPosition = nextPosition(for: step)
+            guard let content = grid[nextPosition], content != .obstruction else {
+                return false
+            }
+            return nextPosition != guardPosition
         }
-        
-        grid[obstructionPosition] = .obstruction
-        
-        var seen: [Step] = []
-        var result = false
-        
-        for step in PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection) {
-            let positionAhead = step.position.neighbour(direction: step.direction)
-            if grid[positionAhead] == .obstruction {
-                if seen.contains(step) {
-                    result = true
-                    break
-                } else {
-                    seen.append(step)
+    }
+    
+    private func nextPosition(for step: Step) -> Point {
+        step.position.neighbour(direction: step.direction)
+    }
+    
+    private func entersLoop(grid: any Grid<Content>) -> (Step) -> Bool {
+        return { step in
+            var newGrid = grid
+            newGrid[step.position.neighbour(direction: step.direction)] = .obstruction
+            
+            var seen: [Step] = []
+            
+            for step in PathTracker(grid: newGrid, startPosition: step.position, startDirection: step.direction) {
+                let positionAhead = nextPosition(for: step)
+                if newGrid[positionAhead] == .obstruction {
+                    if seen.contains(step) {
+                        return true
+                    } else {
+                        seen.append(step)
+                    }
                 }
             }
+            
+            return false
         }
-        
-        grid[obstructionPosition] = .empty
-        return result
     }
     
     enum Content: Equatable {

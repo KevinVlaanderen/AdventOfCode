@@ -9,13 +9,18 @@ struct Day7: Day {
         let equations = parse(data)
 
         return equations
-            .filter(canSatisfy(operators: Operators.allCases))
+            .filter(canSatisfy(operators: [.add, .multiply]))
             .map { $0.result }
             .reduce(0, +)
     }
     
     func task2(data: String, param: P) async throws -> R {
-        return 0
+        let equations = parse(data)
+
+        return equations
+            .filter(canSatisfy(operators: Operators.allCases))
+            .map { $0.result }
+            .reduce(0, +)
     }
     
     func canSatisfy(operators: [Operators]) -> (Equation) -> Bool {
@@ -26,7 +31,7 @@ struct Day7: Day {
     
     func calculate(total: Int, target: Int, numbers: [Int], operators: [Operators]) -> Bool {
         if numbers.count == 0 {
-            return false
+            return total == target
         }
         for op in operators {
             let newTotal = op.apply(a: total, b: numbers.first!)
@@ -62,7 +67,7 @@ struct Day7: Day {
     }
     
     enum Operators: CaseIterable {
-        case add, multiply
+        case add, multiply, combine
     }
 }
 
@@ -73,6 +78,8 @@ extension Day7.Operators {
             return a+b
         case .multiply:
             return a*b
+        case .combine:
+            return Int(String(a)+String(b))!
         }
     }
 }

@@ -12,7 +12,10 @@ final class Day7Tests: TestSuite {
         try await testCase.execute(testCase.day.task1)
     }
     
-    @Test(arguments: [])
+    @Test(arguments: [
+        TestCase(day: D(), data: \.example1, param: (), expected: 11387),
+        TestCase(day: D(), data: \.data, param: (), expected: 92612386119138)
+    ])
     func task2(testCase: TestCase<D>) async throws {
         try await testCase.execute(testCase.day.task2)
     }

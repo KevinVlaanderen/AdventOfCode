@@ -1,11 +1,11 @@
-struct DictGrid<T: Equatable>: Grid {
+public struct DictGrid<T: Equatable>: Grid {
     private var data: [Point:T] = [:]
     
-    let width: Int
-    let height: Int
+    public let width: Int
+    public let height: Int
     let emptyValue: T
     
-    init(_ data: [[T]], emptyValue: T) {
+    public init(_ data: [[T]], emptyValue: T) {
         self.data = data.enumerated().reduce(into: [:]) { (result, current) in
             let y = current.offset
             for item in current.element.enumerated() {
@@ -20,7 +20,7 @@ struct DictGrid<T: Equatable>: Grid {
         self.emptyValue = emptyValue
     }
 
-    subscript(_ position: Point) -> T? {
+    public subscript(_ position: Point) -> T? {
         get {
             if position.x < 0 || position.y < 0 || position.x >= self.width || position.y >= self.height {
                 return nil

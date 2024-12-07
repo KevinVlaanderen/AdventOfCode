@@ -1,34 +1,28 @@
 import Foundation
 internal import Algorithms
 internal import SwiftGraph
+import aoc2024Framework
 
-struct Day6: Day {
-    typealias R = Int
-
-    func task1(data: String, param: P) throws -> R {
-        let grid: any Grid<Content> = parse(data)
-
-        guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
-            fatalError("no guard found")
-        }
-
-        return PathTracker(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
-            .map { step in step.position }
-            .uniqued()
-            .count { _ in true }
-    }
+public struct Day6: Day {
+    public typealias R = Int
     
-    func task2(data: String, param: P) async throws -> R {
+    public init() {}
+    
+    public func perform(task: Task, data: String, param: P) async throws -> Int {
         let grid: any Grid<Content> = parse(data)
-        
+
         guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
             fatalError("no guard found")
         }
-
-        return PathTracker(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
-            .filter(isValidTargetForObstruction(grid: grid, guardPosition: guardPosition))
-            .uniqued(on: nextPosition)
-            .count(where: entersLoop(grid: grid))
+        
+        switch task {
+        case .task1:
+            return try task1(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
+        case .task2:
+            return try task2(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
+        @unknown default:
+            fatalError("unknown task")
+        }
     }
     
     private func parse(_ data: String) -> some Grid<Content> {
@@ -46,6 +40,20 @@ struct Day6: Day {
                 }
             }
         })
+    }
+    
+    private func task1(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> R {
+        PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
+            .map { step in step.position }
+            .uniqued()
+            .count { _ in true }
+    }
+    
+    private func task2(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> R {
+        try PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
+            .filter(isValidTargetForObstruction(grid: grid, guardPosition: startPosition))
+            .uniqued(on: nextPosition)
+            .count(where: entersLoop(grid: grid))
     }
     
     private func findGuard(grid: any Grid<Content>) -> (Point, Direction)? {

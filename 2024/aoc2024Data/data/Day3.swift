@@ -1,25 +1,4 @@
-import Testing
-@testable import aoc2024
-
-final class Day3Tests: TestSuite {
-    typealias D = Day3
-    
-    @Test(arguments: [
-        TestCase(day: D(), data: \.example1, param: (), expected: 161),
-        TestCase(day: D(), data: \.data, param: (), expected: 180233229)
-    ])
-    func task1(testCase: TestCase<D>) async throws {
-        try await testCase.execute(testCase.day.task1)
-    }
-    
-    @Test(arguments: [
-        TestCase(day: D(), data: \.example2, param: (), expected: 48),
-        TestCase(day: D(), data: \.data, param: (), expected: 95411583)
-    ])
-    func task2(testCase: TestCase<D>) async throws {
-        try await testCase.execute(testCase.day.task2)
-    }
-}
+import aoc2024Tasks
 
 extension Day3 {
     var example1: String { return "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))" }

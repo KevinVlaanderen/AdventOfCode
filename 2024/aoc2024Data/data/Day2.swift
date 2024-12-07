@@ -1,25 +1,4 @@
-import Testing
-@testable import aoc2024
-
-struct Day2Tests: TestSuite {
-    typealias D = Day2
-    
-    @Test(arguments: [
-        TestCase(day: D(), data: \.example1, param: (), expected: 2),
-        TestCase(day: D(), data: \.data, param: (), expected: 442)
-    ])
-    func task1(testCase: TestCase<D>) async throws {
-        try await testCase.execute(testCase.day.task1)
-    }
-    
-    @Test(arguments: [
-        TestCase(day: D(), data: \.example1, param: (), expected: 4),
-        TestCase(day: D(), data: \.data, param: (), expected: 493)
-    ])
-    func task2(testCase: TestCase<D>) async throws {
-        try await testCase.execute(testCase.day.task2)
-    }
-}
+import aoc2024Tasks
 
 extension Day2 {
     var example1: String {

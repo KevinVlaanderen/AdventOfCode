@@ -1,13 +1,13 @@
-enum Direction: CaseIterable {
+public enum Direction: CaseIterable {
     case N, NE, E, SE, S, SW, W, NW
 }
 
-enum DirectionChange: CaseIterable {
+public enum DirectionChange: CaseIterable {
     case CW90, CCW90, Invert
 }
 
 extension Direction {
-    func asPoint() -> Point {
+    public func asPoint() -> Point {
         switch self {
         case .N:
             return Point(x: 0, y: -1)
@@ -28,7 +28,7 @@ extension Direction {
         }
     }
     
-    func rotate(_ change: DirectionChange) -> Direction {
+    public func rotate(_ change: DirectionChange) -> Direction {
         switch (self, change) {
         case (.N, .CW90):
             return .E

@@ -1,24 +1,17 @@
 import Foundation
 internal import Algorithms
 internal import SwiftGraph
+import aoc2024Framework
 
-struct Day7: Day {
-    typealias R = Int
-
-    func task1(data: String, param: P) throws -> R {
-        let equations = parse(data)
-
-        return equations
-            .filter(canSatisfy(operators: [.add, .multiply]))
-            .map { $0.result }
-            .reduce(0, +)
-    }
+public struct Day7: Day {
+    public typealias P = [Operators]
+    public typealias R = Int
     
-    func task2(data: String, param: P) async throws -> R {
-        let equations = parse(data)
-
-        return equations
-            .filter(canSatisfy(operators: Operators.allCases))
+    public init() {}
+    
+    public func perform(task: Task, data: String, param: P) async throws -> Int {
+       return parse(data)
+            .filter(canSatisfy(operators: param))
             .map { $0.result }
             .reduce(0, +)
     }
@@ -48,6 +41,7 @@ struct Day7: Day {
         return false
     }
     
+    nonisolated(unsafe)
     private static let linePattern = /(\d+):((?: \d+)+)/
     
     private func parse(_ data: String) -> [Equation] {
@@ -66,7 +60,7 @@ struct Day7: Day {
         let numbers: [Int]
     }
     
-    enum Operators: CaseIterable {
+    public enum Operators: CaseIterable, Sendable {
         case add, multiply, combine
     }
 }

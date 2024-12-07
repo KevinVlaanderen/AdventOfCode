@@ -1,22 +1,20 @@
-protocol Grid<T>: Sequence where Element == GridItem<T> {
+public protocol Grid<T>: Sequence where Element == GridItem<T> {
     associatedtype T: Equatable
     
     var width: Int {get}
     var height: Int {get}
     
     subscript(_ position: Point) -> T? {get set}
-    
-    func makeIterator() -> GridIterator<T>
 }
 
 extension Grid {
-    func makeIterator() -> GridIterator<T> {
+    public func makeIterator() -> GridIterator<T> {
         return GridIterator<T>(grid: self)
     }
 }
 
-struct GridIterator<T: Equatable>: IteratorProtocol {
-    typealias Element = GridItem<T>
+public struct GridIterator<T: Equatable>: IteratorProtocol {
+    public typealias Element = GridItem<T>
     
     let grid: any Grid<T>
     var current = Point(x: 0, y: 0)
@@ -25,7 +23,7 @@ struct GridIterator<T: Equatable>: IteratorProtocol {
         self.grid = grid
     }
     
-    mutating func next() -> Element? {
+    mutating public func next() -> Element? {
         var result: Element?
         
         if let gridValue = grid[current] {
@@ -43,9 +41,7 @@ struct GridIterator<T: Equatable>: IteratorProtocol {
     }
 }
 
-struct GridItem<T: Equatable> {
-    let position: Point
-    let value: T
+public struct GridItem<T: Equatable> {
+    public let position: Point
+    public let value: T
 }
-
-

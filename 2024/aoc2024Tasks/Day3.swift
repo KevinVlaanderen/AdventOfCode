@@ -1,19 +1,34 @@
 import Foundation
 internal import Algorithms
+import aoc2024Framework
 
-struct Day3: Day {
-    typealias R = Int
+public struct Day3: Day {
+    public typealias R = Int
     
+    public init() {}
+    
+    nonisolated(unsafe)
     private static let mulPattern = /mul\((\d+),(\d+)\)/
+    
+    nonisolated(unsafe)
     private static let doPattern = /do\(\)/
+    
+    nonisolated(unsafe)
     private static let dontPattern = /don't\(\)/
     
-    func task1(data: String, param: P) throws -> R {
-        return execute(parse1(data))
-    }
-    
-    func task2(data: String, param: P) throws -> R {
-        return execute(parse2(data))
+    public func perform(task: Task, data: String, param: ()) async throws -> Int {
+        let instructions = {
+            switch task {
+            case .task1:
+                return parse1(data)
+            case .task2:
+                return parse2(data)
+            @unknown default:
+                fatalError("unknown task")
+            }
+        }()
+        
+        return execute(instructions)
     }
     
     private func parse1(_ data: String) -> [Instructions] {
@@ -36,17 +51,6 @@ struct Day3: Day {
         }
     }
     
-    private enum Instructions {
-        case mul(Int, Int)
-        case enable
-        case disable
-    }
-    
-    private struct State {
-        var enabled: Bool = true
-        var total: Int = 0
-    }
-    
     private func execute(_ instructions: [Instructions]) -> Int {
         return instructions.reduce(into: State()) { state, instruction in
             switch instruction {
@@ -61,5 +65,16 @@ struct Day3: Day {
             }
             
         }.total
+    }
+    
+    private enum Instructions {
+        case mul(Int, Int)
+        case enable
+        case disable
+    }
+    
+    private struct State {
+        var enabled: Bool = true
+        var total: Int = 0
     }
 }

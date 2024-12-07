@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9786B9252CFB6AA90041D520"
-               BuildableName = "aoc2024.framework"
-               BlueprintName = "aoc2024"
+               BuildableName = "aoc2024Tasks.framework"
+               BlueprintName = "aoc2024Tasks"
                ReferencedContainer = "container:aoc2024.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -69,8 +69,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9786B9252CFB6AA90041D520"
-            BuildableName = "aoc2024.framework"
-            BlueprintName = "aoc2024"
+            BuildableName = "aoc2024Tasks.framework"
+            BlueprintName = "aoc2024Tasks"
             ReferencedContainer = "container:aoc2024.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

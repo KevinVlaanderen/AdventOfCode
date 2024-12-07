@@ -1,22 +1,22 @@
-struct ArrayGrid<T: Equatable>: Grid {
+public struct ArrayGrid<T: Equatable>: Grid {
     private var data: [T]
     
-    let width: Int
-    let height: Int
+    public let width: Int
+    public let height: Int
     
-    init(_ data: [[T]]) {
+    public init(_ data: [[T]]) {
         self.data = data.flatMap({ $0 })
         self.width = data.first!.count
         self.height = data.count
     }
     
-    init(width: Int, height: Int, defaultValue: T) {
+    public init(width: Int, height: Int, defaultValue: T) {
         self.data = [T](repeating: defaultValue, count: width*height)
         self.width = width
         self.height = height
     }
 
-    subscript(_ position: Point) -> T? {
+    public subscript(_ position: Point) -> T? {
         get {
             if let index = indexOf(position) {
                 return self.data[index]

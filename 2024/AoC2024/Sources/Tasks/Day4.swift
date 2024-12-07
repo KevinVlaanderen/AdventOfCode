@@ -29,7 +29,11 @@ public struct Day4: Day {
     private func task1(grid: any Grid<Character>, word: String) -> R {
         var count = 0
         
-        for item in grid.filter({ $0.value == word.first! }) {
+        for item in grid {
+            if item.value != word.first! {
+                continue
+            }
+            
             for direction in Direction.allCases {
                 if wordFound(grid: grid, word: word, position: item.position, direction: direction) {
                     count += 1
@@ -43,7 +47,11 @@ public struct Day4: Day {
     private func task2(grid: any Grid<Character>, word: String) -> R {
         var crossed: [Point: Int] = [:]
         
-        for item in grid.filter({ $0.value == word.first! }) {
+        for item in grid {
+            if item.value != word.first! {
+                continue
+            }
+            
             for direction in [Direction.NE, Direction.SE, Direction.SW, Direction.NW] {
                 if wordFound(grid: grid, word: word, position: item.position, direction: direction) {
                     let center = item.position.neighbour(direction: direction, distance: word.count / 2)

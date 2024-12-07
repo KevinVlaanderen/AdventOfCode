@@ -32,7 +32,7 @@ public struct Case<D: Day>: CaseProtocol {
         if let index = dayString.firstIndex(of: "(") {
             dayString = String(dayString.prefix(upTo: index))
         }
-        return "\(dayString).\(task).\(data.debugDescription.split(separator: ".")[1])"
+        return "\(dayString) \(task) \(data.debugDescription.split(separator: ".")[1])"
     }
     
     public func execute() throws -> D.R {

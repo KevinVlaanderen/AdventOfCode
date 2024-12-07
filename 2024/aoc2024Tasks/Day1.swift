@@ -7,7 +7,7 @@ public struct Day1: Day {
     
     public init() {}
     
-    public func perform(task: Task, data: String, param: ()) async throws -> Int {
+    public func perform(task: Task, data: String, param: ()) throws -> Int {
         let (left, right) = parse(data: data)
         
         switch task {

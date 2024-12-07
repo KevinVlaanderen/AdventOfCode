@@ -9,7 +9,7 @@ public struct Day7: Day {
     
     public init() {}
     
-    public func perform(task: Task, data: String, param: P) async throws -> Int {
+    public func perform(task: Task, data: String, param: P) throws -> Int {
        return parse(data)
             .filter(canSatisfy(operators: param))
             .map { $0.result }

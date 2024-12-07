@@ -3,16 +3,9 @@ import aoc2024Data
 import Benchmark
 
 for testCase in getCases() {
-    benchmark(testCase.testDescription) {
-        Task {
-            try await testCase.execute()
-        }
+    benchmark(testCase.testDescription, settings: TimeUnit(.us)) {
+        try testCase.execute()
     }
 }
 
-@main
-class AOC2024 {
-    static func main() {
-        Benchmark.main()
-    }
-}
+Benchmark.main()

@@ -1,12 +1,10 @@
 import aoc2024Tasks
 import aoc2024Framework
 
-//@MainActor
 public func getCases() -> [any TestCaseProtocol] {
     return cases
 }
 
-//@MainActor
 public let cases: [any TestCaseProtocol] = [
     TestCase(day: Day1(), task: .task1, data: \.example1, param: (), expected: 11),
     TestCase(day: Day1(), task: .task1, data: \.data, param: (), expected: 1151792),

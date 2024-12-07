@@ -16,7 +16,7 @@ public struct Day3: Day {
     nonisolated(unsafe)
     private static let dontPattern = /don't\(\)/
     
-    public func perform(task: Task, data: String, param: ()) async throws -> Int {
+    public func perform(task: Task, data: String, param: ()) throws -> Int {
         let instructions = {
             switch task {
             case .task1:

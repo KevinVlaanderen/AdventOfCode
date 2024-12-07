@@ -13,8 +13,8 @@ public protocol TestCaseProtocol: CustomTestStringConvertible, Sendable {
     
     var testDescription: String {get}
     
-    func execute() async throws
-    func runTest() async throws
+    func execute() throws
+    func runTest() throws
 }
 
 public struct TestCase<D: Day>: TestCaseProtocol {
@@ -36,11 +36,11 @@ public struct TestCase<D: Day>: TestCaseProtocol {
         return "\(task) \(data)"
     }
     
-    public func execute() async throws {
-        _ = try await day.perform(task: task, data: day[keyPath: data], param: param)
+    public func execute() throws {
+        _ = try day.perform(task: task, data: day[keyPath: data], param: param)
     }
     
-    public func runTest() async throws {
-        try await #expect(day.perform(task: task, data: day[keyPath: data], param: param) == expected)
+    public func runTest() throws {
+        try #expect(day.perform(task: task, data: day[keyPath: data], param: param) == expected)
     }
 }

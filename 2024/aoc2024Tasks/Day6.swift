@@ -8,7 +8,7 @@ public struct Day6: Day {
     
     public init() {}
     
-    public func perform(task: Task, data: String, param: P) async throws -> Int {
+    public func perform(task: Task, data: String, param: P) throws -> Int {
         let grid: any Grid<Content> = parse(data)
 
         guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
@@ -50,7 +50,7 @@ public struct Day6: Day {
     }
     
     private func task2(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> R {
-        try PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
+        PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
             .filter(isValidTargetForObstruction(grid: grid, guardPosition: startPosition))
             .uniqued(on: nextPosition)
             .count(where: entersLoop(grid: grid))

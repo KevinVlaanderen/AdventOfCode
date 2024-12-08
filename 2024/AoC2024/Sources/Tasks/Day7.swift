@@ -17,22 +17,22 @@ public struct Day7: Day {
     
     func canSatisfy(operators: [Operators]) -> (Equation) -> Bool {
         return { equation in
-            calculate(total: equation.numbers.first!, target: equation.result, numbers: Array(equation.numbers.dropFirst()), operators: operators)
+            calculate(total: equation.numbers.first!, target: equation.result, index: 0, numbers: Array(equation.numbers.dropFirst()), operators: operators)
         }
     }
     
-    func calculate(total: Int, target: Int, numbers: [Int], operators: [Operators]) -> Bool {
-        if numbers.count == 0 {
+    func calculate(total: Int, target: Int, index: Int, numbers: [Int], operators: [Operators]) -> Bool {
+        if index >= numbers.count {
             return total == target
         }
         for op in operators {
-            let newTotal = op.apply(a: total, b: numbers.first!)
+            let newTotal = op.apply(a: total, b: numbers[index])
             if newTotal == target {
                 return true
             } else if newTotal > target {
                 continue
             } else {
-                if calculate(total: newTotal, target: target, numbers: Array(numbers.dropFirst()), operators: operators) {
+                if calculate(total: newTotal, target: target, index: index+1, numbers: numbers, operators: operators) {
                     return true
                 }
             }
@@ -72,7 +72,7 @@ extension Day7.Operators {
         case .multiply:
             return a*b
         case .combine:
-            return Int(String(a)+String(b))!
+            return a*10^b.usefulDigits+b
         }
     }
 }

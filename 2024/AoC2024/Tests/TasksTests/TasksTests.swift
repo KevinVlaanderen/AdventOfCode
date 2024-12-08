@@ -4,14 +4,16 @@ import Testing
 @testable import Tasks
 
 struct Tests {
+    let data = Data()
+    
     @Test(arguments: cases)
     func run(c: any CaseProtocol) async throws {
-        try c.runTest()
+        try c.runTest(data: data)
     }
     
     @Test()
     func runSpecific() async throws {
         let c = cases.filter { $0.day is Day8 && $0.task == .task1 }[0]
-        try c.runTest()
+        try c.runTest(data: data)
     }
 }

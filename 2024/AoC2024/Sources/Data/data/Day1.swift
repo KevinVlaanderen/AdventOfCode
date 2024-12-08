@@ -1,8 +1,11 @@
 import Tasks
+import Framework
 
-extension Day1 {
-    var example1: String {
-        return """
+extension Data {
+    public var day1: Day1 { Day1() }
+    
+    public struct Day1 {
+        public var example1: String { return """
 3   4
 4   3
 2   5
@@ -10,9 +13,8 @@ extension Day1 {
 3   9
 3   3
 """
-    }
-    var data: String {
-        return """
+        }
+        public var data: String { return """
 58692   56129
 45806   95015
 61519   31093
@@ -1014,7 +1016,6 @@ extension Day1 {
 25998   79528
 37079   53944
 """
+        }
     }
 }
-
-

@@ -1,8 +1,11 @@
 import Tasks
+import Framework
 
-extension Day5 {
-    var example1: String {
-        return """
+extension Data {
+    public var day5: Day5 { Day5() }
+    
+    public struct Day5 {
+        public var example1: String { return """
 47|53
 97|13
 97|61
@@ -32,9 +35,8 @@ extension Day5 {
 61,13,29
 97,13,75,29,47
 """
-    }
-    var data: String {
-        return """
+        }
+        public var data: String { return """
 87|26
 31|18
 31|47
@@ -1404,5 +1406,6 @@ extension Day5 {
 54,82,18,29,94,32,34
 59,38,48,37,81,42,16,34,56,24,31,53,74,87,32,19,85,94,82,26,39,86,18
 """
+        }
     }
 }

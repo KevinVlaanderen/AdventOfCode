@@ -4,13 +4,13 @@ import Framework
 protocol TestCaseProtocol: CustomTestStringConvertible, Sendable {
     var testDescription: String {get}
     
-    func runTest() throws
+    func runTest(data: Data) throws
 }
 
 
 extension CaseProtocol {
-    func runTest() throws {
-        try #expect(execute() == expected)
+    func runTest(data: Data) throws {
+        try #expect(execute(data: data) == expected)
     }
 }
 

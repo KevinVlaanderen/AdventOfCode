@@ -17,13 +17,23 @@ public struct Day8: Day {
                 let dy = items[0].position.y - items[1].position.y
                 
                 if dx != 0 && dy != 0 {
-                    let ax1 = items[0].position.x + dx
-                    let ay1 = items[0].position.y + dy
-                    grid[Point(x: ax1, y: ay1)]?.antiNode = true
-                    
-                    let ax2 = items[1].position.x - dx
-                    let ay2 = items[1].position.y - dy
-                    grid[Point(x: ax2, y: ay2)]?.antiNode = true
+                    switch task {
+                    case .task1:
+                        setAntiNode(grid: &grid, position: items[0].position, dx: dx, dy: dy)
+                        setAntiNode(grid: &grid, position: items[1].position, dx: -dx, dy: -dy)
+                    case .task2:
+                        for mult in 0... {
+                            if !setAntiNode(grid: &grid, position: items[0].position, dx: dx*mult, dy: dy*mult) {
+                                break
+                            }
+                        }
+                        
+                        for mult in 0... {
+                            if !setAntiNode(grid: &grid, position: items[0].position, dx: -dx*mult, dy: -dy*mult) {
+                                break
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -37,6 +47,18 @@ public struct Day8: Day {
                 Location(frequency: character)
             }
         })
+    }
+    
+    @discardableResult
+    private func setAntiNode(grid: inout any Grid<Location>, position: Point, dx: Int = 0, dy: Int = 0) -> Bool {
+        let x = position.x + dx
+        let y = position.y + dy
+        let point = Point(x: x, y: y)
+        if grid[point] == nil {
+            return false
+        }
+        grid[point]?.antiNode = true
+        return true
     }
 
     private struct Location: Equatable {

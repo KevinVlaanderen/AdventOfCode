@@ -62,7 +62,7 @@ public struct Day6: Day {
     }
     
     private func isValidTargetForObstruction(grid: any Grid<Content>, guardPosition: Point) -> (Step) -> Bool {
-        return { step in
+        { step in
             let nextPosition = nextPosition(for: step)
             guard let content = grid[nextPosition], content != .obstruction else {
                 return false
@@ -76,15 +76,14 @@ public struct Day6: Day {
     }
     
     private func entersLoop(grid: any Grid<Content>) -> (Step) -> Bool {
-        return { step in
+        { outerStep in
             var newGrid = grid
-            newGrid[step.position.neighbour(direction: step.direction)] = .obstruction
+            newGrid[outerStep.position.neighbour(direction: outerStep.direction)] = .obstruction
             
             var seen: [Step] = []
             
-            for step in PathTracker(grid: newGrid, startPosition: step.position, startDirection: step.direction) {
-                let positionAhead = nextPosition(for: step)
-                if newGrid[positionAhead] == .obstruction {
+            for (step, nextStep) in PathTracker(grid: newGrid, startPosition: outerStep.position, startDirection: outerStep.direction).adjacentPairs() {
+                if nextStep.content == .obstruction {
                     if seen.contains(step) {
                         return true
                     } else {
@@ -97,7 +96,7 @@ public struct Day6: Day {
         }
     }
     
-    enum Content: Equatable {
+    enum Content: Equatable, Hashable {
         case empty, obstruction
         case patrolGuard(Direction)
     }
@@ -105,6 +104,7 @@ public struct Day6: Day {
     struct Step: Hashable {
         let position: Point
         let direction: Direction
+        let content: Content
     }
     
     struct PathTracker: Sequence {
@@ -125,20 +125,21 @@ public struct Day6: Day {
             mutating func next() -> Step? {
                 if !started {
                     started = true
-                    return Step(position: currentPosition, direction: currentDirection)
+                    return Step(position: currentPosition, direction: currentDirection, content: grid[currentPosition]!)
                 }
 
                 let nextPosition = currentPosition.neighbour(direction: currentDirection)
-
-                switch grid[nextPosition] {
+                let nextContent = grid[nextPosition]
+                
+                switch nextContent {
                 case .obstruction:
                     currentDirection = currentDirection.rotate(.CW90)
-                    return Step(position: currentPosition, direction: currentDirection)
+                    return Step(position: currentPosition, direction: currentDirection, content: nextContent!)
                 case nil:
                     return nil
                 default:
                     currentPosition = nextPosition
-                    return Step(position: currentPosition, direction: currentDirection)
+                    return Step(position: currentPosition, direction: currentDirection, content: nextContent!)
                 }
             }
         }

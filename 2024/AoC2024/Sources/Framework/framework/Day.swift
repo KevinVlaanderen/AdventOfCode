@@ -1,6 +1,6 @@
 public protocol Day: Sendable {
     associatedtype P: Sendable = Void
-    associatedtype R: Comparable, Sendable
+    associatedtype R: Comparable, Sendable = Int
     
     func perform(task: Task, data: String, param: P) throws -> R
 }

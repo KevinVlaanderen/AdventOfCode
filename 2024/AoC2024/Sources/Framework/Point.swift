@@ -1,6 +1,11 @@
 public struct Point: Hashable {
-    var x, y: Int
+    public var x, y: Int
 
+    public init(x: Int, y: Int) {
+        self.x = x
+        self.y = y
+    }
+    
     public func neighbour(direction: Direction, distance: Int = 1) -> Point {
         var neighbour = self
         let offset = direction.asPoint()

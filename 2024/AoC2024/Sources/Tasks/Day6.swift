@@ -4,8 +4,6 @@ internal import SwiftGraph
 import Framework
 
 public struct Day6: Day {
-    public typealias R = Int
-    
     public init() {}
     
     public func perform(task: Task, data: String, param: P) throws -> Int {
@@ -27,8 +25,8 @@ public struct Day6: Day {
     
     private func parse(_ data: String) -> some Grid<Content> {
         ArrayGrid(data.split(whereSeparator: \.isNewline).map { line in
-            Array(line).map { charater in
-                switch charater {
+            Array(line).map { character in
+                switch character {
                 case ".":
                     return .empty
                 case "#":
@@ -36,7 +34,7 @@ public struct Day6: Day {
                 case "^":
                     return .patrolGuard(.N)
                 default:
-                    fatalError("unknown grid item: \(charater)")
+                    fatalError("unknown grid item: \(character)")
                 }
             }
         })

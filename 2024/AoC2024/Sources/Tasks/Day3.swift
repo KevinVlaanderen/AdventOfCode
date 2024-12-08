@@ -3,8 +3,6 @@ internal import Algorithms
 import Framework
 
 public struct Day3: Day {
-    public typealias R = Int
-    
     public init() {}
     
     nonisolated(unsafe)

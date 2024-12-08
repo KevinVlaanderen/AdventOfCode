@@ -3,8 +3,6 @@ internal import Algorithms
 import Framework
 
 public struct Day1: Day {
-    public typealias R = Int
-    
     public init() {}
     
     public func perform(task: Task, data: String, param: ()) throws -> Int {

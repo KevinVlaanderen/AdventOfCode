@@ -4,7 +4,6 @@ import Framework
 
 public struct Day4: Day {
     public typealias P = String
-    public typealias R = Int
     
     public init() {}
     

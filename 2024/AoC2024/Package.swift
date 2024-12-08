@@ -44,7 +44,8 @@ let package = Package(
             name: "TasksTests",
             dependencies: [
                 "Framework",
-                "Data"
+                "Data",
+                "Tasks"
             ]),
     ]
 )

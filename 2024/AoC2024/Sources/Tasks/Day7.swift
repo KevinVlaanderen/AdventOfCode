@@ -5,7 +5,6 @@ import Framework
 
 public struct Day7: Day {
     public typealias P = [Operators]
-    public typealias R = Int
     
     public init() {}
     

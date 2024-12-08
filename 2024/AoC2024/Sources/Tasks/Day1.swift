@@ -13,8 +13,6 @@ public struct Day1: Day {
             return task1(left: left, right: right)
         case .task2:
             return task2(left: left, right: right)
-        @unknown default:
-            fatalError("unknown task")
         }
     }
     

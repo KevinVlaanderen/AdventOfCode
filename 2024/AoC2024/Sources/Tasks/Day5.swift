@@ -14,8 +14,6 @@ public struct Day5: Day {
             return task1(orderPairs: orderPairs, updates: updates)
         case .task2:
             return task2(orderPairs: orderPairs, updates: updates)
-        @unknown default:
-            fatalError("unknown task")
         }
     }
     

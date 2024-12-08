@@ -16,8 +16,6 @@ public struct Day4: Day {
         case .task2:
             precondition(param.count % 2 == 1)
             return task2(grid: grid, word: param)
-        @unknown default:
-            fatalError("unknown task")
         }
     }
     

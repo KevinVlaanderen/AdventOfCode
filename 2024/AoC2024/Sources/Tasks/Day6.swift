@@ -18,8 +18,6 @@ public struct Day6: Day {
             return try task1(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
         case .task2:
             return try task2(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
-        @unknown default:
-            fatalError("unknown task")
         }
     }
     

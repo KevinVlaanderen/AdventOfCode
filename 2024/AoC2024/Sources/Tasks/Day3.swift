@@ -21,8 +21,6 @@ public struct Day3: Day {
                 return parse1(data)
             case .task2:
                 return parse2(data)
-            @unknown default:
-                fatalError("unknown task")
             }
         }()
         

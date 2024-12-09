@@ -13,7 +13,7 @@ struct Tests {
     
     @Test()
     func runSpecific() async throws {
-        let c = cases.filter { $0.day is Day6 && $0.task == .task2 }[1]
+        let c = cases.filter { $0.day is Day9 && $0.task == .task1 }[0]
         try c.runTest(data: data)
     }
 }

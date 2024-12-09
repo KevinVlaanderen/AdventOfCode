@@ -17,7 +17,7 @@ public struct Day7: Day {
     
     func canSatisfy(operators: [Operators]) -> (Equation) -> Bool {
         return { equation in
-            calculate(total: equation.numbers.first!, target: equation.result, index: 0, numbers: Array(equation.numbers.dropFirst()), operators: operators)
+            calculate(total: equation.numbers.first!, target: equation.result, index: 1, numbers: equation.numbers, operators: operators)
         }
     }
     
@@ -72,7 +72,8 @@ extension Day7.Operators {
         case .multiply:
             return a*b
         case .combine:
-            return a*10^b.usefulDigits+b
+            let total = a*Int(pow(10, Double(b.usefulDigits)))+b
+            return total
         }
     }
 }

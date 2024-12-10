@@ -10,131 +10,110 @@ public struct Day9: Day {
 
         switch task {
         case .task1:
-            return task1(&disk)
+            task1(&disk)
         case .task2:
-            return task2(&disk)
+            task2(&disk)
         }
+        
+        return disk.checksum()
     }
     
-    private func task1(_ disk: inout Disk) -> Int {
-        var inserted = 0
-        var lowestEmptySpaceIndex = 0
+    private func task1(_ disk: inout Disk) {
+        var endIndex = disk.endIndex-1
         
-        fileLoop: for (fileIndex, file) in disk.enumerated().filter({ $0.element.isFile }).reversed() {
-            let adjustedFileIndex = fileIndex + inserted
-            var remaining = file.size
+        for startIndex in 0...endIndex {
+            if case .file(_) = disk[startIndex] {
+                continue
+            }
             
-            for contentIndex in lowestEmptySpaceIndex..<disk.endIndex {
-                let content = disk[contentIndex]
-                
-                if case .file(_) =  content.type {
-                    continue
-                }
-                
-                lowestEmptySpaceIndex = contentIndex
-                
-                if contentIndex >= adjustedFileIndex {
-                    disk[adjustedFileIndex].size = remaining
-                    break fileLoop
-                }
-                if content.size > remaining {
-                    disk.insert(file, at: contentIndex)
-                    inserted += 1
-                    disk[contentIndex].size = remaining
-                    disk[contentIndex+1].size -= remaining
-                    disk.remove(at: adjustedFileIndex+1)
-                    continue fileLoop
-                } else if content.size < remaining {
-                    disk[contentIndex] = file
-                    disk[contentIndex].size = content.size
-                    remaining -= content.size
-                } else {
-                    disk[contentIndex] = file
-                    disk[contentIndex].size = remaining
-                    disk.remove(at: adjustedFileIndex)
-                    continue fileLoop
-                }
+            while case .emptySpace = disk[endIndex] {
+                endIndex -= 1
             }
+            
+            if endIndex <= startIndex {
+                break
+            }
+            
+            disk[startIndex] = disk[endIndex]
+            disk[endIndex] = .emptySpace
         }
-        
-        return disk.checksum()
     }
     
-    private func task2(_ disk: inout Disk) -> Int {
-        var insertedAt: [Int] = []
-        fileLoop: for (fileIndex, file) in disk.enumerated().filter({ $0.element.isFile }).reversed() {
-            for contentIndex in 0..<disk.endIndex {
-                let content = disk[contentIndex]
-                
-                if case .file(_) = content.type {
+    private func task2(_ disk: inout Disk) {
+        var currentContent: Content = .emptySpace
+        var currentLength = 0
+        
+        let originalDisk = disk
+        
+        for endIndex in (0..<originalDisk.endIndex).reversed() {
+            let content = originalDisk[endIndex]
+            
+            if currentContent == content {
+                currentLength += 1
+                continue
+            }
+            
+            if currentContent == .emptySpace {
+                currentContent = content
+                currentLength = 1
+                continue
+            }
+            
+            guard case let .file(id) = currentContent else {
+                fatalError()
+            }
+            
+            var startIndex = 0
+            var emptySpaceLength = 0
+            while startIndex <= endIndex {
+                if case .file(_) = disk[startIndex] {
+                    emptySpaceLength = 0
+                    startIndex += 1
                     continue
                 }
                 
-                let adjustedFileIndex = fileIndex + insertedAt.count { $0 < contentIndex}
-                
-                if contentIndex >= adjustedFileIndex {
-                    continue fileLoop
-                }
-                if content.size > file.size {
-                    disk.insert(file, at: contentIndex)
-                    insertedAt.append(contentIndex)
-                    disk[contentIndex+1].size -= file.size
-                    disk[adjustedFileIndex+1] = Content(type: .emptySpace, size: file.size)
-                    continue fileLoop
-                } else if content.size == file.size {
-                    disk[contentIndex] = file
-                    disk[adjustedFileIndex] = Content(type: .emptySpace, size: file.size)
-                    continue fileLoop
+                emptySpaceLength += 1
+                if emptySpaceLength == currentLength {
+                    for i in startIndex-currentLength+1...startIndex {
+                        disk[i] = .file(id)
+                    }
+                    for i in endIndex+1...endIndex+currentLength {
+                        disk[i] = .emptySpace
+                    }
+                    break
+                } else {
+                    startIndex += 1
                 }
             }
+            
+            currentContent = content
+            currentLength = 1
         }
-
-        return disk.checksum()
     }
 
     private func parse(_ data: String) -> Disk {
-        data.enumerated().map { offset, character in
+        data.enumerated().flatMap { offset, character in
             let id = offset/2
             let size = character.wholeNumberValue!
-            let contentType: ContentType = offset%2 == 0 ? .file(id) : .emptySpace
-            return Content(type: contentType, size: size)
+            let content: Content = offset%2 == 0 ? .file(id) : .emptySpace
+            return Disk(repeating: content, count: size)
         }
     }
     
-    typealias ID = Int
     typealias Disk = [Content]
     
-    struct Content {
-        let type: ContentType
-        var size: Int
-    }
-    
-    
-    
-    enum ContentType: Equatable {
+    enum Content: Equatable {
         case file(Int), emptySpace
     }
 }
 
 extension Day9.Disk {
     func checksum() -> Int {
-        var index: Int = 0
-        return self.reduce(0) { result, content in
-            var value = 0
-            if case let .file(id) = content.type {
-                value = (index..<index+content.size).reduce(0) { $0 + $1*id }
+        self.enumerated().reduce(0) { result, content in
+            if case let .file(id) = content.element {
+                return result + content.offset*id
             }
-            index += content.size
-            return result + value
+            return result
         }
     }
-}
-
-extension Day9.Content {
-  var isFile: Bool {
-      switch self.type {
-    case .file(_): return true
-    default: return false
-    }
-  }
 }

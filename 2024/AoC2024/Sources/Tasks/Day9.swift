@@ -6,101 +6,135 @@ public struct Day9: Day {
     public init() {}
     
     public func perform(task: Task, data: String, param: P) throws -> Int {
-        let diskMap = parse(data)
+        var disk = parse(data)
 
-        return diskMap.enumerated().reduce(0) { $0 + $1.offset*$1.element }
+        switch task {
+        case .task1:
+            return task1(&disk)
+        case .task2:
+            return task2(&disk)
+        }
+    }
+    
+    private func task1(_ disk: inout Disk) -> Int {
+        var inserted = 0
+        var lowestEmptySpaceIndex = 0
+        
+        fileLoop: for (fileIndex, file) in disk.enumerated().filter({ $0.element.isFile }).reversed() {
+            let adjustedFileIndex = fileIndex + inserted
+            var remaining = file.size
+            
+            for contentIndex in lowestEmptySpaceIndex..<disk.endIndex {
+                let content = disk[contentIndex]
+                
+                if case .file(_) =  content.type {
+                    continue
+                }
+                
+                lowestEmptySpaceIndex = contentIndex
+                
+                if contentIndex >= adjustedFileIndex {
+                    disk[adjustedFileIndex].size = remaining
+                    break fileLoop
+                }
+                if content.size > remaining {
+                    disk.insert(file, at: contentIndex)
+                    inserted += 1
+                    disk[contentIndex].size = remaining
+                    disk[contentIndex+1].size -= remaining
+                    disk.remove(at: adjustedFileIndex+1)
+                    continue fileLoop
+                } else if content.size < remaining {
+                    disk[contentIndex] = file
+                    disk[contentIndex].size = content.size
+                    remaining -= content.size
+                } else {
+                    disk[contentIndex] = file
+                    disk[contentIndex].size = remaining
+                    disk.remove(at: adjustedFileIndex)
+                    continue fileLoop
+                }
+            }
+        }
+        
+        return disk.checksum()
+    }
+    
+    private func task2(_ disk: inout Disk) -> Int {
+        var insertedAt: [Int] = []
+        fileLoop: for (fileIndex, file) in disk.enumerated().filter({ $0.element.isFile }).reversed() {
+            for contentIndex in 0..<disk.endIndex {
+                let content = disk[contentIndex]
+                
+                if case .file(_) = content.type {
+                    continue
+                }
+                
+                let adjustedFileIndex = fileIndex + insertedAt.count { $0 < contentIndex}
+                
+                if contentIndex >= adjustedFileIndex {
+                    continue fileLoop
+                }
+                if content.size > file.size {
+                    disk.insert(file, at: contentIndex)
+                    insertedAt.append(contentIndex)
+                    disk[contentIndex+1].size -= file.size
+                    disk[adjustedFileIndex+1] = Content(type: .emptySpace, size: file.size)
+                    continue fileLoop
+                } else if content.size == file.size {
+                    disk[contentIndex] = file
+                    disk[adjustedFileIndex] = Content(type: .emptySpace, size: file.size)
+                    continue fileLoop
+                }
+            }
+        }
+
+        return disk.checksum()
     }
 
-    private func parse(_ data: String) -> DiskMap {
-        data.enumerated().reduce(into: DiskMap()) {
-            let size = $1.element.wholeNumberValue!
-            if $1.offset%2 == 0 {
-                let id = $1.offset/2
-                $0.files.append(Content(type: .file(id), size: size))
-            } else {
-                $0.emptySpaces.append(Content(type: .emptySpace, size: size))
-            }
+    private func parse(_ data: String) -> Disk {
+        data.enumerated().map { offset, character in
+            let id = offset/2
+            let size = character.wholeNumberValue!
+            let contentType: ContentType = offset%2 == 0 ? .file(id) : .emptySpace
+            return Content(type: contentType, size: size)
         }
     }
     
     typealias ID = Int
-    
-    struct DiskMap: Sequence {
-        var files: [Content] = []
-        var emptySpaces: [Content] = []
-
-        func makeIterator() -> BlocksIterator {
-            return BlocksIterator(diskMap: self)
-        }
-        
-        struct BlocksIterator: IteratorProtocol {
-            let diskMap: DiskMap
-            
-            var contentIndex = 0
-            var currentContentIndex = 0
-            
-            var reversedFileIndex = 0
-            var reversedCurrentFileIndex = 0
-            
-            init(diskMap: DiskMap) {
-                self.diskMap = diskMap
-            }
-            
-            mutating func next() -> ID? {
-                while contentIndex < diskMap.files.count + diskMap.emptySpaces.count {
-                    if contentIndex % 2 == 0 {
-                        let fileIndex = contentIndex/2
-                        if currentContentIndex < diskMap.files[fileIndex].size {
-                            guard case let .file(id) = diskMap.files[fileIndex].type else {
-                                fatalError("unexpected type")
-                            }
-                            if fileIndex == diskMap.files.count - reversedFileIndex - 1 && diskMap.files[fileIndex].size - currentContentIndex - reversedCurrentFileIndex <= 0  {
-                                return nil
-                            }
-                            currentContentIndex += 1
-                            return id
-                        } else {
-                            contentIndex += 1
-                            currentContentIndex = 0
-                        }
-                    } else {
-                        if currentContentIndex < diskMap.emptySpaces[contentIndex/2].size {
-                            currentContentIndex += 1
-                            
-                            while reversedFileIndex < diskMap.files.count {
-                                let fileIndex = diskMap.files.count - reversedFileIndex - 1
-                                if reversedCurrentFileIndex < diskMap.files[fileIndex].size {
-                                    guard case let .file(id) = diskMap.files[fileIndex].type else {
-                                        fatalError("unexpected type")
-                                    }
-                                    if id == currentContentIndex/2 {
-                                        return nil
-                                    }
-                                    reversedCurrentFileIndex += 1
-                                    return id
-                                } else {
-                                    reversedFileIndex += 1
-                                    reversedCurrentFileIndex = 0
-                                }
-                            }
-                        } else {
-                            contentIndex += 1
-                            currentContentIndex = 0
-                        }
-                    }
-                }
-                
-                return nil
-            }
-        }
-    }
+    typealias Disk = [Content]
     
     struct Content {
         let type: ContentType
-        let size: Int
+        var size: Int
     }
+    
+    
     
     enum ContentType: Equatable {
         case file(Int), emptySpace
     }
+}
+
+extension Day9.Disk {
+    func checksum() -> Int {
+        var index: Int = 0
+        return self.reduce(0) { result, content in
+            var value = 0
+            if case let .file(id) = content.type {
+                value = (index..<index+content.size).reduce(0) { $0 + $1*id }
+            }
+            index += content.size
+            return result + value
+        }
+    }
+}
+
+extension Day9.Content {
+  var isFile: Bool {
+      switch self.type {
+    case .file(_): return true
+    default: return false
+    }
+  }
 }

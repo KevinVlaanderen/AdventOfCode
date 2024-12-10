@@ -16,8 +16,15 @@ public struct Day10: Day {
         }
         
         return trailheads.reduce(0) { result, current in
-            var found: [Point] = []
-            return result + pathsTo(9, from: current.position, topographicMap: topographicMap, found: &found)
+            var found: Set<Point> = []
+            let numPaths = pathsTo(9, from: current.position, topographicMap: topographicMap, found: &found)
+            
+            switch task {
+            case .task1:
+                return result + found.count
+            case .task2:
+                return result + numPaths
+            }
         }
     }
     
@@ -34,7 +41,7 @@ public struct Day10: Day {
         })
     }
     
-    private func pathsTo(_ target: Int, from: Point, topographicMap: any Grid<Position>, found: inout [Point]) -> Int {
+    private func pathsTo(_ target: Int, from: Point, topographicMap: any Grid<Position>, found: inout Set<Point>) -> Int {
         let newPosition = topographicMap[from]
         
         guard case let .passable(height) = newPosition else {
@@ -42,12 +49,8 @@ public struct Day10: Day {
         }
         
         if height == target {
-            if found.contains(from) {
-                return 0
-            } else {
-                found.append(from)
-                return 1
-            }
+            found.insert(from)
+            return 1
         }
         
         let directions: [Direction] = [.N, .E, .S, .W]

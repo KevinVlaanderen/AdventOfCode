@@ -49,4 +49,6 @@ public let cases: [any CaseProtocol] = [
     Case(day: Day10(), task: .task2, data: \.day10.example8, param: (), expected: 227),
     Case(day: Day10(), task: .task2, data: \.day10.example5, param: (), expected: 81),
     Case(day: Day10(), task: .task2, data: \.day10.data, param: (), expected: 1960),
+    Case(day: Day11(), task: .task1, data: \.day11.example1, param: 25, expected: 55312),
+    Case(day: Day11(), task: .task1, data: \.day11.data, param: 25, expected: 213625),
 ]

@@ -12,46 +12,51 @@ public struct Day11: Day {
         
         var cache: Cache = [:]
         
-        return stones.flatMap { expandStone(stone: $0, count: param, cache: &cache) }.count
+        return countStones(stones: stones, iterations: param, cache: &cache)
     }
     
-    private func expandStone(stone: Int, count: Int, cache: inout Cache) -> [Int] {
-        let key = Key(stone: stone, count: count)
-                      
-        if count == 0 {
-            return [stone]
-        } else if let cachedStones = cache[key] {
-            return cachedStones
+    private func countStones(stones: [Stone], iterations: Int, cache: inout Cache) -> Int {
+        if iterations == 0 {
+            return stones.count
         }
         
-        var newStones: [Int] = []
-        let numDigits = stone.usefulDigits
-        
-        if stone == 0 {
-            newStones = expandStone(stone: 1, count: count-1, cache: &cache)
-        } else if numDigits > 0 && numDigits % 2 == 0 {
-            let divisor = Int(pow(10, Double(numDigits/2)))
-            newStones = [
-                expandStone(stone: stone / divisor, count: count-1, cache: &cache),
-                expandStone(stone: stone % divisor, count: count-1, cache: &cache),
-            ].flatMap { $0 }
-        } else {
-            newStones = expandStone(stone: stone * 2024, count: count-1, cache: &cache)
-        }
-        
-        cache[key] = newStones
+        return stones.reduce(0) { result, stone in
+            let key = Key(stone: stone, count: iterations)
 
-        return newStones
+            if let cachedResult = cache[key] {
+                return result + cachedResult
+            }
+            
+            let numDigits = stone.usefulDigits
+            var numStones = 0
+            
+            if stone == 0 {
+                numStones = countStones(stones: [1], iterations: iterations-1, cache: &cache)
+            } else if numDigits > 0 && numDigits % 2 == 0 {
+                let divisor = Int(pow(10, Double(numDigits/2)))
+                let newStones = [
+                    stone / divisor,
+                    stone % divisor
+                ]
+                numStones = countStones(stones: newStones, iterations: iterations-1, cache: &cache)
+            } else {
+                numStones = countStones(stones: [stone*2024], iterations: iterations-1, cache: &cache)
+            }
+            
+            cache[key] = numStones
+            return result + numStones
+        }
     }
     
-    private func parse(_ data: String) -> [Int] {
-        data.split(whereSeparator: \.isWhitespace).map { Int($0)! }
+    private func parse(_ data: String) -> [Stone] {
+        data.split(whereSeparator: \.isWhitespace).map { Stone($0)! }
     }
     
-    private typealias Cache = [Key: [Int]]
+    private typealias Stone = Int
+    private typealias Cache = [Key: Stone]
     
     private struct Key: Hashable {
-        let stone: Int
+        let stone: Stone
         let count: Int
     }
 }

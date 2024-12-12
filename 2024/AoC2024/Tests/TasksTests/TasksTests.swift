@@ -5,7 +5,7 @@ import Testing
 
 struct Tests {
     let data = Data()
-    
+
     @Test(arguments: cases)
     func run(c: any CaseProtocol) async throws {
         try c.runTest(data: data)
@@ -13,7 +13,7 @@ struct Tests {
     
     @Test()
     func runSpecific() async throws {
-        let c = cases.filter { $0.day is Day9 && $0.task == .task2 }[1]
+        let c = cases.filter { $0.day is Day12 && $0.task == .task1 }[3]
         try c.runTest(data: data)
     }
 }

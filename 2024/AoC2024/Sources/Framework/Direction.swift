@@ -6,7 +6,7 @@ public enum DirectionChange: CaseIterable {
     case CW90, CCW90, Invert
 }
 
-extension Direction {
+extension Direction {    
     public func asPoint() -> Point {
         switch self {
         case .N:

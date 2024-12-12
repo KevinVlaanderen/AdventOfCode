@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "BD820733-3E4E-47FD-AA69-7D09D75BD886",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "TaskTests",
+        "name" : "TaskTests"
+      }
+    }
+  ],
+  "version" : 1
+}

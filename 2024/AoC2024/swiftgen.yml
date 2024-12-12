@@ -1,0 +1,14 @@
+input_dir: Sources/Data
+output_dir: Sources/Data
+
+files:
+    inputs: .
+    filter: .+\.txt$
+    outputs:
+      - templateName: structured-swift5
+        output: Data.swift
+        params:
+            enumName: Data
+            publicAccess: true
+            useExtension: false
+            preservePath: true

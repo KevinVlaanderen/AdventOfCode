@@ -10,7 +10,8 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-algorithms.git", from: "1.1.0"),
         .package(url: "https://github.com/davecom/SwiftGraph", from: "3.1.0"),
         .package(url: "https://github.com/ordo-one/package-jemalloc", from: "1.0.0"),
-        .package(url: "https://github.com/ordo-one/package-benchmark", from: "1.27.4")
+        .package(url: "https://github.com/ordo-one/package-benchmark", from: "1.27.4"),
+        .package(url: "https://github.com/SwiftGen/SwiftGenPlugin", from: "6.6.2")
     ],
     targets: [
         .executableTarget(
@@ -39,13 +40,15 @@ let package = Package(
             dependencies: [
                 "Framework",
                 "Tasks"
+            ],resources: [
+                .copy("Days/."),
             ]),
         .testTarget(
-            name: "TasksTests",
+            name: "TaskTests",
             dependencies: [
                 "Framework",
                 "Data",
-                "Tasks"
+                "Tasks",
             ]),
     ]
 )

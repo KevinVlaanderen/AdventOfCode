@@ -1,5 +1,5 @@
 {
-  "originHash" : "d9705e7e4fe693be4c77de8055089594ce8807b40154ae3d64d10430e7a33b15",
+  "originHash" : "adbe33115598879167bd7ed935f8937ae3d9f13fb8278b8c0aeaab4f1f8e9e91",
   "pins" : [
     {
       "identity" : "hdrhistogram-swift",
@@ -71,6 +71,15 @@
       "state" : {
         "revision" : "c8a44d836fe7913603e246acab7c528c2e780168",
         "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "swiftgenplugin",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftGen/SwiftGenPlugin",
+      "state" : {
+        "revision" : "879b85a470cacd70c19e22eb7e11a3aed66f4068",
+        "version" : "6.6.2"
       }
     },
     {

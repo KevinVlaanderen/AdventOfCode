@@ -6,8 +6,8 @@ public enum DirectionChange: CaseIterable {
     case CW90, CCW90, Invert
 }
 
-extension Direction {    
-    public func asPoint() -> Point {
+public extension Direction {
+    func asPoint() -> Point {
         switch self {
         case .N:
             return Point(x: 0, y: -1)
@@ -28,7 +28,7 @@ extension Direction {
         }
     }
     
-    public func rotate(_ change: DirectionChange) -> Direction {
+    func rotate(_ change: DirectionChange) -> Direction {
         switch (self, change) {
         case (.N, .CW90):
             return .E
@@ -80,4 +80,6 @@ extension Direction {
             return .SE
         }
     }
+     
+    static var orthogonal: [Direction] { [.N, .E, .S, .W] }
 }

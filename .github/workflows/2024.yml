@@ -17,15 +17,23 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
+    - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # 4.2.0
+      with:
+        path: 2024/AoC2024/.build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
     - name: Set up Swift
-      uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f
+      uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f # 2.1.0
+      with:
+        swift-version: "6"
     - name: Run tests
       run: swift test --xunit-output report.xml
     - name: Unit Test Results
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@31a54ee7ebcacc03a09ea97a7e5465a47b84aea5 # 1.9.1
       if: always()
       with:
         name: 2024 test results
-        path: 2024/report-swift-testing.xml
+        path: 2024/AoC2024/report-swift-testing.xml
         reporter: java-junit

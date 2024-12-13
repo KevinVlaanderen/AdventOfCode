@@ -1,0 +1,30 @@
+{% for fixtures in types.structs|annotated:"cases" %}
+{% for day in fixtures.containedTypes|struct %}
+// sourcery:file:{{day.localName}}Tests.swift
+import Testing
+import Framework
+@testable import Data
+
+struct {{day.localName}} {
+    {% for task in day.containedTypes|struct %}
+    struct {{task.localName}} {
+        {% for instance in task.variables|annotated:"expected" %}
+        @Test
+        func {{instance.name}}() async throws {
+            let day = {{day.name}}()
+            let task = {{task.name}}()
+            {% for var in task.variables %}
+            {% if var.name == "param" %}
+            let param = task.param
+            {% endif %}
+            {% endfor %}
+            let expected = {{instance.annotations.expected}}
+            try #expect(execute(day: day.day, task: task.task, data: task.{{instance.name}}, param: param) == expected)
+        }
+        {% endfor %}
+    }
+    {% endfor %}
+}
+// sourcery:end
+{% endfor %}
+{% endfor %}

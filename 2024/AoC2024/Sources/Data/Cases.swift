@@ -1,74 +1,317 @@
 import Foundation
 import Tasks
 import Framework
+import SourceryRuntime
 
-extension File: @unchecked Sendable {}
-
-public func loadData(file: File) -> DataDescriptor {
-    DataDescriptor(url: file.path, load: {
-        try String(contentsOfFile: file.path).trimmingCharacters(in: .newlines)
-    })
+// sourcery: cases
+struct Cases: Sendable {
+    struct Day1 {
+        let day = Tasks.Day1()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day1.P = ()
+            
+            // sourcery: expected = 11
+            let example1 = loadData(file: Data.Input.Day1.example1)
+            // sourcery: expected = 1151792
+            let data = loadData(file: Data.Input.Day1.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day1.P = ()
+            
+            // sourcery: expected = 31
+            let example1 = loadData(file: Data.Input.Day1.example1)
+            // sourcery: expected = 21790168
+            let data = loadData(file: Data.Input.Day1.data)
+        }
+    }
+    
+    struct Day2 {
+        let day = Tasks.Day2()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day2.P = ()
+            
+            // sourcery: expected = 2
+            let example1 = loadData(file: Data.Input.Day2.example1)
+            // sourcery: expected = 442
+            let data = loadData(file: Data.Input.Day2.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day2.P = ()
+            
+            // sourcery: expected = 4
+            let example1 = loadData(file: Data.Input.Day2.example1)
+            // sourcery: expected = 493
+            let data = loadData(file: Data.Input.Day2.data)
+        }
+    }
+    
+    struct Day3 {
+        let day = Tasks.Day3()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day3.P = ()
+            
+            // sourcery: expected = 161
+            let example1 = loadData(file: Data.Input.Day3.example1)
+            // sourcery: expected = 180233229
+            let data = loadData(file: Data.Input.Day3.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day3.P = ()
+            
+            // sourcery: expected = 48
+            let example1 = loadData(file: Data.Input.Day3.example2)
+            // sourcery: expected = 95411583
+            let data = loadData(file: Data.Input.Day3.data)
+        }
+    }
+    
+    struct Day4 {
+        let day = Tasks.Day4()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param = "XMAS"
+            
+            // sourcery: expected = 18
+            let example1 = loadData(file: Data.Input.Day4.example1)
+            // sourcery: expected = 2573
+            let data = loadData(file: Data.Input.Day4.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param = "MAS"
+            
+            // sourcery: expected = 9
+            let example1 = loadData(file: Data.Input.Day4.example1)
+            // sourcery: expected = 1850
+            let data = loadData(file: Data.Input.Day4.data)
+        }
+    }
+    
+    struct Day5 {
+        let day = Tasks.Day5()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day5.P = ()
+            
+            // sourcery: expected = 143
+            let example1 = loadData(file: Data.Input.Day5.example1)
+            // sourcery: expected = 4959
+            let data = loadData(file: Data.Input.Day5.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day5.P = ()
+            
+            // sourcery: expected = 123
+            let example1 = loadData(file: Data.Input.Day5.example1)
+            // sourcery: expected = 4655
+            let data = loadData(file: Data.Input.Day5.data)
+        }
+    }
+    
+    struct Day6 {
+        let day = Tasks.Day6()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day6.P = ()
+            
+            // sourcery: expected = 41
+            let example1 = loadData(file: Data.Input.Day6.example1)
+            // sourcery: expected = 4973
+            let data = loadData(file: Data.Input.Day6.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day6.P = ()
+            
+            // sourcery: expected = 6
+            let example1 = loadData(file: Data.Input.Day6.example1)
+            // sourcery: expected = 1482
+            let data = loadData(file: Data.Input.Day6.data)
+        }
+    }
+    
+    struct Day7 {
+        let day = Tasks.Day7()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day7.P = [.add, .multiply]
+            
+            // sourcery: expected = 3749
+            let example1 = loadData(file: Data.Input.Day7.example1)
+            // sourcery: expected = 5702958180383
+            let data = loadData(file: Data.Input.Day7.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param = Tasks.Day7.Operators.allCases
+            
+            // sourcery: expected = 11387
+            let example1 = loadData(file: Data.Input.Day7.example1)
+            // sourcery: expected = 92612386119138
+            let data = loadData(file: Data.Input.Day7.data)
+        }
+    }
+    
+    struct Day8 {
+        let day = Tasks.Day8()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day8.P = ()
+            
+            // sourcery: expected = 14
+            let example1 = loadData(file: Data.Input.Day8.example1)
+            // sourcery: expected = 320
+            let data = loadData(file: Data.Input.Day8.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day8.P = ()
+            
+            // sourcery: expected = 34
+            let example1 = loadData(file: Data.Input.Day8.example1)
+            // sourcery: expected = 1157
+            let data = loadData(file: Data.Input.Day8.data)
+        }
+    }
+    
+    struct Day9 {
+        let day = Tasks.Day9()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day9.P = ()
+            
+            // sourcery: expected = 1928
+            let example1 = loadData(file: Data.Input.Day9.example1)
+            // sourcery: expected = 6356833654075
+            let data = loadData(file: Data.Input.Day9.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day9.P = ()
+            
+            // sourcery: expected = 2858
+            let example1 = loadData(file: Data.Input.Day9.example1)
+            // sourcery: expected = 6389911791746
+            let data = loadData(file: Data.Input.Day9.data)
+        }
+    }
+    
+    struct Day10 {
+        let day = Tasks.Day10()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day10.P = ()
+            
+            // sourcery: expected = 1
+            let example1 = loadData(file: Data.Input.Day10.example1)
+            // sourcery: expected = 2
+            let example2 = loadData(file: Data.Input.Day10.example2)
+            // sourcery: expected = 4
+            let example3 = loadData(file: Data.Input.Day10.example3)
+            // sourcery: expected = 3
+            let example4 = loadData(file: Data.Input.Day10.example4)
+            // sourcery: expected = 36
+            let example5 = loadData(file: Data.Input.Day10.example5)
+            // sourcery: expected = 816
+            let data = loadData(file: Data.Input.Day10.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day10.P = ()
+            
+            // sourcery: expected = 3
+            let example6 = loadData(file: Data.Input.Day10.example6)
+            // sourcery: expected = 13
+            let example7 = loadData(file: Data.Input.Day10.example7)
+            // sourcery: expected = 227
+            let example8 = loadData(file: Data.Input.Day10.example8)
+            // sourcery: expected = 81
+            let example5 = loadData(file: Data.Input.Day10.example5)
+            // sourcery: expected = 1960
+            let data = loadData(file: Data.Input.Day10.data)
+        }
+    }
+    
+    struct Day11 {
+        let day = Tasks.Day11()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day11.P = 25
+            
+            // sourcery: expected = 55312
+            let example1 = loadData(file: Data.Input.Day11.example1)
+            // sourcery: expected = 213625
+            let data = loadData(file: Data.Input.Day11.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day11.P = 75
+            
+            // sourcery: expected = 252442982856820
+            let data = loadData(file: Data.Input.Day11.data)
+        }
+    }
+    
+    struct Day12 {
+        let day = Tasks.Day12()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day12.P = ()
+            
+            // sourcery: expected = 140
+            let example1 = loadData(file: Data.Input.Day12.example1)
+            // sourcery: expected = 772
+            let example2 = loadData(file: Data.Input.Day12.example2)
+            // sourcery: expected = 1930
+            let example3 = loadData(file: Data.Input.Day12.example3)
+            // sourcery: expected = 1457298
+            let data = loadData(file: Data.Input.Day12.data)
+        }
+        
+        struct Task2 {
+            let task = Task.task2
+            let param: Tasks.Day12.P = ()
+            
+            // sourcery: expected = 80
+            let example1 = loadData(file: Data.Input.Day12.example1)
+            // sourcery: expected = 436
+            let example2 = loadData(file: Data.Input.Day12.example2)
+            // sourcery: expected = 236
+            let example4 = loadData(file: Data.Input.Day12.example4)
+            // sourcery: expected = 368
+            let example5 = loadData(file: Data.Input.Day12.example5)
+            // sourcery: expected = 921636
+            let data = loadData(file: Data.Input.Day12.data)
+        }
+    }
 }
-
-@MainActor
-public let cases: [any CaseProtocol] = [
-    Case(day: Day1(), task: .task1, data: loadData(file: Data.Days.Day1.example1), param: (), expected: 11),
-    Case(day: Day1(), task: .task1, data: loadData(file: Data.Days.Day1.data), param: (), expected: 1151792),
-    Case(day: Day1(), task: .task2, data: loadData(file: Data.Days.Day1.example1), param: (), expected: 31),
-    Case(day: Day1(), task: .task2, data: loadData(file: Data.Days.Day1.data), param: (), expected: 21790168),
-    Case(day: Day2(), task: .task1, data: loadData(file: Data.Days.Day2.example1), param: (), expected: 2),
-    Case(day: Day2(), task: .task1, data: loadData(file: Data.Days.Day2.data), param: (), expected: 442),
-    Case(day: Day2(), task: .task2, data: loadData(file: Data.Days.Day2.example1), param: (), expected: 4),
-    Case(day: Day2(), task: .task2, data: loadData(file: Data.Days.Day2.data), param: (), expected: 493),
-    Case(day: Day3(), task: .task1, data: loadData(file: Data.Days.Day3.example1), param: (), expected: 161),
-    Case(day: Day3(), task: .task1, data: loadData(file: Data.Days.Day3.data), param: (), expected: 180233229),
-    Case(day: Day3(), task: .task2, data: loadData(file: Data.Days.Day3.example2), param: (), expected: 48),
-    Case(day: Day3(), task: .task2, data: loadData(file: Data.Days.Day3.data), param: (), expected: 95411583),
-    Case(day: Day4(), task: .task1, data: loadData(file: Data.Days.Day4.example1), param: "XMAS", expected: 18),
-    Case(day: Day4(), task: .task1, data: loadData(file: Data.Days.Day4.data), param: "XMAS", expected: 2573),
-    Case(day: Day4(), task: .task2, data: loadData(file: Data.Days.Day4.example1), param: "MAS", expected: 9),
-    Case(day: Day4(), task: .task2, data: loadData(file: Data.Days.Day4.data), param: "MAS", expected: 1850),
-    Case(day: Day5(), task: .task1, data: loadData(file: Data.Days.Day5.example1), param: (), expected: 143),
-    Case(day: Day5(), task: .task1, data: loadData(file: Data.Days.Day5.data), param: (), expected: 4959),
-    Case(day: Day5(), task: .task2, data: loadData(file: Data.Days.Day5.example1), param: (), expected: 123),
-    Case(day: Day5(), task: .task2, data: loadData(file: Data.Days.Day5.data), param: (), expected: 4655),
-    Case(day: Day6(), task: .task1, data: loadData(file: Data.Days.Day6.example1), param: (), expected: 41),
-    Case(day: Day6(), task: .task1, data: loadData(file: Data.Days.Day6.data), param: (), expected: 4973),
-    Case(day: Day6(), task: .task2, data: loadData(file: Data.Days.Day6.example1), param: (), expected: 6),
-    Case(day: Day6(), task: .task2, data: loadData(file: Data.Days.Day6.data), param: (), expected: 1482),
-    Case(day: Day7(), task: .task1, data: loadData(file: Data.Days.Day7.example1), param: [.add, .multiply], expected: 3749),
-    Case(day: Day7(), task: .task1, data: loadData(file: Data.Days.Day7.data), param: [.add, .multiply], expected: 5702958180383),
-    Case(day: Day7(), task: .task2, data: loadData(file: Data.Days.Day7.example1), param: Day7.Operators.allCases, expected: 11387),
-    Case(day: Day7(), task: .task2, data: loadData(file: Data.Days.Day7.data), param: Day7.Operators.allCases, expected: 92612386119138),
-    Case(day: Day8(), task: .task1, data: loadData(file: Data.Days.Day8.example1), param: (), expected: 14),
-    Case(day: Day8(), task: .task1, data: loadData(file: Data.Days.Day8.data), param: (), expected: 320),
-    Case(day: Day8(), task: .task2, data: loadData(file: Data.Days.Day8.example1), param: (), expected: 34),
-    Case(day: Day8(), task: .task2, data: loadData(file: Data.Days.Day8.data), param: (), expected: 1157),
-    Case(day: Day9(), task: .task1, data: loadData(file: Data.Days.Day9.example1), param: (), expected: 1928),
-    Case(day: Day9(), task: .task1, data: loadData(file: Data.Days.Day9.data), param: (), expected: 6356833654075),
-    Case(day: Day9(), task: .task2, data: loadData(file: Data.Days.Day9.example1), param: (), expected: 2858),
-    Case(day: Day9(), task: .task2, data: loadData(file: Data.Days.Day9.data), param: (), expected: 6389911791746),
-    Case(day: Day10(), task: .task1, data: loadData(file: Data.Days.Day10.example1), param: (), expected: 1),
-    Case(day: Day10(), task: .task1, data: loadData(file: Data.Days.Day10.example2), param: (), expected: 2),
-    Case(day: Day10(), task: .task1, data: loadData(file: Data.Days.Day10.example3), param: (), expected: 4),
-    Case(day: Day10(), task: .task1, data: loadData(file: Data.Days.Day10.example4), param: (), expected: 3),
-    Case(day: Day10(), task: .task1, data: loadData(file: Data.Days.Day10.example5), param: (), expected: 36),
-    Case(day: Day10(), task: .task1, data: loadData(file: Data.Days.Day10.data), param: (), expected: 816),
-    Case(day: Day10(), task: .task2, data: loadData(file: Data.Days.Day10.example6), param: (), expected: 3),
-    Case(day: Day10(), task: .task2, data: loadData(file: Data.Days.Day10.example7), param: (), expected: 13),
-    Case(day: Day10(), task: .task2, data: loadData(file: Data.Days.Day10.example8), param: (), expected: 227),
-    Case(day: Day10(), task: .task2, data: loadData(file: Data.Days.Day10.example5), param: (), expected: 81),
-    Case(day: Day10(), task: .task2, data: loadData(file: Data.Days.Day10.data), param: (), expected: 1960),
-    Case(day: Day11(), task: .task1, data: loadData(file: Data.Days.Day11.example1), param: 25, expected: 55312),
-    Case(day: Day11(), task: .task1, data: loadData(file: Data.Days.Day11.data), param: 25, expected: 213625),
-    Case(day: Day11(), task: .task2, data: loadData(file: Data.Days.Day11.data), param: 75, expected: 252442982856820),
-    Case(day: Day12(), task: .task1, data: loadData(file: Data.Days.Day12.example1), param: (), expected: 140),
-    Case(day: Day12(), task: .task1, data: loadData(file: Data.Days.Day12.example2), param: (), expected: 772),
-    Case(day: Day12(), task: .task1, data: loadData(file: Data.Days.Day12.example3), param: (), expected: 1930),
-    Case(day: Day12(), task: .task1, data: loadData(file: Data.Days.Day12.data), param: (), expected: 1457298),
-    Case(day: Day12(), task: .task2, data: loadData(file: Data.Days.Day12.example1), param: (), expected: 80),
-    Case(day: Day12(), task: .task2, data: loadData(file: Data.Days.Day12.example2), param: (), expected: 436),
-    Case(day: Day12(), task: .task2, data: loadData(file: Data.Days.Day12.example4), param: (), expected: 236),
-    Case(day: Day12(), task: .task2, data: loadData(file: Data.Days.Day12.example5), param: (), expected: 368),
-    Case(day: Day12(), task: .task2, data: loadData(file: Data.Days.Day12.data), param: (), expected: 921636),
-]

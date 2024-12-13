@@ -1,0 +1,6 @@
+sources:
+    - Sources/Data/Cases.swift
+templates:
+    - Templates
+output:
+    Tests/TaskTests/

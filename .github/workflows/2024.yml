@@ -15,6 +15,10 @@ defaults:
   run:
     working-directory: "2024/AoC2024"
 
+permissions:
+  deployments: write
+  contents: write
+
 jobs:
   test:
     runs-on: macos-latest
@@ -67,6 +71,7 @@ jobs:
       with:
         tool: 'jmh'
         output-file-path: ./2024/AoC2024/Current_run.jmh.json
-        external-data-json-path: ./2024/AoC2024/benchmarks/benchmark-data.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true
+        benchmark-data-dir-path: 2024
+        auto-push: true

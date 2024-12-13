@@ -1,0 +1,31 @@
+name: 2024 tests
+
+on:
+  push:
+    paths:
+      - ".github/workflows/2024.yml"
+      - "2024/**"
+  pull_request:
+    paths:
+      - "2024/**"
+
+defaults:
+  run:
+    working-directory: "2024/AoC2024"
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f
+    - name: Run tests
+      run: swift test --xunit-output report.xml
+    - name: Unit Test Results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: 2024 test results
+        path: 2024/report-swift-testing.xml
+        reporter: java-junit

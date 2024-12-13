@@ -15,9 +15,7 @@ defaults:
   run:
     working-directory: "2024/AoC2024"
 
-permissions:
-  deployments: write
-  contents: write
+permissions: write-all
 
 jobs:
   test:

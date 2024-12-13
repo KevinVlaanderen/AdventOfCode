@@ -25,7 +25,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-spm-
     - name: Set up Swift
-      uses: swift-actions/setup-swift@3aed395c5397f62deb91d8fe7af1418a9ae4d16f # 2.1.0
+      uses: SwiftyLab/setup-swift@151b05f786fbd6304bd81fd1e52cd63d306d04e9 # 1.9.0
       with:
         swift-version: "6"
     - name: Run tests

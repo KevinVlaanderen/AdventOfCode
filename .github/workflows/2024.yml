@@ -23,9 +23,9 @@ jobs:
     - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # 4.2.0
       with:
         path: 2024/AoC2024/.build
-        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        key: ${{ runner.os }}-spm-tests-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
-          ${{ runner.os }}-spm-
+          ${{ runner.os }}-spm-tests-
     - name: Set up Swift
       uses: SwiftyLab/setup-swift@151b05f786fbd6304bd81fd1e52cd63d306d04e9 # 1.9.0
       with:
@@ -51,9 +51,9 @@ jobs:
         path: |
           2024/AoC2024/.build
           ./benchmarks
-        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        key: ${{ runner.os }}-spm-benchmarks-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
-          ${{ runner.os }}-spm-
+          ${{ runner.os }}-spm-benchmarks-
     - name: Set up Swift
       uses: SwiftyLab/setup-swift@151b05f786fbd6304bd81fd1e52cd63d306d04e9 # 1.9.0
       with:

@@ -50,7 +50,7 @@ jobs:
       with:
         path: |
           2024/AoC2024/.build
-          ./benchmarks
+          2024/AoC2024/benchmarks
         key: ${{ runner.os }}-spm-benchmarks-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
           ${{ runner.os }}-spm-benchmarks-
@@ -67,6 +67,6 @@ jobs:
       with:
         tool: 'jmh'
         output-file-path: ./2024/AoC2024/Current_run.jmh.json
-        external-data-json-path: ./2024/AoC2024/cache/benchmark-data.json
+        external-data-json-path: ./2024/AoC2024/benchmarks/benchmark-data.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true

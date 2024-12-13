@@ -2,10 +2,12 @@ name: 2024 tests
 
 on:
   push:
+    branches: [ "main" ]
     paths:
       - ".github/workflows/2024.yml"
       - "2024/**"
   pull_request:
+    branches: [ "main" ]
     paths:
       - "2024/**"
 

@@ -1,6 +1,13 @@
-sources:
-    - Sources/Data/Cases.swift
-templates:
-    - Templates
-output:
-    Tests/TaskTests/
+configurations:
+  - sources:
+      - Sources/Data/Cases.swift
+    templates:
+      - Templates/TestCases.stencil
+    output:
+        Tests/TaskTests/
+  - sources:
+      - Sources/Data/Cases.swift
+    templates:
+      - Templates/Benchmarks.stencil
+    output:
+        Benchmarks/Tasks/Tasks.swift

@@ -39,7 +39,6 @@ let package = Package(
         .target(
             name: "Data",
             dependencies: [
-                .product(name: "SourceryRuntime", package: "sourcery"),
                 "Framework",
                 "Tasks"
             ],resources: [

@@ -1,0 +1,75 @@
+name: 2024 tests
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/2024.yml"
+      - "2024/**"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "2024/**"
+
+defaults:
+  run:
+    working-directory: "2024/AoC2024"
+
+permissions: write-all
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
+    - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # 4.2.0
+      with:
+        path: 2024/AoC2024/.build
+        key: ${{ runner.os }}-spm-tests-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-tests-
+    - name: Set up Swift
+      uses: SwiftyLab/setup-swift@151b05f786fbd6304bd81fd1e52cd63d306d04e9 # 1.9.0
+      with:
+        swift-version: "6"
+    - name: Install jemalloc
+      run: brew install jemalloc
+    - name: Run tests
+      run: swift test --xunit-output report.xml
+    - name: Unit Test Results
+      uses: dorny/test-reporter@31a54ee7ebcacc03a09ea97a7e5465a47b84aea5 # 1.9.1
+      if: always()
+      with:
+        name: 2024 test results
+        path: 2024/AoC2024/report-swift-testing.xml
+        reporter: java-junit
+
+  benchmark:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
+    - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # 4.2.0
+      with:
+        path: |
+          2024/AoC2024/.build
+          2024/AoC2024/benchmarks
+        key: ${{ runner.os }}-spm-benchmarks-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-benchmarks-
+    - name: Set up Swift
+      uses: SwiftyLab/setup-swift@151b05f786fbd6304bd81fd1e52cd63d306d04e9 # 1.9.0
+      with:
+        swift-version: "6"
+    - name: Install jemalloc
+      run: brew install jemalloc
+    - name: Run benchmarks
+      run: swift package --allow-writing-to-package-directory benchmark --grouping metric --format jmh
+    - name: Store benchmark result
+      uses: benchmark-action/github-action-benchmark@d48d326b4ca9ba73ca0cd0d59f108f9e02a381c7 # 1.20.4
+      with:
+        tool: 'jmh'
+        output-file-path: ./2024/AoC2024/Current_run.jmh.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        summary-always: true
+        benchmark-data-dir-path: 2024
+        auto-push: true

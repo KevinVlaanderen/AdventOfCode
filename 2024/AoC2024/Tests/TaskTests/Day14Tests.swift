@@ -23,4 +23,14 @@ struct Day14 {
             try #expect(execute(day: day.day, task: task.task, data: task.data, param: param) == expected)
         }
     }
+    struct Task2 {
+        @Test
+        func data() async throws {
+            let day = Cases.Day14()
+            let task = Cases.Day14.Task2()
+            let param = task.param
+            let expected = 7492
+            try #expect(execute(day: day.day, task: task.task, data: task.data, param: param) == expected)
+        }
+    }
 }

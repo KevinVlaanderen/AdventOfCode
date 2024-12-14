@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1734215381643,
+  "lastUpdate": 1734215413725,
   "repoUrl": "https://github.com/KevinVlaanderen/AdventOfCode",
   "entries": {
     "Benchmark": [
@@ -744,6 +744,198 @@ window.BENCHMARK_DATA = {
             "value": 44.8,
             "unit": "# / s",
             "extra": "iterations: 45\nforks: 1\nthreads: 1"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kevinvlaanderen@gmail.com",
+            "name": "Kevin Vlaanderen",
+            "username": "KevinVlaanderen"
+          },
+          "committer": {
+            "email": "kevinvlaanderen@gmail.com",
+            "name": "Kevin Vlaanderen",
+            "username": "KevinVlaanderen"
+          },
+          "distinct": true,
+          "id": "87929ad084bae72e777f0ac5ba9ef4835d265db5",
+          "message": "simplify case definition",
+          "timestamp": "2024-12-14T23:28:14+01:00",
+          "tree_id": "038b8127623c52276ef7c9ce902128ca7260a166",
+          "url": "https://github.com/KevinVlaanderen/AdventOfCode/commit/87929ad084bae72e777f0ac5ba9ef4835d265db5"
+        },
+        "date": 1734215412624,
+        "tool": "jmh",
+        "benches": [
+          {
+            "name": "package.benchmark.Benchmarks.Day7.Task2.data",
+            "value": 14.071,
+            "unit": "# / s",
+            "extra": "iterations: 14\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day9.Task1.data",
+            "value": 405.104,
+            "unit": "# / s",
+            "extra": "iterations: 396\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day4.Task2.data",
+            "value": 95.621,
+            "unit": "# / s",
+            "extra": "iterations: 95\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day10.Task1.data",
+            "value": 629.538,
+            "unit": "# / s",
+            "extra": "iterations: 608\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day13.Task1.data",
+            "value": 64.406,
+            "unit": "# / s",
+            "extra": "iterations: 64\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day6.Task2.data",
+            "value": 9,
+            "unit": "# / s",
+            "extra": "iterations: 10\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day5.Task1.data",
+            "value": 22.478,
+            "unit": "# / s",
+            "extra": "iterations: 23\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day1.Task2.data",
+            "value": 472.639,
+            "unit": "# / s",
+            "extra": "iterations: 460\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day12.Task1.data",
+            "value": 69.304,
+            "unit": "# / s",
+            "extra": "iterations: 69\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day1.Task1.data",
+            "value": 573.735,
+            "unit": "# / s",
+            "extra": "iterations: 555\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day8.Task2.data",
+            "value": 642.745,
+            "unit": "# / s",
+            "extra": "iterations: 620\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day3.Task1.data",
+            "value": 39.2,
+            "unit": "# / s",
+            "extra": "iterations: 40\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day11.Task1.data",
+            "value": 1597.144,
+            "unit": "# / s",
+            "extra": "iterations: 1476\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day2.Task2.data",
+            "value": 277.626,
+            "unit": "# / s",
+            "extra": "iterations: 273\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day11.Task2.data",
+            "value": 43.705,
+            "unit": "# / s",
+            "extra": "iterations: 44\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day13.Task2.data",
+            "value": 64.344,
+            "unit": "# / s",
+            "extra": "iterations: 64\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day6.Task1.data",
+            "value": 341.371,
+            "unit": "# / s",
+            "extra": "iterations: 334\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day10.Task2.data",
+            "value": 642.282,
+            "unit": "# / s",
+            "extra": "iterations: 620\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day12.Task2.data",
+            "value": 52.868,
+            "unit": "# / s",
+            "extra": "iterations: 53\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day9.Task2.data",
+            "value": 48.694,
+            "unit": "# / s",
+            "extra": "iterations: 49\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day8.Task1.data",
+            "value": 843.584,
+            "unit": "# / s",
+            "extra": "iterations: 805\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day14.Task1.data",
+            "value": 101.455,
+            "unit": "# / s",
+            "extra": "iterations: 101\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day2.Task1.data",
+            "value": 323.016,
+            "unit": "# / s",
+            "extra": "iterations: 317\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day5.Task2.data",
+            "value": 22.348,
+            "unit": "# / s",
+            "extra": "iterations: 23\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day4.Task1.data",
+            "value": 98.735,
+            "unit": "# / s",
+            "extra": "iterations: 98\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day14.Task2.data",
+            "value": 101.535,
+            "unit": "# / s",
+            "extra": "iterations: 101\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day7.Task1.data",
+            "value": 67.779,
+            "unit": "# / s",
+            "extra": "iterations: 68\nforks: 1\nthreads: 1"
+          },
+          {
+            "name": "package.benchmark.Benchmarks.Day3.Task2.data",
+            "value": 16,
+            "unit": "# / s",
+            "extra": "iterations: 17\nforks: 1\nthreads: 1"
           }
         ]
       }

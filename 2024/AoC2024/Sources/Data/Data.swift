@@ -69,6 +69,13 @@ public enum Data {
       /// Input/Day13/example1.txt
       public static let example1 = File(name: "example1", ext: "txt", relativePath: "Input/Day13", mimeType: "text/plain")
     }
+    /// Input/Day14/
+    public enum Day14 {
+      /// Input/Day14/data.txt
+      public static let data = File(name: "data", ext: "txt", relativePath: "Input/Day14", mimeType: "text/plain")
+      /// Input/Day14/example1.txt
+      public static let example1 = File(name: "example1", ext: "txt", relativePath: "Input/Day14", mimeType: "text/plain")
+    }
     /// Input/Day2/
     public enum Day2 {
       /// Input/Day2/data.txt

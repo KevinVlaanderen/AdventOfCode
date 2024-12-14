@@ -337,4 +337,18 @@ struct Cases: Sendable {
             let data = loadData(file: Data.Input.Day13.data)
         }
     }
+    
+    struct Day14 {
+        let day = Tasks.Day14()
+        
+        struct Task1 {
+            let task = Task.task1
+            let param: Tasks.Day14.P = 100
+            
+            // sourcery: expected = 12
+            let example1 = loadData(file: Data.Input.Day14.example1)
+            // sourcery: expected = 208437768
+            let data = loadData(file: Data.Input.Day14.data)
+        }
+    }
 }

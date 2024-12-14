@@ -1,4 +1,4 @@
-public struct Point: Hashable {
+public struct Point: Hashable, Sendable {
     public var x, y: Int
 
     public init(x: Int, y: Int) {

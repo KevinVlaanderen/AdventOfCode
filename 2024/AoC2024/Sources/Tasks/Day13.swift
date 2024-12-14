@@ -3,30 +3,25 @@ import Framework
 internal import Algorithms
 
 public struct Day13: Day {
+    public typealias P = (Int, Int) // (Modifier, Limit)
+    
     public init() {}
         
     public func perform(task: Task, data: String, param: P) throws -> Int {
-        let machines = parse(data)
-        
-        return machines.map { machine in
-            var limit = min(machine.prize.x/machine.b.x, machine.prize.y/machine.b.y)
-            
-            while limit >= 0 {
-                let remainderX = machine.prize.x-limit*machine.b.x
-                let remainderY = machine.prize.y-limit*machine.b.y
+        parse(data, modifier: param.0)
+            .map { machine in
+                let b = (machine.a.x * machine.prize.y - machine.a.y * machine.prize.x) / (machine.a.x * machine.b.y - machine.a.y * machine.b.x)
+                let a = (machine.prize.x - machine.b.x * b) / machine.a.x
                 
-                let fitsX = remainderX / machine.a.x
-                let fitsY = remainderY / machine.a.y
+                let prize = Prize(x: a*machine.a.x + b * machine.b.x, y: a * machine.a.y + b*machine.b.y)
                 
-                if remainderX % machine.a.x == 0 && remainderY % machine.a.y == 0 && fitsX == fitsY {
-                    return limit+fitsX*3
+                if (param.1 >= 0 && (a > param.1 || b > param.1)) || prize != machine.prize {
+                    return 0
                 }
                 
-                limit -= 1
+                return 3*a+b
             }
-            return 0
-        }
-        .reduce(0, +)
+            .reduce(0, +)
     }
     
     nonisolated(unsafe)
@@ -36,7 +31,7 @@ public struct Day13: Day {
     nonisolated(unsafe)
     private static let prizePattern = /Prize: X=(\d+), Y=(\d+)/
     
-    private func parse(_ data: String) -> [Machine] {
+    private func parse(_ data: String, modifier: Int) -> [Machine] {
         data.split(separator: Day13.emptyLinePattern).map { block in
             let lines = block.split(whereSeparator: \.isNewline)
             guard let aMatch = lines[0].wholeMatch(of: Day13.buttonPattern) else {
@@ -51,7 +46,7 @@ public struct Day13: Day {
             return Machine(
                 a: Button(x: Int(aMatch.output.1)!, y: Int(aMatch.output.2)!),
                 b: Button(x: Int(bMatch.output.1)!, y: Int(bMatch.output.2)!),
-                prize: Prize(x: Int(prizeMatch.output.1)!, y: Int(prizeMatch.output.2)!)
+                prize: Prize(x: Int(prizeMatch.output.1)!+modifier, y: Int(prizeMatch.output.2)!+modifier)
             )
         }
     }

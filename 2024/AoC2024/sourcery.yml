@@ -1,6 +1,8 @@
 configurations:
   - sources:
       - Sources/Data/Cases.swift
+      - Sources/Tasks/
+      - Sources/Framework/
     templates:
       - Templates/TestCases.stencil
     output:

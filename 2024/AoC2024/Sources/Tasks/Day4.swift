@@ -3,19 +3,25 @@ internal import Algorithms
 import Framework
 
 public struct Day4: Day {
-    public typealias P = String
+    public typealias P = (Task, String)
     
-    public init() {}
+    private let data: String
+    private let param: P
     
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
         let grid = parse(data)
 
-        switch task {
+        switch param.0 {
         case .task1:
-            return task1(grid: grid, word: param)
+            return task1(grid: grid, word: param.1)
         case .task2:
-            precondition(param.count % 2 == 1)
-            return task2(grid: grid, word: param)
+            precondition(param.1.count % 2 == 1)
+            return task2(grid: grid, word: param.1)
         }
     }
     

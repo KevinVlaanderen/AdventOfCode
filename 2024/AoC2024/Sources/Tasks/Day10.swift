@@ -3,9 +3,15 @@ import Framework
 internal import Algorithms
 
 public struct Day10: Day {
-    public init() {}
-        
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    private let data: String
+    private let param: P
+    
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
         let topographicMap = parse(data)
         
         let trailheads = topographicMap.filter {
@@ -19,7 +25,7 @@ public struct Day10: Day {
             var found: Set<Point> = []
             let numPaths = pathsTo(9, from: current.position, topographicMap: topographicMap, found: &found)
             
-            switch task {
+            switch param {
             case .task1:
                 return result + found.count
             case .task2:

@@ -8,37 +8,25 @@ struct Day7 {
     struct Task1 {
         @Test
         func example1() async throws {
-            let day = Cases.Day7()
             let task = Cases.Day7.Task1()
-            let param = task.param
-            let expected = 3749
-            try #expect(execute(day: day.day, task: task.task, data: task.example1, param: param) == expected)
+            try #expect(task.example1?.perform() == 3749)
         }
         @Test
         func data() async throws {
-            let day = Cases.Day7()
             let task = Cases.Day7.Task1()
-            let param = task.param
-            let expected = 5702958180383
-            try #expect(execute(day: day.day, task: task.task, data: task.data, param: param) == expected)
+            try #expect(task.data?.perform() == 5702958180383)
         }
     }
     struct Task2 {
         @Test
         func example1() async throws {
-            let day = Cases.Day7()
             let task = Cases.Day7.Task2()
-            let param = task.param
-            let expected = 11387
-            try #expect(execute(day: day.day, task: task.task, data: task.example1, param: param) == expected)
+            try #expect(task.example1?.perform() == 11387)
         }
         @Test
         func data() async throws {
-            let day = Cases.Day7()
             let task = Cases.Day7.Task2()
-            let param = task.param
-            let expected = 92612386119138
-            try #expect(execute(day: day.day, task: task.task, data: task.data, param: param) == expected)
+            try #expect(task.data?.perform() == 92612386119138)
         }
     }
 }

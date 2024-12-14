@@ -3,12 +3,18 @@ internal import Algorithms
 import Framework
 
 public struct Day1: Day {
-    public init() {}
+    private let data: String
+    private let param: P
     
-    public func perform(task: Task, data: String, param: ()) throws -> Int {
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
         let (left, right) = parse(data: data)
         
-        switch task {
+        switch param {
         case .task1:
             return task1(left: left, right: right)
         case .task2:

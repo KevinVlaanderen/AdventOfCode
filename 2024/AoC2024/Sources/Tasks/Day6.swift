@@ -4,16 +4,22 @@ internal import SwiftGraph
 import Framework
 
 public struct Day6: Day {
-    public init() {}
+    private let data: String
+    private let param: P
     
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
         let grid: any Grid<Content> = parse(data)
 
         guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
             fatalError("no guard found")
         }
         
-        switch task {
+        switch param {
         case .task1:
             return try task1(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
         case .task2:

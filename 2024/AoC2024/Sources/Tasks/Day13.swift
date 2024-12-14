@@ -5,9 +5,15 @@ internal import Algorithms
 public struct Day13: Day {
     public typealias P = (Int, Int) // (Modifier, Limit)
     
-    public init() {}
-        
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    private let data: String
+    private let param: P
+    
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
         parse(data, modifier: param.0)
             .map { machine in
                 let b = (machine.a.x * machine.prize.y - machine.a.y * machine.prize.x) / (machine.a.x * machine.b.y - machine.a.y * machine.b.x)

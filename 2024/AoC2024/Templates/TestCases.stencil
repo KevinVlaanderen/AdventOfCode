@@ -11,15 +11,8 @@ struct {{day.localName}} {
         {% for instance in task.variables|annotated:"expected" %}
         @Test
         func {{instance.name}}() async throws {
-            let day = {{day.name}}()
             let task = {{task.name}}()
-            {% for var in task.variables %}
-            {% if var.name == "param" %}
-            let param = task.param
-            {% endif %}
-            {% endfor %}
-            let expected = {{instance.annotations.expected}}
-            try #expect(execute(day: day.day, task: task.task, data: task.{{instance.name}}, param: param) == expected)
+            try #expect(task.{{instance.name}}?.perform() == {{instance.annotations.expected}})
         }
         {% endfor %}
     }

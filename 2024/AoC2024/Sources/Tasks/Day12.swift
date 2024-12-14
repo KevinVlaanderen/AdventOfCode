@@ -3,12 +3,18 @@ import Framework
 internal import Algorithms
 
 public struct Day12: Day {
-    public init() {}
-        
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    private let data: String
+    private let param: P
+    
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
         let farm = parse(data)
         
-        switch task {
+        switch param {
         case .task1:
             return farm.regions().reduce(0) { $0 + $1.plots.count*$1.fences(farm: farm) }
         case .task2:

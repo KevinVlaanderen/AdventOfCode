@@ -3,20 +3,17 @@ internal import Algorithms
 import Framework
 
 public struct Day3: Day {
-    public init() {}
+    private let data: String
+    private let param: P
     
-    nonisolated(unsafe)
-    private static let mulPattern = /mul\((\d+),(\d+)\)/
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
     
-    nonisolated(unsafe)
-    private static let doPattern = /do\(\)/
-    
-    nonisolated(unsafe)
-    private static let dontPattern = /don't\(\)/
-    
-    public func perform(task: Task, data: String, param: ()) throws -> Int {
+    public func perform() throws -> Int {
         let instructions = {
-            switch task {
+            switch param {
             case .task1:
                 return parse1(data)
             case .task2:
@@ -26,6 +23,15 @@ public struct Day3: Day {
         
         return execute(instructions)
     }
+    
+    nonisolated(unsafe)
+    private static let mulPattern = /mul\((\d+),(\d+)\)/
+    
+    nonisolated(unsafe)
+    private static let doPattern = /do\(\)/
+    
+    nonisolated(unsafe)
+    private static let dontPattern = /don't\(\)/
     
     private func parse1(_ data: String) -> [Instructions] {
         return data.indices.reduce(into: []) { result, index in

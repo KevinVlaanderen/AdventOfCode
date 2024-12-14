@@ -3,18 +3,24 @@ import Framework
 internal import Algorithms
 
 public struct Day14: Day {
-    public typealias P = Bool
-
-    public init() {}
+    public typealias P = (Task, Bool)
+    
+    private let data: String
+    private let param: P
+    
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
         
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    public func perform() throws -> Int {
         var room = Room(robots: parse(data))
         
-        switch task {
+        switch param.0 {
         case .task1:
-            return task1(room: &room, draw: param)
+            return task1(room: &room, draw: param.1)
         case .task2:
-            return task2(room: &room, draw: param)
+            return task2(room: &room, draw: param.1)
         }
     }
     

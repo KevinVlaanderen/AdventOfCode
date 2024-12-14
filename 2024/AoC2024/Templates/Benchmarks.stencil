@@ -9,19 +9,13 @@ let benchmarks = {
     {% for task in day.containedTypes|struct %}
     {% for instance in task.variables|annotated:"expected" %}
     {% if instance.name == "data" %}
-    Benchmark("{{task.name}}.{{instance.name}}") { benchmark in
+    Benchmark("{{day.localName}}.{{task.localName}}.{{instance.name}}") { benchmark in
         benchmark.configuration.timeUnits = .microseconds
         
-        let day = {{day.name}}()
         let task = {{task.name}}()
-        {% for var in task.variables %}
-        {% if var.name == "param" %}
-        let param = task.param
-        {% endif %}
-        {% endfor %}
                 
         for _ in benchmark.scaledIterations {
-            blackHole(try execute(day: day.day, task: task.task, data: task.{{instance.name}}, param: param))
+            try blackHole(task.{{instance.name}}!.perform())
         }
     }
     {% endif %}

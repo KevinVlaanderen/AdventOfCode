@@ -4,12 +4,18 @@ internal import SwiftGraph
 import Framework
 
 public struct Day5: Day {
-    public init() {}
+    private let data: String
+    private let param: P
     
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
         let (orderPairs, updates) = parse(data)
 
-        switch task {
+        switch param {
         case .task1:
             return task1(orderPairs: orderPairs, updates: updates)
         case .task2:

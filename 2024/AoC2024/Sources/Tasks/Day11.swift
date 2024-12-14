@@ -5,9 +5,15 @@ internal import Algorithms
 public struct Day11: Day {
     public typealias P = Int
     
-    public init() {}
-        
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    private let data: String
+    private let param: P
+    
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
         let stones = parse(data)
         
         var cache: Cache = [:]

@@ -5,9 +5,15 @@ import Framework
 public struct Day7: Day {
     public typealias P = [Operators]
     
-    public init() {}
+    private let data: String
+    private let param: P
     
-    public func perform(task: Task, data: String, param: P) throws -> Int {
+    public init(data: String, param: P) {
+        self.data = data
+        self.param = param
+    }
+    
+    public func perform() throws -> Int {
        parse(data)
             .filter(canSatisfy(operators: param))
             .map { $0.result }

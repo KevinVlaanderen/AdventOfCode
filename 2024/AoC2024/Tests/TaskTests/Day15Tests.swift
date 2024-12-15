@@ -19,7 +19,19 @@ struct Day15 {
         @Test
         func data() async throws {
             let task = Cases.Day15.Task1()
-            try #expect(task.data?.perform() == -1)
+            try #expect(task.data?.perform() == 1412971)
+        }
+    }
+    struct Task2 {
+        @Test
+        func example1() async throws {
+            let task = Cases.Day15.Task2()
+            try #expect(task.example1?.perform() == 9021)
+        }
+        @Test
+        func data() async throws {
+            let task = Cases.Day15.Task2()
+            try #expect(task.data?.perform() == 1429299)
         }
     }
 }

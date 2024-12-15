@@ -3,4 +3,5 @@ public enum AoCError: Error {
     case dataNotFound
     case invalidState
     case invalidTask
+    case parseError(String)
 }

@@ -1,4 +1,4 @@
-public struct Point: Hashable, Sendable {
+public struct Point: Hashable, Sendable, Comparable {
     public var x, y: Int
 
     public init(x: Int, y: Int) {
@@ -12,5 +12,9 @@ public struct Point: Hashable, Sendable {
         neighbour.x += offset.x * distance
         neighbour.y += offset.y * distance
         return neighbour
+    }
+    
+    public static func < (lhs: Point, rhs: Point) -> Bool {
+        lhs.x == rhs.x && lhs.y == rhs.y
     }
 }

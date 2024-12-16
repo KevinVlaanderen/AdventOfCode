@@ -11,6 +11,21 @@ extension Grid {
     public func makeIterator() -> GridIterator<T> {
         return GridIterator<T>(grid: self)
     }
+    
+    public func neighbours(of point: Point, towards directions: [Direction]) -> [GridItem<T>] {
+        directions.compactMap { neighbour(of: point, towards: $0) }
+    }
+    
+    public func neighbour(of point: Point, towards direction: Direction) -> GridItem<T>? {
+        let neighbourPosition = point.neighbour(direction: direction)
+        let neighbour = self[neighbourPosition]
+        
+        guard let neighbour = neighbour else {
+            return nil
+        }
+        
+        return GridItem(position: neighbourPosition, value: neighbour)
+    }
 }
 
 public struct GridIterator<T: Equatable>: IteratorProtocol {

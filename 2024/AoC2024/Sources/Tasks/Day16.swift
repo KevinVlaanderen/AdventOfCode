@@ -16,13 +16,51 @@ public struct Day16: Day {
         let grid = try parse(data)
         let maze = try Maze(from: grid)
         
-        let reindeer = Reindeer(point: maze.start, direction: .E)
+        let reindeer = Step.move(to: maze.start, direction: .E)
 
-        let (_, costSoFar) = maze.path(from: reindeer, to: maze.end)
+        let (cameFrom, costSoFar) = try maze.path(from: reindeer, to: maze.end)
         
-        let costs = costSoFar.filter { $0.key.point == maze.end }.map({ $0.value })
+        let costs = costSoFar.filter { stepCost in
+            if case .move(let to, _) = stepCost.key {
+                return to == maze.end
+            }
+            return false
+        }.map({ $0.value })
+        let minimumCost = costs.dropFirst().reduce(costs.first!, min)
         
-        return costs.dropFirst().reduce(costs.first!, min)
+        switch param {
+        case .task1:
+            return minimumCost
+        case .task2:
+            var found = Set<Point>()
+            
+            let validSteps = cameFrom.keys.filter {
+                if case .move(let to, _) = $0 {
+                    return to == maze.end
+                }
+                return false
+            }
+            
+            for validStep in validSteps {
+                getValidPoints(for: validStep, cameFrom: cameFrom, found: &found)
+            }
+            
+            return found.count
+        }
+    }
+    
+    private func getValidPoints(for step: Step, cameFrom: [Step: Set<Step>], found: inout Set<Point>) {
+        if case .move(let to, _) = step {
+            found.insert(to)
+        }
+        
+        guard let previousSteps = cameFrom[step] else {
+            return
+        }
+        
+        for previousStep in previousSteps {
+            getValidPoints(for: previousStep, cameFrom: cameFrom, found: &found)
+        }
     }
 
     private func parse(_ data: String) throws -> any Grid<TileType> {
@@ -39,21 +77,23 @@ public struct Day16: Day {
         })
     }
     
-    private struct Position: Equatable, Hashable {
-        let point: Point
-        let direction: Direction
+    private enum TileType: Equatable, Hashable {
+        case empty, wall, start, end
     }
     
-    private struct Step: Equatable, Comparable, Hashable {
-        let position: Position
-        let cost: Int
+    private enum Step: Equatable, Hashable {
+        case move(to: Point, direction: Direction)
+        case rotate(direction: Direction, at: Point)
+    }
+    
+    private struct QueuedStep: Equatable, Comparable, Hashable {
+        let step: Step
+        let priority: Int
         
-        static func < (lhs: Step, rhs: Step) -> Bool {
-            lhs.cost < rhs.cost
+        static func < (lhs: QueuedStep, rhs: QueuedStep) -> Bool {
+            lhs.priority < rhs.priority
         }
     }
-    
-    private typealias Reindeer = Position
     
     private struct Maze {
         let start: Point
@@ -74,71 +114,71 @@ public struct Day16: Day {
             self.end = end.position
         }
         
-        func path(from start: Position, to end: Point) -> ([Position: Position?], [Position: Int]) {
-            var frontier = PriorityQueue<Step>(ascending: true, startingValues: [Step(position: start, cost: 0)])
+        func path(from start: Step, to end: Point) throws -> ([Step: Set<Step>], [Step: Int]) {
+            guard case .move(_, _) = start else {
+                throw Day16Error.invalidMove
+            }
             
-            var cameFrom: [Position: Position?] = [start: nil]
-            var costSoFar: [Position: Int] = [start: 0]
+            var frontier = PriorityQueue<QueuedStep>(ascending: true, startingValues: [QueuedStep(step: start, priority: 0)])
+            
+            var cameFrom: [Step: Set<Step>] = [start: []]
+            var costSoFar: [Step: Int] = [start: 0]
             
             while !frontier.isEmpty {
                 guard let current = frontier.pop() else {
                     break
                 }
                 
-                if current.position.point == end {
+                let (currentPoint, currentDirection) = switch current.step {
+                case let .move(to, direction): (to, direction)
+                case let .rotate(direction, at): (at, direction)
+                }
+                
+                if currentPoint == end {
                     break
                 }
                 
-                for next in neighbours(of: current.position, towards: Direction.orthogonal) {
-                    guard let currentCost = costSoFar[current.position] else {
+                for direction in Direction.orthogonal {
+                    let rotate = currentDirection != direction
+                    
+                    let nextPoint = currentPoint.neighbour(direction: direction)
+                    
+                    if let nextTile = grid[nextPoint], nextTile == .wall {
                         continue
                     }
                     
-                    let newCost = currentCost + cost(from: current.position, to: next)
-                    
-                    if let nextCost = costSoFar[next], newCost >= nextCost {
+                    guard let currentCost = costSoFar[current.step] else {
                         continue
                     }
                     
-                    costSoFar[next] = newCost
-                    // priority
-                    frontier.push(Step(position: next, cost: newCost))
-                    cameFrom[next] = current.position
+                    let newCost = currentCost + (rotate ? 1000 : 1)
+                    
+                    let nextStep: Step = rotate ? .rotate(direction: direction, at: currentPoint) : .move(to: nextPoint, direction: direction)
+                    
+                    guard let nextCost = costSoFar[nextStep] else {
+                        costSoFar[nextStep] = newCost
+                        frontier.push(QueuedStep(step: nextStep, priority: newCost))
+                        cameFrom[nextStep] = [current.step]
+                        continue
+                    }
+                    
+                    if newCost > nextCost {
+                        continue
+                    } else if newCost < nextCost {
+                        costSoFar[nextStep] = newCost
+                        frontier.push(QueuedStep(step: nextStep, priority: newCost))
+                        cameFrom[nextStep] = [current.step]
+                    } else {
+                        cameFrom[nextStep]?.insert(current.step)
+                    }
                 }
             }
             
             return (cameFrom, costSoFar)
         }
-        
-        func neighbours(of position: Position, towards directions: [Direction]) -> [Position] {
-            grid.neighbours(of: position.point, towards: Direction.orthogonal).compactMap { neighbour in
-                if let neighbourType = grid[neighbour.position], neighbourType == .wall {
-                    return nil
-                }
-                        
-                let direction: Direction? =
-                if neighbour.position.x == position.point.x && neighbour.position.y < position.point.y { Direction.N }
-                else if neighbour.position.x > position.point.x && neighbour.position.y == position.point.y { Direction.E }
-                else if neighbour.position.x == position.point.x && neighbour.position.y > position.point.y { Direction.S }
-                else if neighbour.position.x < position.point.x && neighbour.position.y == position.point.y { Direction.W }
-                else { nil }
-                
-                guard let direction = direction else {
-                    return nil
-                }
-                
-                return Position(point: neighbour.position, direction: direction)
-            }
-        }
-        
-        func cost(from: Position, to: Position) -> Int {
-            from.direction == to.direction ? 1 : 1001
-        }
     }
     
-    private enum TileType: Equatable, Hashable {
-        case empty, wall, start, end
+    private enum Day16Error: Error {
+        case invalidMove
     }
-    
-    
 }

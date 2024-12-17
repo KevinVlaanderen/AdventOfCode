@@ -9,24 +9,32 @@ struct Day2 {
         @Test
         func example1() async throws {
             let task = Cases.Day2.Task1()
-            try #expect(task.example1?.perform() == 2)
+            #expect(task != nil)
+            let result = try task.example1!.perform()
+            #expect("\(result)" == "2")
         }
         @Test
         func data() async throws {
             let task = Cases.Day2.Task1()
-            try #expect(task.data?.perform() == 442)
+            #expect(task != nil)
+            let result = try task.data!.perform()
+            #expect("\(result)" == "442")
         }
     }
     struct Task2 {
         @Test
         func example1() async throws {
             let task = Cases.Day2.Task2()
-            try #expect(task.example1?.perform() == 4)
+            #expect(task != nil)
+            let result = try task.example1!.perform()
+            #expect("\(result)" == "4")
         }
         @Test
         func data() async throws {
             let task = Cases.Day2.Task2()
-            try #expect(task.data?.perform() == 493)
+            #expect(task != nil)
+            let result = try task.data!.perform()
+            #expect("\(result)" == "493")
         }
     }
 }

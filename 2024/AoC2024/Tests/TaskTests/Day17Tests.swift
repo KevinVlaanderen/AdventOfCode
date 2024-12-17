@@ -4,30 +4,21 @@ import Testing
 import Framework
 @testable import Data
 
-struct Day14 {
+struct Day17 {
     struct Task1 {
         @Test
         func example1() async throws {
-            let task = Cases.Day14.Task1()
+            let task = Cases.Day17.Task1()
             #expect(task != nil)
             let result = try task.example1!.perform()
-            #expect("\(result)" == "12")
+            #expect("\(result)" == "4,6,3,5,6,3,5,2,1,0")
         }
         @Test
         func data() async throws {
-            let task = Cases.Day14.Task1()
+            let task = Cases.Day17.Task1()
             #expect(task != nil)
             let result = try task.data!.perform()
-            #expect("\(result)" == "208437768")
-        }
-    }
-    struct Task2 {
-        @Test
-        func data() async throws {
-            let task = Cases.Day14.Task2()
-            #expect(task != nil)
-            let result = try task.data!.perform()
-            #expect("\(result)" == "7492")
+            #expect("\(result)" == "7,3,1,3,6,3,6,0,2")
         }
     }
 }

@@ -12,7 +12,9 @@ struct {{day.localName}} {
         @Test
         func {{instance.name}}() async throws {
             let task = {{task.name}}()
-            try #expect(task.{{instance.name}}?.perform() == {{instance.annotations.expected}})
+            #expect(task != nil)
+            let result = try task.{{instance.name}}!.perform()
+            #expect("\(result)" == "{{instance.annotations.expected}}")
         }
         {% endfor %}
     }

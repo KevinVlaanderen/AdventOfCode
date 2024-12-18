@@ -3,7 +3,7 @@ internal import Algorithms
 import Framework
 
 public struct Day4: Day {
-    public typealias P = (Task, String)
+    public typealias P = (task: Task, word: String)
     
     private let data: String
     private let param: P
@@ -13,27 +13,33 @@ public struct Day4: Day {
         self.param = param
     }
     
-    public func perform() throws -> Int {
+    public func perform() throws -> R {
         let grid = parse(data)
 
-        switch param.0 {
+        switch param.task {
         case .task1:
-            return task1(grid: grid, word: param.1)
+            return try task1(grid: grid, word: param.word)
         case .task2:
-            precondition(param.1.count % 2 == 1)
-            return task2(grid: grid, word: param.1)
+            if param.word.count % 2 != 1 {
+                throw AoCError.invalidTask("word should have an odd length")
+            }
+            return try task2(grid: grid, word: param.word)
         }
     }
     
     private func parse(_ data: String) -> some Grid<Character> {
-        return ArrayGrid(data.split(whereSeparator: \.isNewline).map({ Array($0) }))
+        ArrayGrid(data.split(whereSeparator: \.isNewline).map({ Array($0) }))
     }
     
-    private func task1(grid: any Grid<Character>, word: String) -> R {
+    private func task1(grid: any Grid<Character>, word: String) throws -> Int {
         var count = 0
         
         for item in grid {
-            if item.value != word.first! {
+            guard let firstCharacter = word.first else {
+                throw AoCError.invalidState("word is empty")
+            }
+            
+            if item.value != firstCharacter {
                 continue
             }
             
@@ -47,11 +53,15 @@ public struct Day4: Day {
         return count
     }
     
-    private func task2(grid: any Grid<Character>, word: String) -> R {
+    private func task2(grid: any Grid<Character>, word: String) throws -> Int {
         var crossed: [Point: Int] = [:]
         
         for item in grid {
-            if item.value != word.first! {
+            guard let firstCharacter = word.first else {
+                throw AoCError.invalidState("word is empty")
+            }
+            
+            if item.value != firstCharacter {
                 continue
             }
             

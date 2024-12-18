@@ -11,28 +11,28 @@ public struct Day2: Day {
         self.param = param
     }
     
-    public func perform() throws -> Int {
+    public func perform() throws -> R {
         let reports = parse(data: data)
 
-        switch param {
+        return switch param {
         case .task1:
-            return task1(reports: reports)
+            task1(reports: reports)
         case .task2:
-            return task2(reports: reports)
+            task2(reports: reports)
         }
     }
     
     private func parse(data: String) -> ([[Int]]) {
-        return data.split(whereSeparator: \.isNewline).map { line in
-            line.split(whereSeparator: \.isWhitespace).map({ Int($0)! })
+        data.split(whereSeparator: \.isNewline).map { line in
+            line.split(whereSeparator: \.isWhitespace).compactMap({ Int($0) })
         }
     }
     
-    private func task1(reports: [[Int]]) -> R {
+    private func task1(reports: [[Int]]) -> Int {
         reports.count(where: checkReport)
     }
     
-    private func task2(reports: [[Int]]) -> R {
+    private func task2(reports: [[Int]]) -> Int {
         reports.count { report in
             if checkReport(report) {
                 return true
@@ -51,7 +51,11 @@ public struct Day2: Day {
     
     private func checkReport(_ report: [Int]) -> Bool {
         let diffs = report.adjacentPairs().map({ $0.0 - $0.1})
-        return diffs.allSatisfy({ abs($0) >= 1 && abs($0) <= 3}) &&
-               diffs.dropFirst().allSatisfy({ $0.signum() == diffs.first!.signum() })
+        return diffs.allSatisfy({ abs($0) >= 1 && abs($0) <= 3}) && diffs.dropFirst().allSatisfy {
+            guard let firstDiff = diffs.first else {
+                return false
+            }
+            return $0.signum() == firstDiff.signum()
+        }
     }
 }

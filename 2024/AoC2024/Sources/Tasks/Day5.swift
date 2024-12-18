@@ -12,38 +12,43 @@ public struct Day5: Day {
         self.param = param
     }
     
-    public func perform() throws -> Int {
-        let (orderPairs, updates) = parse(data)
+    public func perform() throws -> R {
+        let (orderPairs, updates) = try parse(data)
 
-        switch param {
+        return switch param {
         case .task1:
-            return task1(orderPairs: orderPairs, updates: updates)
+            try task1(orderPairs: orderPairs, updates: updates)
         case .task2:
-            return task2(orderPairs: orderPairs, updates: updates)
+            try task2(orderPairs: orderPairs, updates: updates)
         }
     }
     
-    private func parse(_ data: String) -> ([(Int, Int)], [[Int]]) {
+    private func parse(_ data: String) throws -> ([(Int, Int)], [[Int]]) {
         let blocks = data.split(separator: "\n\n")
 
-        let orderPairs = blocks[0].split(whereSeparator: \.isNewline).map { line in
+        let orderPairs = try blocks[0].split(whereSeparator: \.isNewline).map { line in
             let pages = line.split(separator: "|")
-            return (Int(pages[0])!, Int(pages[1])!)
+            guard let left = Int(pages[0]), let right = Int(pages[1]) else {
+                throw AoCError.parseError("failed to parse string to integer")
+            }
+            return (left, right)
         }
         
         let updates = blocks[1].split(whereSeparator: \.isNewline).map { line in
-            return line.split(separator: ",").map({ Int($0)! })
+            return line.split(separator: ",").compactMap({ Int($0) })
         }
         
         return (orderPairs, updates)
     }
     
-    private func task1(orderPairs: [(Int, Int)], updates: [[Int]]) -> R {
-        updates.reduce(0) { result, update in
+    private func task1(orderPairs: [(Int, Int)], updates: [[Int]]) throws -> Int {
+        try updates.reduce(0) { result, update in
             let graph = buildGraph(update: update, orderPairs: orderPairs)
-            let sortOrder = graph.topologicalSort()!
+            guard let sortOrder = graph.topologicalSort() else {
+                throw AoCError.invalidTask("failed to create topological sort")
+            }
             
-            if isSorted(update: update, sortOrder: sortOrder) {
+            if try isSorted(update: update, sortOrder: sortOrder) {
                 return result + update[update.count/2]
             } else {
                 return result
@@ -51,12 +56,14 @@ public struct Day5: Day {
         }
     }
     
-    private func task2(orderPairs: [(Int, Int)], updates: [[Int]]) -> R {
-        updates.reduce(0) { result, update in
+    private func task2(orderPairs: [(Int, Int)], updates: [[Int]]) throws -> Int {
+        try updates.reduce(0) { result, update in
             let graph = buildGraph(update: update, orderPairs: orderPairs)
-            let sortOrder = graph.topologicalSort()!
+            guard let sortOrder = graph.topologicalSort() else {
+                throw AoCError.invalidTask("failed to create topological sort")
+            }
             
-            if !isSorted(update: update, sortOrder: sortOrder) {
+            if try !isSorted(update: update, sortOrder: sortOrder) {
                 return result + sortOrder[sortOrder.count/2]
             } else {
                 return result
@@ -74,7 +81,12 @@ public struct Day5: Day {
         return graph
     }
     
-    private func isSorted(update: [Int], sortOrder: [Int]) -> Bool {
-        return update.adjacentPairs().allSatisfy({ sortOrder.firstIndex(of: $0)! < sortOrder.firstIndex(of: $1)! })
+    private func isSorted(update: [Int], sortOrder: [Int]) throws -> Bool {
+        try update.adjacentPairs().allSatisfy {
+            guard let left = sortOrder.firstIndex(of: $0), let right = sortOrder.firstIndex(of: $1) else {
+                throw AoCError.invalidState("item not found")
+            }
+            return left < right
+        }
     }
 }

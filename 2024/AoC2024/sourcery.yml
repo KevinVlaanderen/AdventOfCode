@@ -12,4 +12,4 @@ configurations:
     templates:
       - Templates/Benchmarks.stencil
     output:
-        Benchmarks/Tasks/Tasks.swift
+        ../Aoc2024Benchmarks/Benchmarks/Tasks/Tasks.swift

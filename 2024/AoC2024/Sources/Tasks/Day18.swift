@@ -1,6 +1,6 @@
 import Foundation
 internal import Algorithms
-internal import SwiftGraph
+internal import HeapModule
 import Framework
 
 public struct Day18: Day {
@@ -28,20 +28,33 @@ public struct Day18: Day {
 
             return "\(path.count)"
         case .task2:
-            var index = param.2
+            var lower = param.2
+            var upper = bytes.count
+            var mid = lower + (upper-lower)/2
+            var lowestFailed: Int?
             
             while true {
-                index += 1
-
-                let (newCameFrom, _) = findPath(grid: grid, start: start, goal: goal, startTime: index)
+                let (newCameFrom, _) = findPath(grid: grid, start: start, goal: goal, startTime: mid)
                 let newPath = reconstructPath(cameFrom: newCameFrom, start: start, goal: goal)
                
                 if newPath.count == 0 {
-                    break
+                    lowestFailed = mid
+                    upper = mid
+                    mid = lower + (upper-lower)/2
+                } else {
+                    if let lowestFailed = lowestFailed, mid+1 == lowestFailed {
+                        break
+                    }
+                    lower = mid
+                    mid = lower + (upper-lower)/2
                 }
             }
             
-            let point = bytes[index-1]
+            guard let lowestFailed = lowestFailed else {
+                throw AoCError.invalidTask("no result found")
+            }
+            
+            let point = bytes[lowestFailed-1]
             
             return "\(point.x),\(point.y)"
         }
@@ -73,13 +86,13 @@ public struct Day18: Day {
     }
     
     private func findPath(grid: any Grid<Int>, start: Point, goal: Point, startTime: Int) -> ([Point: Point?], [Point: Int]) {
-        var frontier = PriorityQueue<PriorityPoint>(ascending: true, startingValues: [PriorityPoint(point: start, priority: 0)])
+        var frontier = Heap<PriorityPoint>([PriorityPoint(point: start, priority: 0)])
         
         var cameFrom: [Point: Point?] = [start: nil]
         var costSoFar: [Point: Int] = [start: startTime]
         
         while !frontier.isEmpty {
-            guard let current = frontier.pop(),
+            guard let current = frontier.popMin(),
                   let currentCost = costSoFar[current.point],
                   current.point != goal else {
                 break
@@ -100,7 +113,7 @@ public struct Day18: Day {
                 }
                 
                 costSoFar[next] = newCost
-                frontier.push(PriorityPoint(point: next, priority: newCost))
+                frontier.insert(PriorityPoint(point: next, priority: newCost))
                 cameFrom[next] = current.point
             }
         }

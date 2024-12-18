@@ -13,7 +13,8 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-algorithms.git", from: "1.1.0"),
         .package(url: "https://github.com/davecom/SwiftGraph", from: "3.1.0"),
         .package(url: "https://github.com/SwiftGen/SwiftGenPlugin", from: "6.6.2"),
-        .package(url: "https://github.com/krzysztofzablocki/Sourcery.git", from: "2.2.5")
+        .package(url: "https://github.com/krzysztofzablocki/Sourcery.git", from: "2.2.5"),
+        .package(url: "https://github.com/apple/swift-collections.git", from: "1.1.4"),
     ],
     targets: [
         .target(
@@ -22,6 +23,7 @@ let package = Package(
             name: "Tasks",
             dependencies: [
                 .product(name: "Algorithms", package: "swift-algorithms"),
+                .product(name: "HeapModule", package: "swift-collections"),
                 "SwiftGraph",
                 "Framework"
             ]),

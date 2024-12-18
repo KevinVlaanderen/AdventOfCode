@@ -294,4 +294,13 @@ struct Cases {
             let data = Tasks.Day17.task(loadData(file: Data.Input.Day17.data), param: .task1)
         }
     }
+    
+    struct Day18 {
+        struct Task1 {
+            // sourcery: expected = 22
+            let example1 = Tasks.Day18.task(loadData(file: Data.Input.Day18.example1), param: (7, 12))
+            // sourcery: expected = 270
+            let data = Tasks.Day18.task(loadData(file: Data.Input.Day18.data), param: (71, 1024))
+        }
+    }
 }

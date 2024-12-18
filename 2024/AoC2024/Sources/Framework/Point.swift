@@ -14,6 +14,10 @@ public struct Point: Hashable, Sendable, Comparable {
         return neighbour
     }
     
+    public func neighbours(directions: [Direction]) -> [Point] {
+        directions.map { self.neighbour(direction: $0) }
+    }
+    
     public static func < (lhs: Point, rhs: Point) -> Bool {
         lhs.x == rhs.x && lhs.y == rhs.y
     }

@@ -15,7 +15,13 @@ public struct Day19: Day {
         let (towels, designs) = parse(data: data)
         
         var cache: [Design: Int] = [:]
-        return designs.count(where: { countOptions(design: $0, towels: towels, cache: &cache) > 0 })
+        
+        return switch param {
+        case .task1:
+            designs.count(where: { countOptions(design: $0, towels: towels, cache: &cache) > 0 })
+        case .task2:
+            designs.reduce(0) { $0 + countOptions(design: $1, towels: towels, cache: &cache) }
+        }
     }
     
     private func parse(data: String) -> ([Towel], [Design]) {
@@ -30,9 +36,7 @@ public struct Day19: Day {
     private func countOptions(design: Design, towels: [Towel], cache: inout [Design: Int]) -> Int {
         if design.isEmpty {
             return 1
-        }
-        
-        if let cachedCount = cache[design] {
+        } else if let cachedCount = cache[design] {
             return cachedCount
         }
         

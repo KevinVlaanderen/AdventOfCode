@@ -12,7 +12,7 @@ public struct Day2: Day {
     }
     
     public func perform() throws -> R {
-        let reports = parse(data: data)
+        let reports = try parse(data: data)
 
         return switch param {
         case .task1:
@@ -22,9 +22,9 @@ public struct Day2: Day {
         }
     }
     
-    private func parse(data: String) -> ([[Int]]) {
-        data.split(whereSeparator: \.isNewline).map { line in
-            line.split(whereSeparator: \.isWhitespace).compactMap({ Int($0) })
+    private func parse(data: String) throws -> ([[Int]]) {
+        try data.lines.map { line in
+            try line.words.map(toInt)
         }
     }
     

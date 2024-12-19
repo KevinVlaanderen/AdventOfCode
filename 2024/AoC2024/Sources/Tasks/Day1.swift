@@ -23,7 +23,7 @@ public struct Day1: Day {
     }
     
     private func parse(data: String) throws -> ([Int], [Int]) {
-        let numbers = try data.split(whereSeparator: \.isWhitespace).map(toInt)
+        let numbers = try data.words.map(toInt)
 
         let left = numbers.striding(by: 2)
         let right = numbers.dropFirst().striding(by: 2)

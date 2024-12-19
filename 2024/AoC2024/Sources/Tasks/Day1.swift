@@ -12,7 +12,7 @@ public struct Day1: Day {
     }
     
     public func perform() throws -> R {
-        let (left, right) = parse(data: data)
+        let (left, right) = try parse(data: data)
         
         return switch param {
         case .task1:
@@ -22,11 +22,13 @@ public struct Day1: Day {
         }
     }
     
-    private func parse(data: String) -> ([Int], [Int]) {
-        let lines = data.split(whereSeparator: \.isWhitespace).compactMap({ Int($0) })
-        let (leftElements, rightElements) = lines.enumerated().partitioned(by: { $0.offset % 2 == 0 })
+    private func parse(data: String) throws -> ([Int], [Int]) {
+        let numbers = try data.split(whereSeparator: \.isWhitespace).map(toInt)
+
+        let left = numbers.striding(by: 2)
+        let right = numbers.dropFirst().striding(by: 2)
         
-        return (leftElements.map({ $0.element }), rightElements.map({ $0.element }))
+        return (Array(left), Array(right))
     }
     
     private func task1(left: [Int], right: [Int]) -> Int {

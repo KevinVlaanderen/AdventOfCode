@@ -16,29 +16,24 @@ public struct Day4: Day {
     public func perform() throws -> R {
         let grid = parse(data)
 
-        switch param.task {
-        case .task1:
-            return try task1(grid: grid, word: param.word)
-        case .task2:
-            if param.word.count % 2 != 1 {
-                throw AoCError.invalidTask("word should have an odd length")
-            }
-            return try task2(grid: grid, word: param.word)
+        return switch param.task {
+        case .task1: try task1(grid: grid, word: param.word)
+        case .task2: try task2(grid: grid, word: param.word)
         }
     }
     
     private func parse(_ data: String) -> some Grid<Character> {
-        ArrayGrid(data.split(whereSeparator: \.isNewline).map({ Array($0) }))
+        ArrayGrid(data.lines.map(toCharacters))
     }
     
     private func task1(grid: any Grid<Character>, word: String) throws -> Int {
+        guard let firstCharacter = word.first else {
+            throw AoCError.invalidState("word is empty")
+        }
+        
         var count = 0
         
         for item in grid {
-            guard let firstCharacter = word.first else {
-                throw AoCError.invalidState("word is empty")
-            }
-            
             if item.value != firstCharacter {
                 continue
             }
@@ -54,13 +49,16 @@ public struct Day4: Day {
     }
     
     private func task2(grid: any Grid<Character>, word: String) throws -> Int {
+        if word.count.isEven {
+            throw AoCError.invalidTask("word should have an odd length")
+        }
+        guard let firstCharacter = word.first else {
+            throw AoCError.invalidState("word is empty")
+        }
+        
         var crossed: [Point: Int] = [:]
         
         for item in grid {
-            guard let firstCharacter = word.first else {
-                throw AoCError.invalidState("word is empty")
-            }
-            
             if item.value != firstCharacter {
                 continue
             }

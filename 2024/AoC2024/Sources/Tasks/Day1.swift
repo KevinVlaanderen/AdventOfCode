@@ -15,10 +15,8 @@ public struct Day1: Day {
         let (left, right) = try parse(data: data)
         
         return switch param {
-        case .task1:
-            task1(left: left, right: right)
-        case .task2:
-            task2(left: left, right: right)
+        case .task1: task1(left: left, right: right)
+        case .task2: task2(left: left, right: right)
         }
     }
     

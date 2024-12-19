@@ -1,4 +1,5 @@
 public extension Int {
+    @inlinable
     var usefulDigits: Int {
         var num = self
         var count = 0

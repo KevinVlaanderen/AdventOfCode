@@ -3,6 +3,8 @@ internal import Algorithms
 import Framework
 
 public struct Day3: Day {
+    public typealias P = [InstructionDefinition.Type]
+    
     private let data: String
     private let param: P
     
@@ -12,52 +14,20 @@ public struct Day3: Day {
     }
     
     public func perform() throws -> R {
-        let instructions = switch param {
-        case .task1:
-            try parse1(data)
-        case .task2:
-            try parse2(data)
-        }
+        let instructions = try parse(instructions: param)
         
         return execute(instructions)
     }
-    
-    nonisolated(unsafe)
-    private static let mulPattern = /mul\((\d+),(\d+)\)/
-    
-    nonisolated(unsafe)
-    private static let doPattern = /do\(\)/
-    
-    nonisolated(unsafe)
-    private static let dontPattern = /don't\(\)/
-    
-    private func parse1(_ data: String) throws -> [Instructions] {
-        try data.indices.reduce(into: []) { result, index in
-            if let match = data.suffix(from: index).prefixMatch(of: Day3.mulPattern) {
-                guard let left = Int(match.output.1), let right = Int(match.output.2) else {
-                    throw AoCError.parseError("failed to parse string to integer")
-                }
-                result.append(Instructions.mul(left, right))
-            }
+
+    private func parse(instructions: [InstructionDefinition.Type]) throws -> [Instruction] {
+        try instructions.reduce([]) { result, instruction in
+            try result + instruction.findMatches(in: data)
         }
+        .sorted(by: { $0.1 < $1.1 })
+        .map({ $0.0 })
     }
     
-    private func parse2(_ data: String) throws -> [Instructions] {
-        try data.indices.reduce(into: []) { result, index in
-            if let match = data.suffix(from: index).prefixMatch(of: Day3.mulPattern) {
-                guard let left = Int(match.output.1), let right = Int(match.output.2) else {
-                    throw AoCError.parseError("failed to parse string to integer")
-                }
-                result.append(Instructions.mul(left, right))
-            } else if data.suffix(from: index).starts(with: Day3.doPattern) {
-                result.append(Instructions.enable)
-            } else if data.suffix(from: index).starts(with: Day3.dontPattern) {
-                result.append(Instructions.disable)
-            }
-        }
-    }
-    
-    private func execute(_ instructions: [Instructions]) -> Int {
+    private func execute(_ instructions: [Instruction]) -> Int {
         instructions.reduce(into: State()) { state, instruction in
             switch instruction {
             case let .mul(a, b):
@@ -69,11 +39,39 @@ public struct Day3: Day {
             case .disable:
                 state.enabled = false
             }
-            
         }.total
     }
     
-    private enum Instructions {
+    public protocol InstructionDefinition: Sendable {
+        static func findMatches(in data: String) throws -> [(Instruction, String.Index)]
+    }
+    
+    public struct MulInstruction: InstructionDefinition {
+        public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
+            try data.matches(of: /mul\((\d+),(\d+)\)/).map { match in
+                let (left, right) = try (toInt(match.output.1), toInt(match.output.2))
+                return (Instruction.mul(left, right), match.range.lowerBound)
+            }
+        }
+    }
+    
+    public struct DoInstruction: InstructionDefinition {
+        public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
+            data.matches(of: /do\(\)/).map { match in
+                (Instruction.enable, match.range.lowerBound)
+            }
+        }
+    }
+    
+    public struct DontInstruction: InstructionDefinition {
+        public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
+            data.matches(of: /don't\(\)/).map { match in
+                (Instruction.disable, match.range.lowerBound)
+            }
+        }
+    }
+    
+    public enum Instruction {
         case mul(Int, Int)
         case enable
         case disable

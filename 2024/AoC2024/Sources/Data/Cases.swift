@@ -38,17 +38,25 @@ struct Cases {
     
     struct Day3 {
         struct Task1 {
+            static let instructions = [Tasks.Day3.MulInstruction.self]
+            
             // sourcery: expected = 161
-            let example1 = Tasks.Day3.task(loadData(file: Data.Input.Day3.example1), param: .task1)
+            let example1 = Tasks.Day3.task(loadData(file: Data.Input.Day3.example1), param: instructions)
             // sourcery: expected = 180233229
-            let data = Tasks.Day3.task(loadData(file: Data.Input.Day3.data), param: .task1)
+            let data = Tasks.Day3.task(loadData(file: Data.Input.Day3.data), param: instructions)
         }
         
         struct Task2 {
+            static let instructions: [any Tasks.Day3.InstructionDefinition.Type] = [
+                Tasks.Day3.MulInstruction.self,
+                Tasks.Day3.DoInstruction.self,
+                Tasks.Day3.DontInstruction.self
+            ]
+            
             // sourcery: expected = 48
-            let example1 = Tasks.Day3.task(loadData(file: Data.Input.Day3.example2), param: .task2)
+            let example1 = Tasks.Day3.task(loadData(file: Data.Input.Day3.example2), param: instructions)
             // sourcery: expected = 95411583
-            let data = Tasks.Day3.task(loadData(file: Data.Input.Day3.data), param: .task2)
+            let data = Tasks.Day3.task(loadData(file: Data.Input.Day3.data), param: instructions)
         }
     }
     

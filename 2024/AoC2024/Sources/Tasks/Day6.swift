@@ -19,43 +19,23 @@ public struct Day6: Day {
             fatalError("no guard found")
         }
         
-        switch param {
-        case .task1:
-            return try task1(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
-        case .task2:
-            return try task2(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
+        return switch param {
+        case .task1: try task1(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
+        case .task2: try task2(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
         }
     }
     
     private func parse(_ data: String) -> some Grid<Content> {
-        ArrayGrid(data.split(whereSeparator: \.isNewline).map { line in
-            Array(line).map { character in
+        ArrayGrid(data.lines.map { line in
+            line.map { character in
                 switch character {
-                case ".":
-                    return .empty
-                case "#":
-                    return .obstruction
-                case "^":
-                    return .patrolGuard(.N)
-                default:
-                    fatalError("unknown grid item: \(character)")
+                case ".":   .empty
+                case "#":   .obstruction
+                case "^":   .patrolGuard(.N)
+                default:    fatalError("unknown grid item: \(character)")
                 }
             }
         })
-    }
-    
-    private func task1(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> R {
-        PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
-            .map { step in step.position }
-            .uniqued()
-            .count { _ in true }
-    }
-    
-    private func task2(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> R {
-        PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
-            .filter(isValidTargetForObstruction(grid: grid, guardPosition: startPosition))
-            .uniqued(on: nextPosition)
-            .count(where: entersLoop(grid: grid))
     }
     
     private func findGuard(grid: any Grid<Content>) -> (Point, Direction)? {
@@ -65,6 +45,20 @@ public struct Day6: Day {
             }
         }
         return nil
+    }
+    
+    private func task1(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> Int {
+        PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
+            .map { step in step.position }
+            .uniqued()
+            .count { _ in true }
+    }
+    
+    private func task2(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> Int {
+        PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
+            .filter(isValidTargetForObstruction(grid: grid, guardPosition: startPosition))
+            .uniqued(on: nextPosition)
+            .count(where: entersLoop(grid: grid))
     }
     
     private func isValidTargetForObstruction(grid: any Grid<Content>, guardPosition: Point) -> (Step) -> Bool {
@@ -92,9 +86,8 @@ public struct Day6: Day {
                 if nextStep.content == .obstruction {
                     if seen.contains(step) {
                         return true
-                    } else {
-                        seen.append(step)
                     }
+                    seen.append(step)
                 }
             }
             
@@ -119,7 +112,7 @@ public struct Day6: Day {
         let startDirection: Direction
         
         func makeIterator() -> PathIterator {
-            return PathIterator(grid: grid, currentPosition: startPosition, currentDirection: startDirection)
+            PathIterator(grid: grid, currentPosition: startPosition, currentDirection: startDirection)
         }
         
         struct PathIterator: IteratorProtocol {
@@ -130,22 +123,26 @@ public struct Day6: Day {
             
             mutating func next() -> Step? {
                 if !started {
+                    guard let currentContent = grid[currentPosition] else {
+                        return nil
+                    }
                     started = true
-                    return Step(position: currentPosition, direction: currentDirection, content: grid[currentPosition]!)
+                    return Step(position: currentPosition, direction: currentDirection, content: currentContent)
                 }
 
                 let nextPosition = currentPosition.neighbour(direction: currentDirection)
-                let nextContent = grid[nextPosition]
+
+                guard let nextContent = grid[nextPosition] else {
+                    return nil
+                }
                 
                 switch nextContent {
                 case .obstruction:
                     currentDirection = currentDirection.rotate(.CW90)
-                    return Step(position: currentPosition, direction: currentDirection, content: nextContent!)
-                case nil:
-                    return nil
+                    return Step(position: currentPosition, direction: currentDirection, content: nextContent)
                 default:
                     currentPosition = nextPosition
-                    return Step(position: currentPosition, direction: currentDirection, content: nextContent!)
+                    return Step(position: currentPosition, direction: currentDirection, content: nextContent)
                 }
             }
         }

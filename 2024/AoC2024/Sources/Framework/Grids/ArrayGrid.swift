@@ -18,18 +18,13 @@ public struct ArrayGrid<T: Equatable>: Grid {
 
     public subscript(_ position: Point) -> T? {
         get {
-            if let index = indexOf(position) {
-                return self.data[index]
-            }
-            return nil
+            guard let index = indexOf(position) else { return nil }
+            return self.data[index]
         }
         
         set(value) {
-            guard let value = value else { return }
-            
-            if let index = indexOf(position) {
-                self.data[index] = value
-            }
+            guard let value = value, let index = indexOf(position) else { return }
+            self.data[index] = value
         }
     }
     

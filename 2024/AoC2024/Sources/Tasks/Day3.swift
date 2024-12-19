@@ -49,7 +49,7 @@ public struct Day3: Day {
     public struct MulInstruction: InstructionDefinition {
         public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
             try data.matches(of: /mul\((\d+),(\d+)\)/).map { match in
-                let (left, right) = try (toInt(match.output.1), toInt(match.output.2))
+                let (left, right) = try (match.output.1.toInt(), match.output.2.toInt())
                 return (Instruction.mul(left, right), match.range.lowerBound)
             }
         }

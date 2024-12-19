@@ -51,7 +51,7 @@ public struct Day18: Day {
             }
             
             guard let lowestFailed = lowestFailed else {
-                throw AoCError.invalidTask("no result found")
+                throw AoCError.taskError("no result found")
             }
             
             let point = bytes[lowestFailed-1]

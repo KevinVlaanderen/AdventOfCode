@@ -23,12 +23,12 @@ public struct Day4: Day {
     }
     
     private func parse(_ data: String) -> some Grid<Character> {
-        ArrayGrid(data.lines.map(toCharacters))
+        ArrayGrid(data.lines.map(\.characters))
     }
     
     private func task1(grid: any Grid<Character>, word: String) throws -> Int {
         guard let firstCharacter = word.first else {
-            throw AoCError.invalidState("word is empty")
+            throw AoCError.taskError("word is empty")
         }
         
         var count = 0
@@ -50,10 +50,10 @@ public struct Day4: Day {
     
     private func task2(grid: any Grid<Character>, word: String) throws -> Int {
         if word.count.isEven {
-            throw AoCError.invalidTask("word should have an odd length")
+            throw AoCError.taskError("word should have an odd length")
         }
         guard let firstCharacter = word.first else {
-            throw AoCError.invalidState("word is empty")
+            throw AoCError.taskError("word is empty")
         }
         
         var crossed: [Point: Int] = [:]

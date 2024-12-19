@@ -26,11 +26,11 @@ public struct Day2: Day {
         }
     }
     
-    private func task1(reports: [[Int]]) -> Int {
+    private func task1(reports: [[Int]]) -> R {
         reports.count(where: checkReport)
     }
     
-    private func task2(reports: [[Int]]) -> Int {
+    private func task2(reports: [[Int]]) -> R {
         reports.count { report in
             if checkReport(report) {
                 return true

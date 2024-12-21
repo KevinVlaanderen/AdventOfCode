@@ -98,7 +98,7 @@ public struct Day18: Day {
                 break
             }
             
-            let validPoints = current.point.neighbours(directions: Direction.orthogonal).filter {
+            let validPoints = current.point.neighbours(directions: Heading.orthogonal).filter {
                 guard let time = grid[$0] else {
                     return false
                 }

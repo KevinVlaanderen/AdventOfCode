@@ -38,7 +38,7 @@ public struct Day4: Day {
                 continue
             }
             
-            for direction in Direction.allCases {
+            for direction in Heading.allCases {
                 if wordFound(grid: grid, word: word, position: item.position, direction: direction) {
                     count += 1
                 }
@@ -63,7 +63,7 @@ public struct Day4: Day {
                 continue
             }
             
-            for direction in [Direction.NE, Direction.SE, Direction.SW, Direction.NW] {
+            for direction in [Heading.NE, Heading.SE, Heading.SW, Heading.NW] {
                 if wordFound(grid: grid, word: word, position: item.position, direction: direction) {
                     let center = item.position.neighbour(direction: direction, distance: word.count / 2)
                     let current = crossed[center] ?? 0
@@ -75,7 +75,7 @@ public struct Day4: Day {
         return crossed.count(where: { $0.value >= 2 })
     }
     
-    private func wordFound(grid: any Grid<Character>, word: String, position: Point, direction: Direction) -> Bool {
+    private func wordFound(grid: any Grid<Character>, word: String, position: Point, direction: Heading) -> Bool {
         guard let currentCharacter = word.first else {
             return true
         }

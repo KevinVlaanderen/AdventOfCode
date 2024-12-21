@@ -38,7 +38,7 @@ public struct Day6: Day {
         })
     }
     
-    private func findGuard(grid: any Grid<Content>) -> (Point, Direction)? {
+    private func findGuard(grid: any Grid<Content>) -> (Point, Heading)? {
         for item in grid {
             if case let .patrolGuard(guardDirection) = item.value {
                 return (item.position, guardDirection)
@@ -47,14 +47,14 @@ public struct Day6: Day {
         return nil
     }
     
-    private func task1(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> Int {
+    private func task1(grid: any Grid<Content>, startPosition: Point, startDirection: Heading) throws -> Int {
         PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
             .map { step in step.position }
             .uniqued()
             .count { _ in true }
     }
     
-    private func task2(grid: any Grid<Content>, startPosition: Point, startDirection: Direction) throws -> Int {
+    private func task2(grid: any Grid<Content>, startPosition: Point, startDirection: Heading) throws -> Int {
         PathTracker(grid: grid, startPosition: startPosition, startDirection: startDirection)
             .filter(isValidTargetForObstruction(grid: grid, guardPosition: startPosition))
             .uniqued(on: nextPosition)
@@ -97,19 +97,19 @@ public struct Day6: Day {
     
     enum Content: Equatable, Hashable {
         case empty, obstruction
-        case patrolGuard(Direction)
+        case patrolGuard(Heading)
     }
     
     struct Step: Hashable {
         let position: Point
-        let direction: Direction
+        let direction: Heading
         let content: Content
     }
     
     struct PathTracker: Sequence {
         let grid: any Grid<Content>
         let startPosition: Point
-        let startDirection: Direction
+        let startDirection: Heading
         
         func makeIterator() -> PathIterator {
             PathIterator(grid: grid, currentPosition: startPosition, currentDirection: startDirection)
@@ -118,7 +118,7 @@ public struct Day6: Day {
         struct PathIterator: IteratorProtocol {
             let grid: any Grid<Content>
             var currentPosition: Point
-            var currentDirection: Direction
+            var currentDirection: Heading
             var started = false
             
             mutating func next() -> Step? {

@@ -6,7 +6,7 @@ public struct Point: Hashable, Sendable, Comparable {
         self.y = y
     }
     
-    public func neighbour(direction: Direction, distance: Int = 1) -> Point {
+    public func neighbour(direction: Heading, distance: Int = 1) -> Point {
         var neighbour = self
         let offset = direction.asPoint()
         neighbour.x += offset.x * distance
@@ -14,7 +14,7 @@ public struct Point: Hashable, Sendable, Comparable {
         return neighbour
     }
     
-    public func neighbours(directions: [Direction]) -> [Point] {
+    public func neighbours(directions: [Heading]) -> [Point] {
         directions.map { self.neighbour(direction: $0) }
     }
     

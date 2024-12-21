@@ -24,7 +24,7 @@ public struct Day20: Day {
         var cheats: [Point: Int] = [:]
         
         for step in path {
-            for neighbour in step.neighbours(directions: Direction.orthogonal) {
+            for neighbour in step.neighbours(directions: Heading.orthogonal) {
                 if cheats[neighbour] != nil || track.grid[neighbour] != .wall {
                     continue
                 }
@@ -94,7 +94,7 @@ public struct Day20: Day {
                     break
                 }
                 
-                for direction in Direction.orthogonal {
+                for direction in Heading.orthogonal {
                     let nextPoint = current.point.neighbour(direction: direction)
                     
                     guard let nextTile = grid[nextPoint], let currentCost = costSoFar[current.point] else {

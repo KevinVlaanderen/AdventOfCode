@@ -40,7 +40,7 @@ public struct Day15: Day {
     nonisolated(unsafe)
     private static let emptyLinePattern = /\n\n/
     
-    private func parse(_ data: String, multiplier: Int) throws -> (Room, [Direction]) {
+    private func parse(_ data: String, multiplier: Int) throws -> (Room, [Heading]) {
         let blocks = data.split(separator: Day15.emptyLinePattern)
 
         let (grid, moves) = (try parseGrid(data: blocks[0]), try parseMoves(data: blocks[1]))
@@ -63,14 +63,14 @@ public struct Day15: Day {
         })
     }
     
-    private func parseMoves(data: Substring) throws -> [Direction] {
+    private func parseMoves(data: Substring) throws -> [Heading] {
         try data.split(whereSeparator: \.isNewline).flatMap { line throws in
             try line.map { character throws in
                 switch character {
-                case "^": Direction.N
-                case ">": Direction.E
-                case "v": Direction.S
-                case "<": Direction.W
+                case "^": Heading.N
+                case ">": Heading.E
+                case "v": Heading.S
+                case "<": Heading.W
                     default: throw AoCError.parseError("unknown direction: \(character)")}
             }
         }
@@ -135,7 +135,7 @@ public struct Day15: Day {
             return tileID >= 0 ? tileMap[tileID] : nil
         }
         
-        func nextTo(tile: Tile, direction: Direction) throws -> Set<TileID> {
+        func nextTo(tile: Tile, direction: Heading) throws -> Set<TileID> {
             switch direction {
             case .N, .S:
                 return tile.positions.reduce(into: []) { result, position in
@@ -162,7 +162,7 @@ public struct Day15: Day {
             }
         }
         
-        mutating func move(_ tileID: TileID, to direction: Direction) throws {
+        mutating func move(_ tileID: TileID, to direction: Heading) throws {
             let (movingTileIDs, canMove) = try checkMove(from: tileID, direction: direction)
             
             if !canMove {
@@ -202,7 +202,7 @@ public struct Day15: Day {
             }
         }
         
-        func checkMove(from tileID: TileID, direction: Direction) throws -> (Set<TileID>, Bool) { // moving
+        func checkMove(from tileID: TileID, direction: Heading) throws -> (Set<TileID>, Bool) { // moving
             if tileID == -1 {
                 throw Day15Error.invalidMove
             }

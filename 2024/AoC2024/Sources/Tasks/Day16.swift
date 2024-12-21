@@ -82,8 +82,8 @@ public struct Day16: Day {
     }
     
     private enum Step: Equatable, Hashable {
-        case move(to: Point, direction: Direction)
-        case rotate(direction: Direction, at: Point)
+        case move(to: Point, direction: Heading)
+        case rotate(direction: Heading, at: Point)
     }
     
     private struct QueuedStep: Equatable, Comparable, Hashable {
@@ -138,7 +138,7 @@ public struct Day16: Day {
                     break
                 }
                 
-                for direction in Direction.orthogonal {
+                for direction in Heading.orthogonal {
                     let rotate = currentDirection != direction
                     
                     let nextPoint = currentPoint.neighbour(direction: direction)

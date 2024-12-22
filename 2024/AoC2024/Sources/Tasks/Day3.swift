@@ -3,7 +3,7 @@ internal import Algorithms
 import Framework
 
 public final class Day3: Day<[Day3.InstructionParam], Int> {
-    public enum InstructionParam: CaseIterable, Sendable {
+    public enum InstructionParam: CaseIterable {
         case mulInst, doInst, dontInst
     }
     

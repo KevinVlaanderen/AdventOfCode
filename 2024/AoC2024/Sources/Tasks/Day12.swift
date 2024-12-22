@@ -2,16 +2,8 @@ import Foundation
 import Framework
 internal import Algorithms
 
-public struct Day12: Day {
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> Int {
+public final class Day12: Day<Task, Int> {
+    public override func perform() throws -> Int {
         let farm = parse(data)
         
         switch param {

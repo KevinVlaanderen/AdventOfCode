@@ -3,16 +3,8 @@ internal import Algorithms
 internal import SwiftGraph
 import Framework
 
-public struct Day6: Day {
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> Int {
+public final class Day6: Day<Task, Int> {
+    public override func perform() throws -> Int {
         let grid: any Grid<Content> = parse(data)
 
         guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
@@ -63,7 +55,7 @@ public struct Day6: Day {
     
     private func isValidTargetForObstruction(grid: any Grid<Content>, guardPosition: Point) -> (Step) -> Bool {
         { step in
-            let nextPosition = nextPosition(for: step)
+            let nextPosition = self.nextPosition(for: step)
             guard let content = grid[nextPosition], content != .obstruction else {
                 return false
             }

@@ -2,17 +2,9 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public struct Day1: Day {
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> R {
-        let (left, right) = try parse(data: data)
+public final class Day1: Day<Task, Int> {
+    public override func perform() throws -> R {
+        let (left, right) = try parse(data: self.data)
         
         return switch param {
         case .task1: task1(left: left, right: right)

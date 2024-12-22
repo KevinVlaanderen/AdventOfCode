@@ -3,19 +3,8 @@ internal import Algorithms
 internal import HeapModule
 import Framework
 
-public struct Day18: Day {
-    public typealias P = (Task, Int, Int) // task, grid size, time
-    public typealias R = String
-    
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> R {
+public final class Day18: Day<(Task, Int, Int), String> {
+    public override func perform() throws -> R {
         let (grid, bytes) = try parse(data: data, size: param.1)
 
         let start = Point(x: 0, y: 0)

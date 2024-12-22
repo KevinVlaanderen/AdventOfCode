@@ -2,18 +2,8 @@ import Foundation
 import Framework
 internal import Algorithms
 
-public struct Day15: Day {
-    public typealias P = Int
-    
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-        
-    public func perform() throws -> Int {
+public final class Day15: Day<Int, Int> {
+    public override func perform() throws -> Int {
         var (room, moves) = try parse(data, multiplier: param)
         
         guard let robotID = room.tileMap.first(where: { $0.value.type == .robot})?.key else {

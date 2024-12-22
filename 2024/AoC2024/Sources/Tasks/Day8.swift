@@ -3,16 +3,8 @@ internal import Algorithms
 internal import SwiftGraph
 import Framework
 
-public struct Day8: Day {
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> Int {
+public final class Day8: Day<Task, Int> {
+    public override func perform() throws -> Int {
         var grid = parse(data)
         
         let groups = grid.filter({ $0.value.frequency != "." }).grouped(by: { $0.value.frequency })

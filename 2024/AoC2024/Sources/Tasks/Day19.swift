@@ -2,16 +2,8 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public struct Day19: Day {
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> R {
+public final class Day19: Day<Task, Int> {
+    public override func perform() throws -> R {
         let (towels, designs) = parse(data: data)
         
         var cache: [Design: Int] = [:]

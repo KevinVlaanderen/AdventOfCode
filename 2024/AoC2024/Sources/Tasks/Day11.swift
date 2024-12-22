@@ -2,18 +2,8 @@ import Foundation
 import Framework
 internal import Algorithms
 
-public struct Day11: Day {
-    public typealias P = Int
-    
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> Int {
+public final class Day11: Day<Int, Int> {
+    public override func perform() throws -> Int {
         let stones = parse(data)
         
         var cache: Cache = [:]

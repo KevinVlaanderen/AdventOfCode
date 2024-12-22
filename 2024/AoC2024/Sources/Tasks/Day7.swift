@@ -2,18 +2,8 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public struct Day7: Day {
-    public typealias P = [Operators]
-    
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> Int {
+public final class Day7: Day<[Day7.Operators], Int> {
+    public override func perform() throws -> Int {
        parse(data)
             .filter(canSatisfy(operators: param))
             .map { $0.result }
@@ -36,7 +26,7 @@ public struct Day7: Day {
     
     private func canSatisfy(operators: [Operators]) -> (Equation) -> Bool {
         { equation in
-            calculate(total: equation.numbers.first!, target: equation.result, index: 1, numbers: equation.numbers, operators: operators)
+            self.calculate(total: equation.numbers.first!, target: equation.result, index: 1, numbers: equation.numbers, operators: operators)
         }
     }
     
@@ -53,14 +43,14 @@ public struct Day7: Day {
         }
     }
     
-    private struct Equation {
-        let result: Int
-        let numbers: [Int]
-    }
-    
-    public enum Operators: CaseIterable, Sendable {
+    public enum Operators: CaseIterable {
         case add, multiply, combine
     }
+}
+
+private struct Equation {
+    let result: Int
+    let numbers: [Int]
 }
 
 extension Day7.Operators {

@@ -2,18 +2,8 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public struct Day3: Day {
-    public typealias P = [InstructionDefinition.Type]
-    
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> R {
+public final class Day3: Day<[Day3.InstructionDefinition.Type], Int> {    
+    public override func perform() throws -> R {
         let instructions = try parse(instructions: param)
         
         return execute(instructions)
@@ -42,10 +32,10 @@ public struct Day3: Day {
         }.total
     }
     
-    public protocol InstructionDefinition: Sendable {
+    public protocol InstructionDefinition {
         static func findMatches(in data: String) throws -> [(Instruction, String.Index)]
     }
-    
+
     public struct MulInstruction: InstructionDefinition {
         public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
             try data.matches(of: /mul\((\d+),(\d+)\)/).map { match in
@@ -54,7 +44,7 @@ public struct Day3: Day {
             }
         }
     }
-    
+
     public struct DoInstruction: InstructionDefinition {
         public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
             data.matches(of: /do\(\)/).map { match in
@@ -62,7 +52,7 @@ public struct Day3: Day {
             }
         }
     }
-    
+
     public struct DontInstruction: InstructionDefinition {
         public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
             data.matches(of: /don't\(\)/).map { match in
@@ -70,15 +60,15 @@ public struct Day3: Day {
             }
         }
     }
-    
-    public enum Instruction {
-        case mul(Int, Int)
-        case enable
-        case disable
-    }
-    
-    private struct State {
-        var enabled: Bool = true
-        var total: Int = 0
-    }
+}
+
+public enum Instruction {
+    case mul(Int, Int)
+    case enable
+    case disable
+}
+
+private struct State {
+    var enabled: Bool = true
+    var total: Int = 0
 }

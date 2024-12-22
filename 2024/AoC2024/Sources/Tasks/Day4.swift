@@ -2,18 +2,8 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public struct Day4: Day {
-    public typealias P = (task: Task, word: String)
-    
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> R {
+public final class Day4: Day<(task: Task, word: String), Int> {
+    public override func perform() throws -> R {
         let grid = parse(data)
 
         return switch param.task {

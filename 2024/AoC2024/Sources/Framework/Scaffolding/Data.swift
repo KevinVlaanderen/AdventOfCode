@@ -1,4 +1,4 @@
-public struct DataDescriptor: Sendable {
+public struct DataDescriptor {
     public init(url: String, load: @escaping DataLoader) {
         self.url = url
         self.load = load
@@ -8,4 +8,4 @@ public struct DataDescriptor: Sendable {
     public let load: DataLoader
 }
 
-public typealias DataLoader = @Sendable () throws -> String
+public typealias DataLoader = () throws -> String

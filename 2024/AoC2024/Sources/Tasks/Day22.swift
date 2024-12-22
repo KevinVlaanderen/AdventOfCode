@@ -3,16 +3,8 @@ internal import Algorithms
 internal import SwiftGraph
 import Framework
 
-public struct Day22: Day {
-    private let data: String
-    private let param: P
-    
-    public init(data: String, param: P) {
-        self.data = data
-        self.param = param
-    }
-    
-    public func perform() throws -> R {
+public final class Day22: Day<Task, Int> {
+    public override func perform() throws -> R {
         let secrets = try parse(data: data)
         
         return switch param {

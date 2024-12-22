@@ -15,7 +15,7 @@ let benchmarks = {
         let task = {{task.name}}()
                 
         for _ in benchmark.scaledIterations {
-            try blackHole(task.{{instance.name}}!.perform())
+            try blackHole(task.{{instance.name}}())
         }
     }
     {% endif %}

@@ -4,8 +4,8 @@ internal import SwiftGraph
 import Framework
 
 public final class Day21: Day<Int, Int> {
-    public override func perform() throws -> R {
-        let codes = try parse(data: data)
+    public override func perform(data: String, param: P) throws -> R {
+        let codes = try parse(data)
 
         return try codes.reduce(into: 0) { result, code in
             var human: DirectionalKeypad? = nil
@@ -29,7 +29,7 @@ public final class Day21: Day<Int, Int> {
         }
     }
     
-    private func parse(data: String) throws -> [Code] {
+    private func parse(_ data: String) throws -> [Code] {
         try data.lines.map({ try $0.map(NumericKey.fromInput) })
     }
 }

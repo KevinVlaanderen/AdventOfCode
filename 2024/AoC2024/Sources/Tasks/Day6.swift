@@ -4,7 +4,7 @@ internal import SwiftGraph
 import Framework
 
 public final class Day6: Day<Task, Int> {
-    public override func perform() throws -> Int {
+    public override func perform(data: String, param: P) throws -> Int {
         let grid: any Grid<Content> = parse(data)
 
         guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
@@ -86,56 +86,56 @@ public final class Day6: Day<Task, Int> {
             return false
         }
     }
+}
+
+private enum Content: Equatable, Hashable {
+    case empty, obstruction
+    case patrolGuard(Heading)
+}
+
+private struct Step: Hashable {
+    let position: Point
+    let heading: Heading
+    let content: Content
+}
+
+private struct PathTracker: Sequence {
+    let grid: any Grid<Content>
+    let startPosition: Point
+    let startDirection: Heading
     
-    enum Content: Equatable, Hashable {
-        case empty, obstruction
-        case patrolGuard(Heading)
+    func makeIterator() -> PathIterator {
+        PathIterator(grid: grid, currentPosition: startPosition, currentHeading: startDirection)
     }
     
-    struct Step: Hashable {
-        let position: Point
-        let heading: Heading
-        let content: Content
-    }
-    
-    struct PathTracker: Sequence {
+    struct PathIterator: IteratorProtocol {
         let grid: any Grid<Content>
-        let startPosition: Point
-        let startDirection: Heading
+        var currentPosition: Point
+        var currentHeading: Heading
+        var started = false
         
-        func makeIterator() -> PathIterator {
-            PathIterator(grid: grid, currentPosition: startPosition, currentHeading: startDirection)
-        }
-        
-        struct PathIterator: IteratorProtocol {
-            let grid: any Grid<Content>
-            var currentPosition: Point
-            var currentHeading: Heading
-            var started = false
-            
-            mutating func next() -> Step? {
-                if !started {
-                    guard let currentContent = grid[currentPosition] else {
-                        return nil
-                    }
-                    started = true
-                    return Step(position: currentPosition, heading: currentHeading, content: currentContent)
-                }
-
-                let nextPosition = currentPosition.neighbour(heading: currentHeading)
-
-                guard let nextContent = grid[nextPosition] else {
+        mutating func next() -> Step? {
+            if !started {
+                guard let currentContent = grid[currentPosition] else {
                     return nil
                 }
-                
-                switch nextContent {
-                case .obstruction:
-                    currentHeading = currentHeading.rotate(.clockwise90)
-                    return Step(position: currentPosition, heading: currentHeading, content: nextContent)
-                default:
-                    currentPosition = nextPosition
-                    return Step(position: currentPosition, heading: currentHeading, content: nextContent)
-                }
+                started = true
+                return Step(position: currentPosition, heading: currentHeading, content: currentContent)
+            }
+
+            let nextPosition = currentPosition.neighbour(heading: currentHeading)
+
+            guard let nextContent = grid[nextPosition] else {
+                return nil
+            }
+            
+            switch nextContent {
+            case .obstruction:
+                currentHeading = currentHeading.rotate(.clockwise90)
+                return Step(position: currentPosition, heading: currentHeading, content: nextContent)
+            default:
+                currentPosition = nextPosition
+                return Step(position: currentPosition, heading: currentHeading, content: nextContent)
             }
         }
     }

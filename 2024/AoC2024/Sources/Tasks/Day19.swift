@@ -3,8 +3,8 @@ internal import Algorithms
 import Framework
 
 public final class Day19: Day<Task, Int> {
-    public override func perform() throws -> R {
-        let (towels, designs) = parse(data: data)
+    public override func perform(data: String, param: P) throws -> R {
+        let (towels, designs) = parse(data)
         
         var cache: [Design: Int] = [:]
         
@@ -16,7 +16,7 @@ public final class Day19: Day<Task, Int> {
         }
     }
     
-    private func parse(data: String) -> ([Towel], [Design]) {
+    private func parse(_ data: String) -> ([Towel], [Design]) {
         let blocks = data.split(separator: "\n\n")
         
         let towels = blocks[0].split(separator: ", ").map({ Towel($0) })
@@ -41,7 +41,7 @@ public final class Day19: Day<Task, Int> {
         cache[design] = count
         return count
     }
-    
-    private typealias Towel = String
-    private typealias Design = Substring
 }
+
+private typealias Towel = String
+private typealias Design = Substring

@@ -2,15 +2,27 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public final class Day3: Day<[Day3.InstructionDefinition.Type], Int> {    
-    public override func perform() throws -> R {
-        let instructions = try parse(instructions: param)
+public final class Day3: Day<[Day3.InstructionParam], Int> {
+    public enum InstructionParam: CaseIterable, Sendable {
+        case mulInst, doInst, dontInst
+    }
+    
+    public override func perform(data: String, param: P) throws -> R {
+        let instructions = try parse(data, param: param)
         
         return execute(instructions)
     }
 
-    private func parse(instructions: [InstructionDefinition.Type]) throws -> [Instruction] {
-        try instructions.reduce([]) { result, instruction in
+    private func parse(_ data: String, param: P) throws -> [Instruction] {
+        let instructions: [InstructionDefinition.Type] = param.map {
+            switch $0 {
+            case .mulInst: MulInstruction.self
+            case .doInst: DoInstruction.self
+            case .dontInst: DontInstruction.self
+            }
+        }
+        
+        return try instructions.reduce([]) { result, instruction in
             try result + instruction.findMatches(in: data)
         }
         .sorted(by: { $0.1 < $1.1 })
@@ -31,41 +43,41 @@ public final class Day3: Day<[Day3.InstructionDefinition.Type], Int> {
             }
         }.total
     }
-    
-    public protocol InstructionDefinition {
-        static func findMatches(in data: String) throws -> [(Instruction, String.Index)]
-    }
+}
 
-    public struct MulInstruction: InstructionDefinition {
-        public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
-            try data.matches(of: /mul\((\d+),(\d+)\)/).map { match in
-                let (left, right) = try (match.output.1.toInt(), match.output.2.toInt())
-                return (Instruction.mul(left, right), match.range.lowerBound)
-            }
-        }
-    }
+private enum Instruction {
+    case mul(Int, Int)
+    case enable
+    case disable
+}
 
-    public struct DoInstruction: InstructionDefinition {
-        public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
-            data.matches(of: /do\(\)/).map { match in
-                (Instruction.enable, match.range.lowerBound)
-            }
-        }
-    }
+private protocol InstructionDefinition {
+    static func findMatches(in data: String) throws -> [(Instruction, String.Index)]
+}
 
-    public struct DontInstruction: InstructionDefinition {
-        public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
-            data.matches(of: /don't\(\)/).map { match in
-                (Instruction.disable, match.range.lowerBound)
-            }
+private struct MulInstruction: InstructionDefinition {
+    public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
+        try data.matches(of: /mul\((\d+),(\d+)\)/).map { match in
+            let (left, right) = try (match.output.1.toInt(), match.output.2.toInt())
+            return (Instruction.mul(left, right), match.range.lowerBound)
         }
     }
 }
 
-public enum Instruction {
-    case mul(Int, Int)
-    case enable
-    case disable
+private struct DoInstruction: InstructionDefinition {
+    public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
+        data.matches(of: /do\(\)/).map { match in
+            (Instruction.enable, match.range.lowerBound)
+        }
+    }
+}
+
+private struct DontInstruction: InstructionDefinition {
+    public static func findMatches(in data: String) throws -> [(Instruction, String.Index)] {
+        data.matches(of: /don't\(\)/).map { match in
+            (Instruction.disable, match.range.lowerBound)
+        }
+    }
 }
 
 private struct State {

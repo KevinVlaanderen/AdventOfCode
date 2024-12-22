@@ -3,7 +3,7 @@ import Framework
 internal import Algorithms
 
 public final class Day9: Day<Task, Int> {
-    public override func perform() throws -> Int {
+    public override func perform(data: String, param: P) throws -> Int {
         var disk = parse(data)
 
         switch param {
@@ -170,23 +170,23 @@ public final class Day9: Day<Task, Int> {
             return result
         }
     }
-    
-    private struct Disk {
-        var files: [Content] = []
-        var emptySpaces: [Content] = []
-    }
-    
-    private struct Content: Equatable {
-        var position: Position
-        var size: Size
-        let type: ContentType
-    }
-    
-    private enum ContentType: Equatable {
-        case file(ID), emptySpace
-    }
-    
-    private typealias ID = Int
-    private typealias Size = Int
-    private typealias Position = Int
 }
+
+private struct Disk {
+    var files: [Content] = []
+    var emptySpaces: [Content] = []
+}
+
+private struct Content: Equatable {
+    var position: Position
+    var size: Size
+    let type: ContentType
+}
+
+private enum ContentType: Equatable {
+    case file(ID), emptySpace
+}
+
+private typealias ID = Int
+private typealias Size = Int
+private typealias Position = Int

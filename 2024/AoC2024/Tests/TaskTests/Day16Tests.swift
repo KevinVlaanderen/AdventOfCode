@@ -10,21 +10,21 @@ struct Day16 {
         func example1() async throws {
             let task = Cases.Day16.Task1()
             #expect(task != nil)
-            let result = try task.example1!.perform()
+            let result = try task.example1()
             #expect("\(result)" == "7036")
         }
         @Test
         func example2() async throws {
             let task = Cases.Day16.Task1()
             #expect(task != nil)
-            let result = try task.example2!.perform()
+            let result = try task.example2()
             #expect("\(result)" == "11048")
         }
         @Test
         func data() async throws {
             let task = Cases.Day16.Task1()
             #expect(task != nil)
-            let result = try task.data!.perform()
+            let result = try task.data()
             #expect("\(result)" == "143580")
         }
     }
@@ -33,21 +33,21 @@ struct Day16 {
         func example1() async throws {
             let task = Cases.Day16.Task2()
             #expect(task != nil)
-            let result = try task.example1!.perform()
+            let result = try task.example1()
             #expect("\(result)" == "45")
         }
         @Test
         func example2() async throws {
             let task = Cases.Day16.Task2()
             #expect(task != nil)
-            let result = try task.example2!.perform()
+            let result = try task.example2()
             #expect("\(result)" == "64")
         }
         @Test
         func data() async throws {
             let task = Cases.Day16.Task2()
             #expect(task != nil)
-            let result = try task.data!.perform()
+            let result = try task.data()
             #expect("\(result)" == "645")
         }
     }

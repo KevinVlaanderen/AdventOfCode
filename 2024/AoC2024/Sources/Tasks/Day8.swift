@@ -4,7 +4,7 @@ internal import SwiftGraph
 import Framework
 
 public final class Day8: Day<Task, Int> {
-    public override func perform() throws -> Int {
+    public override func perform(data: String, param: P) throws -> Int {
         var grid = parse(data)
         
         let groups = grid.filter({ $0.value.frequency != "." }).grouped(by: { $0.value.frequency })
@@ -58,9 +58,9 @@ public final class Day8: Day<Task, Int> {
         grid[point]?.antiNode = true
         return true
     }
+}
 
-    private struct Location: Equatable {
-        let frequency: Character?
-        var antiNode: Bool = false
-    }
+private struct Location: Equatable {
+    let frequency: Character?
+    var antiNode: Bool = false
 }

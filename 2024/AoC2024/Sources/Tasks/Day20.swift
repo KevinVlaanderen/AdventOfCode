@@ -4,8 +4,8 @@ internal import HeapModule
 import Framework
 
 public final class Day20: Day<(maxCheats: Int, cutoff: Int), Int> {
-    public override func perform() throws -> R {
-        let grid = try parse(data: data)
+    public override func perform(data: String, param: P) throws -> R {
+        let grid = try parse(data)
         let track = try RaceTrack(from: grid)
         
         let path = try track.path(from: track.start, to: track.end)
@@ -26,7 +26,7 @@ public final class Day20: Day<(maxCheats: Int, cutoff: Int), Int> {
         return cheats.filter({ $0.value >= param.cutoff }).count
     }
     
-    private func parse(data: String) throws -> any Grid<TileType> {
+    private func parse(_ data: String) throws -> any Grid<TileType> {
         try ArrayGrid(data.lines.map { line throws in
             try line.map { character throws in
                 switch character {

@@ -3,7 +3,7 @@ import Framework
 internal import Algorithms
 
 public final class Day11: Day<Int, Int> {
-    public override func perform() throws -> Int {
+    public override func perform(data: String, param: P) throws -> Int {
         let stones = parse(data)
         
         var cache: Cache = [:]
@@ -47,13 +47,12 @@ public final class Day11: Day<Int, Int> {
     private func parse(_ data: String) -> [Stone] {
         data.split(whereSeparator: \.isWhitespace).map { Stone($0)! }
     }
-    
-    private typealias Stone = Int
-    private typealias Cache = [Key: Stone]
-    
-    private struct Key: Hashable {
-        let stone: Stone
-        let count: Int
-    }
 }
 
+private typealias Stone = Int
+private typealias Cache = [Key: Stone]
+
+private struct Key: Hashable {
+    let stone: Stone
+    let count: Int
+}

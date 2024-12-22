@@ -3,8 +3,8 @@ internal import Algorithms
 import Framework
 
 public final class Day1: Day<Task, Int> {
-    public override func perform() throws -> R {
-        let (left, right) = try parse(data: self.data)
+    public override func perform(data: String, param: P) throws -> R {
+        let (left, right) = try parse(data)
         
         return switch param {
         case .task1: task1(left: left, right: right)
@@ -12,7 +12,7 @@ public final class Day1: Day<Task, Int> {
         }
     }
     
-    private func parse(data: String) throws -> ([Int], [Int]) {
+    private func parse(_ data: String) throws -> ([Int], [Int]) {
         let numbers = try data.words.map(toInt)
 
         let left = numbers.striding(by: 2)

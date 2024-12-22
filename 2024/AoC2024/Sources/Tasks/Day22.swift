@@ -4,8 +4,8 @@ internal import SwiftGraph
 import Framework
 
 public final class Day22: Day<Task, Int> {
-    public override func perform() throws -> R {
-        let secrets = try parse(data: data)
+    public override func perform(data: String, param: P) throws -> R {
+        let secrets = try parse(data)
         
         return switch param {
         case .task1: task1(secrets: secrets)
@@ -13,7 +13,7 @@ public final class Day22: Day<Task, Int> {
         }
     }
     
-    private func parse(data: String) throws -> [Secret] {
+    private func parse(_ data: String) throws -> [Secret] {
         try data.lines.map(toInt)
     }
     

@@ -3,21 +3,21 @@ internal import Algorithms
 internal import HeapModule
 import Framework
 
-public final class Day18: Day<(Task, Int, Int), String> {
-    public override func perform() throws -> R {
-        let (grid, bytes) = try parse(data: data, size: param.1)
+public final class Day18: Day<(task: Task, size: Int, startTime: Int), String> {
+    public override func perform(data: String, param: P) throws -> R {
+        let (grid, bytes) = try parse(data, param: param)
 
         let start = Point(x: 0, y: 0)
         let goal = Point(x: grid.width-1, y: grid.height-1)
         
-        switch param.0 {
+        switch param.task {
         case .task1:
-            let (cameFrom, _) = findPath(grid: grid, start: start, goal: goal, startTime: param.2)
+            let (cameFrom, _) = findPath(grid: grid, start: start, goal: goal, startTime: param.startTime)
             let path = reconstructPath(cameFrom: cameFrom, start: start, goal: goal)
 
             return "\(path.count)"
         case .task2:
-            var lower = param.2
+            var lower = param.startTime
             var upper = bytes.count
             var mid = lower + (upper-lower)/2
             var lowestFailed: Int?
@@ -48,30 +48,20 @@ public final class Day18: Day<(Task, Int, Int), String> {
             return "\(point.x),\(point.y)"
         }
     }
-    
-    nonisolated(unsafe)
-    private static let bytePattern = /(\d+),(\d+)/
-    
-    private func parse(data: String, size: Int) throws -> (any Grid<Int>, [Point]) {
-        let bytes = data.matches(of: Day18.bytePattern)
+
+    private func parse(_ data: String, param: P) throws -> (any Grid<Int>, [Point]) {
+        let bytePattern = /(\d+),(\d+)/
+        
+        let bytes = data.matches(of: bytePattern)
             .map({ Point(x: Int($0.output.1)!, y: Int($0.output.2)!) })
         
-        var grid = ArrayGrid(width: size, height: size, defaultValue: 0)
+        var grid = ArrayGrid(width: param.size, height: param.size, defaultValue: 0)
         
         for byte in bytes.enumerated() {
             grid[byte.element] = byte.offset + 1
         }
         
         return (grid, bytes)
-    }
-    
-    private struct PriorityPoint: Comparable {
-        let point: Point
-        let priority: Int
-        
-        static func < (lhs: Day18.PriorityPoint, rhs: Day18.PriorityPoint) -> Bool {
-            lhs.priority < rhs.priority
-        }
     }
     
     private func findPath(grid: any Grid<Int>, start: Point, goal: Point, startTime: Int) -> ([Point: Point?], [Point: Int]) {
@@ -127,5 +117,14 @@ public final class Day18: Day<(Task, Int, Int), String> {
         }
         
         return path.reversed()
+    }
+}
+
+private struct PriorityPoint: Comparable {
+    let point: Point
+    let priority: Int
+    
+    static func < (lhs: PriorityPoint, rhs: PriorityPoint) -> Bool {
+        lhs.priority < rhs.priority
     }
 }

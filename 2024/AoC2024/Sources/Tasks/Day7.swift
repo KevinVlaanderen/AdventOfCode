@@ -2,19 +2,23 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public final class Day7: Day<[Day7.Operators], Int> {
-    public override func perform() throws -> Int {
-       parse(data)
-            .filter(canSatisfy(operators: param))
+public final class Day7: Day<[Day7.OperatorParam], Int> {
+    public enum OperatorParam: CaseIterable {
+        case add, multiply, combine
+    }
+    
+    public override func perform(data: String, param: P) throws -> Int {
+        let (equations, operators) = parse(data, param: param)
+        
+        return equations.filter(canSatisfy(operators: operators))
             .map { $0.result }
             .reduce(0, +)
     }
     
-    nonisolated(unsafe)
-    private static let linePattern = /(\d+):((?: \d+)+)/
-    
-    private func parse(_ data: String) -> [Equation] {
-        data.matches(of: Day7.linePattern).map { match in
+    private func parse(_ data: String, param: P) -> ([Equation], [Operator]) {
+        let linePattern = /(\d+):((?: \d+)+)/
+        
+        let equations = data.matches(of: linePattern).map { match in
             Equation(
                 result: Int(match.output.1)!,
                 numbers: match.output.2.split(whereSeparator: \.isWhitespace).map({
@@ -22,15 +26,25 @@ public final class Day7: Day<[Day7.Operators], Int> {
                 })
             )
         }
+        
+        let operators: [Operator] = param.map {
+            switch $0 {
+            case .add: .add
+            case .combine: .combine
+            case .multiply: .multiply
+            }
+        }
+        
+        return (equations, operators)
     }
     
-    private func canSatisfy(operators: [Operators]) -> (Equation) -> Bool {
+    private func canSatisfy(operators: [Operator]) -> (Equation) -> Bool {
         { equation in
             self.calculate(total: equation.numbers.first!, target: equation.result, index: 1, numbers: equation.numbers, operators: operators)
         }
     }
     
-    private func calculate(total: Int, target: Int, index: Int, numbers: [Int], operators: [Operators]) -> Bool {
+    private func calculate(total: Int, target: Int, index: Int, numbers: [Int], operators: [Operator]) -> Bool {
         if total > target {
             return false
         } else if index == numbers.endIndex {
@@ -42,10 +56,6 @@ public final class Day7: Day<[Day7.Operators], Int> {
             return calculate(total: newTotal, target: target, index: index+1, numbers: numbers, operators: operators)
         }
     }
-    
-    public enum Operators: CaseIterable {
-        case add, multiply, combine
-    }
 }
 
 private struct Equation {
@@ -53,7 +63,9 @@ private struct Equation {
     let numbers: [Int]
 }
 
-extension Day7.Operators {
+private enum Operator: CaseIterable {
+    case add, multiply, combine
+    
     func apply(a: Int, b: Int) -> Int {
         switch self {
         case .add:

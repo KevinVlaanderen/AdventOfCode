@@ -3,7 +3,7 @@ import Framework
 internal import Algorithms
 
 public final class Day10: Day<Task, Int> {
-    public override func perform() throws -> Int {
+    public override func perform(data: String, param: P) throws -> Int {
         let topographicMap = parse(data)
         
         let trailheads = topographicMap.filter {
@@ -62,10 +62,9 @@ public final class Day10: Day<Task, Int> {
             return result + pathsTo(target, from: next, topographicMap: topographicMap, found: &found)
         }
     }
-    
-    private enum Position: Equatable {
-        case passable(Int)
-        case impassable
-    }
 }
 
+private enum Position: Equatable {
+    case passable(Int)
+    case impassable
+}

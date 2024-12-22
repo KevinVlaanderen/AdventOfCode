@@ -3,7 +3,7 @@ internal import Algorithms
 import Framework
 
 public final class Day4: Day<(task: Task, word: String), Int> {
-    public override func perform() throws -> R {
+    public override func perform(data: String, param: P) throws -> R {
         let grid = parse(data)
 
         return switch param.task {

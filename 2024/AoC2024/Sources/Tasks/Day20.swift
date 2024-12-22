@@ -9,21 +9,23 @@ public final class Day20: Day<(maxCheats: Int, cutoff: Int), Int> {
         let track = try RaceTrack(from: grid)
         
         let path = try track.path(from: track.start, to: track.end)
-                
-        var cheats: [ShortcutKey: Int] = [:]
-        
-        for step in path.enumerated() {
-            let stepsWithinDistance = path.enumerated().filter({ $0.offset > step.offset+1})
-                .map({ ($0, step.element.manhattanDistance(to: $0.element)) })
-                .filter({ $0.1 <= param.maxCheats })
+
+        return path.enumerated().reduce(into: 0) { result, step in
+            let stepDistance = step.offset
             
-            for (otherStep, distance) in stepsWithinDistance where otherStep.offset > step.offset + distance {
-                let key = ShortcutKey(from: step.element, to: otherStep.element)
-                cheats[key] = otherStep.offset - step.offset - distance
+            for otherStep in path[stepDistance+1..<path.endIndex].enumerated() {
+                let otherStepDistance = stepDistance + otherStep.offset + 1
+                let distanceBetween = step.element.manhattanDistance(to: otherStep.element)
+
+                if distanceBetween <= param.maxCheats && otherStepDistance > step.offset + distanceBetween {
+                    let cheatDistance = otherStepDistance - step.offset - distanceBetween
+
+                    if cheatDistance >= param.cutoff {
+                        result += 1
+                    }
+                }
             }
         }
-                
-        return cheats.filter({ $0.value >= param.cutoff }).count
     }
     
     private func parse(_ data: String) throws -> any Grid<TileType> {

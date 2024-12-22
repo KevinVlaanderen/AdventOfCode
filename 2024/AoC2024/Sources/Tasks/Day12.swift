@@ -31,7 +31,7 @@ public struct Day12: Day {
     private struct Farm {
         private let grid: any Grid<Plant>
         
-        private let directions: [Heading] = [.N, .E, .S, .W]
+        private let directions = Direction.allCases
         
         init(grid: any Grid<Day12.Plant>) {
             self.grid = grid
@@ -78,7 +78,7 @@ public struct Day12: Day {
         let plant: Plant
         
         func fences(farm: Farm) -> Int {
-            let directions: [Heading] = [.N, .E, .S, .W]
+            let directions = Direction.allCases
             
             return plots.reduce(0) { result, plot in
                 result + directions.count { direction in
@@ -89,7 +89,7 @@ public struct Day12: Day {
         }
         
         func sides(farm: Farm) -> Int {
-            let directions: [Heading] = [.N, .E, .S, .W]
+            let directions = Direction.allCases
             
             let edges: [Edge: [Int]] = plots.reduce(into: [:]) { result, plot in
                 for direction in directions {
@@ -99,14 +99,12 @@ public struct Day12: Day {
                         var position: Int
                         
                         switch direction {
-                        case .N, .S:
+                        case .up, .down:
                             index = plot.y
                             position = plot.x
-                        case .E, .W:
+                        case .left, .right:
                             index = plot.x
                             position = plot.y
-                        default:
-                            fatalError()
                         }
                         
                         let edge = Edge(direction: direction, index: index)
@@ -126,7 +124,7 @@ public struct Day12: Day {
         }
         
         private struct Edge: Hashable {
-            let direction: Heading
+            let direction: Direction
             let index: Int
         }
     }

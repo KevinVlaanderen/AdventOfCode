@@ -59,7 +59,7 @@ public struct Day10: Day {
             return 1
         }
         
-        let directions: [Heading] = [.N, .E, .S, .W]
+        let directions: [Direction] = [.up, .right, .down, .left]
         
         return directions.reduce(0) { result, direction in
             let next = from.neighbour(direction: direction)

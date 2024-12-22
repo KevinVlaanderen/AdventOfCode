@@ -273,6 +273,13 @@ let benchmarks = {
             try blackHole(task.data!.perform())
         }
     }
+    Benchmark("Day20.Task2.data") { benchmark in
+        benchmark.configuration.timeUnits = .microseconds
+        let task = Cases.Day20.Task2()
+        for _ in benchmark.scaledIterations {
+            try blackHole(task.data!.perform())
+        }
+    }
     Benchmark("Day21.Task1.data") { benchmark in
         benchmark.configuration.timeUnits = .microseconds
         let task = Cases.Day21.Task1()

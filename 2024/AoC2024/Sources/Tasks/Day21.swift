@@ -44,13 +44,13 @@ public struct Day21: Day {
     }
 }
 
-typealias Code = [NumericKey]
+private typealias Code = [NumericKey]
 
-extension Code {
+private extension Code {
     var value: Int { Int(self.dropLast().map({ $0.description }).joined())! }
 }
 
-protocol KeypadProtocol<KeyType> {
+private protocol KeypadProtocol<KeyType> {
     associatedtype KeyType: Hashable
     
     var current: KeyType {get set}
@@ -61,12 +61,12 @@ protocol KeypadProtocol<KeyType> {
     func path(from: KeyType, to: KeyType) throws -> [Direction]
 }
 
-struct HashKey<KeyType: Hashable>: Hashable {
+private struct HashKey<KeyType: Hashable>: Hashable {
     let from: KeyType
     let to: KeyType
 }
 
-extension KeypadProtocol {
+private extension KeypadProtocol {
     mutating func press(_ key: KeyType) throws -> Int {
         let hashKey = HashKey<KeyType>(from: current, to: key)
         
@@ -90,7 +90,7 @@ extension KeypadProtocol {
     }
 }
 
-struct NumericKeypad: KeypadProtocol {
+private struct NumericKeypad: KeypadProtocol {
     let graph: WeightedGraph<NumericKey, Direction>
     var current: NumericKey
     var controlledBy: (any KeypadProtocol<DirectionalKey>)?
@@ -179,7 +179,7 @@ struct NumericKeypad: KeypadProtocol {
     }
 }
 
-struct DirectionalKeypad: KeypadProtocol {
+private struct DirectionalKeypad: KeypadProtocol {
     let graph: WeightedGraph<DirectionalKey, Direction>
     var current: DirectionalKey
     var controlledBy: (any KeypadProtocol<DirectionalKey>)?
@@ -230,7 +230,7 @@ struct DirectionalKeypad: KeypadProtocol {
     }
 }
 
-enum NumericKey: Codable, Hashable, CustomStringConvertible {
+private enum NumericKey: Codable, Hashable, CustomStringConvertible {
     case number(Int)
     case confirm
     
@@ -250,7 +250,7 @@ enum NumericKey: Codable, Hashable, CustomStringConvertible {
     }
 }
 
-enum DirectionalKey: Codable, Hashable {
+private enum DirectionalKey: Codable, Hashable {
     case direction(Direction)
     case confirm
     

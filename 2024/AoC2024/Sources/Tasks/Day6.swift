@@ -31,7 +31,7 @@ public struct Day6: Day {
                 switch character {
                 case ".":   .empty
                 case "#":   .obstruction
-                case "^":   .patrolGuard(.N)
+                case "^":   .patrolGuard(.north)
                 default:    fatalError("unknown grid item: \(character)")
                 }
             }
@@ -72,17 +72,17 @@ public struct Day6: Day {
     }
     
     private func nextPosition(for step: Step) -> Point {
-        step.position.neighbour(direction: step.direction)
+        step.position.neighbour(heading: step.heading)
     }
     
     private func entersLoop(grid: any Grid<Content>) -> (Step) -> Bool {
         { outerStep in
             var newGrid = grid
-            newGrid[outerStep.position.neighbour(direction: outerStep.direction)] = .obstruction
+            newGrid[outerStep.position.neighbour(heading: outerStep.heading)] = .obstruction
             
             var seen: [Step] = []
             
-            for (step, nextStep) in PathTracker(grid: newGrid, startPosition: outerStep.position, startDirection: outerStep.direction).adjacentPairs() {
+            for (step, nextStep) in PathTracker(grid: newGrid, startPosition: outerStep.position, startDirection: outerStep.heading).adjacentPairs() {
                 if nextStep.content == .obstruction {
                     if seen.contains(step) {
                         return true
@@ -102,7 +102,7 @@ public struct Day6: Day {
     
     struct Step: Hashable {
         let position: Point
-        let direction: Heading
+        let heading: Heading
         let content: Content
     }
     
@@ -112,13 +112,13 @@ public struct Day6: Day {
         let startDirection: Heading
         
         func makeIterator() -> PathIterator {
-            PathIterator(grid: grid, currentPosition: startPosition, currentDirection: startDirection)
+            PathIterator(grid: grid, currentPosition: startPosition, currentHeading: startDirection)
         }
         
         struct PathIterator: IteratorProtocol {
             let grid: any Grid<Content>
             var currentPosition: Point
-            var currentDirection: Heading
+            var currentHeading: Heading
             var started = false
             
             mutating func next() -> Step? {
@@ -127,10 +127,10 @@ public struct Day6: Day {
                         return nil
                     }
                     started = true
-                    return Step(position: currentPosition, direction: currentDirection, content: currentContent)
+                    return Step(position: currentPosition, heading: currentHeading, content: currentContent)
                 }
 
-                let nextPosition = currentPosition.neighbour(direction: currentDirection)
+                let nextPosition = currentPosition.neighbour(heading: currentHeading)
 
                 guard let nextContent = grid[nextPosition] else {
                     return nil
@@ -138,11 +138,11 @@ public struct Day6: Day {
                 
                 switch nextContent {
                 case .obstruction:
-                    currentDirection = currentDirection.rotate(.CW90)
-                    return Step(position: currentPosition, direction: currentDirection, content: nextContent)
+                    currentHeading = currentHeading.rotate(.clockwise90)
+                    return Step(position: currentPosition, heading: currentHeading, content: nextContent)
                 default:
                     currentPosition = nextPosition
-                    return Step(position: currentPosition, direction: currentDirection, content: nextContent)
+                    return Step(position: currentPosition, heading: currentHeading, content: nextContent)
                 }
             }
         }

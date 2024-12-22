@@ -38,8 +38,8 @@ public struct Day4: Day {
                 continue
             }
             
-            for direction in Heading.allCases {
-                if wordFound(grid: grid, word: word, position: item.position, direction: direction) {
+            for heading in Heading.allCases {
+                if wordFound(grid: grid, word: word, position: item.position, heading: heading) {
                     count += 1
                 }
             }
@@ -63,9 +63,9 @@ public struct Day4: Day {
                 continue
             }
             
-            for direction in [Heading.NE, Heading.SE, Heading.SW, Heading.NW] {
-                if wordFound(grid: grid, word: word, position: item.position, direction: direction) {
-                    let center = item.position.neighbour(direction: direction, distance: word.count / 2)
+            for heading in [Heading.northEast, Heading.southEast, Heading.southWest, Heading.northWest] {
+                if wordFound(grid: grid, word: word, position: item.position, heading: heading) {
+                    let center = item.position.neighbour(heading: heading, distance: word.count / 2)
                     let current = crossed[center] ?? 0
                     crossed[center] = current+1
                 }
@@ -75,7 +75,7 @@ public struct Day4: Day {
         return crossed.count(where: { $0.value >= 2 })
     }
     
-    private func wordFound(grid: any Grid<Character>, word: String, position: Point, direction: Heading) -> Bool {
+    private func wordFound(grid: any Grid<Character>, word: String, position: Point, heading: Heading) -> Bool {
         guard let currentCharacter = word.first else {
             return true
         }
@@ -88,8 +88,8 @@ public struct Day4: Day {
         }
         
         let newWord = String(word.dropFirst())
-        let newPosition = position.neighbour(direction: direction)
+        let newPosition = position.neighbour(heading: heading)
         
-        return wordFound(grid: grid, word: newWord, position: newPosition, direction: direction)
+        return wordFound(grid: grid, word: newWord, position: newPosition, heading: heading)
     }
 }

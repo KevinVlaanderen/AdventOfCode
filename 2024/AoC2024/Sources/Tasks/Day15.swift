@@ -40,7 +40,7 @@ public struct Day15: Day {
     nonisolated(unsafe)
     private static let emptyLinePattern = /\n\n/
     
-    private func parse(_ data: String, multiplier: Int) throws -> (Room, [Heading]) {
+    private func parse(_ data: String, multiplier: Int) throws -> (Room, [Direction]) {
         let blocks = data.split(separator: Day15.emptyLinePattern)
 
         let (grid, moves) = (try parseGrid(data: blocks[0]), try parseMoves(data: blocks[1]))
@@ -63,15 +63,15 @@ public struct Day15: Day {
         })
     }
     
-    private func parseMoves(data: Substring) throws -> [Heading] {
+    private func parseMoves(data: Substring) throws -> [Direction] {
         try data.split(whereSeparator: \.isNewline).flatMap { line throws in
             try line.map { character throws in
                 switch character {
-                case "^": Heading.N
-                case ">": Heading.E
-                case "v": Heading.S
-                case "<": Heading.W
-                    default: throw AoCError.parseError("unknown direction: \(character)")}
+                case "^": .up
+                case ">": .right
+                case "v": .down
+                case "<": .left
+                default: throw AoCError.parseError("unknown direction: \(character)")}
             }
         }
     }
@@ -135,9 +135,9 @@ public struct Day15: Day {
             return tileID >= 0 ? tileMap[tileID] : nil
         }
         
-        func nextTo(tile: Tile, direction: Heading) throws -> Set<TileID> {
+        func nextTo(tile: Tile, direction: Direction) throws -> Set<TileID> {
             switch direction {
-            case .N, .S:
+            case .up, .down:
                 return tile.positions.reduce(into: []) { result, position in
                     let neighbourPosition = position.neighbour(direction: direction)
                     guard let neighbourID = grid[neighbourPosition] else {
@@ -147,22 +147,20 @@ public struct Day15: Day {
                         result.insert(neighbourID)
                     }
                 }
-            case .E:
+            case .right:
                 guard let tileID = grid[tile.end.neighbour(direction: direction)] else {
                     return []
                 }
                 return tileID >= 0 ? Set<TileID>(arrayLiteral: tileID) : []
-            case .W:
+            case .left:
                 guard let tileID = grid[tile.start.neighbour(direction: direction)] else {
                     return []
                 }
                 return tileID >= 0 ? Set<TileID>(arrayLiteral: tileID) : []
-            default:
-                throw Day15Error.invalidMove
             }
         }
         
-        mutating func move(_ tileID: TileID, to direction: Heading) throws {
+        mutating func move(_ tileID: TileID, to direction: Direction) throws {
             let (movingTileIDs, canMove) = try checkMove(from: tileID, direction: direction)
             
             if !canMove {
@@ -180,11 +178,10 @@ public struct Day15: Day {
                 emptied.formUnion(tile.positions)
                 
                 switch direction {
-                case .N: tile.start.y -= 1
-                case .E: tile.start.x += 1
-                case .S: tile.start.y += 1
-                case .W: tile.start.x -= 1
-                default: throw Day15Error.invalidMove
+                case .up: tile.start.y -= 1
+                case .right: tile.start.x += 1
+                case .down: tile.start.y += 1
+                case .left: tile.start.x -= 1
                 }
                 
                 let newPositions = tile.positions
@@ -202,7 +199,7 @@ public struct Day15: Day {
             }
         }
         
-        func checkMove(from tileID: TileID, direction: Heading) throws -> (Set<TileID>, Bool) { // moving
+        func checkMove(from tileID: TileID, direction: Direction) throws -> (Set<TileID>, Bool) { // moving
             if tileID == -1 {
                 throw Day15Error.invalidMove
             }

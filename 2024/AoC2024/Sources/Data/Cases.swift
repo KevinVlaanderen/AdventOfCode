@@ -344,10 +344,17 @@ struct Cases {
     
     struct Day20 {
         struct Task1 {
-            // sourcery: expected = 0
-            let example1 = Tasks.Day20.task(loadData(file: Data.Input.Day20.example1), param: .task1)
+            // sourcery: expected = 5
+            let example1 = Tasks.Day20.task(loadData(file: Data.Input.Day20.example1), param: (2, 20))
             // sourcery: expected = 1429
-            let data = Tasks.Day20.task(loadData(file: Data.Input.Day20.data), param: .task1)
+            let data = Tasks.Day20.task(loadData(file: Data.Input.Day20.data), param: (2, 100))
+        }
+        
+        struct Task2 {
+            // sourcery: expected = 41
+            let example1 = Tasks.Day20.task(loadData(file: Data.Input.Day20.example1), param: (20, 70))
+            // sourcery: expected = 988931
+            let data = Tasks.Day20.task(loadData(file: Data.Input.Day20.data), param: (20, 100))
         }
     }
     

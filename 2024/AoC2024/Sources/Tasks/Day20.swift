@@ -4,6 +4,8 @@ internal import HeapModule
 import Framework
 
 public struct Day20: Day {
+    public typealias P = (maxCheats: Int, cutoff: Int)
+    
     private let data: String
     private let param: P
     
@@ -16,34 +18,22 @@ public struct Day20: Day {
         let grid = try parse(data: data)
         let track = try RaceTrack(from: grid)
         
-        let (cameFrom, costSoFar) = try track.path(from: track.start, to: track.end)
-        let path = reconstructPath(cameFrom: cameFrom, start: track.start, goal: track.end)
-        
-        let baseLength = path.count
-        
-        var cheats: [Point: Int] = [:]
-        
-        for step in path {
-            for neighbour in step.neighbours(directions: Heading.orthogonal) {
-                if cheats[neighbour] != nil || track.grid[neighbour] != .wall {
-                    continue
-                }
+        let path = try track.path(from: track.start, to: track.end)
                 
-                var newTrack = track
-                newTrack.grid[neighbour] = .empty
-                
-                let (cameFrom, costSoFar) = try newTrack.path(from: newTrack.start, to: newTrack.end)
-                let path = reconstructPath(cameFrom: cameFrom, start: newTrack.start, goal: newTrack.end)
-                
-                let saved = baseLength - path.count
-                if saved <= 0 {
-                    continue
-                }
-                cheats[neighbour] = saved
+        var cheats: [ShortcutKey: Int] = [:]
+        
+        for step in path.enumerated() {
+            let stepsWithinDistance = path.enumerated().filter({ $0.offset > step.offset+1})
+                .map({ ($0, step.element.manhattanDistance(to: $0.element)) })
+                .filter({ $0.1 <= param.maxCheats })
+            
+            for (otherStep, distance) in stepsWithinDistance where otherStep.offset > step.offset + distance {
+                let key = ShortcutKey(from: step.element, to: otherStep.element)
+                cheats[key] = otherStep.offset - step.offset - distance
             }
         }
-        
-        return cheats.filter({ $0.value >= 100 }).count
+                
+        return cheats.filter({ $0.value >= param.cutoff }).count
     }
     
     private func parse(data: String) throws -> any Grid<TileType> {
@@ -59,106 +49,51 @@ public struct Day20: Day {
             }
         })
     }
+}
+
+private struct ShortcutKey: Hashable {
+    let from: Point
+    let to: Point
+}
+
+private struct RaceTrack {
+    let start: Point
+    let end: Point
+    var grid: any Grid<TileType>
     
-    private struct RaceTrack {
-        let start: Point
-        let end: Point
-        var grid: any Grid<TileType>
+    init(from grid: any Grid<TileType>) throws {
+        self.grid = grid
         
-        init(from grid: any Grid<TileType>) throws {
-            self.grid = grid
-            
-            guard let start = grid.first(where: { $0.value == TileType.start }) else {
-                throw AoCError.parseError("No start position")
-            }
-            guard let end = grid.first(where: { $0.value == TileType.end }) else {
-                throw AoCError.parseError("No end position")
-            }
-            
-            self.start = start.position
-            self.end = end.position
+        guard let start = grid.first(where: { $0.value == TileType.start }) else {
+            throw AoCError.parseError("No start position")
+        }
+        guard let end = grid.first(where: { $0.value == TileType.end }) else {
+            throw AoCError.parseError("No end position")
         }
         
-        func path(from start: Point, to end: Point) throws -> ([Point: Point?], [Point: Int]) {
-            var frontier = Heap<QueuedStep>([QueuedStep(point: start, cost: 0)])
-            
-            var cameFrom: [Point: Point?] = [start: nil]
-            var costSoFar: [Point: Int] = [start: 0]
-            
-            while !frontier.isEmpty {
-                guard let current = frontier.popMin() else {
-                    break
-                }
-                
-                if current.point == end {
-                    break
-                }
-                
-                for direction in Heading.orthogonal {
-                    let nextPoint = current.point.neighbour(direction: direction)
-                    
-                    guard let nextTile = grid[nextPoint], let currentCost = costSoFar[current.point] else {
-                        continue
-                    }
-                    
-                    if nextTile == .wall {
-                        continue
-                    }
-                    
-                    let newCost = currentCost+1
-                    let nextCost = costSoFar[nextPoint]
-                    
-                    if nextCost == nil || newCost < nextCost! {
-                        costSoFar[nextPoint] = newCost
-                        frontier.insert(QueuedStep(point: nextPoint, cost: newCost))
-                        cameFrom[nextPoint] = current.point
-                        continue
-                    }
-                }
-            }
-            
-            return (cameFrom, costSoFar)
-        }
+        self.start = start.position
+        self.end = end.position
     }
     
-    private func reconstructPath(cameFrom: [Point: Point?], start: Point, goal: Point) -> [Point] {
-        var current: Point = goal
-        var path: [Point] = []
+    func path(from start: Point, to end: Point) throws -> [Point] {
+        var path = [start]
         
-        if cameFrom[goal] == nil {
-            return path
-        }
+        var current = start
+        var previous: Point? = nil
         
-        while current != start {
-            path.append(current)
-            guard let previous = cameFrom[current], let previous = previous else {
+        while current != end {
+            for neighbour in current.neighbours(directions: Direction.allCases) where neighbour != previous && grid[neighbour] != .wall {
+                path.append(neighbour)
+                previous = current
+                current = neighbour
                 break
             }
-            current = previous
         }
         
-        return path.reversed()
+        return path
     }
-    
-    private enum TileType: Equatable, Hashable {
-        case empty, wall, start, end
-    }
-    
-    private struct QueuedStep: Equatable, Comparable, Hashable {
-        let point: Point
-        let cost: Int
-        
-        static func < (lhs: QueuedStep, rhs: QueuedStep) -> Bool {
-            lhs.cost < rhs.cost
-        }
-    }
-    
-//    private struct Cost: Comparable, Hashable {
-//        let steps: Int
-//        let cheats: Int
-//        
-//        static func < (lhs: Day20.Cost, rhs: Day20.Cost) -> Bool {
-//            lhs.steps < rhs.steps ? true : lhs.steps > rhs.steps ? false : lhs.cheats < rhs.cheats
-//        }
-//    }
+}
+
+private enum TileType: Equatable, Hashable {
+    case empty, wall, start, end
 }

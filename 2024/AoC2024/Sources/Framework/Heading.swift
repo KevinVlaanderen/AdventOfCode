@@ -1,74 +1,72 @@
 public enum Heading: CaseIterable, Codable {
-    case N, NE, E, SE, S, SW, W, NW
+    case north, northEast, east, southEast, south, southWest, west, northWest
 }
 
 public enum HeadingChange: CaseIterable {
-    case CW90, CCW90, Invert
+    case clockwise90, counterClockwise90, invert
 }
 
 public extension Heading {
     func asPoint() -> Point {
         switch self {
-        case .N:
+        case .north:
             return Point(x: 0, y: -1)
-        case .NE:
+        case .northEast:
             return Point(x: 1, y: -1)
-        case .E:
+        case .east:
             return Point(x: 1, y: 0)
-        case .SE:
+        case .southEast:
             return Point(x: 1, y: 1)
-        case .S:
+        case .south:
             return Point(x: 0, y: 1)
-        case .SW:
+        case .southWest:
             return Point(x: -1, y: 1)
-        case .W:
+        case .west:
             return Point(x: -1, y: 0)
-        case .NW:
+        case .northWest:
             return Point(x: -1, y: -1)
         }
     }
     
     func rotate(_ change: HeadingChange) -> Heading {
         switch (self, change) {
-        case (.N, .CW90): .E
-        case (.NE, .CW90): .SE
-        case (.E, .CW90): .S
-        case (.SE, .CW90): .SW
-        case (.S, .CW90): .W
-        case (.SW, .CW90): .NW
-        case (.W, .CW90): .N
-        case (.NW, .CW90): .NE
-        case (.N, .CCW90): .W
-        case (.NE, .CCW90): .NW
-        case (.E, .CCW90): .N
-        case (.SE, .CCW90): .NE
-        case (.S, .CCW90): .E
-        case (.SW, .CCW90): .SE
-        case (.W, .CCW90): .S
-        case (.NW, .CCW90): .SW
-        case (.N, .Invert): .S
-        case (.NE, .Invert): .SW
-        case (.E, .Invert): .W
-        case (.SE, .Invert): .NW
-        case (.S, .Invert): .N
-        case (.SW, .Invert): .NE
-        case (.W, .Invert): .E
-        case (.NW, .Invert): .SE
+        case (.north, .clockwise90): .east
+        case (.northEast, .clockwise90): .southEast
+        case (.east, .clockwise90): .south
+        case (.southEast, .clockwise90): .southWest
+        case (.south, .clockwise90): .west
+        case (.southWest, .clockwise90): .northWest
+        case (.west, .clockwise90): .north
+        case (.northWest, .clockwise90): .northEast
+        case (.north, .counterClockwise90): .west
+        case (.northEast, .counterClockwise90): .northWest
+        case (.east, .counterClockwise90): .north
+        case (.southEast, .counterClockwise90): .northEast
+        case (.south, .counterClockwise90): .east
+        case (.southWest, .counterClockwise90): .southEast
+        case (.west, .counterClockwise90): .south
+        case (.northWest, .counterClockwise90): .southWest
+        case (.north, .invert): .south
+        case (.northEast, .invert): .southWest
+        case (.east, .invert): .west
+        case (.southEast, .invert): .northWest
+        case (.south, .invert): .north
+        case (.southWest, .invert): .northEast
+        case (.west, .invert): .east
+        case (.northWest, .invert): .southEast
         }
     }
     
     func opposite() -> Heading {
         switch self {
-        case .N: .S
-        case .NE: .SW
-        case .E: .W
-        case .SE: .NW
-        case .S: .N
-        case .SW: .NE
-        case .W: .E
-        case .NW: .SE
+        case .north: .south
+        case .northEast: .southWest
+        case .east: .west
+        case .southEast: .northWest
+        case .south: .north
+        case .southWest: .northEast
+        case .west: .east
+        case .northWest: .southEast
         }
     }
-     
-    static var orthogonal: [Heading] { [.N, .E, .S, .W] }
 }

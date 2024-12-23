@@ -7,7 +7,7 @@ public final class Day3: Day<[Day3.InstructionParam], Int> {
         case mulInst, doInst, dontInst
     }
     
-    public override func perform(data: String, param: P) throws -> R {
+    public override func perform(data: String, task: Task, param: P) throws -> R {
         let instructions = try parse(data, param: param)
         
         return execute(instructions)

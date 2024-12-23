@@ -3,7 +3,7 @@ import Framework
 internal import Algorithms
 
 public final class Day15: Day<Int, Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         var (room, moves) = try parse(data, param: param)
         
         guard let robotID = room.tileMap.first(where: { $0.value.type == .robot})?.key else {

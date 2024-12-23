@@ -3,8 +3,8 @@ internal import Algorithms
 internal import SwiftGraph
 import Framework
 
-public final class Day8: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+public final class Day8: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         var grid = parse(data)
         
         let groups = grid.filter({ $0.value.frequency != "." }).grouped(by: { $0.value.frequency })
@@ -15,7 +15,7 @@ public final class Day8: Day<Task, Int> {
                 let dy = items[0].position.y - items[1].position.y
                 
                 if dx != 0 && dy != 0 {
-                    switch param {
+                    switch task {
                     case .task1:
                         setAntiNode(grid: &grid, position: items[0].position, dx: dx, dy: dy)
                         setAntiNode(grid: &grid, position: items[1].position, dx: -dx, dy: -dy)

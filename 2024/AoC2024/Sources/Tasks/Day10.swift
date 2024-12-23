@@ -2,8 +2,8 @@ import Foundation
 import Framework
 internal import Algorithms
 
-public final class Day10: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+public final class Day10: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         let topographicMap = parse(data)
         
         let trailheads = topographicMap.filter {
@@ -17,7 +17,7 @@ public final class Day10: Day<Task, Int> {
             var found: Set<Point> = []
             let numPaths = pathsTo(9, from: current.position, topographicMap: topographicMap, found: &found)
             
-            switch param {
+            switch task {
             case .task1:
                 return result + found.count
             case .task2:

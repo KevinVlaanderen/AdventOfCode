@@ -3,11 +3,11 @@ internal import Algorithms
 internal import SwiftGraph
 import Framework
 
-public final class Day5: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> R {
+public final class Day5: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> R {
         let (orderPairs, updates) = try parse(data)
 
-        return switch param {
+        return switch task {
         case .task1: try task1(orderPairs: orderPairs, updates: updates)
         case .task2: try task2(orderPairs: orderPairs, updates: updates)
         }

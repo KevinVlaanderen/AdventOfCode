@@ -2,11 +2,11 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public final class Day1: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> R {
+public final class Day1: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> R {
         let (left, right) = try parse(data)
         
-        return switch param {
+        return switch task {
         case .task1: task1(left: left, right: right)
         case .task2: task2(left: left, right: right)
         }

@@ -3,14 +3,14 @@ internal import Algorithms
 internal import HeapModule
 import Framework
 
-public final class Day18: Day<(task: Task, size: Int, startTime: Int), String> {
-    public override func perform(data: String, param: P) throws -> R {
+public final class Day18: Day<(size: Int, startTime: Int), String> {
+    public override func perform(data: String, task: Task, param: P) throws -> R {
         let (grid, bytes) = try parse(data, param: param)
 
         let start = Point(x: 0, y: 0)
         let goal = Point(x: grid.width-1, y: grid.height-1)
         
-        switch param.task {
+        switch task {
         case .task1:
             let (cameFrom, _) = findPath(grid: grid, start: start, goal: goal, startTime: param.startTime)
             let path = reconstructPath(cameFrom: cameFrom, start: start, goal: goal)

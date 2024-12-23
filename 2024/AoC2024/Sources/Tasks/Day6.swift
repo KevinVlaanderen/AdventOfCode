@@ -3,15 +3,15 @@ internal import Algorithms
 internal import SwiftGraph
 import Framework
 
-public final class Day6: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+public final class Day6: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         let grid: any Grid<Content> = parse(data)
 
         guard let (guardPosition, guardDirection) = findGuard(grid: grid) else {
             fatalError("no guard found")
         }
         
-        return switch param {
+        return switch task {
         case .task1: try task1(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
         case .task2: try task2(grid: grid, startPosition: guardPosition, startDirection: guardDirection)
         }

@@ -2,11 +2,11 @@ import Foundation
 import Framework
 internal import Algorithms
 
-public final class Day12: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+public final class Day12: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         let farm = parse(data)
         
-        return switch param {
+        return switch task {
         case .task1: farm.regions().reduce(0) { $0 + $1.plots.count*$1.fences(farm: farm) }
         case .task2: farm.regions().reduce(0) { $0 + $1.plots.count*$1.sides(farm: farm) }
         }

@@ -2,11 +2,11 @@ import Foundation
 import Framework
 internal import Algorithms
 
-public final class Day9: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+public final class Day9: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         var disk = parse(data)
 
-        switch param {
+        switch task {
         case .task1:
             return checksum(files: task1(&disk))
         case .task2:

@@ -4,7 +4,7 @@ internal import HeapModule
 import Framework
 
 public final class Day20: Day<(maxCheats: Int, cutoff: Int), Int> {
-    public override func perform(data: String, param: P) throws -> R {
+    public override func perform(data: String, task: Task, param: P) throws -> R {
         let grid = try parse(data)
         let track = try RaceTrack(from: grid)
         

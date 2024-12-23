@@ -3,8 +3,8 @@ import Framework
 internal import SwiftGraph
 internal import Algorithms
 
-public final class Day16: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+public final class Day16: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         let grid = try parse(data)
         let maze = try Maze(from: grid)
         
@@ -20,7 +20,7 @@ public final class Day16: Day<Task, Int> {
         }.map({ $0.value })
         let minimumCost = costs.dropFirst().reduce(costs.first!, min)
         
-        switch param {
+        switch task {
         case .task1:
             return minimumCost
         case .task2:

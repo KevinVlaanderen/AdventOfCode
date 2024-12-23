@@ -3,7 +3,7 @@ import Framework
 internal import Algorithms
 
 public final class Day13: Day<(modifier: Int, presses: Int), Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         parse(data, param: param).map { machine in
             let b = (machine.a.x * machine.prize.y - machine.a.y * machine.prize.x) / (machine.a.x * machine.b.y - machine.a.y * machine.b.x)
             let a = (machine.prize.x - machine.b.x * b) / machine.a.x

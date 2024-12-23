@@ -2,13 +2,13 @@ import Foundation
 import Framework
 internal import Algorithms
 
-public final class Day14: Day<(task: Task, draw: Bool), Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+public final class Day14: Day<Bool, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         var room = Room(robots: parse(data))
         
-        return switch param.task {
-        case .task1: task1(room: &room, draw: param.draw)
-        case .task2: task2(room: &room, draw: param.draw)
+        return switch task {
+        case .task1: task1(room: &room, draw: param)
+        case .task2: task2(room: &room, draw: param)
         }
     }
     

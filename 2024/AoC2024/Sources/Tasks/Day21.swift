@@ -4,7 +4,7 @@ internal import SwiftGraph
 import Framework
 
 public final class Day21: Day<Int, Int> {
-    public override func perform(data: String, param: P) throws -> R {
+    public override func perform(data: String, task: Task, param: P) throws -> R {
         let codes = try parse(data)
 
         return try codes.reduce(into: 0) { result, code in

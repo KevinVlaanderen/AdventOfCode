@@ -2,11 +2,11 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public final class Day17: Day<Task, String> {
-    public override func perform(data: String, param: P) throws -> R {
+public final class Day17: Day<Void, String> {
+    public override func perform(data: String, task: Task, param: P) throws -> R {
         var (machine, instructions, rawInstructions) = try parse(data)
 
-        switch param {
+        switch task {
         case .task1:
             while machine.pointer < instructions.count {
                 try machine.runInstruction(instructions[machine.pointer])

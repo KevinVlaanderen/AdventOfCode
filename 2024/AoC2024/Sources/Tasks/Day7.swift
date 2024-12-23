@@ -7,7 +7,7 @@ public final class Day7: Day<[Day7.OperatorParam], Int> {
         case add, multiply, combine
     }
     
-    public override func perform(data: String, param: P) throws -> Int {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         let (equations, operators) = parse(data, param: param)
         
         return equations.filter(canSatisfy(operators: operators))

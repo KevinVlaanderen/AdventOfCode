@@ -2,13 +2,13 @@ import Foundation
 internal import Algorithms
 import Framework
 
-public final class Day19: Day<Task, Int> {
-    public override func perform(data: String, param: P) throws -> R {
+public final class Day19: Day<Void, Int> {
+    public override func perform(data: String, task: Task, param: P) throws -> R {
         let (towels, designs) = parse(data)
         
         var cache: [Design: Int] = [:]
         
-        return switch param {
+        return switch task {
         case .task1:
             designs.count(where: { countOptions(design: $0, towels: towels, cache: &cache) > 0 })
         case .task2:

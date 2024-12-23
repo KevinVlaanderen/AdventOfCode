@@ -3,7 +3,7 @@ import Framework
 internal import Algorithms
 
 public final class Day11: Day<Int, Int> {
-    public override func perform(data: String, param: P) throws -> Int {
+    public override func perform(data: String, task: Task, param: P) throws -> Int {
         let stones = parse(data)
         
         var cache: Cache = [:]

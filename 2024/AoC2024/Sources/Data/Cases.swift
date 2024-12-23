@@ -382,10 +382,17 @@ struct Cases {
     
     struct Day23 {
         struct Task1 {
-            // sourcery: expected = 7
+            // sourcery: expected = "7"
             let example1 = Tasks.Day23.task(loadData(file: Data.Input.Day23.example1), param: .task1)
-            // sourcery: expected = 1352
+            // sourcery: expected = "1352"
             let data = Tasks.Day23.task(loadData(file: Data.Input.Day23.data), param: .task1)
+        }
+        
+        struct Task2 {
+            // sourcery: expected = "co,de,ka,ta"
+            let example1 = Tasks.Day23.task(loadData(file: Data.Input.Day23.example1), param: .task2)
+            // sourcery: expected = "dm,do,fr,gf,gh,gy,iq,jb,kt,on,rg,xf,ze"
+            let data = Tasks.Day23.task(loadData(file: Data.Input.Day23.data), param: .task2)
         }
     }
 }

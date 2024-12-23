@@ -1,5 +1,4 @@
 import Foundation
-internal import Algorithms
 import Framework
 
 public final class Day7: Day<[Day7.OperatorParam], Int> {

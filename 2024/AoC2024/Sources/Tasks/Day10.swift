@@ -1,6 +1,5 @@
 import Foundation
 import Framework
-internal import Algorithms
 
 public final class Day10: Day<Void, Int> {
     public override func perform(data: String, task: Task, param: P) throws -> Int {

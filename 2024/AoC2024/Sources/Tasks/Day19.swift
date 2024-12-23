@@ -1,5 +1,4 @@
 import Foundation
-internal import Algorithms
 import Framework
 
 public final class Day19: Day<Void, Int> {

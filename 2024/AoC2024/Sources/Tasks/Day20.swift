@@ -1,6 +1,4 @@
 import Foundation
-internal import Algorithms
-internal import HeapModule
 import Framework
 
 public final class Day20: Day<(maxCheats: Int, cutoff: Int), Int> {

@@ -1,7 +1,6 @@
 import Foundation
 import Framework
 internal import SwiftGraph
-internal import Algorithms
 
 public final class Day16: Day<Void, Int> {
     public override func perform(data: String, task: Task, param: P) throws -> Int {

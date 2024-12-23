@@ -1,6 +1,4 @@
 import Foundation
-internal import Algorithms
-internal import SwiftGraph
 import Framework
 
 public final class Day6: Day<Void, Int> {

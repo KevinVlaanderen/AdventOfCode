@@ -1,5 +1,4 @@
 import Foundation
-internal import Algorithms
 internal import HeapModule
 import Framework
 

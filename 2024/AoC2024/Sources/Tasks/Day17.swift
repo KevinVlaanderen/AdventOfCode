@@ -4,75 +4,108 @@ import Framework
 
 public final class Day17: Day<Void, String> {
     public override func perform(data: String, task: Task, param: P) throws -> R {
-        var (machine, instructions, rawInstructions) = try parse(data)
+        var (machine, rawInstructions) = try parse(data)
 
         switch task {
         case .task1:
-            while machine.pointer < instructions.count {
-                try machine.runInstruction(instructions[machine.pointer])
-            }
-            
-            return machine.output.map({ String($0) }).joined(separator: ",")
+            return machine.map({ String($0) }).joined(separator: ",")
         case .task2:
-            var A = 1<<8
-            var newMachine: Machine
+            guard let A = findA(machine: &machine, A: 1, index: 0, targetOutput: rawInstructions) else {
+                return ""
+            }
 
-            Aloop: repeat {
-                A += 1
-                newMachine = machine
-                newMachine.A = A
-                while newMachine.pointer < instructions.count {
-                    try newMachine.runInstruction(instructions[newMachine.pointer])
-                    if !rawInstructions.starts(with: newMachine.output) {
-                        continue Aloop
-                    }
-                }
-            } while newMachine.output != rawInstructions
-            
             return "\(A)"
         }
     }
+    
+    private func findA(machine: inout Machine, A: Int, index: Int, targetOutput: [Int]) -> Int? {
+        let target = targetOutput[targetOutput.count-index-1]
+        
+        for i in 0..<8 {
+            let A = (A+i)
+            machine.A = A
+            
+            guard let output = machine.first(where: { _ in true }), output == target else {
+                continue
+            }
+            if index == targetOutput.count-1 {
+                return A
+            }
+            guard let A = findA(machine: &machine, A: A*8, index: index+1, targetOutput: targetOutput) else {
+                continue
+            }
+            
+            return A
+        }
+        return nil
+    }
 
-    private func parse(_ data: String) throws -> (Machine, [Instruction], [Int]) {
+    private func parse(_ data: String) throws -> (Machine, [Int]) {
         let dataPattern = /Register A: (\d+)\nRegister B: (\d+)\nRegister C: (\d+)\n\nProgram: (.*)/
         
         guard let match = data.wholeMatch(of: dataPattern) else {
             throw AoCError.parseError("data did not match pattern")
         }
-        let A = Int(match.output.1)!
-        let B = Int(match.output.2)!
-        let C = Int(match.output.3)!
+        let A = try toInt(match.output.1)
+        let B = try toInt(match.output.2)
+        let C = try toInt(match.output.3)
         
-        let rawInstructions = match.output.4.split(separator: ",").map({ Int($0)! })
+        let rawInstructions = try match.output.4.split(separator: ",").map(toInt)
         
         let instructions: [Instruction] = try rawInstructions.windows(ofCount: 2).striding(by: 2).map {
-            let opCode: Int = $0[$0.startIndex]
-            let value = $0[$0.endIndex-1]
-            
-            return switch opCode {
-            case 0:                         .adv(.combo(value))
-            case 1:                         .bxl(.literal(value))
-            case 2:                         .bst(.combo(value))
-            case 3:                         .jnz(.literal(value))
-            case 4:                         .bxc
-            case 5:                         .out(.combo(value))
-            case 6:                         .bdv(.combo(value))
-            case 7:                         .cdv(.combo(value))
-            default:                        throw AoCError.parseError("unknown instruction \(opCode) (value=\(value)")}
+            try Instruction.parse(opCode: $0[$0.startIndex], value: $0[$0.endIndex-1])
         }
         
-        return (Machine(A: A, B: B, C: C), instructions, rawInstructions)
+        return (Machine(A: A, B: B, C: C, instructions: instructions), rawInstructions)
     }
 }
 
-private struct Machine {
+private struct Machine: Sequence {
     var A: Int
     var B: Int
     var C: Int
+    let instructions: [Instruction]
+    
     var output: [Int] = []
     var pointer = 0
     
-    mutating func runInstruction(_ instruction: Instruction) throws {
+    func makeIterator() -> MachineIterator {
+        MachineIterator(machine: self)
+    }
+    
+    struct MachineIterator: IteratorProtocol {
+        var machine: Machine
+        
+        public init(machine: Machine) {
+            self.machine = machine
+        }
+        
+        mutating func next() -> Int? {
+            do {
+                while !machine.completed {
+                    if let output = try machine.runNextInstruction() {
+                        return output
+                    }
+                }
+                return nil
+            } catch {
+                return nil
+            }
+        }
+    }
+    
+    public var completed: Bool {
+        pointer >= instructions.count
+    }
+    
+    mutating func runNextInstruction() throws -> Int? {
+        if completed {
+            return nil
+        }
+        
+        let instruction = instructions[pointer]
+        var output: Int? = nil
+        
         switch instruction {
         case .adv(.combo(let value)):   try A = divide(A, power: evaluateCombo(value))
         case .bxl(.literal(let value)): B = B ^ value //
@@ -80,15 +113,17 @@ private struct Machine {
         case .jnz(.literal(_))
             where A == 0:               break
         case .jnz(.literal(let value))
-            where A != 0:               pointer = value/2; return
+            where A != 0:               pointer = value/2; return nil
         case .bxc:                      B = B ^ C //
-        case .out(.combo(let value)):   try output.append(evaluateCombo(value) % 8)
+        case .out(.combo(let value)):   output = try evaluateCombo(value) % 8
         case .bdv(.combo(let value)):   try B = divide(A, power: evaluateCombo(value)) //
         case .cdv(.combo(let value)):   try C = divide(A, power: evaluateCombo(value))
         default:                        throw AoCError.taskError("invalid instruction \(instruction)")
         }
         
         pointer += 1
+        
+        return output
     }
     
     private func evaluateCombo(_ value: Int) throws -> Int {
@@ -115,6 +150,19 @@ private enum Instruction {
     case out(Operand)
     case bdv(Operand)
     case cdv(Operand)
+    
+    static func parse(opCode: Int, value: Int) throws -> Instruction {
+        return switch opCode {
+        case 0:                         .adv(.combo(value))
+        case 1:                         .bxl(.literal(value))
+        case 2:                         .bst(.combo(value))
+        case 3:                         .jnz(.literal(value))
+        case 4:                         .bxc
+        case 5:                         .out(.combo(value))
+        case 6:                         .bdv(.combo(value))
+        case 7:                         .cdv(.combo(value))
+        default:                        throw AoCError.parseError("unknown instruction \(opCode) (value=\(value)")}
+    }
 }
 
 private enum Operand {

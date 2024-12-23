@@ -297,8 +297,8 @@ struct Cases {
         struct Task2 {
             // sourcery: expected = "117440"
             let example2 = Tasks.Day17.task(loadData(file: Data.Input.Day17.example2), task: .task2, param: ())
-//            // sourcery: expected = "-1"
-//            let data = Tasks.Day17.task(loadData(file: Data.Input.Day17.data), task: .task2, param: ())
+            // sourcery: expected = "105843716614554"
+            let data = Tasks.Day17.task(loadData(file: Data.Input.Day17.data), task: .task2, param: ())
         }
     }
     

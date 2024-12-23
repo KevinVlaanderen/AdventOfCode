@@ -29,5 +29,12 @@ struct Day17 {
             let result = try task.example2()
             #expect("\(result)" == "117440")
         }
+        @Test
+        func data() async throws {
+            let task = Cases.Day17.Task2()
+            #expect(task != nil)
+            let result = try task.data()
+            #expect("\(result)" == "105843716614554")
+        }
     }
 }

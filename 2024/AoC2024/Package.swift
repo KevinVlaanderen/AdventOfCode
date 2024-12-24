@@ -24,6 +24,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Algorithms", package: "swift-algorithms"),
                 .product(name: "HeapModule", package: "swift-collections"),
+                .product(name: "BitCollections", package: "swift-collections"),
                 "SwiftGraph",
                 "Framework"
             ]),

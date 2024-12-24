@@ -329,4 +329,11 @@ let benchmarks = {
             try blackHole(task.data())
         }
     }
+    Benchmark("Day24.Task1.data") { benchmark in
+        benchmark.configuration.timeUnits = .microseconds
+        let task = Cases.Day24.Task1()
+        for _ in benchmark.scaledIterations {
+            try blackHole(task.data())
+        }
+    }
 }

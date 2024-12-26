@@ -15,6 +15,7 @@ let package = Package(
         .package(url: "https://github.com/SwiftGen/SwiftGenPlugin", from: "6.6.2"),
         .package(url: "https://github.com/krzysztofzablocki/Sourcery.git", from: "2.2.5"),
         .package(url: "https://github.com/apple/swift-collections.git", from: "1.1.4"),
+        .package(url: "https://github.com/SwiftDocOrg/GraphViz", from: "0.4.1"),
     ],
     targets: [
         .target(
@@ -26,7 +27,8 @@ let package = Package(
                 .product(name: "HeapModule", package: "swift-collections"),
                 .product(name: "BitCollections", package: "swift-collections"),
                 "SwiftGraph",
-                "Framework"
+                "Framework",
+                "GraphViz"
             ]),
         .target(
             name: "Data",

@@ -1,5 +1,5 @@
 {
-  "originHash" : "b8f31371c52d3010c721ddb2572b389ec444936a34a658f706859bfee3ce03b8",
+  "originHash" : "b5321961e12e7ed38ceceed4546afe3ec92a5979b35be870f80f860bfd6a9444",
   "pins" : [
     {
       "identity" : "aexml",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "4b6133c3071d521489a80c38fb92d7983f19d438",
         "version" : "0.9.1"
+      }
+    },
+    {
+      "identity" : "graphviz",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftDocOrg/GraphViz",
+      "state" : {
+        "revision" : "74b6cbd8c5ecea9f64d84c4e1c88d65604dd033f",
+        "version" : "0.4.1"
       }
     },
     {

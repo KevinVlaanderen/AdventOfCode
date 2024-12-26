@@ -31,8 +31,8 @@ jobs:
       uses: SwiftyLab/setup-swift@151b05f786fbd6304bd81fd1e52cd63d306d04e9 # 1.9.0
       with:
         swift-version: "6"
-    - name: Install jemalloc
-      run: brew install jemalloc
+    - name: Install dependencies
+      run: brew install jemalloc graphviz
     - name: Run tests
       run: swift test --xunit-output report.xml
     - name: Unit Test Results
@@ -61,8 +61,8 @@ jobs:
       uses: SwiftyLab/setup-swift@151b05f786fbd6304bd81fd1e52cd63d306d04e9 # 1.9.0
       with:
         swift-version: "6"
-    - name: Install jemalloc
-      run: brew install jemalloc
+    - name: Install dependencies
+      run: brew install jemalloc graphviz
     - name: Run benchmarks
       run: swift package --allow-writing-to-package-directory benchmark --grouping metric --format jmh
     - name: Store benchmark result

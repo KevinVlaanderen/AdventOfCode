@@ -399,18 +399,18 @@ struct Cases {
     struct Day24 {
         struct Task1 {
             // sourcery: expected = "4"
-            let example1 = Tasks.Day24.task(loadData(file: Data.Input.Day24.example1), task: .task1, param: ())
+            let example1 = Tasks.Day24.task(loadData(file: Data.Input.Day24.example1), task: .task1, param: true)
             // sourcery: expected = "2024"
-            let example2 = Tasks.Day24.task(loadData(file: Data.Input.Day24.example2), task: .task1, param: ())
+            let example2 = Tasks.Day24.task(loadData(file: Data.Input.Day24.example2), task: .task1, param: true)
             // sourcery: expected = "60714423975686"
-            let data = Tasks.Day24.task(loadData(file: Data.Input.Day24.data), task: .task1, param: ())
+            let data = Tasks.Day24.task(loadData(file: Data.Input.Day24.data), task: .task1, param: false)
         }
         
         struct Task2 {
-//            // sourcery: expected = "z00,z01,z02,z05"
-//            let example3 = Tasks.Day24.task(loadData(file: Data.Input.Day24.example3), task: .task2, param: ())
-//            // sourcery: expected = "cgh,frt,pmd,sps,tst,z05,z11,z23"
-//            let data = Tasks.Day24.task(loadData(file: Data.Input.Day24.data), task: .task2, param: ())
+            // sourcery: expected = "z00,z01,z02,z05"
+            let example3 = Tasks.Day24.task(loadData(file: Data.Input.Day24.example3), task: .task2, param: true)
+            // sourcery: expected = "cgh,frt,pmd,sps,tst,z05,z11,z23"
+            let data = Tasks.Day24.task(loadData(file: Data.Input.Day24.data), task: .task2, param: false)
         }
     }
     

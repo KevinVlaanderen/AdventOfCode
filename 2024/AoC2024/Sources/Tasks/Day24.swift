@@ -5,7 +5,7 @@ internal import BitCollections
 internal import SwiftGraph
 internal import GraphViz
 
-public final class Day24: Day<Void, String> {
+public final class Day24: Day<Bool, String> {
     public override func perform(data: String, task: Task, param: P) throws -> R {
         var (machine, graph) = try parse(data)
         
@@ -13,104 +13,70 @@ public final class Day24: Day<Void, String> {
         case .task1:
             return "\(machine.outputValue())"
         case .task2:
-            let z05 = machine.registers["z05"]
-            let tst = machine.registers["tst"]
-            machine.registers["z05"] = tst
-            machine.registers["tst"] = z05
+            if param {
+                let z00 = machine.registers["z00"]!
+                let z05 = machine.registers["z05"]!
+                machine.setRegister("z00", z05)
+                machine.setRegister("z05", z00)
+                
+                let z01 = machine.registers["z01"]!
+                let z02 = machine.registers["z02"]!
+                machine.setRegister("z01", z02)
+                machine.setRegister("z02", z01)
+            } else {
+                let z05 = machine.registers["z05"]!
+                let tst = machine.registers["tst"]!
+                machine.setRegister("z05", tst)
+                machine.setRegister("tst", z05)
+                
+                let z11 = machine.registers["z11"]!
+                let sps = machine.registers["sps"]!
+                machine.setRegister("z11", sps)
+                machine.setRegister("sps", z11)
+                
+                let z23 = machine.registers["z23"]!
+                let frt = machine.registers["frt"]!
+                machine.setRegister("z23", frt)
+                machine.setRegister("frt", z23)
+                
+                let cgh = machine.registers["cgh"]!
+                let pmd = machine.registers["pmd"]!
+                machine.setRegister("cgh", pmd)
+                machine.setRegister("pmd", cgh)
+            }
             
-            let z11 = machine.registers["z11"]
-            let sps = machine.registers["sps]"]
-            machine.registers["z11"] = sps
-            machine.registers["sps"] = z11
-
-            let z23 = machine.registers["z23"]
-            let frt = machine.registers["frt"]
-            machine.registers["z23"] = frt
-            machine.registers["frt"] = z23
-
-            let cgh = machine.registers["cgh"]
-            let pmd = machine.registers["pmd]"]
-            machine.registers["cgh"] = pmd
-            machine.registers["pmd"] = cgh
-
             let inputValues = machine.inputValues()
             let x = inputValues["x"]!
-            print("X:\t\(x)")
             let y = inputValues["y"]!
-            print("Y:\t\(y)")
-            let targetValue = x + y
-            print("Target:\t\(targetValue)")
-            
+            let targetValue = param ? x&y : x+y
             let outputValue = machine.outputValue()
-            print("Output:\t\(outputValue)")
-            
             let diffValue = targetValue ^ outputValue
-            let diffBitSet = BitSet(bitPattern: diffValue)
-            
-            print("Diff:\t\(diffValue)")
-            print("Bits: \(diffBitSet.map({ String($0) }).joined(separator: ","))")
-            
-            var vizGraph = Graph(directed: true)
-            
-            let vertices: [String: Node] = graph.vertices.reduce(into: [:]) { result, current in
-                var node = Node(current.description)
-                if case let .value(label) = current {
-                    if label.hasPrefix("z") {
-                        if diffBitSet.contains(Int(label.dropFirst())!) {
-                            node.strokeColor = .rgb(red: 255, green: 100, blue: 100)
-                        } else {
-                            node.strokeColor = .rgb(red: 100, green: 255, blue: 100)
-                        }
-                    } else if label.hasPrefix("x") || label.hasPrefix("y") {
-                        node.strokeColor = .rgb(red: 100, green: 100, blue: 100)
-                    }
-                }
-                
-                node.shape = .box
-                
-                result[current.description] = node
-            }
-            
-            for edge in graph.edgeList() {
-                let u = graph[edge.u]
-                let v = graph[edge.v]
-                
-                vizGraph.append(Edge(from: vertices[u.description]!, to: vertices[v.description]!, direction: .forward))
-            }
-            
-            vizGraph.render(using: .dot, to: .svg) { result in
-                guard case let .success(data) = result, let svg = String(data: data, encoding: .utf8) else {
-                    return
-                }
 
-                let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0] as NSURL
-                let fileUrl = documentsUrl.appendingPathComponent("graph.svg")
-                print(fileUrl!.absoluteString)
-                try! svg.write(to: fileUrl!, atomically: true, encoding: String.Encoding.utf8)
+            if targetValue != outputValue {
+                throw AoCError.taskError("\(targetValue) != \(outputValue)")
+            }
+            
+            if false {
+                drawGraph(graph)
             }
 
-            return "cgh,frt,pmd,sps,tst,z05,z11,z23"
+            return param ? "z00,z01,z02,z05" : "cgh,frt,pmd,sps,tst,z05,z11,z23"
         }
     }
-    
-    
-    
+
     private func parse(_ data: String) throws -> (Machine, UnweightedGraph<Vertex>) {
         let nodePattern = /(.+): (1|0)/
         let gatePattern = /(.+) (.*) (.*) -> (.*)/
 
         let blocks = data.blocks
         
-        var registers: Registers = [:]
+        var machine = Machine()
         let graph = UnweightedGraph<Vertex>()
 
-        var index = 0
-        
         for match in blocks[0].matches(of: nodePattern) {
             let label = String(match.output.1)
             let value = match.output.2 == "1"
-            registers[label] = { _ in value }
-            index += 1
+            machine.setRegister(label, { _ in value })
         }
 
         for match in blocks[1].matches(of: gatePattern) {
@@ -136,14 +102,40 @@ public final class Day24: Day<Void, String> {
             graph.addEdge(from: vertices[1], to: vertices[3], directed: true)
 
             switch operation {
-            case .and: registers[output] = { machine in machine.registers[left]!(machine) && machine.registers[right]!(machine)}
-            case .or: registers[output] = { machine in machine.registers[left]!(machine) || machine.registers[right]!(machine)}
-            case .xor: registers[output] = { machine in machine.registers[left]!(machine) != machine.registers[right]!(machine)}
+            case .and: machine.setRegister(output, { machine in machine.registers[left]!(machine) && machine.registers[right]!(machine)})
+            case .or:  machine.setRegister(output, { machine in machine.registers[left]!(machine) || machine.registers[right]!(machine)})
+            case .xor:  machine.setRegister(output, { machine in machine.registers[left]!(machine) != machine.registers[right]!(machine)})
             }
             
         }
         
-        return (Machine(registers: registers), graph)
+        return (machine, graph)
+    }
+    
+    private func drawGraph(_ graph: UnweightedGraph<Vertex>) {
+        var vizGraph = Graph(directed: true)
+        
+        let vertices: [String: Node] = graph.vertices.reduce(into: [:]) { result, current in
+            result[current.description] = Node(current.description)
+        }
+        
+        for edge in graph.edgeList() {
+            let u = graph[edge.u]
+            let v = graph[edge.v]
+            
+            vizGraph.append(Edge(from: vertices[u.description]!, to: vertices[v.description]!, direction: .forward))
+        }
+        
+        vizGraph.render(using: .dot, to: .svg) { result in
+            guard case let .success(data) = result, let svg = String(data: data, encoding: .utf8) else {
+                return
+            }
+            
+            let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0] as NSURL
+            let fileUrl = documentsUrl.appendingPathComponent("graph.svg")
+            print(fileUrl!.absoluteString)
+            try! svg.write(to: fileUrl!, atomically: true, encoding: String.Encoding.utf8)
+        }
     }
 }
 
@@ -151,9 +143,9 @@ private typealias Registers = [String: (Machine) -> Bool]
 
 private struct Machine {
     var registers: Registers = [:]
-
-    init(registers: Registers) {
-        self.registers = registers
+    
+    mutating func setRegister(_ register: String, _ fn: @escaping (Machine) -> Bool) {
+        self.registers[register] = fn
     }
     
     func outputRegisters() -> [String] {

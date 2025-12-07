@@ -2,20 +2,33 @@ package day3
 
 import (
 	"2025/src/framework"
-	"go/types"
 	"strconv"
 
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+type Battery struct {
+	Value, Position int
+}
+
+func Task(data string, amount int) (result framework.Result[int]) {
 	banks := parse(data)
 
 	for _, bank := range banks {
-		firstValue, firstPosition := findHighest(bank, 0, len(bank)-1)
-		secondValue, _ := findHighest(bank, firstPosition+1, len(bank))
+		values := make([]int, amount)
+		start := 0
 
-		value, _ := strconv.Atoi(strconv.Itoa(firstValue) + strconv.Itoa(secondValue))
+		for i := 0; i < amount; i++ {
+			value, position := findHighest(bank, start, len(bank)-amount+i+1)
+			values[i] = value
+			start = position + 1
+		}
+
+		strValue := lo.Reduce(values, func(agg string, item int, index int) string {
+			return agg + strconv.Itoa(item)
+		}, "")
+
+		value, _ := strconv.Atoi(strValue)
 		result.Value += value
 	}
 

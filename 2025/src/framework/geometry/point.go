@@ -3,9 +3,10 @@ package geometry
 import (
 	math2 "2025/src/framework/math"
 	"fmt"
+	"hash/fnv"
+
 	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
-	"hash/fnv"
 )
 
 type Point struct {

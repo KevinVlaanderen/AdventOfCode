@@ -7,31 +7,43 @@ import (
 	"go/types"
 )
 
-func Task(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	rolls := parse(data)
 	x1, x2, y1, y2 := rolls.Boundaries()
 
 	for x := x1; x <= x2; x++ {
 		for y := y1; y <= y2; y++ {
-			point := geometry.Point{X: x, Y: y}
-
-			hasRoll, found := rolls.Get(&point)
-			if !found || !hasRoll {
-				continue
-			}
-
-			count := 0
-			for _, neighbour := range point.Neighbors(geometry.All) {
-				hasRoll, found := rolls.Get(&neighbour)
-				if found && hasRoll {
-					count++
-				}
-			}
-			if count < 4 {
+			if canAccess(rolls, &geometry.Point{X: x, Y: y}) {
 				result.Value++
 			}
 		}
 	}
+
+	return
+}
+
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+	rolls := parse(data)
+	x1, x2, y1, y2 := rolls.Boundaries()
+	removed := 0
+	keepTrying := true
+
+	for keepTrying {
+		keepTrying = false
+
+		for x := x1; x <= x2; x++ {
+			for y := y1; y <= y2; y++ {
+				point := &geometry.Point{X: x, Y: y}
+				if canAccess(rolls, point) {
+					_ = rolls.Set(point, false)
+					removed++
+					keepTrying = true
+				}
+			}
+		}
+	}
+
+	result.Value = removed
 
 	return
 }
@@ -47,4 +59,20 @@ func parse(data string) grid.Grid[bool] {
 		}
 	}
 	return g
+}
+
+func canAccess(rolls grid.Grid[bool], point *geometry.Point) bool {
+	hasRoll, found := rolls.Get(point)
+	if !found || !hasRoll {
+		return false
+	}
+
+	count := 0
+	for _, neighbour := range point.Neighbors(geometry.All) {
+		hasRoll, found := rolls.Get(&neighbour)
+		if found && hasRoll {
+			count++
+		}
+	}
+	return count < 4
 }

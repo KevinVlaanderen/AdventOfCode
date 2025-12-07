@@ -90,3 +90,26 @@ func ExtractNumbers(line string) []int {
 		}
 	})
 }
+
+func Factors(a int) (result []int) {
+	for i := 1; i <= a; i++ {
+		if a%i == 0 {
+			result = append(result, i)
+		}
+	}
+	return
+}
+
+func Digits(n int) []int {
+	var slc []int
+	for n > 0 {
+		slc = append(slc, n%10)
+		n = n / 10
+	}
+
+	for i, j := 0, len(slc)-1; i < j; i, j = i+1, j-1 {
+		slc[i], slc[j] = slc[j], slc[i]
+	}
+
+	return slc
+}

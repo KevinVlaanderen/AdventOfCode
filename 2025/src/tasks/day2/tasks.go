@@ -4,6 +4,7 @@ import (
 	"2025/src/framework"
 	math2 "2025/src/framework/math"
 	"go/types"
+	"reflect"
 	"strconv"
 	"strings"
 
@@ -18,7 +19,17 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	pairs := parse(data)
 
 	result.Value = lo.Reduce(pairs, func(result int, r Range, index int) int {
-		return result + sumRepeats(r)
+		return result + sumRepeats2(r)
+	}, 0)
+
+	return
+}
+
+func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+	pairs := parse(data)
+
+	result.Value = lo.Reduce(pairs, func(result int, r Range, index int) int {
+		return result + sumRepeatsFactors(r)
 	}, 0)
 
 	return
@@ -37,7 +48,7 @@ func parse(data string) []Range {
 	})
 }
 
-func sumRepeats(r Range) int {
+func sumRepeats2(r Range) int {
 	sum := 0
 
 	for i := r.Min; i <= r.Max; i++ {
@@ -53,6 +64,33 @@ func sumRepeats(r Range) int {
 
 		if lowPart == highPart {
 			sum += i
+		}
+	}
+
+	return sum
+}
+
+func sumRepeatsFactors(r Range) int {
+	sum := 0
+
+numbers:
+	for i := r.Min; i <= r.Max; i++ {
+		factors := math2.Factors(math2.Length(i))
+		digits := math2.Digits(i)
+
+	parts:
+		for _, partSize := range factors[:len(factors)-1] {
+			slices := framework.Partition(digits, partSize)
+			numSlices := len(slices)
+
+			for sliceIndex := 1; sliceIndex < numSlices; sliceIndex++ {
+				if !reflect.DeepEqual(slices[sliceIndex], slices[sliceIndex-1]) {
+					continue parts
+				}
+			}
+
+			sum += i
+			continue numbers
 		}
 	}
 

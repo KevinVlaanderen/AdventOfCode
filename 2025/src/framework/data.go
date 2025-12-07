@@ -1,8 +1,9 @@
 package framework
 
 import (
-	"github.com/samber/lo"
 	"strings"
+
+	"github.com/samber/lo"
 )
 
 func CharLines(data string) [][]rune {

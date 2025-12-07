@@ -1,9 +1,12 @@
 package math
 
 import (
-	"github.com/samber/lo"
+	"errors"
+	"math"
 	"regexp"
 	"strconv"
+
+	"github.com/samber/lo"
 )
 
 func Sum(array []int) int {
@@ -35,6 +38,22 @@ func AbsInt(x int) int {
 	return x
 }
 
+func PowInt(n, m int) int {
+	if m == 0 {
+		return 1
+	}
+
+	if m == 1 {
+		return n
+	}
+
+	result := n
+	for i := 2; i <= m; i++ {
+		result *= n
+	}
+	return result
+}
+
 func Length(i int) int {
 	if i == 0 {
 		return 1
@@ -45,6 +64,19 @@ func Length(i int) int {
 		count++
 	}
 	return count
+}
+
+func Length2(number int) (int, error) {
+	if number == 0 {
+		return 1, nil
+	}
+
+	floor := math.Floor(math.Log10(float64(number)))
+	if floor >= math.MaxInt64 || floor < math.MinInt64 {
+		return 0, errors.New("number out of range")
+	}
+
+	return int(floor) + 1, nil
 }
 
 var numberPattern = regexp.MustCompile(`-?\d+`)

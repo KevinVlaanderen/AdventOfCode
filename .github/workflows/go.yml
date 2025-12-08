@@ -1,0 +1,68 @@
+name: Go
+
+on:
+  workflow_call:
+    inputs:
+      year:
+        required: true
+        type: string
+
+defaults:
+  run:
+    working-directory: ./go
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: "go/go.mod"
+
+    - name: Install dependencies
+      run: go install github.com/jstemmer/go-junit-report/v2@latest
+
+    - name: Test
+      run: go test -v -tags testing 2>&1 ./${{ inputs.year }}/... | go-junit-report -set-exit-code -subtest-mode exclude-parents > ${{ inputs.year }}/report.xml
+
+    - name: Unit Test Results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: ${{ inputs.year }} test results
+        path: go/${{ inputs.year }}/report.xml
+        reporter: java-junit
+        
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: "go/go.mod"
+
+    - name: Install dependencies
+      run: go install github.com/jstemmer/go-junit-report/v2@latest
+
+    - name: Run benchmark
+      run: go test -v -tags testing ./${{ inputs.year }}/... -bench . -run ^$ -benchmem | tee ${{ inputs.year }}/output.txt
+
+    - name: Download previous benchmark data
+      uses: actions/cache@v3
+      with:
+        path: ./cache
+        key: ${{ runner.os }}-benchmark
+
+    - name: Store benchmark result
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        tool: 'go'
+        output-file-path: go/${{ inputs.year }}/output.txt
+        external-data-json-path: ./cache/benchmark-data.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        summary-always: true

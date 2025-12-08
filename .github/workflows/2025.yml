@@ -1,23 +1,23 @@
-name: 2022 tests
+name: 2025 tests
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - ".github/workflows/2022.yml"
+      - ".github/workflows/2025.yml"
       - ".github/workflows/go.yml"
       - "go/framework/**"
-      - "go/2022/**"
+      - "go/2025/**"
   pull_request:
     paths:
-      - ".github/workflows/2022.yml"
+      - ".github/workflows/2025.yml"
       - ".github/workflows/go.yml"
       - "go/framework/**"
-      - "go/2022/**"
+      - "go/2025/**"
   workflow_dispatch:
 
 jobs:
   run-workflow:
     uses: ./.github/workflows/go.yml
     with:
-      year: 2022
+      year: 2025

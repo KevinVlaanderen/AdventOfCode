@@ -28,22 +28,44 @@ type Distance struct {
 func Task1(data string, nConnections int) (result framework.Result[int]) {
 	boxes := parse(data)
 
-	g := createGraph(boxes)
 	distances := calculateDistances(boxes)
 
-	sort.Slice(distances, func(i, j int) bool {
-		return distances[i].Value < distances[j].Value
-	})
-
-	for _, kv := range distances[:nConnections] {
-		_ = g.AddEdge(hash(kv.Key.From), hash(kv.Key.To))
-	}
+	g := createGraph(boxes, distances, nConnections)
 
 	clusters := clusterPoints(g)
 
 	result.Value = lo.Reduce(clusters[:3], func(agg int, cluster []math2.Point3D, index int) int {
 		return agg * len(cluster)
 	}, 1)
+
+	return
+}
+
+func Task2(data string, nConnections int) (result framework.Result[int]) {
+	boxes := parse(data)
+
+	distances := calculateDistances(boxes)
+
+	g := createGraph(boxes, distances, nConnections)
+
+	index := nConnections - 1
+	done := false
+	for !done {
+		index++
+		distance := distances[index]
+		_ = g.AddEdge(hash(distance.Key.From), hash(distance.Key.To))
+
+		adjacencyMap, _ := g.AdjacencyMap()
+		if lo.EveryBy(lo.Keys(adjacencyMap), func(item string) bool {
+			return len(adjacencyMap[item]) > 0
+		}) {
+			done = true
+		}
+	}
+
+	finalDistance := distances[index]
+
+	result.Value = int(finalDistance.Key.From.X) * int(finalDistance.Key.To.X)
 
 	return
 }
@@ -61,11 +83,22 @@ func parse(data string) []math2.Point3D {
 	})
 }
 
-func createGraph(points []math2.Point3D) graph.Graph[string, math2.Point3D] {
+func createGraph(points []math2.Point3D, distances []Distance, n int) graph.Graph[string, math2.Point3D] {
 	g := graph.New(hash, graph.Acyclic())
+
 	for _, point := range points {
 		_ = g.AddVertex(point)
 	}
+
+	nDistances := distances
+	if n > 0 {
+		nDistances = distances[:n]
+	}
+
+	for _, kv := range nDistances {
+		_ = g.AddEdge(hash(kv.Key.From), hash(kv.Key.To))
+	}
+
 	return g
 }
 
@@ -82,6 +115,10 @@ func calculateDistances(points []math2.Point3D) (distances []Distance) {
 	for k, v := range distanceMap {
 		distances = append(distances, Distance{k, v})
 	}
+
+	sort.Slice(distances, func(i, j int) bool {
+		return distances[i].Value < distances[j].Value
+	})
 
 	return
 }

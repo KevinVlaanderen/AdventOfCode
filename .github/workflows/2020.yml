@@ -4,11 +4,11 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "2020/**"
+      - "../../kotlin/2020/**"
   pull_request:
     branches: [ "main" ]
     paths:
-      - "2020/**"
+      - "../../kotlin/2020/**"
   workflow_dispatch:
     branches: [ "main" ]
 

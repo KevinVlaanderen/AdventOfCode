@@ -4,11 +4,11 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "2021/**"
+      - "../../typescript/2021/**"
   pull_request:
     branches: [ "main" ]
     paths:
-      - "2021/**"
+      - "../../typescript/2021/**"
   workflow_dispatch:
     branches: [ "main" ]
 

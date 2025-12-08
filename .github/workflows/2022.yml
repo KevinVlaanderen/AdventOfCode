@@ -4,11 +4,11 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "2022/**"
+      - "../../go/2022/**"
   pull_request:
     branches: [ "main" ]
     paths:
-      - "2022/**"
+      - "../../go/2022/**"
   workflow_dispatch:
     branches: [ "main" ]
 

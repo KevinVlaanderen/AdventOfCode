@@ -25,7 +25,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 
 	result.Value = len(visitedGrid)
 
-	visitedGrid.PrintVisited()
+	// visitedGrid.PrintVisited()
 
 	return
 }
@@ -45,7 +45,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 
 	result.Value = len(visitedGrid)
 
-	visitedGrid.PrintVisited()
+	// visitedGrid.PrintVisited()
 
 	return
 }

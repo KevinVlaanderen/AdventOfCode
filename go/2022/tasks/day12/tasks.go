@@ -4,7 +4,6 @@ import (
 	"aoc/2022/tasks/day12/model"
 	"aoc/framework"
 	"go/types"
-	"log"
 	"sort"
 )
 
@@ -13,7 +12,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 
 	cameFrom, err := grid.PathTo(grid.Start, grid.Destination)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	current := grid.Destination
@@ -43,11 +42,11 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 
 	var pathLengths []int
 
-	for index, startingPoint := range startingPoints {
-		log.Printf("calculating length for starting point %v of %v\n", index+1, len(startingPoints))
+	for _, startingPoint := range startingPoints {
+		// log.Printf("calculating length for starting point %v of %v\n", index+1, len(startingPoints))
 		cameFrom, err := grid.PathTo(startingPoint, grid.Destination)
 		if err != nil {
-			log.Println(err)
+			// log.Println(err)
 			continue
 		}
 

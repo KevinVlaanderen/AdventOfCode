@@ -3,9 +3,7 @@ package day10
 import (
 	"aoc/2022/tasks/day10/model"
 	"aoc/framework"
-	"fmt"
 	"go/types"
-	"log"
 	"strings"
 
 	"github.com/samber/lo"
@@ -16,7 +14,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 
 	processor := NewProcessor(1)
 	for state := range processor.Execute(instructions) {
-		log.Printf("value at tick %v: %v ", state.tick+1, processor.value)
+		// log.Printf("value at tick %v: %v ", state.tick+1, processor.value)
 
 		if state.tick+1 <= 220 && (state.tick+1 == 20 || (state.tick+1-20)%40 == 0) {
 			result.Value += (state.tick + 1) * state.value
@@ -42,7 +40,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[string]) {
 		}
 
 		if column == 39 {
-			fmt.Println(outputLine)
+			// fmt.Println(outputLine)
 			outputLine = ""
 		}
 	}

@@ -17,16 +17,16 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 		result.Value++
 	}
 
-	cave.Area.DrawPointGrid(func(material *model.Material, x int, y int) (rune, bool) {
-		switch *material {
-		case model.ROCK:
-			return '#', true
-		case model.SAND:
-			return 'o', true
-		default:
-			return '.', false
-		}
-	}, map[model.Material]rune{})
+	// cave.Area.DrawPointGrid(func(material *model.Material, x int, y int) (rune, bool) {
+	// 	switch *material {
+	// 	case model.ROCK:
+	// 		return '#', true
+	// 	case model.SAND:
+	// 		return 'o', true
+	// 	default:
+	// 		return '.', false
+	// 	}
+	// }, map[model.Material]rune{})
 
 	return
 }
@@ -42,16 +42,16 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 		result.Value++
 	}
 
-	cave.Area.DrawPointGrid(func(material *model.Material, x int, y int) (rune, bool) {
-		switch *material {
-		case model.ROCK:
-			return '#', true
-		case model.SAND:
-			return 'o', true
-		default:
-			return '.', false
-		}
-	}, map[model.Material]rune{})
+	// cave.Area.DrawPointGrid(func(material *model.Material, x int, y int) (rune, bool) {
+	// 	switch *material {
+	// 	case model.ROCK:
+	// 		return '#', true
+	// 	case model.SAND:
+	// 		return 'o', true
+	// 	default:
+	// 		return '.', false
+	// 	}
+	// }, map[model.Material]rune{})
 
 	return
 }

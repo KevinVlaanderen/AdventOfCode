@@ -26,7 +26,7 @@ jobs:
       run: go install github.com/jstemmer/go-junit-report/v2@latest
 
     - name: Test
-      run: go test -v -tags testing 2>&1 ./${{ inputs.year }}/... | go-junit-report -set-exit-code -subtest-mode exclude-parents > ${{ inputs.year }}/report.xml
+      run: go test -v -tags testing 2>&1 ./${{ inputs.year }}/... | go-junit-report -set-exit-code -subtest-mode exclude-parents > ./${{ inputs.year }}/report.xml
 
     - name: Unit Test Results
       uses: dorny/test-reporter@v1
@@ -50,7 +50,7 @@ jobs:
       run: go install github.com/jstemmer/go-junit-report/v2@latest
 
     - name: Run benchmark
-      run: go test -v -tags testing ./${{ inputs.year }}/... -bench . -run ^$ -benchmem | tee ${{ inputs.year }}/output.txt
+      run: go test -v -tags testing ./${{ inputs.year }}/... -bench . -run ^$ -benchmem | tee ./${{ inputs.year }}/output.txt
 
     - name: Download previous benchmark data
       uses: actions/cache@v3
@@ -63,6 +63,6 @@ jobs:
       with:
         tool: 'go'
         output-file-path: go/${{ inputs.year }}/output.txt
-        external-data-json-path: ./cache/benchmark-data.json
+        external-data-json-path: ./cache/benchmark-data-go-${{ inputs.year }}.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true

@@ -50,7 +50,7 @@ jobs:
       run: go install github.com/jstemmer/go-junit-report/v2@latest
 
     - name: Run benchmark
-      run: go test -v -tags testing ./${{ inputs.year }}/... -bench . -run ^$ -benchmem | tee ./${{ inputs.year }}/output.txt
+      run: go test -bench . -run ^$ -benchmem -tags testing ./${{ inputs.year }}/... | tee ./${{ inputs.year }}/output.txt
 
     - name: Download previous benchmark data
       uses: actions/cache@v3

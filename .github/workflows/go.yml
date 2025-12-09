@@ -35,6 +35,13 @@ jobs:
         name: ${{ inputs.year }} test results
         path: go/${{ inputs.year }}/report.xml
         reporter: java-junit
+
+    - name: Archive test report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ inputs.year }}-test-report
+        path: go/${{ inputs.year }}/report.xml
         
   benchmark:
     runs-on: ubuntu-latest
@@ -66,3 +73,10 @@ jobs:
         external-data-json-path: ./cache/benchmark-data-go-${{ inputs.year }}.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true
+
+    - name: Archive benchmark report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ inputs.year }}-benchmark-report
+        path: go/${{ inputs.year }}/output.txt

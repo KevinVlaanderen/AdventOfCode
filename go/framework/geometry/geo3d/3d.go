@@ -1,4 +1,4 @@
-package math
+package geo3d
 
 import math2 "math"
 

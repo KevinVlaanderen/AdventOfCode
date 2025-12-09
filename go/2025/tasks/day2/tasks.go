@@ -1,8 +1,9 @@
 package day2
 
 import (
-	"aoc/framework"
+	"aoc/framework/datastructures"
 	math2 "aoc/framework/math"
+	"aoc/framework/tasks"
 	"go/types"
 	"reflect"
 	"strconv"
@@ -15,7 +16,7 @@ type Range struct {
 	Min, Max int
 }
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	pairs := parse(data)
 
 	result.Value = lo.Reduce(pairs, func(result int, r Range, index int) int {
@@ -25,7 +26,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	pairs := parse(data)
 
 	result.Value = lo.Reduce(pairs, func(result int, r Range, index int) int {
@@ -80,7 +81,7 @@ numbers:
 
 	parts:
 		for _, partSize := range factors[:len(factors)-1] {
-			slices := framework.Partition(digits, partSize)
+			slices := datastructures.Partition(digits, partSize)
 			numSlices := len(slices)
 
 			for sliceIndex := 1; sliceIndex < numSlices; sliceIndex++ {

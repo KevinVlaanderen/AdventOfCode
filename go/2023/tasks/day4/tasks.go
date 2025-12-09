@@ -2,6 +2,7 @@ package day4
 
 import (
 	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"regexp"
 	"strconv"
@@ -11,7 +12,7 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	cards, err := parse(data)
 	if err != nil {
 		result.Error = err
@@ -23,7 +24,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	cards, err := parse(data)
 	if err != nil {
 		result.Error = err
@@ -87,7 +88,7 @@ func (c Card) Correct() int {
 }
 
 func parse(data string) (cards []Card, err error) {
-	for _, line := range framework.Lines(data) {
+	for _, line := range tasks.Lines(data) {
 		var card Card
 		if card, err = NewCard(line); err != nil {
 			return

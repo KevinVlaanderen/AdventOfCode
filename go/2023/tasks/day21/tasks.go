@@ -1,8 +1,8 @@
 package day21
 
 import (
-	"aoc/framework"
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/tasks"
 	"fmt"
 	"math"
 
@@ -13,7 +13,7 @@ import (
 	"gonum.org/v1/gonum/graph/traverse"
 )
 
-func Task1(data string, param int) (result framework.Result[int]) {
+func Task1(data string, param int) (result tasks.Result[int]) {
 	tiles, start := parse(data)
 	g := createGraph(tiles)
 
@@ -35,7 +35,7 @@ func Task1(data string, param int) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, param int) (result framework.Result[int]) {
+func Task2(data string, param int) (result tasks.Result[int]) {
 	tiles, start := parse(data)
 	g := createGraph(tiles)
 
@@ -122,26 +122,26 @@ func drawMap(tiles [][]Tile, found []Tile) {
 }
 
 type Tile struct {
-	geometry.Point
+	geo2d.Point
 	tileType TileType
 	start    bool
 	distance int
 }
 
 func parse(data string) ([][]Tile, Tile) {
-	lines := framework.Lines(data)
+	lines := tasks.Lines(data)
 
 	var start Tile
 	tiles := lo.Map(lines, func(line string, y int) []Tile {
 		return lo.Map([]rune(line), func(char rune, x int) Tile {
 			switch char {
 			case '#':
-				return Tile{Point: geometry.Point{X: x, Y: y}, tileType: Rock}
+				return Tile{Point: geo2d.Point{X: x, Y: y}, tileType: Rock}
 			case 'S':
-				start = Tile{Point: geometry.Point{X: x, Y: y}, tileType: Garden, start: true}
+				start = Tile{Point: geo2d.Point{X: x, Y: y}, tileType: Garden, start: true}
 				return start
 			default:
-				return Tile{Point: geometry.Point{X: x, Y: y}, tileType: Garden}
+				return Tile{Point: geo2d.Point{X: x, Y: y}, tileType: Garden}
 			}
 		})
 	})

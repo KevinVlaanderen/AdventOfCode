@@ -2,14 +2,14 @@ package day19
 
 import (
 	"2023/src/tasks/day19/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
-	blocks := framework.Blocks(data)
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
+	blocks := tasks.Blocks(data)
 	workflows, parts := model.ParseWorkflows(blocks[0]), model.ParseParts(blocks[1])
 	system := model.NewSystem(workflows)
 
@@ -27,8 +27,8 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
-	blocks := framework.Blocks(data)
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	blocks := tasks.Blocks(data)
 	workflows := model.ParseWorkflows(blocks[0])
 	system := model.NewSystem(workflows)
 

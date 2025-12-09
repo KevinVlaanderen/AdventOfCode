@@ -1,4 +1,4 @@
-package geometry
+package geo2d
 
 type Rotation uint8
 

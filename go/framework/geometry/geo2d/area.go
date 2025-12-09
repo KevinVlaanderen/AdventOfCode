@@ -1,4 +1,4 @@
-package geometry
+package geo2d
 
 import (
 	"aoc/framework"

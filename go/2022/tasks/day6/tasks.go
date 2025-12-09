@@ -2,11 +2,11 @@ package day6
 
 import (
 	"aoc/2022/tasks/day6/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	signal := parse(data)
 
 	result.Value = signal.FindMarker(4)
@@ -14,7 +14,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	signal := parse(data)
 
 	result.Value = signal.FindMarker(14)

@@ -1,4 +1,4 @@
-package framework
+package tasks
 
 type Task[T comparable, P any] func(data string, param P) Result[T]
 

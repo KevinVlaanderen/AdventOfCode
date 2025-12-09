@@ -1,7 +1,7 @@
 package model
 
 import (
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	"regexp"
 )
 
@@ -27,7 +27,7 @@ func (s *Schematic) Add(line string) {
 	s.lines++
 }
 
-func (s *Schematic) SymbolAt(location geometry.Point) (Symbol, bool) {
+func (s *Schematic) SymbolAt(location geo2d.Point) (Symbol, bool) {
 	for _, symbol := range s.Symbols {
 		if symbol.Position == location {
 			return symbol, true
@@ -36,7 +36,7 @@ func (s *Schematic) SymbolAt(location geometry.Point) (Symbol, bool) {
 	return Symbol{}, false
 }
 
-func (s *Schematic) NumberAt(location geometry.Point) (Number, bool) {
+func (s *Schematic) NumberAt(location geo2d.Point) (Number, bool) {
 	for _, number := range s.Numbers {
 		if number.Area.Contains(location) {
 			return number, true

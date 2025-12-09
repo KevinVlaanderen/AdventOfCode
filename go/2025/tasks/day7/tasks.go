@@ -1,9 +1,9 @@
 package day7
 
 import (
-	"aoc/framework"
-	"aoc/framework/geometry"
-	"aoc/framework/geometry/grid"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/geometry/geo2d/grid"
+	"aoc/framework/tasks"
 	"fmt"
 	"go/types"
 
@@ -23,26 +23,26 @@ const (
 
 type Vertex struct {
 	Type     SpaceType
-	Position geometry.Point
+	Position geo2d.Point
 }
 
 type Edge struct {
 	From      Vertex
-	Direction geometry.Direction
-	Position  geometry.Point
+	Direction geo2d.Direction
+	Position  geo2d.Point
 }
 
 func hash(vertex Vertex) string {
 	return fmt.Sprintf("%v-%v-%v", vertex.Position.X, vertex.Position.Y, vertex.Type)
 }
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	lab, start := parse(data)
-	beams := lane.NewQueue[geometry.Point](start.Neighbour(geometry.South))
+	beams := lane.NewQueue[geo2d.Point](start.Neighbour(geo2d.South))
 
 	for beams.Size() > 0 {
 		currentBeam, _ := beams.Head()
-		nextPosition := currentBeam.Neighbour(geometry.South)
+		nextPosition := currentBeam.Neighbour(geo2d.South)
 		spaceType, found := lab.Get(&nextPosition)
 		if found {
 			if spaceType == Empty {
@@ -51,11 +51,11 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 			} else if spaceType == Splitter {
 				result.Value++
 
-				left := nextPosition.Neighbour(geometry.West)
+				left := nextPosition.Neighbour(geo2d.West)
 				_ = lab.Set(&left, Beam)
 				beams.Enqueue(left)
 
-				right := nextPosition.Neighbour(geometry.East)
+				right := nextPosition.Neighbour(geo2d.East)
 				_ = lab.Set(&right, Beam)
 				beams.Enqueue(right)
 			}
@@ -66,7 +66,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	lab, start := parse(data)
 
 	g, startVertex, endVertex := createGraph(lab, start)
@@ -78,7 +78,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func createGraph(lab grid.Grid[SpaceType], start geometry.Point) (graph.Graph[string, Vertex], Vertex, Vertex) {
+func createGraph(lab grid.Grid[SpaceType], start geo2d.Point) (graph.Graph[string, Vertex], Vertex, Vertex) {
 	g := graph.New(hash, graph.Directed(), graph.Acyclic())
 
 	startVertex := Vertex{Type: Start, Position: start}
@@ -87,11 +87,11 @@ func createGraph(lab grid.Grid[SpaceType], start geometry.Point) (graph.Graph[st
 	endVertex := Vertex{Type: End}
 	_ = g.AddVertex(endVertex)
 
-	beams := lane.NewQueue[*Edge](&Edge{From: startVertex, Position: start.Neighbour(geometry.South)})
+	beams := lane.NewQueue[*Edge](&Edge{From: startVertex, Position: start.Neighbour(geo2d.South)})
 
 	for beams.Size() > 0 {
 		currentBeam, _ := beams.Head()
-		nextPosition := currentBeam.Position.Neighbour(geometry.South)
+		nextPosition := currentBeam.Position.Neighbour(geo2d.South)
 		spaceType, found := lab.Get(&nextPosition)
 		if found {
 			if spaceType == Empty {
@@ -107,11 +107,11 @@ func createGraph(lab grid.Grid[SpaceType], start geometry.Point) (graph.Graph[st
 					_ = g.AddVertex(newVertex)
 					_ = g.AddEdge(hash(currentBeam.From), hash(newVertex), graph.EdgeData(1))
 
-					left := nextPosition.Neighbour(geometry.West)
-					beams.Enqueue(&Edge{From: newVertex, Direction: geometry.Left, Position: left})
+					left := nextPosition.Neighbour(geo2d.West)
+					beams.Enqueue(&Edge{From: newVertex, Direction: geo2d.Left, Position: left})
 
-					right := nextPosition.Neighbour(geometry.East)
-					beams.Enqueue(&Edge{From: newVertex, Direction: geometry.Right, Position: right})
+					right := nextPosition.Neighbour(geo2d.East)
+					beams.Enqueue(&Edge{From: newVertex, Direction: geo2d.Right, Position: right})
 
 					beams.Dequeue()
 				}
@@ -143,8 +143,8 @@ func dfs(m map[string]map[string]graph.Edge[string], src string, dest string, ed
 	}
 }
 
-func parse(data string) (space grid.Grid[SpaceType], start geometry.Point) {
-	lines := framework.CharLines(data)
+func parse(data string) (space grid.Grid[SpaceType], start geo2d.Point) {
+	lines := tasks.CharLines(data)
 	width := len(lines[0])
 	height := len(lines)
 
@@ -159,11 +159,11 @@ func parse(data string) (space grid.Grid[SpaceType], start geometry.Point) {
 				spaceType = Empty
 			case 'S':
 				spaceType = Start
-				start = geometry.Point{X: x, Y: y}
+				start = geo2d.Point{X: x, Y: y}
 			case '^':
 				spaceType = Splitter
 			}
-			_ = space.Set(&geometry.Point{X: x, Y: y}, spaceType)
+			_ = space.Set(&geo2d.Point{X: x, Y: y}, spaceType)
 		}
 	}
 

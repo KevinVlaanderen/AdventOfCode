@@ -2,13 +2,13 @@ package day8
 
 import (
 	"aoc/2022/tasks/day8/model"
-	"aoc/framework"
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/tasks"
 	"go/types"
 	"strconv"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	grid := parse(data)
 
 	mask := grid.DetermineVisibility()
@@ -24,10 +24,10 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	grid := parse(data)
 
-	scores := geometry.CreateMask(grid, 0)
+	scores := geo2d.CreateMask(grid, 0)
 
 	for x, items := range grid {
 		for y := range items {
@@ -49,7 +49,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 func parse(data string) model.Grid {
 	var grid model.Grid
 
-	for _, line := range framework.Lines(data) {
+	for _, line := range tasks.Lines(data) {
 		for x, item := range []rune(line) {
 			value, _ := strconv.Atoi(string(item))
 			if x >= len(grid) {

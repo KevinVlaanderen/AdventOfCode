@@ -2,8 +2,8 @@ package day5
 
 import (
 	"2023/src/tasks/day5/model"
-	"aoc/framework"
 	"aoc/framework/math"
+	"aoc/framework/tasks"
 	"go/types"
 	"regexp"
 
@@ -13,8 +13,8 @@ import (
 
 var seedsPattern = regexp.MustCompile(`seeds: ([\d\s]+)`)
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
-	blocks := framework.LineBlocks(data)
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
+	blocks := tasks.LineBlocks(data)
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])
@@ -29,8 +29,8 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
-	blocks := framework.LineBlocks(data)
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	blocks := tasks.LineBlocks(data)
 	almanac := model.NewAlmanac(blocks[1:])
 
 	seedsMatch := seedsPattern.FindStringSubmatch(blocks[0][0])

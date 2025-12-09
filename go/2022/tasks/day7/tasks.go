@@ -2,7 +2,7 @@ package day7
 
 import (
 	"aoc/2022/tasks/day7/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"path"
 	"sort"
@@ -12,7 +12,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	inputs := parse(data)
 
 	fileSystem := NewFileSystem()
@@ -45,7 +45,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	inputs := parse(data)
 
 	fileSystem := NewFileSystem()
@@ -86,7 +86,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse(data string) []model.Input {
-	return lo.Map(framework.Lines(data), func(line string, index int) model.Input {
+	return lo.Map(tasks.Lines(data), func(line string, index int) model.Input {
 		if line[0] == '$' {
 			return model.Input{
 				InputType: model.COMMAND,

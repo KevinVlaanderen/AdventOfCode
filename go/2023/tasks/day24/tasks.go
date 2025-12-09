@@ -1,7 +1,7 @@
 package day24
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"math"
 	"regexp"
 	"strconv"
@@ -10,7 +10,7 @@ import (
 	"gonum.org/v1/gonum/spatial/r3"
 )
 
-func Task1(data string, param lo.Tuple2[int, int]) (result framework.Result[int]) {
+func Task1(data string, param lo.Tuple2[int, int]) (result tasks.Result[int]) {
 	hailstones := parse(data, true)
 	minWindow, maxWindow := float64(param.A), float64(param.B)
 

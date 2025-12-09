@@ -2,7 +2,10 @@ package day12
 
 import (
 	"aoc/framework"
+	"aoc/framework/datastructures"
 	"aoc/framework/math"
+	"aoc/framework/tasks"
+	types2 "aoc/framework/types"
 	"go/types"
 	"strings"
 
@@ -10,8 +13,8 @@ import (
 	lop "github.com/samber/lo/parallel"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
-	lines := framework.Lines(data)
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
+	lines := tasks.Lines(data)
 
 	for _, line := range lines {
 		recordData := strings.Split(line, " ")
@@ -27,15 +30,15 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
-	lines := framework.Lines(data)
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	lines := tasks.Lines(data)
 
 	cache := framework.NewSafeCache[framework.Hash64, int]()
 
 	lop.ForEach(lines, func(line string, index int) {
 		recordData := strings.Split(line, " ")
-		conditions := framework.RepeatString(recordData[0], 5, "?")
-		sizes := framework.RepeatSlice(math.ExtractNumbers(recordData[1]), 5)
+		conditions := types2.RepeatString(recordData[0], 5, "?")
+		sizes := datastructures.RepeatSlice(math.ExtractNumbers(recordData[1]), 5)
 
 		matches := countFits(conditions, sizes, cache)
 		result.Value += matches

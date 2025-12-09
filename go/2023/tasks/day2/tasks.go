@@ -1,7 +1,7 @@
 package day2
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"errors"
 	"go/types"
 	"log"
@@ -13,7 +13,7 @@ import (
 	lop "github.com/samber/lo/parallel"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	numWorkers := 4
 
 	games := parseAll(data)
@@ -49,7 +49,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	numWorkers := 4
 
 	games := parseAll(data)

@@ -1,4 +1,4 @@
-package geometry
+package geo2d
 
 import (
 	math2 "aoc/framework/math"

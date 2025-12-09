@@ -3,6 +3,7 @@ package day11
 import (
 	"aoc/2022/tasks/day11/model"
 	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"regexp"
 	"sort"
@@ -12,7 +13,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	monkeys := parse(data)
 
 	for range framework.Range(0, 20, 1) {
@@ -46,7 +47,7 @@ var monkeyPattern = regexp.MustCompile(
 		`\s+If false: throw to monkey (\d+)`)
 
 func parse(data string) []model.Monkey {
-	return lo.Map(framework.Blocks(data), func(block string, index int) model.Monkey {
+	return lo.Map(tasks.Blocks(data), func(block string, index int) model.Monkey {
 		matches := monkeyPattern.FindStringSubmatch(block)
 
 		number, _ := strconv.Atoi(matches[1])

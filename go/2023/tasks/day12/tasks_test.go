@@ -1,7 +1,7 @@
 package day12
 
 import (
-	_testing "aoc/framework/testing"
+	_testing "aoc/framework/tasks/testing"
 	"go/types"
 	"testing"
 )

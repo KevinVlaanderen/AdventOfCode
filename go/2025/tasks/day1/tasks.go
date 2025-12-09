@@ -1,16 +1,16 @@
 package day1
 
 import (
-	"aoc/framework"
 	"aoc/framework/math"
+	"aoc/framework/tasks"
 	"strconv"
 )
 
-func Task(data string, countPassing bool) (result framework.Result[int]) {
+func Task(data string, countPassing bool) (result tasks.Result[int]) {
 	position := 50
 	ending, passing := 0, 0
 
-	for _, line := range framework.Lines(data) {
+	for _, line := range tasks.Lines(data) {
 		rotation, _ := strconv.Atoi(line[1:])
 		if line[0] == 'L' {
 			rotation *= -1

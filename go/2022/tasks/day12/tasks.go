@@ -2,12 +2,12 @@ package day12
 
 import (
 	"aoc/2022/tasks/day12/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"sort"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	grid := parse(data)
 
 	cameFrom, err := grid.PathTo(grid.Start, grid.Destination)
@@ -28,7 +28,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	grid := parse(data)
 
 	var startingPoints []model.Position
@@ -69,7 +69,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse(data string) *model.Grid {
-	lines := framework.Lines(data)
+	lines := tasks.Lines(data)
 
 	grid := model.Grid{}
 	grid.Squares = make([][]int, len(lines[0]))

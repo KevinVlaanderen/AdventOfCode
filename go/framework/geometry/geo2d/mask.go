@@ -1,4 +1,4 @@
-package geometry
+package geo2d
 
 func CreateMask[I any, O any](data [][]I, initial O) [][]O {
 	sizeA := len(data)

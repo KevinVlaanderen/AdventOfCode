@@ -1,10 +1,10 @@
 package day11
 
 import (
-	"aoc/framework"
-	"aoc/framework/geometry"
-	"aoc/framework/geometry/grid"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/geometry/geo2d/grid"
 	"aoc/framework/math"
+	"aoc/framework/tasks"
 	"go/types"
 
 	"github.com/samber/lo"
@@ -14,16 +14,16 @@ type Galaxy struct {
 	id int
 }
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
-	universe := NewUniverse(framework.Lines(data))
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
+	universe := NewUniverse(tasks.Lines(data))
 
 	result.Value = universe.CalculateDistances(2)
 
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
-	universe := NewUniverse(framework.Lines(data))
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	universe := NewUniverse(tasks.Lines(data))
 
 	result.Value = universe.CalculateDistances(1000000)
 
@@ -38,7 +38,7 @@ func NewUniverse(data []string) Universe {
 	for y, line := range data {
 		for x, char := range line {
 			if char == '#' {
-				universe.Add(geometry.Point{X: x, Y: y}, true)
+				universe.Add(geo2d.Point{X: x, Y: y}, true)
 			}
 		}
 	}
@@ -55,7 +55,7 @@ func (universe Universe) CalculateDistances(factor int) int {
 	for x := xMin + 1; x < xMax; x++ {
 		colEmpty := true
 		for y := yMin; y <= yMax; y++ {
-			if _, found := g.Get(geometry.Point{X: x, Y: y}); found {
+			if _, found := g.Get(geo2d.Point{X: x, Y: y}); found {
 				colEmpty = false
 				break
 			}
@@ -67,7 +67,7 @@ func (universe Universe) CalculateDistances(factor int) int {
 	for y := yMin + 1; y < yMax; y++ {
 		rowEmpty := true
 		for x := xMin; x <= xMax; x++ {
-			if _, found := g.Get(geometry.Point{X: x, Y: y}); found {
+			if _, found := g.Get(geo2d.Point{X: x, Y: y}); found {
 				rowEmpty = false
 				break
 			}

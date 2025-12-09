@@ -1,8 +1,10 @@
 package model
 
-import "aoc/framework/geometry"
+import (
+	"aoc/framework/geometry/geo2d"
+)
 
 type Step struct {
-	Position    geometry.Point
-	Orientation geometry.Orientation
+	Position    geo2d.Point
+	Orientation geo2d.Orientation
 }

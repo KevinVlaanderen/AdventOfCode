@@ -3,6 +3,7 @@ package day6
 import (
 	"aoc/framework"
 	_math "aoc/framework/math"
+	"aoc/framework/tasks"
 	"go/types"
 	"math"
 	"regexp"
@@ -11,8 +12,8 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
-	lines := framework.Lines(data)
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
+	lines := tasks.Lines(data)
 	races := parseRaces(lines, false)
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
@@ -28,8 +29,8 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
-	lines := framework.Lines(data)
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	lines := tasks.Lines(data)
 	races := parseRaces(lines, true)
 	race := races[0]
 

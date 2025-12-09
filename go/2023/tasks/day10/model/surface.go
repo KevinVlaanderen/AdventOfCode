@@ -1,14 +1,14 @@
 package model
 
 import (
-	"aoc/framework/geometry"
-	"aoc/framework/geometry/grid"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/geometry/geo2d/grid"
 
 	"github.com/samber/lo"
 )
 
 type Surface struct {
-	start geometry.Point
+	start geo2d.Point
 	Grid  grid.SparseGrid[*Pipe]
 }
 
@@ -17,7 +17,7 @@ func NewSurface(data string) Surface {
 		Grid: grid.NewSparseGrid[*Pipe](),
 	}
 
-	current := geometry.Point{}
+	current := geo2d.Point{}
 	for _, r := range data {
 		switch r {
 		case '\n':
@@ -41,36 +41,36 @@ func NewSurface(data string) Surface {
 func (s Surface) calculateStartPipe() *Pipe {
 	var top, right, bottom, left bool
 
-	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geometry.North)); ok && neighbour.Bottom() {
+	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geo2d.North)); ok && neighbour.Bottom() {
 		top = true
 	}
-	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geometry.East)); ok && neighbour.Left() {
+	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geo2d.East)); ok && neighbour.Left() {
 		right = true
 	}
-	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geometry.South)); ok && neighbour.Top() {
+	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geo2d.South)); ok && neighbour.Top() {
 		bottom = true
 	}
-	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geometry.West)); ok && neighbour.Right() {
+	if neighbour, ok := s.Grid.Get(s.start.Neighbour(geo2d.West)); ok && neighbour.Right() {
 		left = true
 	}
 
 	return NewPipeFromDirections(top, right, bottom, left)
 }
 
-func (s Surface) pickStartingDirection() geometry.Orientation {
+func (s Surface) pickStartingDirection() geo2d.Orientation {
 	start, found := s.Grid.Get(s.start)
 	if !found {
 		panic("starting pipe not found")
 	}
 	switch {
 	case start.Top():
-		return geometry.North
+		return geo2d.North
 	case start.Right():
-		return geometry.East
+		return geo2d.East
 	case start.Bottom():
-		return geometry.South
+		return geo2d.South
 	case start.Left():
-		return geometry.West
+		return geo2d.West
 	}
 	panic("starting pipe invalid")
 }
@@ -91,7 +91,7 @@ func (s Surface) FindLoop() []Segment {
 		var neighbourPipe *Pipe
 
 		dx, dy := currentPipe.EndpointDelta(comingFrom)
-		neighbourPoint := geometry.Point{X: currentPoint.X + dx, Y: currentPoint.Y + dy}
+		neighbourPoint := geo2d.Point{X: currentPoint.X + dx, Y: currentPoint.Y + dy}
 
 		if neighbourPoint == s.start {
 			break
@@ -107,15 +107,15 @@ func (s Surface) FindLoop() []Segment {
 			Pipe:  neighbourPipe,
 			Point: &neighbourPoint,
 		})
-		currentPoint, currentPipe, comingFrom = neighbourPoint, neighbourPipe, geometry.OppositeOrientation[currentPipe.OtherSide(comingFrom)]
+		currentPoint, currentPipe, comingFrom = neighbourPoint, neighbourPipe, geo2d.OppositeOrientation[currentPipe.OtherSide(comingFrom)]
 	}
 	return loop
 }
 
-func (s Surface) FindAllPointsInsideLoop(loop []Segment) []geometry.Point {
+func (s Surface) FindAllPointsInsideLoop(loop []Segment) []geo2d.Point {
 	loopRotation := s.calculateLoopRotation(loop)
 
-	found := make([]geometry.Point, 0)
+	found := make([]geo2d.Point, 0)
 
 	for index := 0; index < len(loop); index++ {
 		currentIndex, previousIndex := index, index-1
@@ -127,67 +127,67 @@ func (s Surface) FindAllPointsInsideLoop(loop []Segment) []geometry.Point {
 		direction := previous.DirectionOf(current)
 
 		switch {
-		case direction == geometry.North && current.Pipe.Type == TopBottom && loopRotation == geometry.CW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-		case direction == geometry.North && current.Pipe.Type == TopBottom && loopRotation == geometry.CCW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
-		case direction == geometry.North && current.Pipe.Type == BottomLeft && loopRotation == geometry.CW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
-		case direction == geometry.North && current.Pipe.Type == BottomRight && loopRotation == geometry.CCW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
+		case direction == geo2d.North && current.Pipe.Type == TopBottom && loopRotation == geo2d.CW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
+		case direction == geo2d.North && current.Pipe.Type == TopBottom && loopRotation == geo2d.CCW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
+		case direction == geo2d.North && current.Pipe.Type == BottomLeft && loopRotation == geo2d.CW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
+		case direction == geo2d.North && current.Pipe.Type == BottomRight && loopRotation == geo2d.CCW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
 
-		case direction == geometry.East && current.Pipe.Type == LeftRight && loopRotation == geometry.CW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-		case direction == geometry.East && current.Pipe.Type == LeftRight && loopRotation == geometry.CCW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
-		case direction == geometry.East && current.Pipe.Type == TopLeft && loopRotation == geometry.CW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-		case direction == geometry.East && current.Pipe.Type == BottomLeft && loopRotation == geometry.CCW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
+		case direction == geo2d.East && current.Pipe.Type == LeftRight && loopRotation == geo2d.CW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
+		case direction == geo2d.East && current.Pipe.Type == LeftRight && loopRotation == geo2d.CCW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
+		case direction == geo2d.East && current.Pipe.Type == TopLeft && loopRotation == geo2d.CW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
+		case direction == geo2d.East && current.Pipe.Type == BottomLeft && loopRotation == geo2d.CCW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
 
-		case direction == geometry.South && current.Pipe.Type == TopBottom && loopRotation == geometry.CW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
-		case direction == geometry.South && current.Pipe.Type == TopBottom && loopRotation == geometry.CCW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-		case direction == geometry.South && current.Pipe.Type == TopLeft && loopRotation == geometry.CCW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-		case direction == geometry.South && current.Pipe.Type == TopRight && loopRotation == geometry.CW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
+		case direction == geo2d.South && current.Pipe.Type == TopBottom && loopRotation == geo2d.CW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
+		case direction == geo2d.South && current.Pipe.Type == TopBottom && loopRotation == geo2d.CCW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
+		case direction == geo2d.South && current.Pipe.Type == TopLeft && loopRotation == geo2d.CCW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X + 1, Y: loop[index].Point.Y}, &found)
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
+		case direction == geo2d.South && current.Pipe.Type == TopRight && loopRotation == geo2d.CW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
 
-		case direction == geometry.West && current.Pipe.Type == LeftRight && loopRotation == geometry.CW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
-		case direction == geometry.West && current.Pipe.Type == LeftRight && loopRotation == geometry.CCW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-		case direction == geometry.West && current.Pipe.Type == BottomRight && loopRotation == geometry.CW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
-		case direction == geometry.West && current.Pipe.Type == TopRight && loopRotation == geometry.CCW:
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
-			s.findPointsInsideLoop(loop, geometry.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
+		case direction == geo2d.West && current.Pipe.Type == LeftRight && loopRotation == geo2d.CW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
+		case direction == geo2d.West && current.Pipe.Type == LeftRight && loopRotation == geo2d.CCW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
+		case direction == geo2d.West && current.Pipe.Type == BottomRight && loopRotation == geo2d.CW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y - 1}, &found)
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
+		case direction == geo2d.West && current.Pipe.Type == TopRight && loopRotation == geo2d.CCW:
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X, Y: loop[index].Point.Y + 1}, &found)
+			s.findPointsInsideLoop(loop, geo2d.Point{X: loop[index].Point.X - 1, Y: loop[index].Point.Y}, &found)
 		}
 	}
 	return found
 }
 
-func (s Surface) findPointsInsideLoop(loop []Segment, point geometry.Point, found *[]geometry.Point) {
+func (s Surface) findPointsInsideLoop(loop []Segment, point geo2d.Point, found *[]geo2d.Point) {
 	if pipe, ok := s.Grid.Get(point); (ok && pipe.PartOfLoop) || lo.Contains(*found, point) {
 		return
 	}
 
 	*found = append(*found, point)
 
-	lo.ForEach(point.Neighbors(geometry.All), func(neighbourPoint geometry.Point, index int) {
+	lo.ForEach(point.Neighbors(geo2d.All), func(neighbourPoint geo2d.Point, index int) {
 		s.findPointsInsideLoop(loop, neighbourPoint, found)
 	})
 }
 
-func (s Surface) calculateLoopRotation(loop []Segment) geometry.Rotation {
+func (s Surface) calculateLoopRotation(loop []Segment) geo2d.Rotation {
 	var nCW, nCCW int
 	for index := 0; index < len(loop); index++ {
 		currentIndex, nextIndex := index, index+1
@@ -196,20 +196,20 @@ func (s Surface) calculateLoopRotation(loop []Segment) geometry.Rotation {
 		}
 
 		current, next := loop[currentIndex], loop[nextIndex]
-		comingFrom := geometry.OppositeOrientation[current.DirectionOf(next)]
+		comingFrom := geo2d.OppositeOrientation[current.DirectionOf(next)]
 
 		switch next.Pipe.Rotation(comingFrom) {
-		case geometry.CW:
+		case geo2d.CW:
 			nCW++
-		case geometry.CCW:
+		case geo2d.CCW:
 			nCCW++
 		default:
 		}
 	}
 
 	if nCW > nCCW {
-		return geometry.CW
+		return geo2d.CW
 	} else {
-		return geometry.CCW
+		return geo2d.CCW
 	}
 }

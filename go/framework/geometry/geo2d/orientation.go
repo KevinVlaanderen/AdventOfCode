@@ -1,4 +1,4 @@
-package geometry
+package geo2d
 
 type Orientation uint8
 

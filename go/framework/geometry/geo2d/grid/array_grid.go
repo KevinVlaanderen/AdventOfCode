@@ -1,7 +1,7 @@
 package grid
 
 import (
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	"errors"
 	"fmt"
 
@@ -21,18 +21,18 @@ func NewGrid[T comparable](width, height int) Grid[T] {
 	return Grid[T]{data: data, width: width, height: height}
 }
 
-func (g *Grid[T]) InBounds(point *geometry.Point) bool {
+func (g *Grid[T]) InBounds(point *geo2d.Point) bool {
 	return point.X >= 0 && point.X < g.width && point.Y >= 0 && point.Y < g.height
 }
 
-func (g *Grid[T]) Get(point *geometry.Point) (value T, found bool) {
+func (g *Grid[T]) Get(point *geo2d.Point) (value T, found bool) {
 	if !g.InBounds(point) {
 		return lo.Empty[T](), false
 	}
 	return g.data[point.Y][point.X], true
 }
 
-func (g *Grid[T]) Set(point *geometry.Point, value T) error {
+func (g *Grid[T]) Set(point *geo2d.Point, value T) error {
 	if !g.InBounds(point) {
 		return errors.New("out of bounds")
 	}

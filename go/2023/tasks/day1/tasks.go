@@ -1,7 +1,7 @@
 package day1
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"fmt"
 	"go/types"
 	"strconv"
@@ -34,19 +34,19 @@ var words = map[string]int{
 	"nine":  9,
 }
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	lookup := digits
 
-	for _, line := range framework.Lines(data) {
+	for _, line := range tasks.Lines(data) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	lookup := lo.Assign(digits, words)
 
-	for _, line := range framework.Lines(data) {
+	for _, line := range tasks.Lines(data) {
 		result.Value += calculateCalibrationValue(line, lookup)
 	}
 	return

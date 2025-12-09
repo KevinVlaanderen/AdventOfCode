@@ -1,22 +1,24 @@
 package model
 
-import "aoc/framework/geometry"
+import (
+	"aoc/framework/geometry/geo2d"
+)
 
 type Segment struct {
 	Pipe  *Pipe
-	Point *geometry.Point
+	Point *geo2d.Point
 }
 
-func (s Segment) DirectionOf(other Segment) geometry.Orientation {
+func (s Segment) DirectionOf(other Segment) geo2d.Orientation {
 	switch {
 	case other.Point.Y < s.Point.Y:
-		return geometry.North
+		return geo2d.North
 	case other.Point.X > s.Point.X:
-		return geometry.East
+		return geo2d.East
 	case other.Point.Y > s.Point.Y:
-		return geometry.South
+		return geo2d.South
 	case other.Point.X < s.Point.X:
-		return geometry.West
+		return geo2d.West
 	}
 	panic("invalid direction")
 }

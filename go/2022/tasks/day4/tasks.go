@@ -2,14 +2,14 @@ package day4
 
 import (
 	"aoc/2022/tasks/day4/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"strings"
 
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	pairs := parse(data)
 
 	for _, pair := range pairs {
@@ -21,7 +21,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	pairs := parse(data)
 
 	for _, pair := range pairs {
@@ -34,7 +34,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse(data string) []model.Pair {
-	return lo.Map(framework.Lines(data), func(line string, index int) model.Pair {
+	return lo.Map(tasks.Lines(data), func(line string, index int) model.Pair {
 		parts := strings.Split(line, ",")
 
 		assignment1, _ := model.NewAssignment(parts[0])

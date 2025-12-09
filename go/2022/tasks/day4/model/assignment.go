@@ -2,6 +2,7 @@ package model
 
 import (
 	"aoc/framework"
+	"aoc/framework/datastructures"
 	"strconv"
 	"strings"
 )
@@ -31,7 +32,7 @@ func (a Assignment) OverlapsWith(b Assignment) bool {
 	range1 := framework.Range(a.low, a.high-a.low+1, 1)
 	range2 := framework.Range(b.low, b.high-b.low+1, 1)
 
-	if intersection, err := framework.Intersection(range1, range2); err != nil {
+	if intersection, err := datastructures.Intersection(range1, range2); err != nil {
 		return false
 	} else {
 		return len(intersection) > 0

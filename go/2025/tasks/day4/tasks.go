@@ -1,19 +1,19 @@
 package day4
 
 import (
-	"aoc/framework"
-	"aoc/framework/geometry"
-	"aoc/framework/geometry/grid"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/geometry/geo2d/grid"
+	"aoc/framework/tasks"
 	"go/types"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	rolls := parse(data)
 	x1, x2, y1, y2 := rolls.Boundaries()
 
 	for x := x1; x <= x2; x++ {
 		for y := y1; y <= y2; y++ {
-			if canAccess(rolls, &geometry.Point{X: x, Y: y}) {
+			if canAccess(rolls, &geo2d.Point{X: x, Y: y}) {
 				result.Value++
 			}
 		}
@@ -22,7 +22,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	rolls := parse(data)
 	x1, x2, y1, y2 := rolls.Boundaries()
 	removed := 0
@@ -33,7 +33,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 
 		for x := x1; x <= x2; x++ {
 			for y := y1; y <= y2; y++ {
-				point := &geometry.Point{X: x, Y: y}
+				point := &geo2d.Point{X: x, Y: y}
 				if canAccess(rolls, point) {
 					_ = rolls.Set(point, false)
 					removed++
@@ -49,26 +49,26 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse(data string) grid.Grid[bool] {
-	lines := framework.CharLines(data)
+	lines := tasks.CharLines(data)
 	width := len(lines[0])
 	height := len(lines)
 	g := grid.NewGrid[bool](width, height)
 	for y, line := range lines {
 		for x, char := range line {
-			_ = g.Set(&geometry.Point{X: x, Y: y}, char == '@')
+			_ = g.Set(&geo2d.Point{X: x, Y: y}, char == '@')
 		}
 	}
 	return g
 }
 
-func canAccess(rolls grid.Grid[bool], point *geometry.Point) bool {
+func canAccess(rolls grid.Grid[bool], point *geo2d.Point) bool {
 	hasRoll, found := rolls.Get(point)
 	if !found || !hasRoll {
 		return false
 	}
 
 	count := 0
-	for _, neighbour := range point.Neighbors(geometry.All) {
+	for _, neighbour := range point.Neighbors(geo2d.All) {
 		hasRoll, found := rolls.Get(&neighbour)
 		if found && hasRoll {
 			count++

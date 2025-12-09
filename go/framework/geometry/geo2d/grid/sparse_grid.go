@@ -2,38 +2,38 @@ package grid
 
 import (
 	"aoc/framework"
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	"fmt"
 
 	"github.com/samber/lo"
 )
 
 type SparseGrid[T comparable] struct {
-	points                 map[geometry.Point]T
+	points                 map[geo2d.Point]T
 	xMin, xMax, yMin, yMax int
 }
 
 func NewSparseGrid[T comparable]() SparseGrid[T] {
 	return SparseGrid[T]{
-		points: make(map[geometry.Point]T),
+		points: make(map[geo2d.Point]T),
 	}
 }
 
-func (g *SparseGrid[T]) Keys() []geometry.Point {
+func (g *SparseGrid[T]) Keys() []geo2d.Point {
 	return lo.Keys(g.points)
 }
 
-func (g *SparseGrid[T]) Has(key geometry.Point) (found bool) {
+func (g *SparseGrid[T]) Has(key geo2d.Point) (found bool) {
 	_, found = g.Get(key)
 	return
 }
 
-func (g *SparseGrid[T]) Get(key geometry.Point) (value T, found bool) {
+func (g *SparseGrid[T]) Get(key geo2d.Point) (value T, found bool) {
 	value, found = g.points[key]
 	return
 }
 
-func (g *SparseGrid[T]) Add(key geometry.Point, value T) {
+func (g *SparseGrid[T]) Add(key geo2d.Point, value T) {
 	g.points[key] = value
 	if len(g.points) == 0 || key.X < g.xMin {
 		g.xMin = key.X
@@ -49,7 +49,7 @@ func (g *SparseGrid[T]) Add(key geometry.Point, value T) {
 	}
 }
 
-func (g *SparseGrid[T]) Delete(key geometry.Point) {
+func (g *SparseGrid[T]) Delete(key geo2d.Point) {
 	delete(g.points, key)
 }
 
@@ -72,7 +72,7 @@ func (g *SparseGrid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
 func (g *SparseGrid[T]) DrawPointGridBy(mapping func(value T, found bool, x int, y int) rune) {
 	for y := range framework.RangeGen(g.yMin, g.yMax-g.yMin+1, 1) {
 		for x := range framework.RangeGen(g.xMin, g.xMax-g.xMin+1, 1) {
-			value, found := g.points[geometry.Point{X: x, Y: y}]
+			value, found := g.points[geo2d.Point{X: x, Y: y}]
 
 			if mapping != nil {
 				fmt.Print(string(mapping(value, found, x, y)))
@@ -83,6 +83,6 @@ func (g *SparseGrid[T]) DrawPointGridBy(mapping func(value T, found bool, x int,
 	}
 }
 
-func (g *SparseGrid[T]) InBounds(point geometry.Point) bool {
+func (g *SparseGrid[T]) InBounds(point geo2d.Point) bool {
 	return point.X >= g.xMin && point.X <= g.xMax && point.Y >= g.yMin && point.Y <= g.yMax
 }

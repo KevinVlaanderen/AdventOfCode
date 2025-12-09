@@ -1,8 +1,8 @@
 package day1
 
 import (
-	"aoc/framework"
 	"aoc/framework/math"
+	"aoc/framework/tasks"
 	"go/types"
 	"sort"
 	"strconv"
@@ -13,7 +13,7 @@ import (
 type Elf = []Calories
 type Calories = int
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	elfs := parse(data)
 
 	var sums []int
@@ -28,7 +28,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	elfs := parse(data)
 
 	var sums []int
@@ -44,7 +44,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse(data string) []Elf {
-	return lo.Map(framework.LineBlocks(data), func(block []string, index int) Elf {
+	return lo.Map(tasks.LineBlocks(data), func(block []string, index int) Elf {
 		return lo.Map(block, func(line string, index int) Calories {
 			value, _ := strconv.Atoi(line)
 			return value

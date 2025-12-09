@@ -2,7 +2,7 @@ package day13
 
 import (
 	"aoc/2022/tasks/day13/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"encoding/json"
 	"go/types"
 	"sort"
@@ -10,7 +10,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	pairs := parse1(data)
 
 	for _, pair := range pairs {
@@ -22,7 +22,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	packets := parse2(data)
 
 	divider1String := "[[2]]"
@@ -55,7 +55,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 
 func parse1(data string) []model.Pair {
 	pairIndex := 1
-	blocks := framework.LineBlocks(data)
+	blocks := tasks.LineBlocks(data)
 
 	return lo.Map(blocks, func(block []string, index int) model.Pair {
 		var packet1, packet2 model.Packet
@@ -70,7 +70,7 @@ func parse1(data string) []model.Pair {
 }
 
 func parse2(data string) []model.Packet {
-	lines := lo.Flatten(framework.LineBlocks(data))
+	lines := lo.Flatten(tasks.LineBlocks(data))
 
 	return lo.Map(lines, func(line string, index int) model.Packet {
 		var packet model.Packet

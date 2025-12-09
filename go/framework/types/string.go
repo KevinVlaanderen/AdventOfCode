@@ -1,4 +1,4 @@
-package framework
+package types
 
 func RepeatString(value string, count int, separator string) string {
 	newValue := value

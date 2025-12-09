@@ -1,7 +1,7 @@
 package model
 
 import (
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	"regexp"
 	"strings"
 
@@ -10,7 +10,7 @@ import (
 )
 
 type Network struct {
-	steps     []geometry.Direction
+	steps     []geo2d.Direction
 	nodeNames []string
 	nodes     []lo.Tuple2[int, int]
 }
@@ -35,13 +35,13 @@ func NewNetwork(stepData string, nodeData string) Network {
 	}
 }
 
-func parseSteps(line string) []geometry.Direction {
-	return lo.Map(strings.Split(line, ""), func(direction string, index int) geometry.Direction {
+func parseSteps(line string) []geo2d.Direction {
+	return lo.Map(strings.Split(line, ""), func(direction string, index int) geo2d.Direction {
 		switch direction {
 		case "L":
-			return geometry.Left
+			return geo2d.Left
 		case "R":
-			return geometry.Right
+			return geo2d.Right
 		default:
 			panic("unknown direction")
 		}
@@ -64,11 +64,11 @@ func (n Network) IndicesBy(filter func(item string, index int) bool) []int {
 	})
 }
 
-func (n Network) Next(current int, direction geometry.Direction) int {
+func (n Network) Next(current int, direction geo2d.Direction) int {
 	switch direction {
-	case geometry.Left:
+	case geo2d.Left:
 		return n.nodes[current].A
-	case geometry.Right:
+	case geo2d.Right:
 		return n.nodes[current].B
 	}
 	panic("unknown direction")

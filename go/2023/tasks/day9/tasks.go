@@ -3,13 +3,14 @@ package day9
 import (
 	"aoc/framework"
 	"aoc/framework/math"
+	"aoc/framework/tasks"
 	"go/types"
 
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	reports := parse(data)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
@@ -19,7 +20,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	reports := parse(data)
 
 	result.Value = lo.Sum(lop.Map(reports, func(report []int, index int) int {
@@ -30,7 +31,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse(data string) [][]int {
-	return lo.Map(framework.Lines(data), func(item string, index int) []int {
+	return lo.Map(tasks.Lines(data), func(item string, index int) []int {
 		return math.ExtractNumbers(item)
 	})
 }

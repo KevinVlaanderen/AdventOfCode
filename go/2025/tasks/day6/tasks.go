@@ -1,7 +1,7 @@
 package day6
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"fmt"
 	"go/types"
 	"strconv"
@@ -22,7 +22,7 @@ const (
 	Multiply           = '*'
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	problems := parse(data)
 
 	for _, problem := range problems {
@@ -32,8 +32,8 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
-	input := framework.CharLines(data)
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	input := tasks.CharLines(data)
 	numbers := input[:len(input)-1]
 	operations := input[len(input)-1]
 
@@ -91,7 +91,7 @@ func reduceOperation(currentOperation Operation) func(agg int, number int, index
 }
 
 func parse(data string) (problems []Problem) {
-	lines := framework.Lines(data)
+	lines := tasks.Lines(data)
 
 	numbers := lo.Map(lines[:len(lines)-1], func(line string, index int) []int {
 		return lo.Map(strings.Fields(line), func(number string, index int) int {

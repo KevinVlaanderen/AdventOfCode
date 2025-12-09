@@ -2,14 +2,14 @@ package day10
 
 import (
 	"aoc/2022/tasks/day10/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"strings"
 
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	instructions := parse(data)
 
 	processor := NewProcessor(1)
@@ -24,7 +24,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[string]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[string]) {
 	instructions := parse(data)
 
 	var outputLine string
@@ -51,7 +51,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[string]) {
 }
 
 func parse(data string) []model.Instruction {
-	return lo.Map(framework.Lines(data), func(line string, index int) model.Instruction {
+	return lo.Map(tasks.Lines(data), func(line string, index int) model.Instruction {
 		parts := strings.Split(line, " ")
 		instructionType, _ := model.MapWordToInstructionType(parts[0])
 		instruction := model.Instruction{Type: instructionType}

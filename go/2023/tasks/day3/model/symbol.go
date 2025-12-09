@@ -1,10 +1,12 @@
 package model
 
-import "aoc/framework/geometry"
+import (
+	"aoc/framework/geometry/geo2d"
+)
 
 type Symbol struct {
 	Value    rune
-	Position geometry.Point
+	Position geo2d.Point
 }
 
 func ExtractSymbols(line string, y int) (symbols []Symbol) {
@@ -13,7 +15,7 @@ func ExtractSymbols(line string, y int) (symbols []Symbol) {
 		x := symbolMatch[0]
 		symbols = append(symbols, Symbol{
 			Value:    rune(line[x]),
-			Position: geometry.Point{X: x, Y: y},
+			Position: geo2d.Point{X: x, Y: y},
 		})
 	}
 	return

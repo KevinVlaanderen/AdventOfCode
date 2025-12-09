@@ -1,9 +1,9 @@
 package day17
 
 import (
-	"aoc/framework"
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	"aoc/framework/pathfinding"
+	"aoc/framework/tasks"
 	"go/types"
 	"math"
 	"strconv"
@@ -19,30 +19,30 @@ func (g *Graph) Cost(current pathfinding.PointWithDirection, next pathfinding.Po
 	return g.WeightedEdge(current.Point.ID(), next.Point.ID()).Weight()
 }
 
-func (g *Graph) Heuristic(from, to geometry.Point) float64 {
+func (g *Graph) Heuristic(from, to geo2d.Point) float64 {
 	return math.Abs(float64(from.X-to.X)) + math.Abs(float64(from.Y-to.Y))
 }
 
-func (g *Graph) Neighbours(point pathfinding.PointWithDirection, _ geometry.NeighbourMode) []geometry.Point {
+func (g *Graph) Neighbours(point pathfinding.PointWithDirection, _ geo2d.NeighbourMode) []geo2d.Point {
 	nodes := g.From(point.Point.ID())
-	points := make([]geometry.Point, 0, nodes.Len())
+	points := make([]geo2d.Point, 0, nodes.Len())
 	for nodes.Next() {
-		nextPoint := nodes.Node().(geometry.Point)
+		nextPoint := nodes.Node().(geo2d.Point)
 		direction, _ := point.Point.OrientationOf(nextPoint)
-		if point.Point != nextPoint && direction != geometry.OppositeOrientation[point.Direction] {
+		if point.Point != nextPoint && direction != geo2d.OppositeOrientation[point.Direction] {
 			points = append(points, nextPoint)
 		}
 	}
 	return points
 }
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	g, width, height := parse(data)
 
 	graph := &Graph{g}
 
-	start := geometry.Point{X: 0, Y: 0}
-	goal := geometry.Point{X: int(width - 1), Y: int(height - 1)}
+	start := geo2d.Point{X: 0, Y: 0}
+	goal := geo2d.Point{X: int(width - 1), Y: int(height - 1)}
 
 	aStar := pathfinding.NewAStar(graph)
 	aStar.RunSearch(start, goal)
@@ -118,7 +118,7 @@ func (n Node) ID() int64 {
 }
 
 func parse(data string) (*simple.WeightedDirectedGraph, int64, int64) {
-	lines := framework.Lines(data)
+	lines := tasks.Lines(data)
 
 	width, height := len(lines[0]), len(lines)
 
@@ -141,12 +141,12 @@ func parse(data string) (*simple.WeightedDirectedGraph, int64, int64) {
 
 			costs[y][x] = cost
 
-			point := geometry.Point{X: x, Y: y}
+			point := geo2d.Point{X: x, Y: y}
 
 			g.AddNode(point)
 
 			if x > 0 {
-				westPoint := point.Neighbour(geometry.West)
+				westPoint := point.Neighbour(geo2d.West)
 				edge := simple.WeightedEdge{F: point, T: westPoint, W: costs[y][x-1]}
 				g.SetWeightedEdge(edge)
 				edge = simple.WeightedEdge{F: westPoint, T: point, W: cost}
@@ -154,7 +154,7 @@ func parse(data string) (*simple.WeightedDirectedGraph, int64, int64) {
 			}
 
 			if y > 0 {
-				northPoint := point.Neighbour(geometry.North)
+				northPoint := point.Neighbour(geo2d.North)
 				edge := simple.WeightedEdge{F: point, T: northPoint, W: costs[y-1][x]}
 				g.SetWeightedEdge(edge)
 				edge = simple.WeightedEdge{F: northPoint, T: point, W: cost}

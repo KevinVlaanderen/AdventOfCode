@@ -1,9 +1,9 @@
 package model
 
 import (
-	"aoc/framework"
-	"aoc/framework/geometry"
-	"aoc/framework/geometry/grid"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/geometry/geo2d/grid"
+	"aoc/framework/tasks"
 
 	"github.com/samber/lo"
 )
@@ -12,17 +12,17 @@ type Cave grid.SparseGrid[Tile]
 
 func NewCave(data string) Cave {
 	tiles := grid.NewSparseGrid[Tile]()
-	for y, line := range framework.Lines(data) {
+	for y, line := range tasks.Lines(data) {
 		for x, char := range line {
 			switch char {
 			case '/':
-				tiles.Add(geometry.Point{X: x, Y: y}, Tile{MirrorRight})
+				tiles.Add(geo2d.Point{X: x, Y: y}, Tile{MirrorRight})
 			case '\\':
-				tiles.Add(geometry.Point{X: x, Y: y}, Tile{MirrorLeft})
+				tiles.Add(geo2d.Point{X: x, Y: y}, Tile{MirrorLeft})
 			case '|':
-				tiles.Add(geometry.Point{X: x, Y: y}, Tile{SplitterVertical})
+				tiles.Add(geo2d.Point{X: x, Y: y}, Tile{SplitterVertical})
 			case '-':
-				tiles.Add(geometry.Point{X: x, Y: y}, Tile{SplitterHorizontal})
+				tiles.Add(geo2d.Point{X: x, Y: y}, Tile{SplitterHorizontal})
 			}
 		}
 	}
@@ -30,12 +30,12 @@ func NewCave(data string) Cave {
 	return Cave(tiles)
 }
 
-func (c Cave) CountEnergized(position geometry.Point, orientation geometry.Orientation) int {
+func (c Cave) CountEnergized(position geo2d.Point, orientation geo2d.Orientation) int {
 	steps := map[Step]bool{}
 	g := grid.SparseGrid[Tile](c)
 	c.followPath(&g, position, orientation, &steps)
 
-	found := lo.Associate(lo.Keys(steps), func(item Step) (geometry.Point, bool) {
+	found := lo.Associate(lo.Keys(steps), func(item Step) (geo2d.Point, bool) {
 		return item.Position, true
 	})
 
@@ -47,7 +47,7 @@ func (c Cave) Boundaries() (int, int, int, int) {
 	return g.Boundaries()
 }
 
-func (c Cave) followPath(grid *grid.SparseGrid[Tile], current geometry.Point, orientation geometry.Orientation, steps *map[Step]bool) {
+func (c Cave) followPath(grid *grid.SparseGrid[Tile], current geo2d.Point, orientation geo2d.Orientation, steps *map[Step]bool) {
 	xMin, xMax, yMin, yMax := grid.Boundaries()
 
 	for {
@@ -68,47 +68,47 @@ func (c Cave) followPath(grid *grid.SparseGrid[Tile], current geometry.Point, or
 			switch tile.TileType {
 			case MirrorLeft:
 				switch orientation {
-				case geometry.North:
-					orientation = geometry.West
-				case geometry.East:
-					orientation = geometry.South
-				case geometry.South:
-					orientation = geometry.East
-				case geometry.West:
-					orientation = geometry.North
+				case geo2d.North:
+					orientation = geo2d.West
+				case geo2d.East:
+					orientation = geo2d.South
+				case geo2d.South:
+					orientation = geo2d.East
+				case geo2d.West:
+					orientation = geo2d.North
 				default:
 					panic("invalid orientation")
 				}
 				current = current.Neighbour(orientation)
 			case MirrorRight:
 				switch orientation {
-				case geometry.North:
-					orientation = geometry.East
-				case geometry.East:
-					orientation = geometry.North
-				case geometry.South:
-					orientation = geometry.West
-				case geometry.West:
-					orientation = geometry.South
+				case geo2d.North:
+					orientation = geo2d.East
+				case geo2d.East:
+					orientation = geo2d.North
+				case geo2d.South:
+					orientation = geo2d.West
+				case geo2d.West:
+					orientation = geo2d.South
 				default:
 					panic("invalid orientation")
 				}
 				current = current.Neighbour(orientation)
 			case SplitterHorizontal:
-				if orientation == geometry.East || orientation == geometry.West {
+				if orientation == geo2d.East || orientation == geo2d.West {
 					current = current.Neighbour(orientation)
 					continue
 				}
-				c.followPath(grid, current.Neighbour(geometry.East), geometry.East, steps)
-				c.followPath(grid, current.Neighbour(geometry.West), geometry.West, steps)
+				c.followPath(grid, current.Neighbour(geo2d.East), geo2d.East, steps)
+				c.followPath(grid, current.Neighbour(geo2d.West), geo2d.West, steps)
 				return
 			case SplitterVertical:
-				if orientation == geometry.North || orientation == geometry.South {
+				if orientation == geo2d.North || orientation == geo2d.South {
 					current = current.Neighbour(orientation)
 					continue
 				}
-				c.followPath(grid, current.Neighbour(geometry.North), geometry.North, steps)
-				c.followPath(grid, current.Neighbour(geometry.South), geometry.South, steps)
+				c.followPath(grid, current.Neighbour(geo2d.North), geo2d.North, steps)
+				c.followPath(grid, current.Neighbour(geo2d.South), geo2d.South, steps)
 				return
 			}
 		}

@@ -2,18 +2,18 @@ package day14
 
 import (
 	"aoc/2022/tasks/day14/model"
-	"aoc/framework"
-	"aoc/framework/geometry"
-	"aoc/framework/geometry/grid"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/geometry/geo2d/grid"
+	"aoc/framework/tasks"
 	"go/types"
 	"strconv"
 	"strings"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	cave := parse(data)
 
-	for cave.DropSand(geometry.Point{X: 500, Y: 0}) {
+	for cave.DropSand(geo2d.Point{X: 500, Y: 0}) {
 		result.Value++
 	}
 
@@ -31,14 +31,14 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	cave := parse(data)
 
 	cave.AddRock(
-		geometry.Point{X: cave.MinX - cave.MaxY, Y: cave.MaxY + 2},
-		geometry.Point{X: cave.MaxX + cave.MaxY, Y: cave.MaxY + 2})
+		geo2d.Point{X: cave.MinX - cave.MaxY, Y: cave.MaxY + 2},
+		geo2d.Point{X: cave.MaxX + cave.MaxY, Y: cave.MaxY + 2})
 
-	for cave.DropSand(geometry.Point{X: 500, Y: 0}) {
+	for cave.DropSand(geo2d.Point{X: 500, Y: 0}) {
 		result.Value++
 	}
 
@@ -57,21 +57,21 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse(data string) *model.Cave {
-	lines := framework.Lines(data)
+	lines := tasks.Lines(data)
 	width := len(lines[0])
 	height := len(lines)
 
 	cave := model.Cave{Area: grid.NewGrid[model.Material](width, height)}
 
-	for _, line := range framework.Lines(data) {
+	for _, line := range tasks.Lines(data) {
 		lineParts := strings.Split(line, " -> ")
 
-		var positions []geometry.Point
+		var positions []geo2d.Point
 		for _, linePart := range lineParts {
 			rockParts := strings.Split(linePart, ",")
 			x, _ := strconv.Atoi(rockParts[0])
 			y, _ := strconv.Atoi(rockParts[1])
-			positions = append(positions, geometry.Point{X: x, Y: y})
+			positions = append(positions, geo2d.Point{X: x, Y: y})
 		}
 
 		for index := range positions {

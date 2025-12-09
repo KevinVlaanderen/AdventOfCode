@@ -1,7 +1,7 @@
 package day7
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"strconv"
 	"strings"
@@ -10,7 +10,7 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	hands := parseHands(data, &cardMap1, false)
 
 	slices.SortFunc(hands, func(a, b Hand) int {
@@ -24,7 +24,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	hands := parseHands(data, &cardMap2, true)
 
 	slices.SortFunc(hands, func(a, b Hand) int {
@@ -39,7 +39,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parseHands(data string, cardMap *map[string]int, withJokers bool) []Hand {
-	return lo.Map(framework.Lines(data), func(item string, index int) Hand {
+	return lo.Map(tasks.Lines(data), func(item string, index int) Hand {
 		if hand, err := NewHand(item, cardMap, withJokers); err != nil {
 			panic(err)
 		} else {

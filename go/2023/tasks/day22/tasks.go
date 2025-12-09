@@ -2,9 +2,10 @@ package day22
 
 import (
 	"2023/src/tasks/day22/model"
-	"aoc/framework"
-	"aoc/framework/geometry"
-	"aoc/framework/geometry/grid"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/geometry/geo2d/grid"
+	_d2 "aoc/framework/geometry/geo3d"
+	"aoc/framework/tasks"
 	"go/types"
 	"sort"
 	"strconv"
@@ -17,7 +18,7 @@ import (
 	"golang.org/x/image/colornames"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	bricks := parse(data)
 
 	dropBricks(bricks)
@@ -37,7 +38,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	bricks := parse(data)
 
 	dropBricks(bricks)
@@ -92,7 +93,7 @@ func dropBricks(bricks []*model.Brick) {
 
 	sort.Sort(model.ByHeight(bricks))
 
-	pointBuffer := make([]geometry.Point, 0, 16)
+	pointBuffer := make([]geo2d.Point, 0, 16)
 	for _, brick := range bricks {
 		pointBuffer = brick.FillXYPoints(pointBuffer)
 
@@ -120,13 +121,13 @@ func dropBricks(bricks []*model.Brick) {
 }
 
 func parse(data string) []*model.Brick {
-	return lo.Map(framework.Lines(data), func(line string, index int) *model.Brick {
+	return lo.Map(tasks.Lines(data), func(line string, index int) *model.Brick {
 		parts := strings.Split(line, "~")
 		return model.NewBrick(parseVoxel(parts[0]), parseVoxel(parts[1]))
 	})
 }
 
-func parseVoxel(data string) geometry.Voxel {
+func parseVoxel(data string) _d2.Voxel {
 	parts := strings.Split(data, ",")
 	var x, y, z int
 	var err error
@@ -139,7 +140,7 @@ func parseVoxel(data string) geometry.Voxel {
 	if z, err = strconv.Atoi(parts[2]); err != nil {
 		panic(err)
 	}
-	return geometry.Voxel{X: x, Y: y, Z: z}
+	return _d2.Voxel{X: x, Y: y, Z: z}
 }
 
 func calculateDimensions(bricks []*model.Brick) (int, int, int) {

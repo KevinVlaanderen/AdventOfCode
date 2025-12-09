@@ -1,7 +1,7 @@
 package day25
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"hash/fnv"
 	"regexp"
@@ -15,7 +15,7 @@ import (
 	"gonum.org/v1/gonum/graph/traverse"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	g := parse(data)
 
 	nodes := g.Nodes()

@@ -2,7 +2,7 @@ package day15
 
 import (
 	"2023/src/tasks/day15/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"strings"
 
@@ -10,8 +10,8 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
-	words := strings.Split(framework.Lines(data)[0], ",")
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
+	words := strings.Split(tasks.Lines(data)[0], ",")
 	hashCalculator := createHashCalculator()
 
 	for _, word := range words {
@@ -21,9 +21,9 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	hashCalculator := createHashCalculator()
-	instructions := lo.Map(strings.Split(framework.Lines(data)[0], ","), func(word string, index int) model.Instruction {
+	instructions := lo.Map(strings.Split(tasks.Lines(data)[0], ","), func(word string, index int) model.Instruction {
 		return model.NewInstruction(word, hashCalculator)
 	})
 

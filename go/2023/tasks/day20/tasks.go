@@ -3,8 +3,8 @@ package day20
 import (
 	"2023/src/tasks/day20/model"
 	"2023/src/tasks/day20/model/modules"
-	"aoc/framework"
 	"aoc/framework/math"
+	"aoc/framework/tasks"
 	"fmt"
 	"go/types"
 	"regexp"
@@ -15,7 +15,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	descriptions := CreateDescriptions(data)
 	system := CreateSystem(descriptions)
 
@@ -28,7 +28,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	descriptions := CreateDescriptions(data)
 
 	g := graph.New(graph.StringHash, graph.Rooted(), graph.Directed())

@@ -2,7 +2,7 @@ package day2
 
 import (
 	"aoc/2022/tasks/day2/model"
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"fmt"
 	"go/types"
 	"strings"
@@ -10,7 +10,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	rounds := parse1(data)
 
 	for _, round := range rounds {
@@ -25,7 +25,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	predictions := parse2(data)
 
 	for _, prediction := range predictions {
@@ -48,7 +48,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse1(data string) []model.Round {
-	return lo.Map(framework.Lines(data), func(line string, index int) model.Round {
+	return lo.Map(tasks.Lines(data), func(line string, index int) model.Round {
 		parts := strings.Split(line, " ")
 		return model.NewRound(
 			model.ParseHandFor(model.Player1, parts[0]),
@@ -58,7 +58,7 @@ func parse1(data string) []model.Round {
 }
 
 func parse2(data string) []model.Prediction {
-	return lo.Map(framework.Lines(data), func(line string, index int) model.Prediction {
+	return lo.Map(tasks.Lines(data), func(line string, index int) model.Prediction {
 		parts := strings.Split(line, " ")
 		return model.NewPrediction(
 			model.ParseHandFor(model.Player1, parts[0]),

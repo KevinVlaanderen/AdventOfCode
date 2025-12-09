@@ -2,14 +2,14 @@ package day3
 
 import (
 	"2023/src/tasks/day3/model"
-	"aoc/framework"
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
+	"aoc/framework/tasks"
 	"go/types"
 
 	"golang.org/x/exp/slices"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	schematic := parse(data)
 
 	for _, number := range schematic.Numbers {
@@ -25,7 +25,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	schematic := parse(data)
 
 	for _, symbol := range schematic.Symbols {
@@ -35,7 +35,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 
 		numbers := make([]model.Number, 0)
 
-		for _, coordinate := range symbol.Position.Neighbors(geometry.All) {
+		for _, coordinate := range symbol.Position.Neighbors(geo2d.All) {
 			if number, found := schematic.NumberAt(coordinate); found && !slices.Contains(numbers, number) {
 				numbers = append(numbers, number)
 			}
@@ -52,7 +52,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 func parse(data string) model.Schematic {
 	schematic := model.NewSchematic()
 
-	for _, line := range framework.Lines(data) {
+	for _, line := range tasks.Lines(data) {
 		schematic.Add(line)
 	}
 

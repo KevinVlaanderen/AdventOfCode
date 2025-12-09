@@ -1,9 +1,9 @@
 package day18
 
 import (
-	"aoc/framework"
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	_math "aoc/framework/math"
+	"aoc/framework/tasks"
 	"go/types"
 	"math"
 	"regexp"
@@ -12,46 +12,46 @@ import (
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	instructions := parse1(data)
-	vertices := findVertices(instructions, geometry.Point{})
+	vertices := findVertices(instructions, geo2d.Point{})
 	result.Value = calculateArea(vertices)
 
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	instructions := parse2(data)
-	vertices := findVertices(instructions, geometry.Point{})
+	vertices := findVertices(instructions, geo2d.Point{})
 	result.Value = calculateArea(vertices)
 
 	return
 }
 
-func findVertices(instructions []Instruction, start geometry.Point) []geometry.Point {
+func findVertices(instructions []Instruction, start geo2d.Point) []geo2d.Point {
 	numVertices := len(instructions) + 1
 
-	corners := make([]geometry.Point, numVertices)
+	corners := make([]geo2d.Point, numVertices)
 	corners[0] = start
 
 	for index, instruction := range instructions {
 		current := corners[index]
 
 		switch instruction.direction {
-		case geometry.North:
-			corners[index+1] = geometry.Point{X: current.X, Y: current.Y - instruction.meters}
-		case geometry.East:
-			corners[index+1] = geometry.Point{X: current.X + instruction.meters, Y: current.Y}
-		case geometry.South:
-			corners[index+1] = geometry.Point{X: current.X, Y: current.Y + instruction.meters}
-		case geometry.West:
-			corners[index+1] = geometry.Point{X: current.X - instruction.meters, Y: current.Y}
+		case geo2d.North:
+			corners[index+1] = geo2d.Point{X: current.X, Y: current.Y - instruction.meters}
+		case geo2d.East:
+			corners[index+1] = geo2d.Point{X: current.X + instruction.meters, Y: current.Y}
+		case geo2d.South:
+			corners[index+1] = geo2d.Point{X: current.X, Y: current.Y + instruction.meters}
+		case geo2d.West:
+			corners[index+1] = geo2d.Point{X: current.X - instruction.meters, Y: current.Y}
 		default:
 			panic("invalid direction")
 		}
 	}
 
-	vertices := make([]geometry.Point, numVertices)
+	vertices := make([]geo2d.Point, numVertices)
 
 	for currentIndex := 0; currentIndex < numVertices; currentIndex++ {
 		previousIndex := currentIndex - 1
@@ -72,32 +72,32 @@ func findVertices(instructions []Instruction, start geometry.Point) []geometry.P
 		outgoingDirection, _ := current.OrientationOf(next)
 
 		switch {
-		case incomingDirection == geometry.North && outgoingDirection == geometry.East:
-			vertices[currentIndex] = geometry.Point{X: current.X, Y: current.Y}
-		case incomingDirection == geometry.North && outgoingDirection == geometry.West:
-			vertices[currentIndex] = geometry.Point{X: current.X, Y: current.Y + 1}
-		case incomingDirection == geometry.East && outgoingDirection == geometry.North:
-			vertices[currentIndex] = geometry.Point{X: current.X, Y: current.Y}
-		case incomingDirection == geometry.East && outgoingDirection == geometry.South:
-			vertices[currentIndex] = geometry.Point{X: current.X + 1, Y: current.Y}
-		case incomingDirection == geometry.South && outgoingDirection == geometry.East:
-			vertices[currentIndex] = geometry.Point{X: current.X + 1, Y: current.Y}
-		case incomingDirection == geometry.South && outgoingDirection == geometry.West:
-			vertices[currentIndex] = geometry.Point{X: current.X + 1, Y: current.Y + 1}
-		case incomingDirection == geometry.West && outgoingDirection == geometry.North:
-			vertices[currentIndex] = geometry.Point{X: current.X, Y: current.Y + 1}
-		case incomingDirection == geometry.West && outgoingDirection == geometry.South:
-			vertices[currentIndex] = geometry.Point{X: current.X, Y: current.Y + 1}
+		case incomingDirection == geo2d.North && outgoingDirection == geo2d.East:
+			vertices[currentIndex] = geo2d.Point{X: current.X, Y: current.Y}
+		case incomingDirection == geo2d.North && outgoingDirection == geo2d.West:
+			vertices[currentIndex] = geo2d.Point{X: current.X, Y: current.Y + 1}
+		case incomingDirection == geo2d.East && outgoingDirection == geo2d.North:
+			vertices[currentIndex] = geo2d.Point{X: current.X, Y: current.Y}
+		case incomingDirection == geo2d.East && outgoingDirection == geo2d.South:
+			vertices[currentIndex] = geo2d.Point{X: current.X + 1, Y: current.Y}
+		case incomingDirection == geo2d.South && outgoingDirection == geo2d.East:
+			vertices[currentIndex] = geo2d.Point{X: current.X + 1, Y: current.Y}
+		case incomingDirection == geo2d.South && outgoingDirection == geo2d.West:
+			vertices[currentIndex] = geo2d.Point{X: current.X + 1, Y: current.Y + 1}
+		case incomingDirection == geo2d.West && outgoingDirection == geo2d.North:
+			vertices[currentIndex] = geo2d.Point{X: current.X, Y: current.Y + 1}
+		case incomingDirection == geo2d.West && outgoingDirection == geo2d.South:
+			vertices[currentIndex] = geo2d.Point{X: current.X, Y: current.Y + 1}
 		}
 	}
 
 	return vertices
 }
 
-func calculateArea(vertices []geometry.Point) int {
+func calculateArea(vertices []geo2d.Point) int {
 	var totalArea int
 
-	maxY := lo.MaxBy(vertices, func(a geometry.Point, b geometry.Point) bool {
+	maxY := lo.MaxBy(vertices, func(a geo2d.Point, b geo2d.Point) bool {
 		return a.Y > b.Y
 	}).Y
 
@@ -129,7 +129,7 @@ func calculateArea(vertices []geometry.Point) int {
 }
 
 type Instruction struct {
-	direction geometry.Orientation
+	direction geo2d.Orientation
 	meters    int
 }
 
@@ -144,13 +144,13 @@ func parse1(data string) (instructions []Instruction) {
 
 		switch match[1] {
 		case "U":
-			instruction.direction = geometry.North
+			instruction.direction = geo2d.North
 		case "R":
-			instruction.direction = geometry.East
+			instruction.direction = geo2d.East
 		case "D":
-			instruction.direction = geometry.South
+			instruction.direction = geo2d.South
 		case "L":
-			instruction.direction = geometry.West
+			instruction.direction = geo2d.West
 		default:
 			panic("invalid direction")
 		}
@@ -180,13 +180,13 @@ func parse2(data string) (instructions []Instruction) {
 
 		switch match[2] {
 		case "0":
-			instruction.direction = geometry.East
+			instruction.direction = geo2d.East
 		case "1":
-			instruction.direction = geometry.South
+			instruction.direction = geo2d.South
 		case "2":
-			instruction.direction = geometry.West
+			instruction.direction = geo2d.West
 		case "3":
-			instruction.direction = geometry.North
+			instruction.direction = geo2d.North
 		default:
 			panic("invalid direction")
 		}

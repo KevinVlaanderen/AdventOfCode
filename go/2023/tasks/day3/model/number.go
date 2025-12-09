@@ -1,7 +1,7 @@
 package model
 
 import (
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	"aoc/framework/math"
 	"log"
 	"strconv"
@@ -9,7 +9,7 @@ import (
 
 type Number struct {
 	Value int
-	Area  geometry.Area
+	Area  geo2d.Area
 }
 
 func (n Number) Length() int {
@@ -26,7 +26,7 @@ func ExtractNumbers(line string, y int) (numbers []Number) {
 		}
 		numbers = append(numbers, Number{
 			Value: value,
-			Area:  geometry.Area{From: geometry.Point{X: start, Y: y}, To: geometry.Point{X: end - 1, Y: y}},
+			Area:  geo2d.Area{From: geo2d.Point{X: start, Y: y}, To: geo2d.Point{X: end - 1, Y: y}},
 		})
 	}
 	return

@@ -2,13 +2,14 @@ package day14
 
 import (
 	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 
 	"github.com/samber/lo"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
-	rocks := framework.CharLines(data)
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
+	rocks := tasks.CharLines(data)
 
 	moveNorth(&rocks)
 	result.Value = calculateLoad(&rocks)
@@ -18,8 +19,8 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 
 const MaxIterations = 1000000000
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
-	rocks := framework.CharLines(data)
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	rocks := tasks.CharLines(data)
 
 	var previousHashes = make([]framework.Hash64, 0)
 	var previousScores = make([]int, 0)

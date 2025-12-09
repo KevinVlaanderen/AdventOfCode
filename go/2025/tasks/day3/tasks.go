@@ -1,7 +1,7 @@
 package day3
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"strconv"
 
 	"github.com/samber/lo"
@@ -11,7 +11,7 @@ type Battery struct {
 	Value, Position int
 }
 
-func Task(data string, amount int) (result framework.Result[int]) {
+func Task(data string, amount int) (result tasks.Result[int]) {
 	banks := parse(data)
 
 	for _, bank := range banks {
@@ -36,7 +36,7 @@ func Task(data string, amount int) (result framework.Result[int]) {
 }
 
 func parse(data string) [][]int {
-	return lo.Map(framework.CharLines(data), func(line []rune, index int) []int {
+	return lo.Map(tasks.CharLines(data), func(line []rune, index int) []int {
 		return lo.Map(line, func(char rune, index int) int {
 			return int(char) - 48
 		})

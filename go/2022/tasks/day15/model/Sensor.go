@@ -1,17 +1,17 @@
 package model
 
 import (
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	"aoc/framework/math"
 )
 
 type Sensor struct {
-	geometry.Point
-	ClosestBeacon geometry.Point
+	geo2d.Point
+	ClosestBeacon geo2d.Point
 	Distance      int
 }
 
-func NewSensor(point geometry.Point, closestBeacon geometry.Point) Sensor {
+func NewSensor(point geo2d.Point, closestBeacon geo2d.Point) Sensor {
 	diffX := math.AbsInt(point.X - closestBeacon.X)
 	diffY := math.AbsInt(point.Y - closestBeacon.Y)
 	distance := diffX + diffY

@@ -1,8 +1,8 @@
 package day8
 
 import (
-	"aoc/framework"
-	math2 "aoc/framework/math"
+	math2 "aoc/framework/geometry/geo3d"
+	"aoc/framework/tasks"
 	"fmt"
 	"sort"
 	"strconv"
@@ -25,7 +25,7 @@ type Distance struct {
 	Value float64
 }
 
-func Task1(data string, nConnections int) (result framework.Result[int]) {
+func Task1(data string, nConnections int) (result tasks.Result[int]) {
 	boxes := parse(data)
 
 	distances := calculateDistances(boxes)
@@ -41,7 +41,7 @@ func Task1(data string, nConnections int) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, nConnections int) (result framework.Result[int]) {
+func Task2(data string, nConnections int) (result tasks.Result[int]) {
 	boxes := parse(data)
 
 	distances := calculateDistances(boxes)
@@ -71,7 +71,7 @@ func Task2(data string, nConnections int) (result framework.Result[int]) {
 }
 
 func parse(data string) []math2.Point3D {
-	lines := framework.Lines(data)
+	lines := tasks.Lines(data)
 
 	return lo.Map(lines, func(line string, index int) math2.Point3D {
 		parts := strings.Split(line, ",")

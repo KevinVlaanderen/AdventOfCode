@@ -1,6 +1,8 @@
 package model
 
-import "aoc/framework/geometry"
+import (
+	"aoc/framework/geometry/geo2d"
+)
 
 type Pipe struct {
 	Type       PipeType
@@ -53,101 +55,101 @@ func (p Pipe) Left() bool {
 	return p.Type == LeftRight || p.Type == TopLeft || p.Type == BottomLeft
 }
 
-func (p Pipe) ConnectsTo(other Pipe, side geometry.Orientation) bool {
-	if (side == geometry.North && !p.Top()) ||
-		(side == geometry.East && !p.Right()) ||
-		(side == geometry.South && !p.Bottom()) ||
-		(side == geometry.West && !p.Left()) {
+func (p Pipe) ConnectsTo(other Pipe, side geo2d.Orientation) bool {
+	if (side == geo2d.North && !p.Top()) ||
+		(side == geo2d.East && !p.Right()) ||
+		(side == geo2d.South && !p.Bottom()) ||
+		(side == geo2d.West && !p.Left()) {
 		return false
 	}
-	oppositeSide := geometry.OppositeOrientation[side]
-	if (oppositeSide == geometry.North && !other.Top()) ||
-		(oppositeSide == geometry.East && !other.Right()) ||
-		(oppositeSide == geometry.South && !other.Bottom()) ||
-		(oppositeSide == geometry.West && !other.Left()) {
+	oppositeSide := geo2d.OppositeOrientation[side]
+	if (oppositeSide == geo2d.North && !other.Top()) ||
+		(oppositeSide == geo2d.East && !other.Right()) ||
+		(oppositeSide == geo2d.South && !other.Bottom()) ||
+		(oppositeSide == geo2d.West && !other.Left()) {
 		return false
 	}
 	return true
 }
 
-func (p Pipe) Rotation(comingFrom geometry.Orientation) geometry.Rotation {
+func (p Pipe) Rotation(comingFrom geo2d.Orientation) geo2d.Rotation {
 	switch {
-	case comingFrom == geometry.North && p.Type == TopLeft:
-		return geometry.CW
-	case comingFrom == geometry.North && p.Type == TopRight:
-		return geometry.CCW
-	case comingFrom == geometry.East && p.Type == TopRight:
-		return geometry.CW
-	case comingFrom == geometry.East && p.Type == BottomRight:
-		return geometry.CCW
-	case comingFrom == geometry.South && p.Type == BottomRight:
-		return geometry.CW
-	case comingFrom == geometry.South && p.Type == BottomLeft:
-		return geometry.CCW
-	case comingFrom == geometry.West && p.Type == BottomLeft:
-		return geometry.CW
-	case comingFrom == geometry.West && p.Type == TopLeft:
-		return geometry.CCW
+	case comingFrom == geo2d.North && p.Type == TopLeft:
+		return geo2d.CW
+	case comingFrom == geo2d.North && p.Type == TopRight:
+		return geo2d.CCW
+	case comingFrom == geo2d.East && p.Type == TopRight:
+		return geo2d.CW
+	case comingFrom == geo2d.East && p.Type == BottomRight:
+		return geo2d.CCW
+	case comingFrom == geo2d.South && p.Type == BottomRight:
+		return geo2d.CW
+	case comingFrom == geo2d.South && p.Type == BottomLeft:
+		return geo2d.CCW
+	case comingFrom == geo2d.West && p.Type == BottomLeft:
+		return geo2d.CW
+	case comingFrom == geo2d.West && p.Type == TopLeft:
+		return geo2d.CCW
 	}
-	return geometry.Straight
+	return geo2d.Straight
 }
 
-func (p Pipe) EndpointDelta(comingFrom geometry.Orientation) (int, int) {
+func (p Pipe) EndpointDelta(comingFrom geo2d.Orientation) (int, int) {
 	switch {
-	case comingFrom == geometry.North && p.Type == TopLeft:
+	case comingFrom == geo2d.North && p.Type == TopLeft:
 		return -1, 0
-	case comingFrom == geometry.North && p.Type == TopRight:
+	case comingFrom == geo2d.North && p.Type == TopRight:
 		return 1, 0
-	case comingFrom == geometry.North && p.Type == TopBottom:
+	case comingFrom == geo2d.North && p.Type == TopBottom:
 		return 0, 1
-	case comingFrom == geometry.East && p.Type == TopRight:
+	case comingFrom == geo2d.East && p.Type == TopRight:
 		return 0, -1
-	case comingFrom == geometry.East && p.Type == BottomRight:
+	case comingFrom == geo2d.East && p.Type == BottomRight:
 		return 0, 1
-	case comingFrom == geometry.East && p.Type == LeftRight:
+	case comingFrom == geo2d.East && p.Type == LeftRight:
 		return -1, 0
-	case comingFrom == geometry.South && p.Type == BottomRight:
+	case comingFrom == geo2d.South && p.Type == BottomRight:
 		return 1, 0
-	case comingFrom == geometry.South && p.Type == BottomLeft:
+	case comingFrom == geo2d.South && p.Type == BottomLeft:
 		return -1, 0
-	case comingFrom == geometry.South && p.Type == TopBottom:
+	case comingFrom == geo2d.South && p.Type == TopBottom:
 		return 0, -1
-	case comingFrom == geometry.West && p.Type == BottomLeft:
+	case comingFrom == geo2d.West && p.Type == BottomLeft:
 		return 0, 1
-	case comingFrom == geometry.West && p.Type == TopLeft:
+	case comingFrom == geo2d.West && p.Type == TopLeft:
 		return 0, -1
-	case comingFrom == geometry.West && p.Type == LeftRight:
+	case comingFrom == geo2d.West && p.Type == LeftRight:
 		return 1, 0
 	}
 	panic("cannot determine delta")
 }
 
-func (p Pipe) OtherSide(comingFrom geometry.Orientation) geometry.Orientation {
+func (p Pipe) OtherSide(comingFrom geo2d.Orientation) geo2d.Orientation {
 	switch {
-	case comingFrom == geometry.North && p.Type == TopLeft:
-		return geometry.West
-	case comingFrom == geometry.North && p.Type == TopRight:
-		return geometry.East
-	case comingFrom == geometry.North && p.Type == TopBottom:
-		return geometry.South
-	case comingFrom == geometry.East && p.Type == TopRight:
-		return geometry.North
-	case comingFrom == geometry.East && p.Type == BottomRight:
-		return geometry.South
-	case comingFrom == geometry.East && p.Type == LeftRight:
-		return geometry.West
-	case comingFrom == geometry.South && p.Type == BottomRight:
-		return geometry.East
-	case comingFrom == geometry.South && p.Type == BottomLeft:
-		return geometry.West
-	case comingFrom == geometry.South && p.Type == TopBottom:
-		return geometry.North
-	case comingFrom == geometry.West && p.Type == BottomLeft:
-		return geometry.South
-	case comingFrom == geometry.West && p.Type == TopLeft:
-		return geometry.North
-	case comingFrom == geometry.West && p.Type == LeftRight:
-		return geometry.East
+	case comingFrom == geo2d.North && p.Type == TopLeft:
+		return geo2d.West
+	case comingFrom == geo2d.North && p.Type == TopRight:
+		return geo2d.East
+	case comingFrom == geo2d.North && p.Type == TopBottom:
+		return geo2d.South
+	case comingFrom == geo2d.East && p.Type == TopRight:
+		return geo2d.North
+	case comingFrom == geo2d.East && p.Type == BottomRight:
+		return geo2d.South
+	case comingFrom == geo2d.East && p.Type == LeftRight:
+		return geo2d.West
+	case comingFrom == geo2d.South && p.Type == BottomRight:
+		return geo2d.East
+	case comingFrom == geo2d.South && p.Type == BottomLeft:
+		return geo2d.West
+	case comingFrom == geo2d.South && p.Type == TopBottom:
+		return geo2d.North
+	case comingFrom == geo2d.West && p.Type == BottomLeft:
+		return geo2d.South
+	case comingFrom == geo2d.West && p.Type == TopLeft:
+		return geo2d.North
+	case comingFrom == geo2d.West && p.Type == LeftRight:
+		return geo2d.East
 	}
 	panic("cannot determine other side")
 }

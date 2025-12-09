@@ -1,7 +1,7 @@
 package day5
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"sort"
 	"strconv"
@@ -19,7 +19,7 @@ type Range struct {
 	From, To int
 }
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	ingredients := parse(data)
 
 	for _, ingredient := range ingredients.Ingredients {
@@ -34,7 +34,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	ingredients := parse(data)
 
 	mergedRanges := mergeRanges(ingredients.FreshRanges)
@@ -47,7 +47,7 @@ func Task2(data string, _ types.Nil) (result framework.Result[int]) {
 }
 
 func parse(data string) (ingredients Ingredients) {
-	lines := framework.LineBlocks(data)
+	lines := tasks.LineBlocks(data)
 
 	ingredients.FreshRanges = lo.Map(lines[0], func(line string, index int) *Range {
 		parts := strings.Split(line, "-")

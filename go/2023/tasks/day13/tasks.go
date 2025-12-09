@@ -2,14 +2,15 @@ package day13
 
 import (
 	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 )
 
-func Task1(data string, _ types.Nil) (result framework.Result[int]) {
-	blocks := framework.LineBlocks(data)
+func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
+	blocks := tasks.LineBlocks(data)
 	cache := framework.NewSafeCache[string, *HashGroup]()
 
 	lop.ForEach(blocks, func(block []string, index int) {
@@ -25,8 +26,8 @@ func Task1(data string, _ types.Nil) (result framework.Result[int]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[int]) {
-	blocks := framework.LineBlocks(data)
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	blocks := tasks.LineBlocks(data)
 	cache := framework.NewSafeCache[string, *HashGroup]()
 
 	lop.ForEach(blocks, func(block []string, index int) {

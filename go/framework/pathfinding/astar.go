@@ -1,7 +1,7 @@
 package pathfinding
 
 import (
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 	"errors"
 
 	"github.com/oleiade/lane/v2"
@@ -9,9 +9,9 @@ import (
 )
 
 type Graph interface {
-	Neighbours(point PointWithDirection, mode geometry.NeighbourMode) []geometry.Point
+	Neighbours(point PointWithDirection, mode geo2d.NeighbourMode) []geo2d.Point
 	Cost(current PointWithDirection, next PointWithDirection) float64
-	Heuristic(a, b geometry.Point) float64
+	Heuristic(a, b geo2d.Point) float64
 }
 
 // type CostFn[G Graph]
@@ -19,7 +19,7 @@ type Graph interface {
 
 type AStar struct {
 	graph     Graph
-	cameFrom  map[geometry.Point]PointWithDirection
+	cameFrom  map[geo2d.Point]PointWithDirection
 	costSoFar map[PointWithDirection]float64
 }
 
@@ -28,17 +28,17 @@ func NewAStar(graph Graph) *AStar {
 }
 
 type OrientationAware interface {
-	OrientationOf(other geometry.Point) (geometry.Orientation, bool)
+	OrientationOf(other geo2d.Point) (geo2d.Orientation, bool)
 }
 
 type PointWithDirection struct {
-	Point     geometry.Point
-	Direction geometry.Orientation
+	Point     geo2d.Point
+	Direction geo2d.Orientation
 	Length    int
 }
 
-func (a *AStar) RunSearch(start geometry.Point, goal geometry.Point) {
-	a.cameFrom = make(map[geometry.Point]PointWithDirection)
+func (a *AStar) RunSearch(start geo2d.Point, goal geo2d.Point) {
+	a.cameFrom = make(map[geo2d.Point]PointWithDirection)
 	a.costSoFar = make(map[PointWithDirection]float64)
 
 	startWithDirection := PointWithDirection{Point: start}
@@ -59,7 +59,7 @@ func (a *AStar) RunSearch(start geometry.Point, goal geometry.Point) {
 			break
 		}
 
-		for _, next := range a.graph.Neighbours(current, geometry.Orthogonal) {
+		for _, next := range a.graph.Neighbours(current, geo2d.Orthogonal) {
 			direction, _ := current.Point.OrientationOf(next)
 			nextWithDirection := PointWithDirection{Point: next, Direction: direction}
 			if current.Length == 0 || current.Direction != direction {
@@ -85,8 +85,8 @@ func (a *AStar) RunSearch(start geometry.Point, goal geometry.Point) {
 	}
 }
 
-func (a *AStar) CalculatePath(start, goal geometry.Point) []geometry.Point {
-	path := make([]geometry.Point, 0)
+func (a *AStar) CalculatePath(start, goal geo2d.Point) []geo2d.Point {
+	path := make([]geo2d.Point, 0)
 	for current := goal; current != start; current = a.cameFrom[current].Point {
 		path = append(path, current)
 	}

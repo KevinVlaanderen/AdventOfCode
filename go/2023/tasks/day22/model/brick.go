@@ -1,20 +1,21 @@
 package model
 
 import (
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
+	_d2 "aoc/framework/geometry/geo3d"
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/samber/lo"
 )
 
 type Brick struct {
-	Endpoints   lo.Tuple2[geometry.Voxel, geometry.Voxel]
+	Endpoints   lo.Tuple2[_d2.Voxel, _d2.Voxel]
 	Dimension   Dimension
 	Supports    mapset.Set[*Brick]
 	SupportedBy mapset.Set[*Brick]
 }
 
-func NewBrick(a, b geometry.Voxel) *Brick {
+func NewBrick(a, b _d2.Voxel) *Brick {
 	var dimension Dimension
 	switch {
 	case a.X != b.X:
@@ -29,7 +30,7 @@ func NewBrick(a, b geometry.Voxel) *Brick {
 		a, b = b, a
 	}
 	return &Brick{
-		Endpoints:   lo.Tuple2[geometry.Voxel, geometry.Voxel]{A: a, B: b},
+		Endpoints:   lo.Tuple2[_d2.Voxel, _d2.Voxel]{A: a, B: b},
 		Dimension:   dimension,
 		Supports:    mapset.NewSet[*Brick](),
 		SupportedBy: mapset.NewSet[*Brick](),
@@ -42,21 +43,21 @@ func (b *Brick) MoveToZ(z int) {
 	b.Endpoints.B.Z = z + deltaZ
 }
 
-func (b *Brick) FillXYPoints(buffer []geometry.Point) []geometry.Point {
+func (b *Brick) FillXYPoints(buffer []geo2d.Point) []geo2d.Point {
 	buffer = buffer[:0]
 	switch b.Dimension {
 	case X:
 		y := b.Endpoints.A.Y
 		for x := b.Endpoints.A.X; x <= b.Endpoints.B.X; x++ {
-			buffer = append(buffer, geometry.Point{X: x, Y: y})
+			buffer = append(buffer, geo2d.Point{X: x, Y: y})
 		}
 	case Y:
 		x := b.Endpoints.A.X
 		for y := b.Endpoints.A.Y; y <= b.Endpoints.B.Y; y++ {
-			buffer = append(buffer, geometry.Point{X: x, Y: y})
+			buffer = append(buffer, geo2d.Point{X: x, Y: y})
 		}
 	case Z:
-		buffer = append(buffer, geometry.Point{X: b.Endpoints.A.X, Y: b.Endpoints.A.Y})
+		buffer = append(buffer, geo2d.Point{X: b.Endpoints.A.X, Y: b.Endpoints.A.Y})
 	}
 
 	return buffer

@@ -2,13 +2,13 @@ package model
 
 import (
 	"aoc/framework"
-	"aoc/framework/geometry"
+	"aoc/framework/geometry/geo2d"
 )
 
 type Grid [][]int
 
 func (g Grid) DetermineVisibility() [][]bool {
-	mask := geometry.CreateMask(g, false)
+	mask := geo2d.CreateMask(g, false)
 
 	increasingRange := framework.Range(0, len(g), 1)
 	decreasingRange := framework.Range(len(g)-1, len(g), -1)

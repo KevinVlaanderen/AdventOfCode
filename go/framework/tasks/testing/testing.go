@@ -3,7 +3,7 @@
 package testing
 
 import (
-	"aoc/framework"
+	"aoc/framework/tasks"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -19,7 +19,7 @@ const (
 )
 
 type TaskDefinition[T comparable, P any] struct {
-	Task  framework.Task[T, P]
+	Task  tasks.Task[T, P]
 	Tests []TestDefinition[T, P]
 }
 
@@ -94,7 +94,7 @@ func runBenchmark[T comparable, P any](b *testing.B, taskDefinition TaskDefiniti
 	b.Run(testDefinition.name(), test)
 }
 
-func CreateTest[T comparable, P any](task framework.Task[T, P], data string, param P, expected T) func(*testing.T) {
+func CreateTest[T comparable, P any](task tasks.Task[T, P], data string, param P, expected T) func(*testing.T) {
 	return func(t *testing.T) {
 		if result := task(data, param); result.Error != nil {
 			t.Fatal(result.Error)
@@ -104,7 +104,7 @@ func CreateTest[T comparable, P any](task framework.Task[T, P], data string, par
 	}
 }
 
-func CreateBenchmark[T comparable, P any](task framework.Task[T, P], data string, param P) func(*testing.B) {
+func CreateBenchmark[T comparable, P any](task tasks.Task[T, P], data string, param P) func(*testing.B) {
 	return func(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {

@@ -1,4 +1,4 @@
-package framework
+package datastructures
 
 func RepeatSlice[T any](slice []T, count int) []T {
 	size := len(slice)

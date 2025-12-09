@@ -4,6 +4,7 @@ import (
 	"aoc/2022/tasks/day5/model"
 	"aoc/2022/tasks/day5/mover"
 	"aoc/framework"
+	"aoc/framework/tasks"
 	"go/types"
 	"regexp"
 	"strconv"
@@ -15,7 +16,7 @@ type Mover interface {
 	Move(n int, from int, to int)
 }
 
-func Task1(data string, _ types.Nil) (result framework.Result[string]) {
+func Task1(data string, _ types.Nil) (result tasks.Result[string]) {
 	storage, instructions := parse(data)
 
 	crateMover := &mover.CrateMover9000{Storage: storage}
@@ -31,7 +32,7 @@ func Task1(data string, _ types.Nil) (result framework.Result[string]) {
 	return
 }
 
-func Task2(data string, _ types.Nil) (result framework.Result[string]) {
+func Task2(data string, _ types.Nil) (result tasks.Result[string]) {
 	storage, instructions := parse(data)
 
 	crateMover := &mover.CrateMover9001{Storage: storage}
@@ -51,7 +52,7 @@ var numberPattern = regexp.MustCompile(`\d+`)
 var cratePattern = regexp.MustCompile(`\[(\w+)]`)
 
 func parse(data string) (*model.Storage, []model.Instruction) {
-	blocks := framework.LineBlocks(data)
+	blocks := tasks.LineBlocks(data)
 
 	storage := parseStorage(blocks[0])
 	instructions := parseInstructions(blocks[1])

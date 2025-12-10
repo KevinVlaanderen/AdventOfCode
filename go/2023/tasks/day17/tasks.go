@@ -78,7 +78,7 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	//	if numInHeading == 3 {
 	//		previousOldEdge := oldEdge
 	//		if oldEdge = g.Edge(nextPoint.ID(), nextPoint.Neighbour(currentHeading).ID()); oldEdge != nil {
-	//			newEdge := simple.WeightedEdge{F: oldEdge.From(), T: oldEdge.To(), W: 999999999999}
+	//			newEdge := simple.WeightedEdge{F: oldEdge.U(), T: oldEdge.V(), W: 999999999999}
 	//			changes := []graph.Edge{newEdge}
 	//			if previousOldEdge != nil {
 	//				changes = append(changes, previousOldEdge)

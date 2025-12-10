@@ -12,42 +12,58 @@ import (
 	"github.com/samber/lo"
 )
 
-type Rectangle struct {
-	U, V geo2d.Point
-}
-
-type Area struct {
-	Rectangle Rectangle
-	Size      int
-}
-
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	points := parse(data)
 
 	areas := calculateAreas(points)
+	sort.Slice(areas, func(i, j int) bool {
+		return areas[i].Size() > areas[j].Size()
+	})
 
-	result.Value = areas[0].Size
+	result.Value = areas[0].Size()
 
 	return
 }
 
-func calculateAreas(points []geo2d.Point) (areas []Area) {
-	areaMap := make(map[Rectangle]int)
+func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
+	points := parse(data)
 
-	for i := 0; i < len(points)-1; i++ {
-		for j := i + 1; j < len(points); j++ {
-			size := (1 + math.AbsInt(points[i].X-points[j].X)) * (1 + math.AbsInt(points[i].Y-points[j].Y))
-			areaMap[Rectangle{U: points[i], V: points[j]}] = size
-		}
-	}
-
-	for k, v := range areaMap {
-		areas = append(areas, Area{k, v})
-	}
-
+	lines := createLines(points)
+	areas := calculateAreas(points)
 	sort.Slice(areas, func(i, j int) bool {
-		return areas[i].Size > areas[j].Size
+		return areas[i].Size() > areas[j].Size()
 	})
+
+	type State struct {
+		line              geo2d.Line
+		previousLineIndex int
+		previousCoord     int
+	}
+
+	var largestArea geo2d.Area
+
+largestAreaLoop:
+	for _, largestArea = range areas {
+		minX := math.MinInt(largestArea.U.X, largestArea.V.X)
+		maxX := math.MaxInt(largestArea.U.X, largestArea.V.X)
+		minY := math.MinInt(largestArea.U.Y, largestArea.V.Y)
+		maxY := math.MaxInt(largestArea.U.Y, largestArea.V.Y)
+
+		for _, line := range lines {
+			lineMinX := math.MinInt(line.A.X, line.B.X)
+			lineMaxX := math.MaxInt(line.A.X, line.B.X)
+			lineMinY := math.MinInt(line.A.Y, line.B.Y)
+			lineMaxY := math.MaxInt(line.A.Y, line.B.Y)
+
+			if minX < lineMaxX && maxX > lineMinX && minY < lineMaxY && maxY > lineMinY {
+				continue largestAreaLoop
+			}
+		}
+
+		break largestAreaLoop
+	}
+
+	result.Value = largestArea.Size()
 
 	return
 }
@@ -61,4 +77,21 @@ func parse(data string) []geo2d.Point {
 		})
 		return geo2d.Point{X: partsInt[0], Y: partsInt[1]}
 	})
+}
+
+func createLines(points []geo2d.Point) (lines []geo2d.Line) {
+	for i := 0; i < len(points)-1; i++ {
+		lines = append(lines, geo2d.Line{A: points[i], B: points[i+1]})
+	}
+	lines = append(lines, geo2d.Line{A: points[len(points)-1], B: points[0]})
+	return
+}
+
+func calculateAreas(points []geo2d.Point) (areas []geo2d.Area) {
+	for i := 0; i < len(points)-1; i++ {
+		for j := i + 1; j < len(points); j++ {
+			areas = append(areas, geo2d.NewArea(points[i], points[j]))
+		}
+	}
+	return
 }

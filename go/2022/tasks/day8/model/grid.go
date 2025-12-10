@@ -68,7 +68,7 @@ func (g Grid) DetermineScore(x int, y int) int {
 
 	var scoreLeft, scoreRight, scoreTop, scoreBottom int
 
-	// To top
+	// V top
 	for _, newY := range topRange {
 		scoreTop++
 		if g[x][newY] >= g[x][y] {
@@ -76,7 +76,7 @@ func (g Grid) DetermineScore(x int, y int) int {
 		}
 	}
 
-	// To bottom
+	// V bottom
 	for _, newY := range bottomRange {
 		scoreBottom++
 		if g[x][newY] >= g[x][y] {
@@ -84,7 +84,7 @@ func (g Grid) DetermineScore(x int, y int) int {
 		}
 	}
 
-	// To left
+	// V left
 	for _, newX := range leftRange {
 		scoreLeft++
 		if g[newX][y] >= g[x][y] {
@@ -92,7 +92,7 @@ func (g Grid) DetermineScore(x int, y int) int {
 		}
 	}
 
-	// To right
+	// V right
 	for _, newX := range rightRange {
 		scoreRight++
 		if g[newX][y] >= g[x][y] {

@@ -26,7 +26,7 @@ func ExtractNumbers(line string, y int) (numbers []Number) {
 		}
 		numbers = append(numbers, Number{
 			Value: value,
-			Area:  geo2d.Area{From: geo2d.Point{X: start, Y: y}, To: geo2d.Point{X: end - 1, Y: y}},
+			Area:  geo2d.Area{U: geo2d.Point{X: start, Y: y}, V: geo2d.Point{X: end - 1, Y: y}},
 		})
 	}
 	return

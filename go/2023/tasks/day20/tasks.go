@@ -56,7 +56,7 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	group := []string{"broadcaster", neighbour}
 	findGroup(neighbour, adjacencyMap, &group)
 
-	fmt.Printf("From %v to %v %v\n", neighbour, last, group)
+	fmt.Printf("U %v to %v %v\n", neighbour, last, group)
 
 	groupDescriptions := make(map[string]Description, len(group))
 	for _, name := range group {

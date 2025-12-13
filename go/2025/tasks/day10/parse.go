@@ -23,13 +23,13 @@ func Parse(data string) []MachineDescription {
 			return agg
 		}, 0)
 
-		buttonWiringSchematics := lo.Map(strings.Split(match[2], " "), func(schematic string, index int) []int {
-			wirings := buttonWiringSchematicsPattern.FindAllString(schematic, -1)
-			targets := lo.Map(wirings, func(wiring string, index int) int {
+		buttonWiringSchematics := lo.Map(strings.Split(match[2], " "), func(schematic string, index int) int {
+			button := 0
+			for _, wiring := range buttonWiringSchematicsPattern.FindAllString(schematic, -1) {
 				value, _ := strconv.Atoi(wiring)
-				return value
-			})
-			return targets
+				button += math.PowInt(2, value)
+			}
+			return button
 		})
 
 		joltageRequirements := lo.Map(strings.Split(match[3], ","), func(joltage string, index int) int {
@@ -38,9 +38,9 @@ func Parse(data string) []MachineDescription {
 		})
 
 		return MachineDescription{
-			IndicatorLightDiagram:  indicatorLightDiagram,
-			ButtonWiringSchematics: buttonWiringSchematics,
-			JoltageRequirements:    joltageRequirements,
+			targetLights:   indicatorLightDiagram,
+			buttons:        buttonWiringSchematics,
+			targetJoltages: joltageRequirements,
 		}
 	})
 }

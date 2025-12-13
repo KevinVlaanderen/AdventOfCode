@@ -1,7 +1,6 @@
 package day10
 
 import (
-	"aoc/framework/math"
 	"aoc/framework/tasks"
 	"go/types"
 
@@ -9,32 +8,29 @@ import (
 )
 
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
-	machineDescriptions := Parse(data)
+	machines := Parse(data)
 
-	result.Value = lo.SumBy(machineDescriptions, func(machineDescription MachineDescription) int {
-		_, presses := pressLightButtonsUntilValid(&machineDescription, 0, 0, NewCache())
+	result.Value = lo.SumBy(machines, func(machine MachineDescription) int {
+		presses, _ := pressLightButtonsUntilValid(machine.buttons, machine.targetLights, 0, 0, 0, NewCache())
 		return presses
 	})
 
 	return
 }
 
-func pressLightButtonsUntilValid(description *MachineDescription, lights, presses int, cache *Cache) (bool, int) {
+func pressLightButtonsUntilValid(buttons []int, target, lights, presses, best int, cache *Cache) (int, bool) {
 	if cache == nil {
-		return false, 0
+		return 0, false
 	}
 
 	cache.lightsSeen[lights] = struct{}{}
 
 	endSuccess := false
-	endPresses := 0
+	endResult := 0
 
-	for button := 0; button < len(description.ButtonWiringSchematics); button++ {
+	for _, button := range buttons {
 		newPresses := presses + 1
-		newLights := lights
-		for _, lightIndex := range description.ButtonWiringSchematics[button] {
-			newLights ^= math.PowInt(2, lightIndex)
-		}
+		newLights := lights ^ button
 
 		if _, ok := cache.lightsSeen[newLights]; ok {
 			continue
@@ -43,16 +39,16 @@ func pressLightButtonsUntilValid(description *MachineDescription, lights, presse
 		found := false
 		result := 0
 
-		if cache.best > 0 && newPresses >= cache.best {
+		if best > 0 && newPresses >= best {
 			continue
-		} else if newLights == description.IndicatorLightDiagram {
+		} else if newLights == target {
 			found = true
 			result = newPresses
 		} else if cached, ok := cache.pressesToSuccess[newLights]; ok {
 			found = true
 			result = cached + newPresses
 		} else {
-			found, result = pressLightButtonsUntilValid(description, newLights, newPresses, cache)
+			result, found = pressLightButtonsUntilValid(buttons, target, newLights, newPresses, best, cache)
 			if found {
 				cache.pressesToSuccess[newLights] = result - newPresses
 			}
@@ -60,23 +56,21 @@ func pressLightButtonsUntilValid(description *MachineDescription, lights, presse
 
 		if found {
 			endSuccess = true
-			if endPresses == 0 || result < endPresses {
-				endPresses = result
+			if best == 0 || result < best {
+				best = result
 			}
-			if cache.best == 0 || result < cache.best {
-				cache.best = result
+			if endResult == 0 || result < endResult {
+				endResult = result
 			}
 		}
-
 	}
 
 	delete(cache.lightsSeen, lights)
 
-	return endSuccess, endPresses
+	return endResult, endSuccess
 }
 
 type Cache struct {
-	best             int
 	lightsSeen       map[int]struct{}
 	pressesToSuccess map[int]int
 }

@@ -4,6 +4,7 @@ import (
 	"aoc/framework/tasks"
 	"go/types"
 
+	"github.com/oleiade/lane/v2"
 	"github.com/samber/lo"
 )
 
@@ -11,73 +12,48 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	machines := Parse(data)
 
 	result.Value = lo.SumBy(machines, func(machine MachineDescription) int {
-		presses, _ := pressLightButtonsUntilValid(machine.buttons, machine.targetLights, 0, 0, 0, NewCache())
-		return presses
+		return pressLightButtonsUntilValid(machine.buttons, machine.targetLights)
 	})
 
 	return
 }
 
-func pressLightButtonsUntilValid(buttons []int, target, lights, presses, best int, cache *Cache) (int, bool) {
-	if cache == nil {
-		return 0, false
+func pressLightButtonsUntilValid(buttons []int, target int) int {
+	best := 0
+	lightsSeen := make(map[int]struct{})
+
+	type State struct {
+		lights  int
+		presses int
 	}
 
-	cache.lightsSeen[lights] = struct{}{}
+	queue := lane.NewQueue(State{lights: 0, presses: 0})
 
-	endSuccess := false
-	endResult := 0
+	for queue.Size() > 0 {
+		state, _ := queue.Dequeue()
 
-	for _, button := range buttons {
-		newPresses := presses + 1
-		newLights := lights ^ button
-
-		if _, ok := cache.lightsSeen[newLights]; ok {
+		if _, ok := lightsSeen[state.lights]; ok {
 			continue
 		}
 
-		found := false
-		result := 0
+		lightsSeen[state.lights] = struct{}{}
 
-		if best > 0 && newPresses >= best {
+		if state.lights == target {
+			if best == 0 || state.presses < best {
+				best = state.presses
+			}
 			continue
-		} else if newLights == target {
-			found = true
-			result = newPresses
-		} else if cached, ok := cache.pressesToSuccess[newLights]; ok {
-			found = true
-			result = cached + newPresses
-		} else {
-			result, found = pressLightButtonsUntilValid(buttons, target, newLights, newPresses, best, cache)
-			if found {
-				cache.pressesToSuccess[newLights] = result - newPresses
-			}
+		} else if best > 0 && state.presses > best {
+			continue
 		}
 
-		if found {
-			endSuccess = true
-			if best == 0 || result < best {
-				best = result
-			}
-			if endResult == 0 || result < endResult {
-				endResult = result
-			}
+		for _, button := range buttons {
+			newPresses := state.presses + 1
+			newLights := state.lights ^ button
+
+			queue.Enqueue(State{lights: newLights, presses: newPresses})
 		}
 	}
 
-	delete(cache.lightsSeen, lights)
-
-	return endResult, endSuccess
-}
-
-type Cache struct {
-	lightsSeen       map[int]struct{}
-	pressesToSuccess map[int]int
-}
-
-func NewCache() *Cache {
-	return &Cache{
-		lightsSeen:       make(map[int]struct{}),
-		pressesToSuccess: make(map[int]int),
-	}
+	return best
 }

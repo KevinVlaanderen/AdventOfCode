@@ -14,6 +14,13 @@ var taskDefinitions = []_testing.TaskDefinition[int, types.Nil]{
 			{Path: "day10", Expected: 404, Type: _testing.RealData},
 		},
 	},
+	{
+		Task: Task2,
+		Tests: []_testing.TestDefinition[int, types.Nil]{
+			{Path: "data", Expected: 33, Type: _testing.TestData},
+			{Path: "day10", Expected: 16474, Type: _testing.RealData},
+		},
+	},
 }
 
 func Test(t *testing.T) {

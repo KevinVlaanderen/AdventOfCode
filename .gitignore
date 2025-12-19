@@ -1,2 +1,5 @@
 *.png
 *.gv
+
+test-report.xml
+benchmark-results.txt

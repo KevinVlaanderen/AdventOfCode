@@ -56,7 +56,8 @@ jobs:
     - name: Download previous benchmark data
       uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb #v5.0.1
       with:
-        path: ./cache
+        path: |
+          benchmark-data
         key: ${{ runner.os }}-benchmark
 
     - name: Store benchmark result
@@ -64,7 +65,7 @@ jobs:
       with:
         tool: 'go'
         output-file-path: go/${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
-        external-data-json-path: ./cache/benchmark-data-go-${{ inputs.year }}.json
+        external-data-json-path: benchmark-data/go-${{ inputs.year }}.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true
 

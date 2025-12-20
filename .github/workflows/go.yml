@@ -26,22 +26,22 @@ jobs:
       run: go install github.com/jstemmer/go-junit-report/v2@latest
 
     - name: Test
-      run: go test -v 2>&1 ./${{ inputs.year }}/tasks/... | go-junit-report -set-exit-code -subtest-mode exclude-parents > ./${{ inputs.year }}/test-report.xml
+      run: go test -v 2>&1 ./${{ inputs.year }}/tasks/... | go-junit-report -set-exit-code -subtest-mode exclude-parents > ./${{ inputs.year }}/test-report-${{ inputs.year }}.xml
 
     - name: Unit Test Results
       uses: dorny/test-reporter@v1
       if: always()
       with:
         name: ${{ inputs.year }} test results
-        path: go/${{ inputs.year }}/test-report.xml
+        path: go/${{ inputs.year }}/test-report-${{ inputs.year }}.xml
         reporter: java-junit
 
     - name: Archive test report
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: ${{ inputs.year }}-test-report
-        path: go/${{ inputs.year }}/test-report.xml
+        name: test-report-${{ inputs.year }}
+        path: go/${{ inputs.year }}/test-report-${{ inputs.year }}.xml
         
   benchmark:
     runs-on: ubuntu-latest
@@ -57,7 +57,7 @@ jobs:
       run: go install github.com/jstemmer/go-junit-report/v2@latest
 
     - name: Run benchmark
-      run: go test -bench . -run ^$ -benchmem ./${{ inputs.year }}/tasks/... | tee ./${{ inputs.year }}/benchmark-report.txt
+      run: go test -bench . -run ^$ -benchmem ./${{ inputs.year }}/tasks/... | tee ./${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
 
     - name: Download previous benchmark data
       uses: actions/cache@v3
@@ -69,7 +69,7 @@ jobs:
       uses: benchmark-action/github-action-benchmark@v1
       with:
         tool: 'go'
-        output-file-path: go/${{ inputs.year }}/benchmark-report.txt
+        output-file-path: go/${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
         external-data-json-path: ./cache/benchmark-data-go-${{ inputs.year }}.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true
@@ -78,5 +78,5 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: ${{ inputs.year }}-benchmark-report
-        path: go/${{ inputs.year }}/benchmark-report.txt
+        name: benchmark-report-${{ inputs.year }}
+        path: go/${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt

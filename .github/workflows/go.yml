@@ -58,7 +58,7 @@ jobs:
       with:
         path: |
           benchmark-data
-        key: ${{ runner.os }}-benchmark
+        key: ${{ runner.os }}-benchmark-go-${{ inputs.year }}
 
     - name: Store benchmark result
       uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b #v1.20.7

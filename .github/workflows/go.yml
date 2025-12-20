@@ -21,6 +21,8 @@ jobs:
       uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c #v6.1.0
       with:
         go-version-file: "go/go.mod"
+        cache-dependency-path: |
+          go/go.sum
 
     - name: Test
       run: go test -v -json 2>&1 ./${{ inputs.year }}/tasks/... > ./${{ inputs.year }}/test-report-${{ inputs.year }}.json
@@ -49,6 +51,8 @@ jobs:
       uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c #v6.1.0
       with:
         go-version-file: "go/go.mod"
+        cache-dependency-path: |
+          go/go.sum
 
     - name: Run benchmark
       run: go test -bench . -run ^$ -benchmem ./${{ inputs.year }}/tasks/... | tee ./${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt

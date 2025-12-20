@@ -13,15 +13,17 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.LineBlocks(data)
 	cache := framework.NewSafeCache[string, *HashGroup]()
 
-	lop.ForEach(blocks, func(block []string, index int) {
+	result.Value = lo.Sum(lop.Map(blocks, func(block []string, index int) int {
 		direction, index := findReflection(block, false, cache)
 		switch direction {
 		case Horizontal:
-			result.Value += index * 100
+			return index * 100
 		case Vertical:
-			result.Value += index
+			return index
+		default:
+			return 0
 		}
-	})
+	}))
 
 	return
 }
@@ -30,15 +32,17 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.LineBlocks(data)
 	cache := framework.NewSafeCache[string, *HashGroup]()
 
-	lop.ForEach(blocks, func(block []string, index int) {
+	result.Value = lo.Sum(lo.Map(blocks, func(block []string, index int) int {
 		direction, index := findReflection(block, true, cache)
 		switch direction {
 		case Horizontal:
-			result.Value += index * 100
+			return index * 100
 		case Vertical:
-			result.Value += index
+			return index
+		default:
+			return 0
 		}
-	})
+	}))
 
 	return
 }

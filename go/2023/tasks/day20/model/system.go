@@ -42,12 +42,6 @@ func (s *System) ActivateModule(module Module) {
 		s.queue = s.queue[1:]
 		output := currentModule.Output()
 		for _, sink := range currentModule.Sinks() {
-			//valueString := "low"
-			//if output {
-			//	valueString = "high"
-			//}
-			//fmt.Printf("%v -%v-> %v\n", currentModule.Name(), valueString, sink.Name())
-
 			if output {
 				s.state.HighCount++
 			} else {

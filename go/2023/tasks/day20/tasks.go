@@ -5,7 +5,6 @@ import (
 	"aoc/2023/tasks/day20/model/modules"
 	"aoc/framework/math"
 	"aoc/framework/tasks"
-	"fmt"
 	"go/types"
 	"regexp"
 	"strings"
@@ -52,11 +51,8 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 
 	neighbour := first[0]
 	counts := make([]int, 1)
-	// counts := lop.Map(first, func(neighbour string, index int) int {
 	group := []string{"broadcaster", neighbour}
 	findGroup(neighbour, adjacencyMap, &group)
-
-	fmt.Printf("U %v to %v %v\n", neighbour, last, group)
 
 	groupDescriptions := make(map[string]Description, len(group))
 	for _, name := range group {
@@ -68,33 +64,15 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	count := 0
 	for i := 0; i < 1000; i++ {
 		if value, found := system.State().Results[last]; found && value {
-			fmt.Printf("Found result %v for neighbour %v", count, neighbour)
 			break
 		}
 		system.ActivateModule(system.Module("broadcaster"))
 		count++
-		if count%10000000 == 0 {
-			fmt.Printf("%v: %v iterations\n", neighbour, count)
-		}
 	}
 
 	counts[0] = count
-	// })
-
-	println(counts)
 
 	result.Value = math.LCM(counts[0], counts[1], counts[2:]...)
-
-	// file, _ := os.Create(path.Join(".", "modules.gv"))
-	// _ = draw.DOT(g, file)
-
-	// for !system.State().HasResult || system.State().Result {
-	//	system.ActivateModule(system.Module("button"))
-	//	result.Value++
-	//	if result.Value%1000000 == 0 {
-	//		fmt.Printf("%v iterations\n", result.Value)
-	//	}
-	// }
 
 	return
 }

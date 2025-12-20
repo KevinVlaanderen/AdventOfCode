@@ -14,8 +14,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 
 	processor := NewProcessor(1)
 	for state := range processor.Execute(instructions) {
-		// log.Printf("value at tick %v: %v ", state.tick+1, processor.value)
-
 		if state.tick+1 <= 220 && (state.tick+1 == 20 || (state.tick+1-20)%40 == 0) {
 			result.Value += (state.tick + 1) * state.value
 		}
@@ -40,7 +38,6 @@ func Task2(data string, _ types.Nil) (result tasks.Result[string]) {
 		}
 
 		if column == 39 {
-			// fmt.Println(outputLine)
 			outputLine = ""
 		}
 	}

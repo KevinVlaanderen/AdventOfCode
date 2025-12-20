@@ -14,9 +14,6 @@ type Graph interface {
 	Heuristic(a, b geo2d.Point) float64
 }
 
-// type CostFn[G Graph]
-// type HeuristicFn func
-
 type AStar struct {
 	graph     Graph
 	cameFrom  map[geo2d.Point]PointWithDirection

@@ -17,17 +17,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 		result.Value++
 	}
 
-	// cave.Area.DrawPointGrid(func(material *model.Material, x int, y int) (rune, bool) {
-	// 	switch *material {
-	// 	case model.ROCK:
-	// 		return '#', true
-	// 	case model.SAND:
-	// 		return 'o', true
-	// 	default:
-	// 		return '.', false
-	// 	}
-	// }, map[model.Material]rune{})
-
 	return
 }
 
@@ -41,17 +30,6 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	for cave.DropSand(geo2d.Point{X: 500, Y: 0}) {
 		result.Value++
 	}
-
-	// cave.Area.DrawPointGrid(func(material *model.Material, x int, y int) (rune, bool) {
-	// 	switch *material {
-	// 	case model.ROCK:
-	// 		return '#', true
-	// 	case model.SAND:
-	// 		return 'o', true
-	// 	default:
-	// 		return '.', false
-	// 	}
-	// }, map[model.Material]rune{})
 
 	return
 }

@@ -22,8 +22,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 		return 0
 	})
 
-	// system.Draw("system.gv")
-
 	return
 }
 

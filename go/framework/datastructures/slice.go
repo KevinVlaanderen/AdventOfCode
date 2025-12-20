@@ -18,7 +18,6 @@ func Partition[T any](slice []T, size int) (slices [][]T) {
 		if j > sliceSize {
 			j = sliceSize
 		}
-		// do what do you want to with the sub-slice, here just printing the sub-slices
 		slices = append(slices, slice[i:j])
 	}
 	return

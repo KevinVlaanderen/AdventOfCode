@@ -43,10 +43,8 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	var pathLengths []int
 
 	for _, startingPoint := range startingPoints {
-		// log.Printf("calculating length for starting point %v of %v\n", index+1, len(startingPoints))
 		cameFrom, err := grid.PathTo(startingPoint, grid.Destination)
 		if err != nil {
-			// log.Println(err)
 			continue
 		}
 

@@ -27,7 +27,6 @@ func (g *Grid) PathTo(from Position, to Position) (cameFrom map[Position]Positio
 
 	cameFrom = map[Position]Position{}
 	costSoFar := map[Position]int{}
-	// cameFrom[g.Start] = nil
 	costSoFar[from] = 0
 
 	for !frontier.Empty() {

@@ -13,9 +13,6 @@ import (
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/samber/lo"
-	"github.com/tidwall/pinhole"
-	"golang.org/x/exp/rand"
-	"golang.org/x/image/colornames"
 )
 
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
@@ -85,10 +82,6 @@ func countFalling(brick *model.Brick, bricks []*model.Brick, fallen *mapset.Set[
 func dropBricks(bricks []*model.Brick) {
 	sizeX, sizeY, _ := calculateDimensions(bricks)
 
-	// seed := uint64(time.Now().Second())
-	// rand.Seed(seed)
-	// drawBricks(bricks, sizeX, sizeY, sizeZ, "before")
-
 	heightmap := grid.NewArrayGrid[lo.Tuple2[*model.Brick, int]](sizeX, sizeY)
 
 	sort.Sort(model.ByHeight(bricks))
@@ -114,10 +107,6 @@ func dropBricks(bricks []*model.Brick) {
 			}
 		}
 	}
-
-	// rand.Seed(seed)
-	// sizeX, sizeY, sizeZ = calculateDimensions(bricks)
-	// drawBricks(bricks, sizeX, sizeY, sizeZ, "after")
 }
 
 func parse(data string) []*model.Brick {
@@ -154,27 +143,4 @@ func calculateDimensions(bricks []*model.Brick) (int, int, int) {
 		return a.Endpoints.B.Z > b.Endpoints.B.Z
 	})
 	return x.Endpoints.B.X + 1, y.Endpoints.B.Y + 1, z.Endpoints.B.Z + 1
-}
-
-func drawBricks(bricks []*model.Brick, x, y, z int, filename string) {
-	sizeX, sizeY, sizeZ := 1.0/float64(x), 1.0/float64(y), 1.0/float64(z)
-	size := max(sizeX, sizeY, sizeZ)
-
-	p := pinhole.New()
-	for _, brick := range bricks {
-		p.Begin()
-		p.DrawCube(
-			float64(brick.Endpoints.A.X)*size,
-			float64(brick.Endpoints.A.Z)*size,
-			float64(brick.Endpoints.A.Y)*size,
-			float64(brick.Endpoints.B.X+1)*size,
-			float64(brick.Endpoints.B.Z+1)*size,
-			float64(brick.Endpoints.B.Y+1)*size)
-		p.Colorize(colornames.Map[colornames.Names[rand.Int()%len(colornames.Names)]])
-		p.End()
-	}
-	p.Center()
-	p.Rotate(-0.1, 0.5, 0)
-	p.Translate(0, 0, 1)
-	_ = p.SavePNG(filename+".png", 2000, 2000, nil)
 }

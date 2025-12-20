@@ -46,65 +46,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 
 	aStar := pathfinding.NewAStar(graph)
 	aStar.RunSearch(start, goal)
-	path := aStar.CalculatePath(start, goal)
-
-	println(path)
-
-	// dStar := dynamic.NewDStarLite(start, goal, g, func(a, b graph.Node) float64 {
-	//	xA, xB, yA, yB := a.ID()%width, b.ID()%width, a.ID()/width, b.ID()/width
-	//	return math.Abs(float64(xA-xB)) + math.Abs(float64(yA-yB))
-	// }, simple.NewWeightedDirectedGraph(0, math.Inf(1)))
-	//
-	// currentPoint := start
-	// var currentHeading geometry.Orientation
-	// numInHeading := -1
-	// var oldEdge graph.Edge
-	// for dStar.Step() {
-	//	//if oldEdge != nil {
-	//	//	dStar.UpdateWorld([]graph.Edge{oldEdge})
-	//	//	oldEdge = nil
-	//	//}
-	//
-	//	nextPoint := dStar.Here().(geometry.Point)
-	//	heading, _ := currentPoint.OrientationOf(nextPoint)
-	//
-	//	if numInHeading == -1 || heading != currentHeading {
-	//		currentHeading = heading
-	//		numInHeading = 1
-	//	} else {
-	//		numInHeading++
-	//	}
-	//
-	//	if numInHeading == 3 {
-	//		previousOldEdge := oldEdge
-	//		if oldEdge = g.Edge(nextPoint.ID(), nextPoint.Neighbour(currentHeading).ID()); oldEdge != nil {
-	//			newEdge := simple.WeightedEdge{F: oldEdge.U(), T: oldEdge.V(), W: 999999999999}
-	//			changes := []graph.Edge{newEdge}
-	//			if previousOldEdge != nil {
-	//				changes = append(changes, previousOldEdge)
-	//			}
-	//			dStar.UpdateWorld(changes)
-	//		}
-	//	}
-	//	currentPoint = nextPoint
-	// }
-	//
-	// dStar.MoveTo(start)
-	// p, weight := dStar.Path()
-	//
-	// fmt.Print(p, weight)
-
-	// aStar := pathfinding.NewAStar[string, geometry.Point](g)
-	// aStar.RunSearch(start, goal, aStarCost, heuristic, validPath)
-	// path := aStar.CalculatePath(start, goal)
-
-	// paths := YenKSP(g, start, goal, 10, nil)
-	// println(len(path))
-
-	// result.Value = lo.Sum(lo.Map(path, func(hash string, index int) int {
-	//	_, props, _ := g.VertexWithProperties(hash)
-	//	return props.Weight
-	// }))
 
 	return
 }

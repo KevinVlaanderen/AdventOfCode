@@ -2,11 +2,8 @@ package model
 
 import (
 	"fmt"
-	"os"
-	"path"
 
 	"github.com/dominikbraun/graph"
-	"github.com/dominikbraun/graph/draw"
 	"github.com/samber/lo"
 )
 
@@ -98,23 +95,4 @@ func (s *System) ValidBoundaries(start, end string) []map[Category]lo.Tuple2[int
 		validBoundaries[index] = boundaries
 	}
 	return validBoundaries
-}
-
-func (s *System) Draw(filename string) {
-	edges, _ := s.graph.Edges()
-
-	for _, edge := range edges {
-		label := "always"
-		if edge.Properties.Data != nil {
-			condition := edge.Properties.Data.(*Condition)
-			if condition != nil {
-				label = condition.String()
-			}
-		}
-
-		_ = s.graph.UpdateEdge(edge.Source, edge.Target, graph.EdgeAttribute("label", label))
-	}
-
-	file, _ := os.Create(path.Join(".", filename))
-	_ = draw.DOT(s.graph, file)
 }

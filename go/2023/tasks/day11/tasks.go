@@ -30,7 +30,9 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-type Universe grid.SparseGrid[bool]
+type Universe struct {
+	grid grid.Grid[bool]
+}
 
 func NewUniverse(data []string) Universe {
 	universe := grid.NewSparseGrid[bool]()
@@ -38,24 +40,23 @@ func NewUniverse(data []string) Universe {
 	for y, line := range data {
 		for x, char := range line {
 			if char == '#' {
-				universe.Add(geo2d.Point{X: x, Y: y}, true)
+				universe.Set(geo2d.Point{X: x, Y: y}, true)
 			}
 		}
 	}
-	return Universe(universe)
+	return Universe{universe}
 }
 
 func (universe Universe) CalculateDistances(factor int) int {
 	var result int
-	g := grid.SparseGrid[bool](universe)
 
-	xMin, xMax, yMin, yMax := g.Boundaries()
+	minX, minY, maxX, maxY := universe.grid.Bounds()
 	var emptyRows, emptyCols []int
 
-	for x := xMin + 1; x < xMax; x++ {
+	for x := minX + 1; x < maxX; x++ {
 		colEmpty := true
-		for y := yMin; y <= yMax; y++ {
-			if _, found := g.Get(geo2d.Point{X: x, Y: y}); found {
+		for y := minY; y <= maxY; y++ {
+			if _, found := universe.grid.Get(geo2d.Point{X: x, Y: y}); found {
 				colEmpty = false
 				break
 			}
@@ -64,10 +65,10 @@ func (universe Universe) CalculateDistances(factor int) int {
 			emptyCols = append(emptyCols, x)
 		}
 	}
-	for y := yMin + 1; y < yMax; y++ {
+	for y := minY + 1; y < maxY; y++ {
 		rowEmpty := true
-		for x := xMin; x <= xMax; x++ {
-			if _, found := g.Get(geo2d.Point{X: x, Y: y}); found {
+		for x := minX; x <= maxX; x++ {
+			if _, found := universe.grid.Get(geo2d.Point{X: x, Y: y}); found {
 				rowEmpty = false
 				break
 			}
@@ -77,7 +78,8 @@ func (universe Universe) CalculateDistances(factor int) int {
 		}
 	}
 
-	galaxies := g.Keys()
+	galaxies := lo.ChannelToSlice(universe.grid.PointsSet())
+
 	for i := 0; i < len(galaxies)-1; i++ {
 		for j := i + 1; j < len(galaxies); j++ {
 			currentPoint, nextPoint := galaxies[i], galaxies[j]

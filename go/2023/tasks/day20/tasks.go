@@ -1,8 +1,8 @@
 package day20
 
 import (
-	"2023/src/tasks/day20/model"
-	"2023/src/tasks/day20/model/modules"
+	"aoc/2023/tasks/day20/model"
+	"aoc/2023/tasks/day20/model/modules"
 	"aoc/framework/math"
 	"aoc/framework/tasks"
 	"fmt"

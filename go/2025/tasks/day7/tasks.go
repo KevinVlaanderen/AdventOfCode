@@ -43,20 +43,20 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	for beams.Size() > 0 {
 		currentBeam, _ := beams.Head()
 		nextPosition := currentBeam.Neighbour(geo2d.South)
-		spaceType, found := lab.Get(&nextPosition)
+		spaceType, found := lab.Get(nextPosition)
 		if found {
 			if spaceType == Empty {
-				_ = lab.Set(&nextPosition, Beam)
+				_ = lab.Set(nextPosition, Beam)
 				beams.Enqueue(nextPosition)
 			} else if spaceType == Splitter {
 				result.Value++
 
 				left := nextPosition.Neighbour(geo2d.West)
-				_ = lab.Set(&left, Beam)
+				_ = lab.Set(left, Beam)
 				beams.Enqueue(left)
 
 				right := nextPosition.Neighbour(geo2d.East)
-				_ = lab.Set(&right, Beam)
+				_ = lab.Set(right, Beam)
 				beams.Enqueue(right)
 			}
 		}
@@ -92,7 +92,7 @@ func createGraph(lab grid.Grid[SpaceType], start geo2d.Point) (graph.Graph[strin
 	for beams.Size() > 0 {
 		currentBeam, _ := beams.Head()
 		nextPosition := currentBeam.Position.Neighbour(geo2d.South)
-		spaceType, found := lab.Get(&nextPosition)
+		spaceType, found := lab.Get(nextPosition)
 		if found {
 			if spaceType == Empty {
 				currentBeam.Position = nextPosition
@@ -148,7 +148,7 @@ func parse(data string) (space grid.Grid[SpaceType], start geo2d.Point) {
 	width := len(lines[0])
 	height := len(lines)
 
-	space = grid.NewGrid[SpaceType](width, height)
+	space = grid.NewArrayGrid[SpaceType](width, height)
 
 	for y, line := range lines {
 		for x, char := range line {
@@ -163,7 +163,7 @@ func parse(data string) (space grid.Grid[SpaceType], start geo2d.Point) {
 			case '^':
 				spaceType = Splitter
 			}
-			_ = space.Set(&geo2d.Point{X: x, Y: y}, spaceType)
+			_ = space.Set(geo2d.Point{X: x, Y: y}, spaceType)
 		}
 	}
 

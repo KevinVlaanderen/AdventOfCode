@@ -9,7 +9,7 @@ import (
 
 type Surface struct {
 	start geo2d.Point
-	Grid  grid.SparseGrid[*Pipe]
+	Grid  grid.Grid[*Pipe]
 }
 
 func NewSurface(data string) Surface {
@@ -28,12 +28,12 @@ func NewSurface(data string) Surface {
 			surface.start = current
 		case '.':
 		default:
-			surface.Grid.Add(current, NewPipeFromRune(r))
+			surface.Grid.Set(current, NewPipeFromRune(r))
 		}
 		current.X++
 	}
 
-	surface.Grid.Add(surface.start, surface.calculateStartPipe())
+	surface.Grid.Set(surface.start, surface.calculateStartPipe())
 
 	return surface
 }

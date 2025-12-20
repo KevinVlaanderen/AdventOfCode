@@ -1,6 +1,6 @@
 package modules
 
-import "2023/src/tasks/day20/model"
+import "aoc/2023/tasks/day20/model"
 
 type FlipFlop struct {
 	*DefaultModule

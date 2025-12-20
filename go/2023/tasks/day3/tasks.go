@@ -1,7 +1,7 @@
 package day3
 
 import (
-	"2023/src/tasks/day3/model"
+	"aoc/2023/tasks/day3/model"
 	"aoc/framework/geometry/geo2d"
 	"aoc/framework/tasks"
 	"go/types"

@@ -2,62 +2,124 @@ package grid
 
 import (
 	"aoc/framework/geometry/geo2d"
-	"errors"
 	"fmt"
 
 	"github.com/samber/lo"
 )
 
-type Grid[T comparable] struct {
-	data          [][]T
+type item[T comparable] struct {
+	value T
+	isSet bool
+}
+
+type ArrayGrid[T comparable] struct {
+	data          []item[T]
 	width, height int
 }
 
-func NewGrid[T comparable](width, height int) Grid[T] {
-	data := make([][]T, height)
-	for y := 0; y < height; y++ {
-		data[y] = make([]T, width)
-	}
-	return Grid[T]{data: data, width: width, height: height}
+func NewArrayGrid[T comparable](width, height int) *ArrayGrid[T] {
+	data := make([]item[T], width*height)
+	return &ArrayGrid[T]{data: data, width: width, height: height}
 }
 
-func (g *Grid[T]) InBounds(point *geo2d.Point) bool {
-	return point.X >= 0 && point.X < g.width && point.Y >= 0 && point.Y < g.height
-}
-
-func (g *Grid[T]) Get(point *geo2d.Point) (value T, found bool) {
+func (g *ArrayGrid[T]) Get(point geo2d.Point) (value T, found bool) {
 	if !g.InBounds(point) {
 		return lo.Empty[T](), false
 	}
-	return g.data[point.Y][point.X], true
+	return g.data[g.width*point.Y+point.X].value, true
 }
 
-func (g *Grid[T]) Set(point *geo2d.Point, value T) error {
+func (g *ArrayGrid[T]) Set(point geo2d.Point, value T) bool {
 	if !g.InBounds(point) {
-		return errors.New("out of bounds")
+		return false
 	}
-	g.data[point.Y][point.X] = value
-	return nil
+	g.data[g.width*point.Y+point.X] = item[T]{value, true}
+	return true
 }
 
-func (g *Grid[T]) Boundaries() (int, int, int, int) {
-	return 0, g.width - 1, 0, g.height - 1
+func (g *ArrayGrid[T]) Clear(point geo2d.Point) bool {
+	if !g.InBounds(point) {
+		return false
+	}
+	g.data[g.width*point.Y+point.X] = item[T]{lo.Empty[T](), false}
+	return true
 }
 
-func (g *Grid[T]) DrawPointGrid(fn func(value *T, x int, y int) (rune, bool), fallback map[T]rune) {
-	for y, row := range g.data {
-		for x, v := range row {
-			if char, ok := fn(&v, x, y); ok {
-				fmt.Print(string(char))
-				continue
-			}
+func (g *ArrayGrid[T]) MinX() int {
+	return 0
+}
 
-			if character, valueExists := fallback[v]; valueExists {
-				fmt.Print(string(character))
-			} else {
-				fmt.Print(" ")
+func (g *ArrayGrid[T]) MinY() int {
+	return 0
+}
+
+func (g *ArrayGrid[T]) MaxX() int {
+	return g.width - 1
+}
+
+func (g *ArrayGrid[T]) MaxY() int {
+	return g.height - 1
+}
+
+func (g *ArrayGrid[T]) Bounds() (minX int, minY int, maxX int, maxY int) {
+	return g.MinX(), g.MinY(), g.MaxX(), g.MaxY()
+}
+
+func (g *ArrayGrid[T]) InBounds(point geo2d.Point) bool {
+	return point.X >= g.MinX() && point.X <= g.MaxX() && point.Y >= g.MinY() && point.Y <= g.MaxY()
+}
+
+func (g *ArrayGrid[T]) Points() <-chan geo2d.Point {
+	c := make(chan geo2d.Point)
+	go func() {
+		defer close(c)
+
+		for i := 0; i < g.width*g.height; i++ {
+			c <- geo2d.Point{X: i % g.width, Y: i / g.width}
+		}
+	}()
+	return c
+}
+
+func (g *ArrayGrid[T]) PointsSet() <-chan geo2d.Point {
+	c := make(chan geo2d.Point)
+	go func() {
+		defer close(c)
+
+		for i, dataItem := range g.data {
+			if dataItem.isSet {
+				c <- geo2d.Point{X: i % g.width, Y: i / g.width}
 			}
 		}
-		fmt.Print("\n")
+	}()
+	return c
+}
+
+func (g *ArrayGrid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
+	for i, dataItem := range g.data {
+		if i > 0 && i%g.width == 0 {
+			print("\n")
+		}
+
+		if character, valueExists := mapping[dataItem.value]; dataItem.isSet && valueExists {
+			fmt.Print(string(character))
+		} else {
+			fmt.Print(fallback)
+		}
 	}
 }
+
+func (g *ArrayGrid[T]) DrawPointGridBy(mapping func(value T, isSet bool, x int, y int) rune) {
+	for i, dataItem := range g.data {
+		if i > 0 && i%g.width == 0 {
+			print("\n")
+		}
+
+		x := i % g.width
+		y := i / g.width
+		char := mapping(dataItem.value, dataItem.isSet, x, y)
+		fmt.Print(string(char))
+	}
+}
+
+var _ Grid[struct{}] = &ArrayGrid[struct{}]{}

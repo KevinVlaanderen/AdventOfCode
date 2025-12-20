@@ -57,11 +57,7 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 }
 
 func parse(data string) *model.Cave {
-	lines := tasks.Lines(data)
-	width := len(lines[0])
-	height := len(lines)
-
-	cave := model.Cave{Area: grid.NewGrid[model.Material](width, height)}
+	cave := model.Cave{Area: grid.NewSparseGrid[model.Material]()}
 
 	for _, line := range tasks.Lines(data) {
 		lineParts := strings.Split(line, " -> ")

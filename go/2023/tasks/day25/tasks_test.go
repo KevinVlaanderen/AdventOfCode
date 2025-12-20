@@ -11,7 +11,7 @@ var taskDefinitions = []_testing.TaskDefinition[int, types.Nil]{
 		Task: Task1,
 		Tests: []_testing.TestDefinition[int, types.Nil]{
 			{Path: "data", Expected: 54, Type: _testing.TestData},
-			{Path: "day25", Expected: -1, Type: _testing.RealData},
+			// {Path: "day25", Expected: -1, Type: _testing.RealData},
 		},
 	},
 }

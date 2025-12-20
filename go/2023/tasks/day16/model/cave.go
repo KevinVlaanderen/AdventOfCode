@@ -8,7 +8,9 @@ import (
 	"github.com/samber/lo"
 )
 
-type Cave grid.SparseGrid[Tile]
+type Cave struct {
+	Grid grid.Grid[Tile]
+}
 
 func NewCave(data string) Cave {
 	tiles := grid.NewSparseGrid[Tile]()
@@ -16,24 +18,23 @@ func NewCave(data string) Cave {
 		for x, char := range line {
 			switch char {
 			case '/':
-				tiles.Add(geo2d.Point{X: x, Y: y}, Tile{MirrorRight})
+				tiles.Set(geo2d.Point{X: x, Y: y}, Tile{MirrorRight})
 			case '\\':
-				tiles.Add(geo2d.Point{X: x, Y: y}, Tile{MirrorLeft})
+				tiles.Set(geo2d.Point{X: x, Y: y}, Tile{MirrorLeft})
 			case '|':
-				tiles.Add(geo2d.Point{X: x, Y: y}, Tile{SplitterVertical})
+				tiles.Set(geo2d.Point{X: x, Y: y}, Tile{SplitterVertical})
 			case '-':
-				tiles.Add(geo2d.Point{X: x, Y: y}, Tile{SplitterHorizontal})
+				tiles.Set(geo2d.Point{X: x, Y: y}, Tile{SplitterHorizontal})
 			}
 		}
 	}
 
-	return Cave(tiles)
+	return Cave{tiles}
 }
 
 func (c Cave) CountEnergized(position geo2d.Point, orientation geo2d.Orientation) int {
 	steps := map[Step]bool{}
-	g := grid.SparseGrid[Tile](c)
-	c.followPath(&g, position, orientation, &steps)
+	c.followPath(c.Grid, position, orientation, &steps)
 
 	found := lo.Associate(lo.Keys(steps), func(item Step) (geo2d.Point, bool) {
 		return item.Position, true
@@ -43,15 +44,14 @@ func (c Cave) CountEnergized(position geo2d.Point, orientation geo2d.Orientation
 }
 
 func (c Cave) Boundaries() (int, int, int, int) {
-	g := grid.SparseGrid[Tile](c)
-	return g.Boundaries()
+	return c.Grid.Bounds()
 }
 
-func (c Cave) followPath(grid *grid.SparseGrid[Tile], current geo2d.Point, orientation geo2d.Orientation, steps *map[Step]bool) {
-	xMin, xMax, yMin, yMax := grid.Boundaries()
+func (c Cave) followPath(grid grid.Grid[Tile], current geo2d.Point, orientation geo2d.Orientation, steps *map[Step]bool) {
+	minX, minY, maxX, maxY := grid.Bounds()
 
 	for {
-		if current.X < xMin || current.X > xMax || current.Y < yMin || current.Y > yMax {
+		if current.X < minX || current.X > maxX || current.Y < minY || current.Y > maxY {
 			break
 		}
 

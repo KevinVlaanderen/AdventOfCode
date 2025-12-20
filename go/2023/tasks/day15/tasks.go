@@ -1,7 +1,7 @@
 package day15
 
 import (
-	"2023/src/tasks/day15/model"
+	"aoc/2023/tasks/day15/model"
 	"aoc/framework/tasks"
 	"go/types"
 	"strings"

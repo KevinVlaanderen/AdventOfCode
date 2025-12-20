@@ -13,10 +13,10 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	g := parse(data)
 
 	startingPoints := []PointWithHeading{{geo2d.Point{X: 1}, geo2d.South}}
-	startingPoints = append(startingPoints, findSlopes(&g)...)
+	startingPoints = append(startingPoints, findSlopes(g)...)
 
 	segments := lo.Associate(startingPoints, func(startingPoint PointWithHeading) (geo2d.Point, Segment) {
-		return calculateSegment(&g, startingPoint, true, func(terrain Terrain, heading geo2d.Orientation) bool {
+		return calculateSegment(g, startingPoint, true, func(terrain Terrain, heading geo2d.Orientation) bool {
 			return !(heading == geo2d.North && terrain&SlopeSouth != 0) &&
 				!(heading == geo2d.East && terrain&SlopeWest != 0) &&
 				!(heading == geo2d.South && terrain&SlopeNorth != 0) &&
@@ -35,10 +35,10 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	g := parse(data)
 
 	startingPoints := []PointWithHeading{{geo2d.Point{X: 1}, geo2d.South}}
-	startingPoints = append(startingPoints, findStartingPoints(&g)...)
+	startingPoints = append(startingPoints, findStartingPoints(g)...)
 
 	segments := lo.Associate(startingPoints, func(startingPoint PointWithHeading) (geo2d.Point, Segment) {
-		return calculateSegment(&g, startingPoint, false, func(terrain Terrain, heading geo2d.Orientation) bool { return true })
+		return calculateSegment(g, startingPoint, false, func(terrain Terrain, heading geo2d.Orientation) bool { return true })
 	})
 
 	startingSegment := segments[geo2d.Point{X: 1}]
@@ -49,10 +49,10 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-func findSlopes(g *grid.SparseGrid[Terrain]) []PointWithHeading {
+func findSlopes(g grid.Grid[Terrain]) []PointWithHeading {
 	slopes := make([]PointWithHeading, 0)
 
-	lo.ForEach(g.Keys(), func(point geo2d.Point, index int) {
+	for point := range g.PointsSet() {
 		if terrain, found := g.Get(point); !found {
 			panic("terrain not found")
 		} else if terrain&Slope != 0 {
@@ -67,14 +67,14 @@ func findSlopes(g *grid.SparseGrid[Terrain]) []PointWithHeading {
 				slopes = append(slopes, PointWithHeading{point, geo2d.West})
 			}
 		}
-	})
+	}
 	return slopes
 }
 
-func findStartingPoints(g *grid.SparseGrid[Terrain]) []PointWithHeading {
+func findStartingPoints(g grid.Grid[Terrain]) []PointWithHeading {
 	startingPoints := make([]PointWithHeading, 0)
 
-	lo.ForEach(g.Keys(), func(point geo2d.Point, index int) {
+	for point := range g.PointsSet() {
 		neighbours := make([]PointWithHeading, 0, 4)
 
 		for _, offset := range point.NeighbourOffsets(geo2d.Orthogonal) {
@@ -88,7 +88,7 @@ func findStartingPoints(g *grid.SparseGrid[Terrain]) []PointWithHeading {
 		if len(neighbours) > 2 {
 			startingPoints = append(startingPoints, neighbours...)
 		}
-	})
+	}
 	return startingPoints
 }
 
@@ -125,7 +125,7 @@ func calculatePathLengths2(start *Segment, segments map[geo2d.Point]Segment, see
 	})
 }
 
-func calculateSegment(g *grid.SparseGrid[Terrain], startingPoint PointWithHeading, slippery bool, canMoveTo func(Terrain, geo2d.Orientation) bool) (geo2d.Point, Segment) {
+func calculateSegment(g grid.Grid[Terrain], startingPoint PointWithHeading, slippery bool, canMoveTo func(Terrain, geo2d.Orientation) bool) (geo2d.Point, Segment) {
 	length := 1
 	current := startingPoint.Point
 	heading := startingPoint.Direction
@@ -162,22 +162,22 @@ func calculateSegment(g *grid.SparseGrid[Terrain], startingPoint PointWithHeadin
 	}
 }
 
-func parse(data string) grid.SparseGrid[Terrain] {
+func parse(data string) grid.Grid[Terrain] {
 	g := grid.NewSparseGrid[Terrain]()
 	lines := tasks.Lines(data)
 	for y, line := range lines {
 		for x, char := range line {
 			switch char {
 			case '.':
-				g.Add(geo2d.Point{X: x, Y: y}, Path)
+				g.Set(geo2d.Point{X: x, Y: y}, Path)
 			case '^':
-				g.Add(geo2d.Point{X: x, Y: y}, Path|Slope|SlopeNorth)
+				g.Set(geo2d.Point{X: x, Y: y}, Path|Slope|SlopeNorth)
 			case '>':
-				g.Add(geo2d.Point{X: x, Y: y}, Path|Slope|SlopeEast)
+				g.Set(geo2d.Point{X: x, Y: y}, Path|Slope|SlopeEast)
 			case 'v':
-				g.Add(geo2d.Point{X: x, Y: y}, Path|Slope|SlopeSouth)
+				g.Set(geo2d.Point{X: x, Y: y}, Path|Slope|SlopeSouth)
 			case '<':
-				g.Add(geo2d.Point{X: x, Y: y}, Path|Slope|SlopeWest)
+				g.Set(geo2d.Point{X: x, Y: y}, Path|Slope|SlopeWest)
 			}
 		}
 	}

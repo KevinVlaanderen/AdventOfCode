@@ -1,10 +1,10 @@
 package day22
 
 import (
-	"2023/src/tasks/day22/model"
+	"aoc/2023/tasks/day22/model"
 	"aoc/framework/geometry/geo2d"
 	"aoc/framework/geometry/geo2d/grid"
-	_d2 "aoc/framework/geometry/geo3d"
+	"aoc/framework/geometry/geo3d"
 	"aoc/framework/tasks"
 	"go/types"
 	"sort"
@@ -89,7 +89,7 @@ func dropBricks(bricks []*model.Brick) {
 	// rand.Seed(seed)
 	// drawBricks(bricks, sizeX, sizeY, sizeZ, "before")
 
-	heightmap := grid.NewGrid[lo.Tuple2[*model.Brick, int]](sizeX, sizeY)
+	heightmap := grid.NewArrayGrid[lo.Tuple2[*model.Brick, int]](sizeX, sizeY)
 
 	sort.Sort(model.ByHeight(bricks))
 
@@ -99,18 +99,18 @@ func dropBricks(bricks []*model.Brick) {
 
 		maxZ := 0
 		for _, point := range pointBuffer {
-			if highest, found := heightmap.Get(&point); found && highest.B > maxZ {
+			if highest, found := heightmap.Get(point); found && highest.B > maxZ {
 				maxZ = highest.B
 			}
 		}
 		brick.MoveToZ(maxZ + 1)
 		for _, point := range pointBuffer {
-			if highest, found := heightmap.Get(&point); found && highest.B == maxZ && highest.A != nil {
+			if highest, found := heightmap.Get(point); found && highest.B == maxZ && highest.A != nil {
 				highest.A.Supports.Add(brick)
 				brick.SupportedBy.Add(highest.A)
 			}
-			if err := heightmap.Set(&point, lo.Tuple2[*model.Brick, int]{A: brick, B: brick.Endpoints.B.Z}); err != nil {
-				panic(err)
+			if ok := heightmap.Set(point, lo.Tuple2[*model.Brick, int]{A: brick, B: brick.Endpoints.B.Z}); !ok {
+				panic("out of bounds")
 			}
 		}
 	}
@@ -127,7 +127,7 @@ func parse(data string) []*model.Brick {
 	})
 }
 
-func parseVoxel(data string) _d2.Voxel {
+func parseVoxel(data string) geo3d.Voxel {
 	parts := strings.Split(data, ",")
 	var x, y, z int
 	var err error
@@ -140,7 +140,7 @@ func parseVoxel(data string) _d2.Voxel {
 	if z, err = strconv.Atoi(parts[2]); err != nil {
 		panic(err)
 	}
-	return _d2.Voxel{X: x, Y: y, Z: z}
+	return geo3d.Voxel{X: x, Y: y, Z: z}
 }
 
 func calculateDimensions(bricks []*model.Brick) (int, int, int) {

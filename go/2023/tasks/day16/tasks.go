@@ -1,7 +1,7 @@
 package day16
 
 import (
-	"2023/src/tasks/day16/model"
+	"aoc/2023/tasks/day16/model"
 	"aoc/framework/geometry/geo2d"
 	"aoc/framework/tasks"
 	"go/types"
@@ -21,7 +21,7 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 
 	var mu sync.RWMutex
 
-	xMin, xMax, yMin, yMax := cave.Boundaries()
+	minX, minY, maxX, maxY := cave.Grid.Bounds()
 
 	getResult := func() int {
 		mu.RLock()
@@ -43,23 +43,23 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	}
 
 	wg := sync.WaitGroup{}
-	wg.Add(xMax - xMin + 1)
-	wg.Add(yMax - yMin + 1)
+	wg.Add(maxX - minX + 1)
+	wg.Add(maxY - minY + 1)
 
-	for x := xMin; x <= xMax; x++ {
+	for x := minX; x <= maxX; x++ {
 		go func(x int) {
 			size := cave.CountEnergized(geo2d.Point{X: x}, geo2d.South)
 			setMaxResult(size)
 
-			size = cave.CountEnergized(geo2d.Point{X: x, Y: yMax}, geo2d.North)
+			size = cave.CountEnergized(geo2d.Point{X: x, Y: maxY}, geo2d.North)
 			setMaxResult(size)
 
 			wg.Done()
 		}(x)
 	}
-	for y := yMin; y <= yMax; y++ {
+	for y := minY; y <= maxY; y++ {
 		go func(y int) {
-			size := cave.CountEnergized(geo2d.Point{X: xMax, Y: y}, geo2d.West)
+			size := cave.CountEnergized(geo2d.Point{X: maxX, Y: y}, geo2d.West)
 			setMaxResult(size)
 
 			size = cave.CountEnergized(geo2d.Point{Y: y}, geo2d.East)

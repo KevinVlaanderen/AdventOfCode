@@ -1,7 +1,7 @@
 package day8
 
 import (
-	"2023/src/tasks/day8/model"
+	"aoc/2023/tasks/day8/model"
 	"aoc/framework/math"
 	"aoc/framework/tasks"
 	"go/types"

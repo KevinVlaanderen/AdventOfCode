@@ -1,7 +1,7 @@
 package day19
 
 import (
-	"2023/src/tasks/day19/model"
+	"aoc/2023/tasks/day19/model"
 	"aoc/framework/tasks"
 	"go/types"
 

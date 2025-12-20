@@ -9,6 +9,18 @@ func Range(start, count, step int) []int {
 	return result
 }
 
+// func Range(start, count, step int, yield func(int) bool) {
+// 	i := start
+// 	c := 0
+// 	for c < count {
+// 		if !yield(i) {
+// 			return
+// 		}
+// 		i += step
+// 		count++
+// 	}
+// }
+
 func RangeGen(start, count, step int) <-chan int {
 	c := make(chan int, count)
 	go func() {

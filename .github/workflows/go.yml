@@ -15,58 +15,52 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
 
     - name: Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c #v6.1.0
       with:
         go-version-file: "go/go.mod"
 
-    - name: Install dependencies
-      run: go install github.com/jstemmer/go-junit-report/v2@latest
-
     - name: Test
-      run: go test -v 2>&1 ./${{ inputs.year }}/tasks/... | go-junit-report -set-exit-code -subtest-mode exclude-parents > ./${{ inputs.year }}/test-report-${{ inputs.year }}.xml
+      run: go test -v -json 2>&1 ./${{ inputs.year }}/tasks/... > ./${{ inputs.year }}/test-report-${{ inputs.year }}.json
 
     - name: Unit Test Results
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8 #v2.3.0
       if: always()
       with:
         name: ${{ inputs.year }} test results
-        path: go/${{ inputs.year }}/test-report-${{ inputs.year }}.xml
-        reporter: java-junit
+        path: go/${{ inputs.year }}/test-report-${{ inputs.year }}.json
+        reporter: golang-json
 
     - name: Archive test report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f #v6.0.0
       if: always()
       with:
         name: test-report-${{ inputs.year }}
-        path: go/${{ inputs.year }}/test-report-${{ inputs.year }}.xml
+        path: go/${{ inputs.year }}/test-report-${{ inputs.year }}.json
         
   benchmark:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
 
     - name: Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c #v6.1.0
       with:
         go-version-file: "go/go.mod"
-
-    - name: Install dependencies
-      run: go install github.com/jstemmer/go-junit-report/v2@latest
 
     - name: Run benchmark
       run: go test -bench . -run ^$ -benchmem ./${{ inputs.year }}/tasks/... | tee ./${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
 
     - name: Download previous benchmark data
-      uses: actions/cache@v3
+      uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb #v5.0.1
       with:
         path: ./cache
         key: ${{ runner.os }}-benchmark
 
     - name: Store benchmark result
-      uses: benchmark-action/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b #v1.20.7
       with:
         tool: 'go'
         output-file-path: go/${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
@@ -75,7 +69,7 @@ jobs:
         summary-always: true
 
     - name: Archive benchmark report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f #v6.0.0
       if: always()
       with:
         name: benchmark-report-${{ inputs.year }}

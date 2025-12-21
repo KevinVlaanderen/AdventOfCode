@@ -10,8 +10,8 @@ var taskDefinitions = []tests.TaskDefinition[int, types.Nil]{
 	{
 		Task: Task1,
 		Tests: []tests.TestDefinition[int, types.Nil]{
-			{Path: "data", Expected: 54, Type: tests.TestData},
-			// {Path: "day25", Expected: -1, Type: tests.RealData},
+			{Data: tests.MockData("data"), Expected: 54},
+			// {Data: tests.RealData("day25"), Expected: -1},
 		},
 	},
 }

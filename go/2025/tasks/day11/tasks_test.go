@@ -10,15 +10,15 @@ var taskDefinitions = []tests.TaskDefinition[int, types.Nil]{
 	{
 		Task: Task1,
 		Tests: []tests.TestDefinition[int, types.Nil]{
-			{Path: "data", Expected: 5, Type: tests.TestData},
-			{Path: "day11", Expected: 566, Type: tests.RealData},
+			{Data: tests.MockData("data"), Expected: 5},
+			{Data: tests.RealData("day11"), Expected: 566},
 		},
 	},
 	{
 		Task: Task2,
 		Tests: []tests.TestDefinition[int, types.Nil]{
-			{Path: "data2", Expected: 2, Type: tests.TestData},
-			{Path: "day11", Expected: 331837854931968, Type: tests.RealData},
+			{Data: tests.MockData("data2"), Expected: 2},
+			{Data: tests.RealData("day11"), Expected: 331837854931968},
 		},
 	},
 }

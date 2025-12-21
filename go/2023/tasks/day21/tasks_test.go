@@ -9,20 +9,20 @@ var taskDefinitions = []tests.TaskDefinition[int, int]{
 	{
 		Task: Task1,
 		Tests: []tests.TestDefinition[int, int]{
-			{Path: "data", Expected: 16, Type: tests.TestData, Param: 6},
-			{Path: "day21", Expected: 3646, Type: tests.RealData, Param: 64},
+			{Data: tests.MockData("data"), Param: 6, Expected: 16},
+			{Data: tests.RealData("day21"), Param: 64, Expected: 3646},
 		},
 	},
 	{
 		Task:  Task2,
 		Tests: []tests.TestDefinition[int, int]{
-			// {Path: "data", Expected: 16, Type: tests.TestData, Param: 6},
-			// {Path: "data", Expected: 50, Type: tests.TestData, Param: 10},
-			// {Path: "data", Expected: 1594, Type: tests.TestData, Param: 50},
-			// {Path: "data", Expected: 6536, Type: tests.TestData, Param: 100},
-			// {Path: "data", Expected: 167004, Type: tests.TestData, Param: 500},
-			// {Path: "data", Expected: 668697, Type: tests.TestData, Param: 1000},
-			// {Path: "day21", Expected: -1, Type: tests.RealData, Param: 26501365},
+			// {Data: tests.MockData("data"), Expected: 16},
+			// {Data: tests.MockData("data"), Expected: 50},
+			// {Data: tests.MockData("data"), Expected: 1594},
+			// {Data: tests.MockData("data"), Expected: 6536},
+			// {Data: tests.MockData("data"), Expected: 167004},
+			// {Data: tests.MockData("data"), Expected: 668697},
+			// {Data: tests.RealData("day21"), Expected: -1},
 		},
 	},
 }

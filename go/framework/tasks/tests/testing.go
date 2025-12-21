@@ -3,17 +3,7 @@ package tests
 import (
 	"aoc/framework/tasks"
 	"fmt"
-	"os"
-	"path/filepath"
-	"strings"
 	"testing"
-)
-
-type TestType int
-
-const (
-	TestData TestType = iota
-	RealData
 )
 
 type TaskDefinition[T comparable, P any] struct {
@@ -22,40 +12,19 @@ type TaskDefinition[T comparable, P any] struct {
 }
 
 type TestDefinition[T comparable, P any] struct {
-	Path     string
+	Data     DataDescriptor
 	Expected T
-	Type     TestType
 	Param    P
 }
 
 func (t TestDefinition[T, P]) name() string {
-	switch t.Type {
-	case TestData:
-		return fmt.Sprintf("TestData(%v)", t.Path)
-	case RealData:
-		return fmt.Sprintf("RealData(%v)", t.Path)
+	switch t.Data.dataType {
+	case Mock:
+		return fmt.Sprintf("MockData(%v)", t.Data.path)
+	case Real:
+		return fmt.Sprintf("RealData(%v)", t.Data.path)
 	}
-	panic(fmt.Errorf("unknown test type %v", t.Type))
-}
-
-func (t TestDefinition[T, P]) dataPath() string {
-	var path string
-	var err error
-
-	switch t.Type {
-	case TestData:
-		path, err = CreateTestDataPath(t.Path)
-	case RealData:
-		path, err = CreateRealDataPath(t.Path)
-	default:
-		panic(fmt.Errorf("unknown test type %v", t.Type))
-
-	}
-	if err != nil {
-		panic(err)
-	} else {
-		return path
-	}
+	panic(fmt.Errorf("unknown test type %v", t.Data.dataType))
 }
 
 func RunTests[T comparable, P any](t *testing.T, taskDefinitions []TaskDefinition[T, P]) {
@@ -64,32 +33,48 @@ func RunTests[T comparable, P any](t *testing.T, taskDefinitions []TaskDefinitio
 	for taskIndex, taskDefinition := range taskDefinitions {
 		t.Run(fmt.Sprintf("Task%v", taskIndex+1), func(tTask *testing.T) {
 			for _, testDefinition := range taskDefinition.Tests {
-				runTest(tTask, taskDefinition, testDefinition)
+				if err := runTest(tTask, taskDefinition, testDefinition); err != nil {
+					tTask.Error(err)
+				}
 			}
 		})
 	}
 }
 
-func runTest[T comparable, P any](t *testing.T, taskDefinition TaskDefinition[T, P], testDefinition TestDefinition[T, P]) {
-	data := ReadAll(testDefinition.dataPath())
+func runTest[T comparable, P any](t *testing.T, taskDefinition TaskDefinition[T, P], testDefinition TestDefinition[T, P]) error {
+	data, err := ReadData(testDefinition.Data)
+	if err != nil {
+		return err
+	}
+
 	test := CreateTest(taskDefinition.Task, data, testDefinition.Param, testDefinition.Expected)
 	t.Run(testDefinition.name(), test)
+
+	return nil
 }
 
 func RunBenchmarks[T comparable, P any](b *testing.B, taskDefinitions []TaskDefinition[T, P]) {
 	for taskIndex, taskDefinition := range taskDefinitions {
 		b.Run(fmt.Sprintf("Task%v", taskIndex+1), func(bTask *testing.B) {
 			for _, testDefinition := range taskDefinition.Tests {
-				runBenchmark(bTask, taskDefinition, testDefinition)
+				if err := runBenchmark(bTask, taskDefinition, testDefinition); err != nil {
+					bTask.Error(err)
+				}
 			}
 		})
 	}
 }
 
-func runBenchmark[T comparable, P any](b *testing.B, taskDefinition TaskDefinition[T, P], testDefinition TestDefinition[T, P]) {
-	data := ReadAll(testDefinition.dataPath())
+func runBenchmark[T comparable, P any](b *testing.B, taskDefinition TaskDefinition[T, P], testDefinition TestDefinition[T, P]) error {
+	data, err := ReadData(testDefinition.Data)
+	if err != nil {
+		return err
+	}
+
 	test := CreateBenchmark(taskDefinition.Task, data, testDefinition.Param)
 	b.Run(testDefinition.name(), test)
+
+	return nil
 }
 
 func CreateTest[T comparable, P any](task tasks.Task[T, P], data string, param P, expected T) func(*testing.T) {
@@ -108,23 +93,5 @@ func CreateBenchmark[T comparable, P any](task tasks.Task[T, P], data string, pa
 		for i := 0; i < b.N; i++ {
 			task(data, param)
 		}
-	}
-}
-
-func CreateTestDataPath(name string) (path string, err error) {
-	path, err = filepath.Abs(filepath.Join("testdata", name))
-	return
-}
-
-func CreateRealDataPath(name string) (path string, err error) {
-	path, err = filepath.Abs(filepath.Join("../../data", name))
-	return
-}
-
-func ReadAll(path string) string {
-	if bytes, err := os.ReadFile(path); err != nil {
-		panic(err)
-	} else {
-		return strings.TrimRight(string(bytes), " \n")
 	}
 }

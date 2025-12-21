@@ -11,8 +11,8 @@ var taskDefinitions = []tests.TaskDefinition[int, lo.Tuple2[int, int]]{
 	{
 		Task: Task1,
 		Tests: []tests.TestDefinition[int, lo.Tuple2[int, int]]{
-			{Path: "data", Expected: 2, Type: tests.TestData, Param: lo.Tuple2[int, int]{A: 7, B: 27}},
-			{Path: "day24", Expected: 21843, Type: tests.RealData, Param: lo.Tuple2[int, int]{A: 200000000000000, B: 400000000000000}},
+			{Data: tests.MockData("data"), Param: lo.Tuple2[int, int]{A: 7, B: 27}, Expected: 2},
+			{Data: tests.RealData("day24"), Param: lo.Tuple2[int, int]{A: 200000000000000, B: 400000000000000}, Expected: 21843},
 		},
 	},
 }

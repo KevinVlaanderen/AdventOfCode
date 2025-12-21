@@ -1,4 +1,4 @@
-package testing
+package tests
 
 import (
 	"aoc/framework/tasks"

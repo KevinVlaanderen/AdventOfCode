@@ -1,31 +1,31 @@
 package day1
 
 import (
-	_testing "aoc/framework/tasks/testing"
+	"aoc/framework/tasks/tests"
 	"testing"
 )
 
-var taskDefinitions = []_testing.TaskDefinition[int, bool]{
+var taskDefinitions = []tests.TaskDefinition[int, bool]{
 	{
 		Task: Task,
-		Tests: []_testing.TestDefinition[int, bool]{
-			{Path: "data", Expected: 3, Param: false, Type: _testing.TestData},
-			{Path: "day1", Expected: 1023, Param: false, Type: _testing.RealData},
+		Tests: []tests.TestDefinition[int, bool]{
+			{Path: "data", Expected: 3, Param: false, Type: tests.TestData},
+			{Path: "day1", Expected: 1023, Param: false, Type: tests.RealData},
 		},
 	},
 	{
 		Task: Task,
-		Tests: []_testing.TestDefinition[int, bool]{
-			{Path: "data", Expected: 6, Param: true, Type: _testing.TestData},
-			{Path: "day1", Expected: 5899, Param: true, Type: _testing.RealData},
+		Tests: []tests.TestDefinition[int, bool]{
+			{Path: "data", Expected: 6, Param: true, Type: tests.TestData},
+			{Path: "day1", Expected: 5899, Param: true, Type: tests.RealData},
 		},
 	},
 }
 
 func Test(t *testing.T) {
-	_testing.RunTests(t, taskDefinitions)
+	tests.RunTests(t, taskDefinitions)
 }
 
 func Benchmark(b *testing.B) {
-	_testing.RunBenchmarks(b, taskDefinitions)
+	tests.RunBenchmarks(b, taskDefinitions)
 }

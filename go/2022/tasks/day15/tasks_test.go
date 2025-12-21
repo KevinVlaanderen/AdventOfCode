@@ -1,24 +1,24 @@
 package day15
 
 import (
-	_testing "aoc/framework/tasks/testing"
+	"aoc/framework/tasks/tests"
 	"testing"
 )
 
-var taskDefinitions = []_testing.TaskDefinition[int, int]{
+var taskDefinitions = []tests.TaskDefinition[int, int]{
 	{
 		Task: Task1,
-		Tests: []_testing.TestDefinition[int, int]{
-			{Path: "data", Param: 10, Expected: 26, Type: _testing.TestData},
-			{Path: "day15", Param: 2000000, Expected: 4886370, Type: _testing.RealData},
+		Tests: []tests.TestDefinition[int, int]{
+			{Path: "data", Param: 10, Expected: 26, Type: tests.TestData},
+			{Path: "day15", Param: 2000000, Expected: 4886370, Type: tests.RealData},
 		},
 	},
 }
 
 func Test(t *testing.T) {
-	_testing.RunTests(t, taskDefinitions)
+	tests.RunTests(t, taskDefinitions)
 }
 
 func Benchmark(b *testing.B) {
-	_testing.RunBenchmarks(b, taskDefinitions)
+	tests.RunBenchmarks(b, taskDefinitions)
 }

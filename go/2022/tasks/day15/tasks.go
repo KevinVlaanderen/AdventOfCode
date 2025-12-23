@@ -36,7 +36,7 @@ func Task1(data string, testRow int) (result tasks.Result[int]) {
 		initialized = true
 	}
 
-	for _, x := range framework.Range(xMin, xMax-xMin+1, 1) {
+	for _, x := range framework.RangeSlice(xMin, xMax-xMin+1, 1) {
 		testPoint := geo2d.Point{X: x, Y: testRow}
 
 		canContainBeacon := true

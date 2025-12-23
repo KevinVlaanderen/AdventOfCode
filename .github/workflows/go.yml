@@ -25,7 +25,7 @@ jobs:
           go/go.sum
 
     - name: Test
-      run: go test -v -json 2>&1 ./${{ inputs.year }}/tasks/... > ./${{ inputs.year }}/test-report-${{ inputs.year }}.json
+      run: GOEXPERIMENTS=rangefunc go test -v -json 2>&1 ./${{ inputs.year }}/tasks/... > ./${{ inputs.year }}/test-report-${{ inputs.year }}.json
 
     - name: Unit Test Results
       uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8 #v2.3.0
@@ -55,7 +55,7 @@ jobs:
           go/go.sum
 
     - name: Run benchmark
-      run: go test -bench . -run ^$ -benchmem ./${{ inputs.year }}/tasks/... | tee ./${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
+      run: GOEXPERIMENTS=rangefunc go test -bench . -run ^$ -benchmem ./${{ inputs.year }}/tasks/... | tee ./${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
 
     - name: Download previous benchmark data
       uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb #v5.0.1

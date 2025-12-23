@@ -29,8 +29,8 @@ func (a Assignment) Contains(b Assignment) bool {
 }
 
 func (a Assignment) OverlapsWith(b Assignment) bool {
-	range1 := framework.Range(a.low, a.high-a.low+1, 1)
-	range2 := framework.Range(b.low, b.high-b.low+1, 1)
+	range1 := framework.RangeSlice(a.low, a.high-a.low+1, 1)
+	range2 := framework.RangeSlice(b.low, b.high-b.low+1, 1)
 
 	if intersection, err := datastructures.Intersection(range1, range2); err != nil {
 		return false

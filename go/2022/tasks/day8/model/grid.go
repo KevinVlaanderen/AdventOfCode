@@ -10,8 +10,8 @@ type Grid [][]int
 func (g Grid) DetermineVisibility() [][]bool {
 	mask := geo2d.CreateMask(g, false)
 
-	increasingRange := framework.Range(0, len(g), 1)
-	decreasingRange := framework.Range(len(g)-1, len(g), -1)
+	increasingRange := framework.RangeSlice(0, len(g), 1)
+	decreasingRange := framework.RangeSlice(len(g)-1, len(g), -1)
 
 	// Top to bottom
 	for _, x := range increasingRange {
@@ -61,10 +61,10 @@ func (g Grid) DetermineVisibility() [][]bool {
 }
 
 func (g Grid) DetermineScore(x int, y int) int {
-	leftRange := framework.Range(x-1, x, -1)
-	rightRange := framework.Range(x+1, len(g)-x-1, 1)
-	topRange := framework.Range(y-1, y, -1)
-	bottomRange := framework.Range(y+1, len(g[x])-y-1, 1)
+	leftRange := framework.RangeSlice(x-1, x, -1)
+	rightRange := framework.RangeSlice(x+1, len(g)-x-1, 1)
+	topRange := framework.RangeSlice(y-1, y, -1)
+	bottomRange := framework.RangeSlice(y+1, len(g[x])-y-1, 1)
 
 	var scoreLeft, scoreRight, scoreTop, scoreBottom int
 

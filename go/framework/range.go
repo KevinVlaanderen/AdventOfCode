@@ -1,27 +1,17 @@
 package framework
 
-func Range(start, count, step int) []int {
-	result := make([]int, 0, count)
+import "iter"
+
+func RangeSlice(start, count, step int) []int {
+	result := make([]int, count)
 	for i := 0; i < count; i++ {
-		result = append(result, start)
+		result[i] = start
 		start += step
 	}
 	return result
 }
 
-// func Range(start, count, step int, yield func(int) bool) {
-// 	i := start
-// 	c := 0
-// 	for c < count {
-// 		if !yield(i) {
-// 			return
-// 		}
-// 		i += step
-// 		count++
-// 	}
-// }
-
-func RangeGen(start, count, step int) <-chan int {
+func RangeChan(start, count, step int) <-chan int {
 	c := make(chan int, count)
 	go func() {
 		defer close(c)
@@ -31,4 +21,15 @@ func RangeGen(start, count, step int) <-chan int {
 		}
 	}()
 	return c
+}
+
+func RangeYield(start, count, step int) iter.Seq[int] {
+	return func(yield func(int) bool) {
+		for i := 0; i < count; i++ {
+			if !yield(start) {
+				return
+			}
+			start += step
+		}
+	}
 }

@@ -42,7 +42,7 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	})
 	for index, count := range pile {
 		score := cards[index].Correct()
-		for nextIndex := range framework.RangeGen(index+1, score, 1) {
+		for _, nextIndex := range framework.RangeSlice(index+1, score, 1) {
 			if nextIndex < len(cards) {
 				pile[nextIndex] += count
 			}

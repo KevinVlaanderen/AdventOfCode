@@ -36,11 +36,11 @@ func (a Area) Size() int {
 
 func (a Area) Neighbors() (points []Point) {
 	width, height := a.V.X-a.U.X+1, a.V.Y-a.U.Y+1
-	for y := range framework.RangeGen(a.U.Y-1, height+2, 1) {
+	for _, y := range framework.RangeSlice(a.U.Y-1, height+2, 1) {
 		points = append(points, Point{a.U.X - 1, y})
 		points = append(points, Point{a.V.X + 1, y})
 	}
-	for x := range framework.RangeGen(a.U.X, width, 1) {
+	for _, x := range framework.RangeSlice(a.U.X, width, 1) {
 		points = append(points, Point{x, a.U.Y - 1})
 		points = append(points, Point{x, a.V.Y + 1})
 	}

@@ -23,7 +23,7 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	visitedGrid := model.Grid{rope.TailPosition(): true}
 
 	for _, instruction := range instructions {
-		for range framework.Range(0, instruction.Steps, 1) {
+		for range framework.RangeSlice(0, instruction.Steps, 1) {
 			rope.Move(instruction.Direction)
 			visitedGrid[rope.TailPosition()] = true
 		}
@@ -44,7 +44,7 @@ func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	visitedGrid := model.Grid{rope.TailPosition(): true}
 
 	for _, instruction := range instructions {
-		for range framework.Range(0, instruction.Steps, 1) {
+		for range framework.RangeSlice(0, instruction.Steps, 1) {
 			rope.Move(instruction.Direction)
 			visitedGrid[rope.TailPosition()] = true
 		}

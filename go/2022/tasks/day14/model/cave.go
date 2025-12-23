@@ -25,7 +25,7 @@ func (c *Cave) AddRock(from geo2d.Point, to geo2d.Point) {
 	if from.X == to.X {
 		lowestY := math.MinInt(from.Y, to.Y)
 		highestY := math.MaxInt(from.Y, to.Y)
-		for y := range framework.RangeGen(lowestY, math.AbsInt(highestY-lowestY)+1, 1) {
+		for _, y := range framework.RangeSlice(lowestY, math.AbsInt(highestY-lowestY)+1, 1) {
 			if ok := c.Area.Set(geo2d.Point{X: from.X, Y: y}, ROCK); !ok {
 				panic("out of bounds")
 			}
@@ -33,7 +33,7 @@ func (c *Cave) AddRock(from geo2d.Point, to geo2d.Point) {
 	} else {
 		lowestX := math.MinInt(from.X, to.X)
 		highestX := math.MaxInt(from.X, to.X)
-		for x := range framework.RangeGen(lowestX, math.AbsInt(highestX-lowestX)+1, 1) {
+		for _, x := range framework.RangeSlice(lowestX, math.AbsInt(highestX-lowestX)+1, 1) {
 			if ok := c.Area.Set(geo2d.Point{X: x, Y: from.Y}, ROCK); !ok {
 				panic("out of bounds")
 			}

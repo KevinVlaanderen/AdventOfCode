@@ -20,7 +20,7 @@ import (
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	monkeys := parse(data)
 
-	for range framework.Range(0, 20, 1) {
+	for range framework.RangeSlice(0, 20, 1) {
 		for monkeyIndex := range monkeys {
 			monkey := &monkeys[monkeyIndex]
 			for itemIndex := range monkey.Items {

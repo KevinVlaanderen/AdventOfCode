@@ -118,7 +118,7 @@ func moveWest(data *[][]rune) {
 func moveSouth(data *[][]rune) {
 	width := len((*data)[0])
 	height := len(*data)
-	limits := framework.Range(height-1, width, 0)
+	limits := framework.RangeSlice(height-1, width, 0)
 
 	for y := height - 1; y >= 0; y-- {
 		for x := 0; x < width; x++ {
@@ -137,7 +137,7 @@ func moveSouth(data *[][]rune) {
 func moveEast(data *[][]rune) {
 	width := len((*data)[0])
 	height := len(*data)
-	limits := framework.Range(width-1, height, 0)
+	limits := framework.RangeSlice(width-1, height, 0)
 
 	for x := width - 1; x >= 0; x-- {
 		for y := 0; y < height; y++ {

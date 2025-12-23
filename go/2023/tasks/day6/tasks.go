@@ -22,7 +22,7 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 
 	result.Value = lo.Reduce(races, func(result int, race Race, index int) int {
 		times := make([]int, race.time+1)
-		for time := range framework.RangeGen(0, race.time+1, 1) {
+		for _, time := range framework.RangeSlice(0, race.time+1, 1) {
 			times[time] = time
 		}
 		return result * lo.CountBy(times, func(time int) bool {

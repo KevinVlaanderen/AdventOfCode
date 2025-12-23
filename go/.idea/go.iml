@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="WEB_MODULE" version="4">
+<module version="4">
   <component name="Go" enabled="true">
     <buildTags>
-      <option name="customFlags">
+      <option name="experiments">
         <array>
-          <option value="testing" />
+          <option value="rangefunc" />
         </array>
       </option>
     </buildTags>
-  </component>
-  <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

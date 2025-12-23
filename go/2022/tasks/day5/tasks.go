@@ -74,8 +74,8 @@ func parseStorage(block []string) *model.Storage {
 
 	stacks := make([]model.Stack, numStacks)
 
-	for _, lineIndex := range framework.Range(len(stackData)-1, len(stackData), -1) {
-		for _, stackIndex := range framework.Range(0, numStacks, 1) {
+	for _, lineIndex := range framework.RangeSlice(len(stackData)-1, len(stackData), -1) {
+		for _, stackIndex := range framework.RangeSlice(0, numStacks, 1) {
 			crateIndex := stackIndex * 4
 			crateString := stackData[lineIndex][crateIndex : crateIndex+3]
 

@@ -2,9 +2,9 @@
 <module type="WEB_MODULE" version="4">
   <component name="Go" enabled="true">
     <buildTags>
-      <option name="customFlags">
+      <option name="experiments">
         <array>
-          <option value="testing" />
+          <option value="rangefunc" />
         </array>
       </option>
     </buildTags>

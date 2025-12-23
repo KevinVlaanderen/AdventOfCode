@@ -121,8 +121,8 @@ func (g *SparseGrid[T]) DrawPointGrid(mapping map[T]rune, fallback rune) {
 }
 
 func (g *SparseGrid[T]) DrawPointGridBy(mapping func(value T, found bool, x int, y int) rune) {
-	for y := range framework.RangeGen(g.minY, g.height(), 1) {
-		for x := range framework.RangeGen(g.minX, g.width(), 1) {
+	for _, y := range framework.RangeSlice(g.minY, g.height(), 1) {
+		for _, x := range framework.RangeSlice(g.minX, g.width(), 1) {
 			value, found := g.data[geo2d.Point{X: x, Y: y}]
 
 			if mapping != nil {

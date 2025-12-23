@@ -81,7 +81,7 @@ func extrapolate(numbers []int, direction Direction) int {
 }
 
 func findDiff(input []int) (diff []int, done bool) {
-	for index := range framework.RangeGen(0, len(input)-1, 1) {
+	for _, index := range framework.RangeSlice(0, len(input)-1, 1) {
 		diff = append(diff, input[index+1]-input[index])
 	}
 	done = lo.EveryBy(diff, func(item int) bool {

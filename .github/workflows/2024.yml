@@ -66,11 +66,12 @@ jobs:
     - name: Run benchmarks
       run: swift package --allow-writing-to-package-directory benchmark --grouping metric --format jmh
     - name: Store benchmark result
-      uses: benchmark-action/github-action-benchmark@d48d326b4ca9ba73ca0cd0d59f108f9e02a381c7 # 1.20.4
+      uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b #v1.20.7
       with:
+        name: Swift ${{ inputs.year }}
         tool: 'jmh'
-        output-file-path: ./2024/AoC2024Benchmarks/Current_run.jmh.json
+        output-file-path: swift/${{ inputs.year }}/benchmark-report-${{ inputs.year }}.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true
-        benchmark-data-dir-path: 2024/benchmarks
+        benchmark-data-dir-path: benchmarks/swift/${{ inputs.year }}
         auto-push: true

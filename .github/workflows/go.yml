@@ -72,6 +72,7 @@ jobs:
         output-file-path: go/${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true
+        benchmark-data-dir-path: benchmarks/go/${{ inputs.year }}
         auto-push: true
 
     - name: Archive benchmark report

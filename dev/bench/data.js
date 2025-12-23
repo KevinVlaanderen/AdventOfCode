@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1766497102549,
+  "lastUpdate": 1766497159900,
   "repoUrl": "https://github.com/KevinVlaanderen/AdventOfCode",
   "entries": {
     "Benchmark": [
@@ -2640,6 +2640,2238 @@ window.BENCHMARK_DATA = {
             "value": 5079,
             "unit": "allocs/op",
             "extra": "856 times\n4 procs"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kevinvlaanderen@gmail.com",
+            "name": "Kevin Vlaanderen",
+            "username": "KevinVlaanderen"
+          },
+          "committer": {
+            "email": "kevinvlaanderen@gmail.com",
+            "name": "Kevin Vlaanderen",
+            "username": "KevinVlaanderen"
+          },
+          "distinct": true,
+          "id": "3e9d57399272f37d61724a8894eaa7ba34f2014a",
+          "message": "try out multiple range implementations; settle on rangeSlice for now",
+          "timestamp": "2025-12-23T14:36:39+01:00",
+          "tree_id": "3df1091e91e29366ab7ebc345a150875b9906164",
+          "url": "https://github.com/KevinVlaanderen/AdventOfCode/commit/3e9d57399272f37d61724a8894eaa7ba34f2014a"
+        },
+        "date": 1766497159555,
+        "tool": "go",
+        "benches": [
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 2121,
+            "unit": "ns/op\t     648 B/op\t       9 allocs/op",
+            "extra": "566730 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 2121,
+            "unit": "ns/op",
+            "extra": "566730 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 648,
+            "unit": "B/op",
+            "extra": "566730 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 9,
+            "unit": "allocs/op",
+            "extra": "566730 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day1)",
+            "value": 628397,
+            "unit": "ns/op\t  162439 B/op\t    2001 allocs/op",
+            "extra": "1914 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day1) - ns/op",
+            "value": 628397,
+            "unit": "ns/op",
+            "extra": "1914 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day1) - B/op",
+            "value": 162439,
+            "unit": "B/op",
+            "extra": "1914 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day1) - allocs/op",
+            "value": 2001,
+            "unit": "allocs/op",
+            "extra": "1914 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data2)",
+            "value": 9206,
+            "unit": "ns/op\t    3078 B/op\t      18 allocs/op",
+            "extra": "129469 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data2) - ns/op",
+            "value": 9206,
+            "unit": "ns/op",
+            "extra": "129469 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data2) - B/op",
+            "value": 3078,
+            "unit": "B/op",
+            "extra": "129469 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data2) - allocs/op",
+            "value": 18,
+            "unit": "allocs/op",
+            "extra": "129469 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day1)",
+            "value": 1287472,
+            "unit": "ns/op\t  307431 B/op\t    2004 allocs/op",
+            "extra": "916 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day1) - ns/op",
+            "value": 1287472,
+            "unit": "ns/op",
+            "extra": "916 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day1) - B/op",
+            "value": 307431,
+            "unit": "B/op",
+            "extra": "916 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day1) - allocs/op",
+            "value": 2004,
+            "unit": "allocs/op",
+            "extra": "916 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 1161,
+            "unit": "ns/op\t     720 B/op\t      24 allocs/op",
+            "extra": "1000000 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 1161,
+            "unit": "ns/op",
+            "extra": "1000000 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 720,
+            "unit": "B/op",
+            "extra": "1000000 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 24,
+            "unit": "allocs/op",
+            "extra": "1000000 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2)",
+            "value": 3095,
+            "unit": "ns/op\t    2504 B/op\t      46 allocs/op",
+            "extra": "375543 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - ns/op",
+            "value": 3095,
+            "unit": "ns/op",
+            "extra": "375543 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - B/op",
+            "value": 2504,
+            "unit": "B/op",
+            "extra": "375543 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - allocs/op",
+            "value": 46,
+            "unit": "allocs/op",
+            "extra": "375543 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day10)",
+            "value": 3685356,
+            "unit": "ns/op\t 2896989 B/op\t   32651 allocs/op",
+            "extra": "324 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day10) - ns/op",
+            "value": 3685356,
+            "unit": "ns/op",
+            "extra": "324 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day10) - B/op",
+            "value": 2896989,
+            "unit": "B/op",
+            "extra": "324 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day10) - allocs/op",
+            "value": 32651,
+            "unit": "allocs/op",
+            "extra": "324 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data3)",
+            "value": 33738,
+            "unit": "ns/op\t   10852 B/op\t     210 allocs/op",
+            "extra": "35124 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data3) - ns/op",
+            "value": 33738,
+            "unit": "ns/op",
+            "extra": "35124 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data3) - B/op",
+            "value": 10852,
+            "unit": "B/op",
+            "extra": "35124 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data3) - allocs/op",
+            "value": 210,
+            "unit": "allocs/op",
+            "extra": "35124 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data4)",
+            "value": 86324,
+            "unit": "ns/op\t   33056 B/op\t     596 allocs/op",
+            "extra": "13876 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data4) - ns/op",
+            "value": 86324,
+            "unit": "ns/op",
+            "extra": "13876 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data4) - B/op",
+            "value": 33056,
+            "unit": "B/op",
+            "extra": "13876 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data4) - allocs/op",
+            "value": 596,
+            "unit": "allocs/op",
+            "extra": "13876 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data5)",
+            "value": 100336,
+            "unit": "ns/op\t   40467 B/op\t     717 allocs/op",
+            "extra": "10000 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data5) - ns/op",
+            "value": 100336,
+            "unit": "ns/op",
+            "extra": "10000 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data5) - B/op",
+            "value": 40467,
+            "unit": "B/op",
+            "extra": "10000 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data5) - allocs/op",
+            "value": 717,
+            "unit": "allocs/op",
+            "extra": "10000 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day10)",
+            "value": 10062433,
+            "unit": "ns/op\t 4080015 B/op\t   60224 allocs/op",
+            "extra": "123 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day10) - ns/op",
+            "value": 10062433,
+            "unit": "ns/op",
+            "extra": "123 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day10) - B/op",
+            "value": 4080015,
+            "unit": "B/op",
+            "extra": "123 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day10) - allocs/op",
+            "value": 60224,
+            "unit": "allocs/op",
+            "extra": "123 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 10092,
+            "unit": "ns/op\t    1512 B/op\t      12 allocs/op",
+            "extra": "120056 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 10092,
+            "unit": "ns/op",
+            "extra": "120056 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 1512,
+            "unit": "B/op",
+            "extra": "120056 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 12,
+            "unit": "allocs/op",
+            "extra": "120056 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day11)",
+            "value": 3841103,
+            "unit": "ns/op\t   45937 B/op\t      29 allocs/op",
+            "extra": "309 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day11) - ns/op",
+            "value": 3841103,
+            "unit": "ns/op",
+            "extra": "309 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day11) - B/op",
+            "value": 45937,
+            "unit": "B/op",
+            "extra": "309 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day11) - allocs/op",
+            "value": 29,
+            "unit": "allocs/op",
+            "extra": "309 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day11)",
+            "value": 3822985,
+            "unit": "ns/op\t   45939 B/op\t      29 allocs/op",
+            "extra": "310 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day11) - ns/op",
+            "value": 3822985,
+            "unit": "ns/op",
+            "extra": "310 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day11) - B/op",
+            "value": 45939,
+            "unit": "B/op",
+            "extra": "310 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day11) - allocs/op",
+            "value": 29,
+            "unit": "allocs/op",
+            "extra": "310 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 43653,
+            "unit": "ns/op\t   10271 B/op\t     182 allocs/op",
+            "extra": "27373 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 43653,
+            "unit": "ns/op",
+            "extra": "27373 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 10271,
+            "unit": "B/op",
+            "extra": "27373 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 182,
+            "unit": "allocs/op",
+            "extra": "27373 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day12)",
+            "value": 10299830,
+            "unit": "ns/op\t 2381899 B/op\t   39311 allocs/op",
+            "extra": "100 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day12) - ns/op",
+            "value": 10299830,
+            "unit": "ns/op",
+            "extra": "100 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day12) - B/op",
+            "value": 2381899,
+            "unit": "B/op",
+            "extra": "100 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day12) - allocs/op",
+            "value": 39311,
+            "unit": "allocs/op",
+            "extra": "100 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 421274,
+            "unit": "ns/op\t  128580 B/op\t    1479 allocs/op",
+            "extra": "2607 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 421274,
+            "unit": "ns/op",
+            "extra": "2607 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 128580,
+            "unit": "B/op",
+            "extra": "2607 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 1479,
+            "unit": "allocs/op",
+            "extra": "2607 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day12)",
+            "value": 235605534,
+            "unit": "ns/op\t96158888 B/op\t 1210490 allocs/op",
+            "extra": "5 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day12) - ns/op",
+            "value": 235605534,
+            "unit": "ns/op",
+            "extra": "5 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day12) - B/op",
+            "value": 96158888,
+            "unit": "B/op",
+            "extra": "5 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day12) - allocs/op",
+            "value": 1210490,
+            "unit": "allocs/op",
+            "extra": "5 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 23597,
+            "unit": "ns/op\t    5824 B/op\t     288 allocs/op",
+            "extra": "50263 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 23597,
+            "unit": "ns/op",
+            "extra": "50263 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 5824,
+            "unit": "B/op",
+            "extra": "50263 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 288,
+            "unit": "allocs/op",
+            "extra": "50263 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day13)",
+            "value": 1010914,
+            "unit": "ns/op\t  614781 B/op\t   33633 allocs/op",
+            "extra": "1190 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day13) - ns/op",
+            "value": 1010914,
+            "unit": "ns/op",
+            "extra": "1190 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day13) - B/op",
+            "value": 614781,
+            "unit": "B/op",
+            "extra": "1190 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day13) - allocs/op",
+            "value": 33633,
+            "unit": "allocs/op",
+            "extra": "1190 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 27666,
+            "unit": "ns/op\t   10608 B/op\t     459 allocs/op",
+            "extra": "43081 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 27666,
+            "unit": "ns/op",
+            "extra": "43081 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 10608,
+            "unit": "B/op",
+            "extra": "43081 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 459,
+            "unit": "allocs/op",
+            "extra": "43081 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day13)",
+            "value": 4858724,
+            "unit": "ns/op\t 1467001 B/op\t   58756 allocs/op",
+            "extra": "246 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day13) - ns/op",
+            "value": 4858724,
+            "unit": "ns/op",
+            "extra": "246 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day13) - B/op",
+            "value": 1467001,
+            "unit": "B/op",
+            "extra": "246 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day13) - allocs/op",
+            "value": 58756,
+            "unit": "allocs/op",
+            "extra": "246 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 852.4,
+            "unit": "ns/op\t     960 B/op\t      13 allocs/op",
+            "extra": "1431628 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 852.4,
+            "unit": "ns/op",
+            "extra": "1431628 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 960,
+            "unit": "B/op",
+            "extra": "1431628 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 13,
+            "unit": "allocs/op",
+            "extra": "1431628 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day14)",
+            "value": 44289,
+            "unit": "ns/op\t   46977 B/op\t     103 allocs/op",
+            "extra": "27646 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day14) - ns/op",
+            "value": 44289,
+            "unit": "ns/op",
+            "extra": "27646 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day14) - B/op",
+            "value": 46977,
+            "unit": "B/op",
+            "extra": "27646 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day14) - allocs/op",
+            "value": 103,
+            "unit": "allocs/op",
+            "extra": "27646 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 22824,
+            "unit": "ns/op\t   11696 B/op\t     189 allocs/op",
+            "extra": "53014 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 22824,
+            "unit": "ns/op",
+            "extra": "53014 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 11696,
+            "unit": "B/op",
+            "extra": "53014 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 189,
+            "unit": "allocs/op",
+            "extra": "53014 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day14)",
+            "value": 36469516,
+            "unit": "ns/op\t 6679479 B/op\t   19163 allocs/op",
+            "extra": "32 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day14) - ns/op",
+            "value": 36469516,
+            "unit": "ns/op",
+            "extra": "32 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day14) - B/op",
+            "value": 6679479,
+            "unit": "B/op",
+            "extra": "32 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day14) - allocs/op",
+            "value": 19163,
+            "unit": "allocs/op",
+            "extra": "32 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 69.74,
+            "unit": "ns/op\t      32 B/op\t       2 allocs/op",
+            "extra": "17108152 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 69.74,
+            "unit": "ns/op",
+            "extra": "17108152 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 32,
+            "unit": "B/op",
+            "extra": "17108152 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 2,
+            "unit": "allocs/op",
+            "extra": "17108152 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2)",
+            "value": 207.8,
+            "unit": "ns/op\t     192 B/op\t       2 allocs/op",
+            "extra": "5745100 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - ns/op",
+            "value": 207.8,
+            "unit": "ns/op",
+            "extra": "5745100 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - B/op",
+            "value": 192,
+            "unit": "B/op",
+            "extra": "5745100 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - allocs/op",
+            "value": 2,
+            "unit": "allocs/op",
+            "extra": "5745100 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day15)",
+            "value": 60013,
+            "unit": "ns/op\t   65554 B/op\t       2 allocs/op",
+            "extra": "19855 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day15) - ns/op",
+            "value": 60013,
+            "unit": "ns/op",
+            "extra": "19855 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day15) - B/op",
+            "value": 65554,
+            "unit": "B/op",
+            "extra": "19855 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day15) - allocs/op",
+            "value": 2,
+            "unit": "allocs/op",
+            "extra": "19855 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data2)",
+            "value": 18841,
+            "unit": "ns/op\t   26128 B/op\t     526 allocs/op",
+            "extra": "64422 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data2) - ns/op",
+            "value": 18841,
+            "unit": "ns/op",
+            "extra": "64422 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data2) - B/op",
+            "value": 26128,
+            "unit": "B/op",
+            "extra": "64422 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data2) - allocs/op",
+            "value": 526,
+            "unit": "allocs/op",
+            "extra": "64422 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day15)",
+            "value": 429975,
+            "unit": "ns/op\t  323748 B/op\t    1883 allocs/op",
+            "extra": "2736 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day15) - ns/op",
+            "value": 429975,
+            "unit": "ns/op",
+            "extra": "2736 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day15) - B/op",
+            "value": 323748,
+            "unit": "B/op",
+            "extra": "2736 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day15) - allocs/op",
+            "value": 1883,
+            "unit": "allocs/op",
+            "extra": "2736 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 11324,
+            "unit": "ns/op\t    9096 B/op\t      20 allocs/op",
+            "extra": "106354 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 11324,
+            "unit": "ns/op",
+            "extra": "106354 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 9096,
+            "unit": "B/op",
+            "extra": "106354 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 20,
+            "unit": "allocs/op",
+            "extra": "106354 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day16)",
+            "value": 2559983,
+            "unit": "ns/op\t 2117667 B/op\t     137 allocs/op",
+            "extra": "468 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day16) - ns/op",
+            "value": 2559983,
+            "unit": "ns/op",
+            "extra": "468 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day16) - B/op",
+            "value": 2117667,
+            "unit": "B/op",
+            "extra": "468 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day16) - allocs/op",
+            "value": 137,
+            "unit": "allocs/op",
+            "extra": "468 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 156707,
+            "unit": "ns/op\t  193879 B/op\t     389 allocs/op",
+            "extra": "7387 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 156707,
+            "unit": "ns/op",
+            "extra": "7387 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 193879,
+            "unit": "B/op",
+            "extra": "7387 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 389,
+            "unit": "allocs/op",
+            "extra": "7387 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day16)",
+            "value": 236143547,
+            "unit": "ns/op\t542724700 B/op\t   32772 allocs/op",
+            "extra": "5 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day16) - ns/op",
+            "value": 236143547,
+            "unit": "ns/op",
+            "extra": "5 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day16) - B/op",
+            "value": 542724700,
+            "unit": "B/op",
+            "extra": "5 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day16) - allocs/op",
+            "value": 32772,
+            "unit": "allocs/op",
+            "extra": "5 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 5819,
+            "unit": "ns/op\t    3058 B/op\t      37 allocs/op",
+            "extra": "205384 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 5819,
+            "unit": "ns/op",
+            "extra": "205384 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 3058,
+            "unit": "B/op",
+            "extra": "205384 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 37,
+            "unit": "allocs/op",
+            "extra": "205384 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day18)",
+            "value": 489164,
+            "unit": "ns/op\t  193049 B/op\t    1593 allocs/op",
+            "extra": "2468 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day18) - ns/op",
+            "value": 489164,
+            "unit": "ns/op",
+            "extra": "2468 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day18) - B/op",
+            "value": 193049,
+            "unit": "B/op",
+            "extra": "2468 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day18) - allocs/op",
+            "value": 1593,
+            "unit": "allocs/op",
+            "extra": "2468 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 5614,
+            "unit": "ns/op\t    3058 B/op\t      37 allocs/op",
+            "extra": "202360 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 5614,
+            "unit": "ns/op",
+            "extra": "202360 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 3058,
+            "unit": "B/op",
+            "extra": "202360 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 37,
+            "unit": "allocs/op",
+            "extra": "202360 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day18)",
+            "value": 548088,
+            "unit": "ns/op\t  192903 B/op\t    1593 allocs/op",
+            "extra": "2149 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day18) - ns/op",
+            "value": 548088,
+            "unit": "ns/op",
+            "extra": "2149 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day18) - B/op",
+            "value": 192903,
+            "unit": "B/op",
+            "extra": "2149 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day18) - allocs/op",
+            "value": 1593,
+            "unit": "allocs/op",
+            "extra": "2149 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 98813,
+            "unit": "ns/op\t  106715 B/op\t     943 allocs/op",
+            "extra": "12138 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 98813,
+            "unit": "ns/op",
+            "extra": "12138 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 106715,
+            "unit": "B/op",
+            "extra": "12138 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 943,
+            "unit": "allocs/op",
+            "extra": "12138 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day19)",
+            "value": 17603346,
+            "unit": "ns/op\t 9941954 B/op\t   71205 allocs/op",
+            "extra": "67 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day19) - ns/op",
+            "value": 17603346,
+            "unit": "ns/op",
+            "extra": "67 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day19) - B/op",
+            "value": 9941954,
+            "unit": "B/op",
+            "extra": "67 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day19) - allocs/op",
+            "value": 71205,
+            "unit": "allocs/op",
+            "extra": "67 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 96257,
+            "unit": "ns/op\t  104845 B/op\t     905 allocs/op",
+            "extra": "12537 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 96257,
+            "unit": "ns/op",
+            "extra": "12537 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 104845,
+            "unit": "B/op",
+            "extra": "12537 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 905,
+            "unit": "allocs/op",
+            "extra": "12537 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day19)",
+            "value": 26304724,
+            "unit": "ns/op\t 9876445 B/op\t   69899 allocs/op",
+            "extra": "43 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day19) - ns/op",
+            "value": 26304724,
+            "unit": "ns/op",
+            "extra": "43 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day19) - B/op",
+            "value": 9876445,
+            "unit": "B/op",
+            "extra": "43 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day19) - allocs/op",
+            "value": 69899,
+            "unit": "allocs/op",
+            "extra": "43 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 63856,
+            "unit": "ns/op\t   17827 B/op\t     272 allocs/op",
+            "extra": "18696 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 63856,
+            "unit": "ns/op",
+            "extra": "18696 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 17827,
+            "unit": "B/op",
+            "extra": "18696 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 272,
+            "unit": "allocs/op",
+            "extra": "18696 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day2)",
+            "value": 1026083,
+            "unit": "ns/op\t  606826 B/op\t    7564 allocs/op",
+            "extra": "1178 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day2) - ns/op",
+            "value": 1026083,
+            "unit": "ns/op",
+            "extra": "1178 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day2) - B/op",
+            "value": 606826,
+            "unit": "B/op",
+            "extra": "1178 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day2) - allocs/op",
+            "value": 7564,
+            "unit": "allocs/op",
+            "extra": "1178 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 65931,
+            "unit": "ns/op\t   17803 B/op\t     272 allocs/op",
+            "extra": "18343 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 65931,
+            "unit": "ns/op",
+            "extra": "18343 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 17803,
+            "unit": "B/op",
+            "extra": "18343 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 272,
+            "unit": "allocs/op",
+            "extra": "18343 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day2)",
+            "value": 1014824,
+            "unit": "ns/op\t  599152 B/op\t    7562 allocs/op",
+            "extra": "1213 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day2) - ns/op",
+            "value": 1014824,
+            "unit": "ns/op",
+            "extra": "1213 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day2) - B/op",
+            "value": 599152,
+            "unit": "B/op",
+            "extra": "1213 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day2) - allocs/op",
+            "value": 7562,
+            "unit": "allocs/op",
+            "extra": "1213 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 736033,
+            "unit": "ns/op\t  215517 B/op\t    9024 allocs/op",
+            "extra": "1641 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 736033,
+            "unit": "ns/op",
+            "extra": "1641 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 215517,
+            "unit": "B/op",
+            "extra": "1641 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 9024,
+            "unit": "allocs/op",
+            "extra": "1641 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2)",
+            "value": 585346,
+            "unit": "ns/op\t  168067 B/op\t    7522 allocs/op",
+            "extra": "2002 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - ns/op",
+            "value": 585346,
+            "unit": "ns/op",
+            "extra": "2002 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - B/op",
+            "value": 168067,
+            "unit": "B/op",
+            "extra": "2002 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - allocs/op",
+            "value": 7522,
+            "unit": "allocs/op",
+            "extra": "2002 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day20)",
+            "value": 3583961,
+            "unit": "ns/op\t 1150750 B/op\t   10984 allocs/op",
+            "extra": "333 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day20) - ns/op",
+            "value": 3583961,
+            "unit": "ns/op",
+            "extra": "333 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day20) - B/op",
+            "value": 1150750,
+            "unit": "B/op",
+            "extra": "333 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day20) - allocs/op",
+            "value": 10984,
+            "unit": "allocs/op",
+            "extra": "333 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 227852,
+            "unit": "ns/op\t   99822 B/op\t    2057 allocs/op",
+            "extra": "4909 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 227852,
+            "unit": "ns/op",
+            "extra": "4909 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 99822,
+            "unit": "B/op",
+            "extra": "4909 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 2057,
+            "unit": "allocs/op",
+            "extra": "4909 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day21)",
+            "value": 58524711,
+            "unit": "ns/op\t19245785 B/op\t  420653 allocs/op",
+            "extra": "20 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day21) - ns/op",
+            "value": 58524711,
+            "unit": "ns/op",
+            "extra": "20 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day21) - B/op",
+            "value": 19245785,
+            "unit": "B/op",
+            "extra": "20 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day21) - allocs/op",
+            "value": 420653,
+            "unit": "allocs/op",
+            "extra": "20 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 4936,
+            "unit": "ns/op\t    5024 B/op\t      92 allocs/op",
+            "extra": "244812 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 4936,
+            "unit": "ns/op",
+            "extra": "244812 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 5024,
+            "unit": "B/op",
+            "extra": "244812 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 92,
+            "unit": "allocs/op",
+            "extra": "244812 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day22)",
+            "value": 1082934,
+            "unit": "ns/op\t  878833 B/op\t   16000 allocs/op",
+            "extra": "1088 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day22) - ns/op",
+            "value": 1082934,
+            "unit": "ns/op",
+            "extra": "1088 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day22) - B/op",
+            "value": 878833,
+            "unit": "B/op",
+            "extra": "1088 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day22) - allocs/op",
+            "value": 16000,
+            "unit": "allocs/op",
+            "extra": "1088 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 25331,
+            "unit": "ns/op\t    9371 B/op\t     180 allocs/op",
+            "extra": "46222 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 25331,
+            "unit": "ns/op",
+            "extra": "46222 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 9371,
+            "unit": "B/op",
+            "extra": "46222 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 180,
+            "unit": "allocs/op",
+            "extra": "46222 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day22)",
+            "value": 37630301,
+            "unit": "ns/op\t 7916639 B/op\t  191859 allocs/op",
+            "extra": "36 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day22) - ns/op",
+            "value": 37630301,
+            "unit": "ns/op",
+            "extra": "36 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day22) - B/op",
+            "value": 7916639,
+            "unit": "B/op",
+            "extra": "36 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day22) - allocs/op",
+            "value": 191859,
+            "unit": "allocs/op",
+            "extra": "36 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 126398,
+            "unit": "ns/op\t   24377 B/op\t     340 allocs/op",
+            "extra": "8950 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 126398,
+            "unit": "ns/op",
+            "extra": "8950 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 24377,
+            "unit": "B/op",
+            "extra": "8950 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 340,
+            "unit": "allocs/op",
+            "extra": "8950 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day23)",
+            "value": 5507383,
+            "unit": "ns/op\t 1211229 B/op\t   13905 allocs/op",
+            "extra": "216 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day23) - ns/op",
+            "value": 5507383,
+            "unit": "ns/op",
+            "extra": "216 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day23) - B/op",
+            "value": 1211229,
+            "unit": "B/op",
+            "extra": "216 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day23) - allocs/op",
+            "value": 13905,
+            "unit": "allocs/op",
+            "extra": "216 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 227690,
+            "unit": "ns/op\t   49201 B/op\t     741 allocs/op",
+            "extra": "5134 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 227690,
+            "unit": "ns/op",
+            "extra": "5134 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 49201,
+            "unit": "B/op",
+            "extra": "5134 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 741,
+            "unit": "allocs/op",
+            "extra": "5134 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day23)",
+            "value": 8561192924,
+            "unit": "ns/op\t12356692200 B/op\t114357611 allocs/op",
+            "extra": "1 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day23) - ns/op",
+            "value": 8561192924,
+            "unit": "ns/op",
+            "extra": "1 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day23) - B/op",
+            "value": 12356692200,
+            "unit": "B/op",
+            "extra": "1 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day23) - allocs/op",
+            "value": 114357611,
+            "unit": "allocs/op",
+            "extra": "1 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 4340,
+            "unit": "ns/op\t    1636 B/op\t      13 allocs/op",
+            "extra": "269814 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 4340,
+            "unit": "ns/op",
+            "extra": "269814 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 1636,
+            "unit": "B/op",
+            "extra": "269814 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 13,
+            "unit": "allocs/op",
+            "extra": "269814 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day24)",
+            "value": 2375400,
+            "unit": "ns/op\t   99858 B/op\t     608 allocs/op",
+            "extra": "504 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day24) - ns/op",
+            "value": 2375400,
+            "unit": "ns/op",
+            "extra": "504 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day24) - B/op",
+            "value": 99858,
+            "unit": "B/op",
+            "extra": "504 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day24) - allocs/op",
+            "value": 608,
+            "unit": "allocs/op",
+            "extra": "504 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 218592,
+            "unit": "ns/op\t   87507 B/op\t    1232 allocs/op",
+            "extra": "5262 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 218592,
+            "unit": "ns/op",
+            "extra": "5262 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 87507,
+            "unit": "B/op",
+            "extra": "5262 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 1232,
+            "unit": "allocs/op",
+            "extra": "5262 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 10819,
+            "unit": "ns/op\t   10633 B/op\t     103 allocs/op",
+            "extra": "110676 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 10819,
+            "unit": "ns/op",
+            "extra": "110676 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 10633,
+            "unit": "B/op",
+            "extra": "110676 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 103,
+            "unit": "allocs/op",
+            "extra": "110676 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day3)",
+            "value": 3603610,
+            "unit": "ns/op\t 1115096 B/op\t    9557 allocs/op",
+            "extra": "332 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day3) - ns/op",
+            "value": 3603610,
+            "unit": "ns/op",
+            "extra": "332 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day3) - B/op",
+            "value": 1115096,
+            "unit": "B/op",
+            "extra": "332 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day3) - allocs/op",
+            "value": 9557,
+            "unit": "allocs/op",
+            "extra": "332 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 8995,
+            "unit": "ns/op\t    6324 B/op\t      61 allocs/op",
+            "extra": "132621 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 8995,
+            "unit": "ns/op",
+            "extra": "132621 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 6324,
+            "unit": "B/op",
+            "extra": "132621 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 61,
+            "unit": "allocs/op",
+            "extra": "132621 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day3)",
+            "value": 6877086,
+            "unit": "ns/op\t  603907 B/op\t    4547 allocs/op",
+            "extra": "174 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day3) - ns/op",
+            "value": 6877086,
+            "unit": "ns/op",
+            "extra": "174 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day3) - B/op",
+            "value": 603907,
+            "unit": "B/op",
+            "extra": "174 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day3) - allocs/op",
+            "value": 4547,
+            "unit": "allocs/op",
+            "extra": "174 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 66659,
+            "unit": "ns/op\t   14585 B/op\t     287 allocs/op",
+            "extra": "18429 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 66659,
+            "unit": "ns/op",
+            "extra": "18429 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 14585,
+            "unit": "B/op",
+            "extra": "18429 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 287,
+            "unit": "allocs/op",
+            "extra": "18429 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day4)",
+            "value": 5274089,
+            "unit": "ns/op\t 1281965 B/op\t   22667 allocs/op",
+            "extra": "224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day4) - ns/op",
+            "value": 5274089,
+            "unit": "ns/op",
+            "extra": "224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day4) - B/op",
+            "value": 1281965,
+            "unit": "B/op",
+            "extra": "224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day4) - allocs/op",
+            "value": 22667,
+            "unit": "allocs/op",
+            "extra": "224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 66196,
+            "unit": "ns/op\t   14654 B/op\t     288 allocs/op",
+            "extra": "17686 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 66196,
+            "unit": "ns/op",
+            "extra": "17686 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 14654,
+            "unit": "B/op",
+            "extra": "17686 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 288,
+            "unit": "allocs/op",
+            "extra": "17686 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day4)",
+            "value": 5271294,
+            "unit": "ns/op\t 1288449 B/op\t   22752 allocs/op",
+            "extra": "224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day4) - ns/op",
+            "value": 5271294,
+            "unit": "ns/op",
+            "extra": "224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day4) - B/op",
+            "value": 1288449,
+            "unit": "B/op",
+            "extra": "224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day4) - allocs/op",
+            "value": 22752,
+            "unit": "allocs/op",
+            "extra": "224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 23823,
+            "unit": "ns/op\t    9278 B/op\t     160 allocs/op",
+            "extra": "50149 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 23823,
+            "unit": "ns/op",
+            "extra": "50149 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 9278,
+            "unit": "B/op",
+            "extra": "50149 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 160,
+            "unit": "allocs/op",
+            "extra": "50149 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day5)",
+            "value": 216719,
+            "unit": "ns/op\t   76855 B/op\t    1023 allocs/op",
+            "extra": "5548 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day5) - ns/op",
+            "value": 216719,
+            "unit": "ns/op",
+            "extra": "5548 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day5) - B/op",
+            "value": 76855,
+            "unit": "B/op",
+            "extra": "5548 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day5) - allocs/op",
+            "value": 1023,
+            "unit": "allocs/op",
+            "extra": "5548 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 25454,
+            "unit": "ns/op\t   10613 B/op\t     210 allocs/op",
+            "extra": "47548 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 25454,
+            "unit": "ns/op",
+            "extra": "47548 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 10613,
+            "unit": "B/op",
+            "extra": "47548 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 210,
+            "unit": "allocs/op",
+            "extra": "47548 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day5)",
+            "value": 254357,
+            "unit": "ns/op\t  104022 B/op\t    1561 allocs/op",
+            "extra": "4546 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day5) - ns/op",
+            "value": 254357,
+            "unit": "ns/op",
+            "extra": "4546 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day5) - B/op",
+            "value": 104022,
+            "unit": "B/op",
+            "extra": "4546 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day5) - allocs/op",
+            "value": 1561,
+            "unit": "allocs/op",
+            "extra": "4546 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 3337,
+            "unit": "ns/op\t    1560 B/op\t      21 allocs/op",
+            "extra": "357394 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 3337,
+            "unit": "ns/op",
+            "extra": "357394 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 1560,
+            "unit": "B/op",
+            "extra": "357394 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 21,
+            "unit": "allocs/op",
+            "extra": "357394 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day6)",
+            "value": 6018,
+            "unit": "ns/op\t    5572 B/op\t      25 allocs/op",
+            "extra": "192016 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day6) - ns/op",
+            "value": 6018,
+            "unit": "ns/op",
+            "extra": "192016 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day6) - B/op",
+            "value": 5572,
+            "unit": "B/op",
+            "extra": "192016 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day6) - allocs/op",
+            "value": 25,
+            "unit": "allocs/op",
+            "extra": "192016 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 2399,
+            "unit": "ns/op\t     515 B/op\t      13 allocs/op",
+            "extra": "479432 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 2399,
+            "unit": "ns/op",
+            "extra": "479432 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 515,
+            "unit": "B/op",
+            "extra": "479432 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 13,
+            "unit": "allocs/op",
+            "extra": "479432 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day6)",
+            "value": 3678,
+            "unit": "ns/op\t     522 B/op\t      13 allocs/op",
+            "extra": "319711 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day6) - ns/op",
+            "value": 3678,
+            "unit": "ns/op",
+            "extra": "319711 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day6) - B/op",
+            "value": 522,
+            "unit": "B/op",
+            "extra": "319711 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day6) - allocs/op",
+            "value": 13,
+            "unit": "allocs/op",
+            "extra": "319711 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 2039,
+            "unit": "ns/op\t    1440 B/op\t      14 allocs/op",
+            "extra": "562779 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 2039,
+            "unit": "ns/op",
+            "extra": "562779 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 1440,
+            "unit": "B/op",
+            "extra": "562779 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 14,
+            "unit": "allocs/op",
+            "extra": "562779 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day7)",
+            "value": 1686806,
+            "unit": "ns/op\t 1473879 B/op\t    9946 allocs/op",
+            "extra": "705 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day7) - ns/op",
+            "value": 1686806,
+            "unit": "ns/op",
+            "extra": "705 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day7) - B/op",
+            "value": 1473879,
+            "unit": "B/op",
+            "extra": "705 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day7) - allocs/op",
+            "value": 9946,
+            "unit": "allocs/op",
+            "extra": "705 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 2471,
+            "unit": "ns/op\t    1600 B/op\t      15 allocs/op",
+            "extra": "449398 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 2471,
+            "unit": "ns/op",
+            "extra": "449398 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 1600,
+            "unit": "B/op",
+            "extra": "449398 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 15,
+            "unit": "allocs/op",
+            "extra": "449398 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day7)",
+            "value": 1761318,
+            "unit": "ns/op\t 1444054 B/op\t    9691 allocs/op",
+            "extra": "685 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day7) - ns/op",
+            "value": 1761318,
+            "unit": "ns/op",
+            "extra": "685 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day7) - B/op",
+            "value": 1444054,
+            "unit": "B/op",
+            "extra": "685 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day7) - allocs/op",
+            "value": 9691,
+            "unit": "allocs/op",
+            "extra": "685 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 16397,
+            "unit": "ns/op\t    3496 B/op\t      47 allocs/op",
+            "extra": "74146 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 16397,
+            "unit": "ns/op",
+            "extra": "74146 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 3496,
+            "unit": "B/op",
+            "extra": "74146 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 47,
+            "unit": "allocs/op",
+            "extra": "74146 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2)",
+            "value": 4855,
+            "unit": "ns/op\t    1821 B/op\t      30 allocs/op",
+            "extra": "249534 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - ns/op",
+            "value": 4855,
+            "unit": "ns/op",
+            "extra": "249534 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - B/op",
+            "value": 1821,
+            "unit": "B/op",
+            "extra": "249534 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data2) - allocs/op",
+            "value": 30,
+            "unit": "allocs/op",
+            "extra": "249534 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day8)",
+            "value": 1903147,
+            "unit": "ns/op\t  388033 B/op\t    2892 allocs/op",
+            "extra": "628 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day8) - ns/op",
+            "value": 1903147,
+            "unit": "ns/op",
+            "extra": "628 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day8) - B/op",
+            "value": 388033,
+            "unit": "B/op",
+            "extra": "628 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day8) - allocs/op",
+            "value": 2892,
+            "unit": "allocs/op",
+            "extra": "628 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data3)",
+            "value": 12108,
+            "unit": "ns/op\t    4318 B/op\t      60 allocs/op",
+            "extra": "99438 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data3) - ns/op",
+            "value": 12108,
+            "unit": "ns/op",
+            "extra": "99438 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data3) - B/op",
+            "value": 4318,
+            "unit": "B/op",
+            "extra": "99438 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data3) - allocs/op",
+            "value": 60,
+            "unit": "allocs/op",
+            "extra": "99438 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day8)",
+            "value": 2213683,
+            "unit": "ns/op\t  401161 B/op\t    2909 allocs/op",
+            "extra": "538 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day8) - ns/op",
+            "value": 2213683,
+            "unit": "ns/op",
+            "extra": "538 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day8) - B/op",
+            "value": 401161,
+            "unit": "B/op",
+            "extra": "538 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day8) - allocs/op",
+            "value": 2909,
+            "unit": "allocs/op",
+            "extra": "538 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data)",
+            "value": 14961,
+            "unit": "ns/op\t    2350 B/op\t      71 allocs/op",
+            "extra": "79836 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - ns/op",
+            "value": 14961,
+            "unit": "ns/op",
+            "extra": "79836 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - B/op",
+            "value": 2350,
+            "unit": "B/op",
+            "extra": "79836 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Mock(data) - allocs/op",
+            "value": 71,
+            "unit": "allocs/op",
+            "extra": "79836 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day9)",
+            "value": 1440674,
+            "unit": "ns/op\t 1384291 B/op\t   19601 allocs/op",
+            "extra": "862 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day9) - ns/op",
+            "value": 1440674,
+            "unit": "ns/op",
+            "extra": "862 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day9) - B/op",
+            "value": 1384291,
+            "unit": "B/op",
+            "extra": "862 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask1/Real(day9) - allocs/op",
+            "value": 19601,
+            "unit": "allocs/op",
+            "extra": "862 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data)",
+            "value": 15215,
+            "unit": "ns/op\t    2355 B/op\t      71 allocs/op",
+            "extra": "86420 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - ns/op",
+            "value": 15215,
+            "unit": "ns/op",
+            "extra": "86420 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - B/op",
+            "value": 2355,
+            "unit": "B/op",
+            "extra": "86420 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Mock(data) - allocs/op",
+            "value": 71,
+            "unit": "allocs/op",
+            "extra": "86420 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day9)",
+            "value": 1404637,
+            "unit": "ns/op\t 1384399 B/op\t   19600 allocs/op",
+            "extra": "855 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day9) - ns/op",
+            "value": 1404637,
+            "unit": "ns/op",
+            "extra": "855 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day9) - B/op",
+            "value": 1384399,
+            "unit": "B/op",
+            "extra": "855 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkTask2/Real(day9) - allocs/op",
+            "value": 19600,
+            "unit": "allocs/op",
+            "extra": "855 times\n4 procs"
           }
         ]
       }

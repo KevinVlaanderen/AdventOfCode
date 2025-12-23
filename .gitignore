@@ -1,5 +1,6 @@
 *.png
 *.gv
 
-test-report.xml
-benchmark-results.txt
+.github/.idea
+test-report-*.*
+benchmark-report-*.*

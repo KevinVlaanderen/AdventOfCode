@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day24
 
 import (
@@ -5,14 +7,21 @@ import (
 	"math"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/samber/lo"
 	"gonum.org/v1/gonum/spatial/r3"
 )
 
-func Task1(data string, param lo.Tuple2[int, int]) (result tasks.Result[int]) {
+// Task1 type:mock 	file:data	param:"7,27"								expected:2
+// Task1 type:real 	file:day24	param:"200000000000000,400000000000000"		expected:21843
+func Task1(data string, param string) (result tasks.Result[int]) {
 	hailstones := parse(data, true)
-	minWindow, maxWindow := float64(param.A), float64(param.B)
+
+	paramParts := strings.Split(param, ",")
+	minInt, _ := strconv.Atoi(paramParts[0])
+	maxInt, _ := strconv.Atoi(paramParts[1])
+	minWindow, maxWindow := float64(minInt), float64(maxInt)
 
 	lo.ForEach(hailstones, func(current Hailstone, index int) {
 		if index >= len(hailstones)-2 {

@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day16
 
 import (
@@ -8,6 +10,8 @@ import (
 	"sync"
 )
 
+// Task1 type:mock 	file:data	expected:46
+// Task1 type:real 	file:day16 	expected:7210
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	cave := model.NewCave(data)
 
@@ -16,6 +20,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:51
+// Task2 type:real 	file:day16 	expected:7673
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	cave := model.NewCave(data)
 

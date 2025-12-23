@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day6
 
 import (
@@ -22,6 +24,8 @@ const (
 	Multiply           = '*'
 )
 
+// Task1 type:mock 	file:data	expected:4277556
+// Task1 type:real 	file:day6 	expected:4449991244405
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	problems := parse(data)
 
@@ -32,6 +36,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:3263827
+// Task2 type:real 	file:day6 	expected:9348430857627
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	input := tasks.CharLines(data)
 	numbers := input[:len(input)-1]

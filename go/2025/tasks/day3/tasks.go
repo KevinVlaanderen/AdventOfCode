@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day3
 
 import (
@@ -11,7 +13,19 @@ type Battery struct {
 	Value, Position int
 }
 
-func Task(data string, amount int) (result tasks.Result[int]) {
+// Task1 type:mock 	file:data	param:2		expected:357
+// Task1 type:real 	file:day3 	param:2		expected:17109
+func Task1(data string, amount int) (result tasks.Result[int]) {
+	return solve(data, amount)
+}
+
+// Task2 type:mock 	file:data	param:12	expected:3121910778619
+// Task2 type:real 	file:day3 	param:12	expected:169347417057382
+func Task2(data string, amount int) (result tasks.Result[int]) {
+	return solve(data, amount)
+}
+
+func solve(data string, amount int) (result tasks.Result[int]) {
 	banks := parse(data)
 
 	for _, bank := range banks {

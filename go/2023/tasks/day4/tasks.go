@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day4
 
 import (
@@ -12,6 +14,8 @@ import (
 	"golang.org/x/exp/slices"
 )
 
+// Task1 type:mock 	file:data	expected:13
+// Task1 type:real 	file:day4 	expected:22193
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	cards, err := parse(data)
 	if err != nil {
@@ -24,6 +28,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:30
+// Task2 type:real 	file:day4 	expected:5625994
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	cards, err := parse(data)
 	if err != nil {

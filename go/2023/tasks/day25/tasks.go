@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day25
 
 import (
@@ -15,6 +17,8 @@ import (
 	"gonum.org/v1/gonum/graph/traverse"
 )
 
+// Task1 type:mock 	file:data	expected:54
+// Task1 type:real 	file:day25 	expected:-1		skip:true
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	g := parse(data)
 

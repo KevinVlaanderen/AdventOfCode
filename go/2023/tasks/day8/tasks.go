@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day8
 
 import (
@@ -9,6 +11,9 @@ import (
 	lop "github.com/samber/lo/parallel"
 )
 
+// Task1 type:mock 	file:data	expected:2
+// Task1 type:mock 	file:data2	expected:6
+// Task1 type:real 	file:day8 	expected:14893
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.Blocks(data)
 	network := model.NewNetwork(blocks[0], blocks[1])
@@ -22,6 +27,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data3	expected:6
+// Task2 type:real 	file:day8 	expected:10241191004509
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.Blocks(data)
 	network := model.NewNetwork(blocks[0], blocks[1])

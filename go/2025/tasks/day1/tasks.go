@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day1
 
 import (
@@ -6,7 +8,19 @@ import (
 	"strconv"
 )
 
-func Task(data string, countPassing bool) (result tasks.Result[int]) {
+// Task1 type:mock 	file:data	param:false		expected:3
+// Task1 type:real 	file:day1 	param:false		expected:1023
+func Task1(data string, countPassing bool) (result tasks.Result[int]) {
+	return solve(data, countPassing)
+}
+
+// Task2 type:mock 	file:data	param:true		expected:6
+// Task2 type:real 	file:day1 	param:true		expected:5899
+func Task2(data string, countPassing bool) (result tasks.Result[int]) {
+	return solve(data, countPassing)
+}
+
+func solve(data string, countPassing bool) (result tasks.Result[int]) {
 	position := 50
 	ending, passing := 0, 0
 

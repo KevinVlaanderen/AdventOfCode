@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day2
 
 import (
@@ -13,6 +15,8 @@ import (
 	lop "github.com/samber/lo/parallel"
 )
 
+// Task1 type:mock 	file:data	expected:8
+// Task1 type:real 	file:day2 	expected:2278
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	numWorkers := 4
 
@@ -49,6 +53,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:2286
+// Task2 type:real 	file:day2 	expected:67953
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	numWorkers := 4
 

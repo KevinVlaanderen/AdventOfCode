@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day21
 
 import (
@@ -12,6 +14,8 @@ import (
 	"gonum.org/v1/gonum/graph/traverse"
 )
 
+// Task1 type:mock 	file:data	param:6		expected:16
+// Task1 type:real 	file:day21 	param:64	expected:3646
 func Task1(data string, param int) (result tasks.Result[int]) {
 	tiles, start := parse(data)
 	g := createGraph(tiles)
@@ -32,6 +36,14 @@ func Task1(data string, param int) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	param:6			expected:16			skip:true
+// Task2 type:mock 	file:data	param:10		expected:50			skip:true
+// Task2 type:mock 	file:data	param:50		expected:1594		skip:true
+// Task2 type:mock 	file:data	param:100		expected:6536		skip:true
+// Task2 type:mock 	file:data	param:500		expected:167004		skip:true
+// Task2 type:mock 	file:data	param:1000		expected:668697		skip:true
+// Task2 type:mock 	file:data	param:5000		expected:16733044	skip:true
+// Task2 type:real 	file:day21 	param:26501365	expected:-1			skip:true
 func Task2(data string, param int) (result tasks.Result[int]) {
 	tiles, start := parse(data)
 	g := createGraph(tiles)

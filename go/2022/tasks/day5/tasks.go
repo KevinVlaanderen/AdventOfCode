@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day5
 
 import (
@@ -16,6 +18,8 @@ type Mover interface {
 	Move(n int, from int, to int)
 }
 
+// Task1 type:mock 	file:data	expected:"CMZ"
+// Task1 type:real 	file:day5 	expected:"SHQWSRBDL"
 func Task1(data string, _ types.Nil) (result tasks.Result[string]) {
 	storage, instructions := parse(data)
 
@@ -32,6 +36,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[string]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:"MCD"
+// Task2 type:real 	file:day5 	expected:"CDTQZHBRS"
 func Task2(data string, _ types.Nil) (result tasks.Result[string]) {
 	storage, instructions := parse(data)
 

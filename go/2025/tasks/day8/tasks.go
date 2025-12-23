@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day8
 
 import (
@@ -25,6 +27,8 @@ type Distance struct {
 	Value float64
 }
 
+// Task1 type:mock 	file:data	param:10	expected:40
+// Task1 type:real 	file:day8 	param:1000	expected:122430
 func Task1(data string, nConnections int) (result tasks.Result[int]) {
 	boxes := parse(data)
 
@@ -41,6 +45,8 @@ func Task1(data string, nConnections int) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	param:10	expected:25272
+// Task2 type:real 	file:day8 	param:1000	expected:8135565324
 func Task2(data string, nConnections int) (result tasks.Result[int]) {
 	boxes := parse(data)
 

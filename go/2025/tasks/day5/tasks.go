@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day5
 
 import (
@@ -19,6 +21,8 @@ type Range struct {
 	From, To int
 }
 
+// Task1 type:mock 	file:data	expected:3
+// Task1 type:real 	file:day5	expected:811
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	ingredients := parse(data)
 
@@ -34,6 +38,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:14
+// Task2 type:real 	file:day5 	expected:338189277144473
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	ingredients := parse(data)
 

@@ -3,6 +3,7 @@ module aoc
 go 1.25
 
 require (
+	github.com/dave/jennifer v1.7.1
 	github.com/deckarep/golang-set/v2 v2.8.0
 	github.com/dominikbraun/graph v0.23.0
 	github.com/elliotchance/orderedmap/v2 v2.7.0

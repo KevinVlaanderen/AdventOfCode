@@ -8,11 +8,11 @@ import (
 	"strings"
 )
 
-type DataType uint8
+type DataType string
 
 const (
-	Mock DataType = iota
-	Real
+	Mock DataType = "Mock"
+	Real          = "Real"
 )
 
 type DataDescriptor struct {

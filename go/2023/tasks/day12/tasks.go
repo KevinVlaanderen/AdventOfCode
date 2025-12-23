@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day12
 
 import (
@@ -13,6 +15,8 @@ import (
 	lop "github.com/samber/lo/parallel"
 )
 
+// Task1 type:mock 	file:data	expected:21
+// Task1 type:real 	file:day12 	expected:7653
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	lines := tasks.Lines(data)
 
@@ -30,6 +34,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:525152
+// Task2 type:real 	file:day12 	expected:60681419004564
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	lines := tasks.Lines(data)
 

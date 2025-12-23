@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day19
 
 import (
@@ -8,6 +10,8 @@ import (
 	"github.com/samber/lo"
 )
 
+// Task1 type:mock 	file:data	expected:19114
+// Task1 type:real 	file:day19 	expected:323625
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.Blocks(data)
 	workflows, parts := model.ParseWorkflows(blocks[0]), model.ParseParts(blocks[1])
@@ -25,6 +29,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:167409079868000
+// Task2 type:real 	file:day19 	expected:127447746739409
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.Blocks(data)
 	workflows := model.ParseWorkflows(blocks[0])

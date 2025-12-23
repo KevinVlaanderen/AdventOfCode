@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day15
 
 import (
@@ -12,6 +14,8 @@ import (
 	"github.com/samber/lo"
 )
 
+// Task1 type:mock 	file:data	param:10		expected:26
+// Task1 type:real 	file:day15 	param:2000000	expected:4886370
 func Task1(data string, testRow int) (result tasks.Result[int]) {
 	sensors := parse(data)
 

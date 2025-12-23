@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day14
 
 import (
@@ -8,6 +10,8 @@ import (
 	"github.com/samber/lo"
 )
 
+// Task1 type:mock 	file:data	expected:136
+// Task1 type:real 	file:day14 	expected:113525
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	rocks := tasks.CharLines(data)
 
@@ -19,6 +23,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 
 const MaxIterations = 1000000000
 
+// Task2 type:mock 	file:data	expected:64
+// Task2 type:real 	file:day14 	expected:101292
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	rocks := tasks.CharLines(data)
 

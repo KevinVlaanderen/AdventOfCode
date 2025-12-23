@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day6
 
 import (
@@ -12,6 +14,8 @@ import (
 	"github.com/samber/lo"
 )
 
+// Task1 type:mock 	file:data	expected:288
+// Task1 type:real 	file:day6 	expected:252000
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	lines := tasks.Lines(data)
 	races := parseRaces(lines, false)
@@ -29,6 +33,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:71503
+// Task2 type:real 	file:day6 	expected:36992486
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	lines := tasks.Lines(data)
 	races := parseRaces(lines, true)

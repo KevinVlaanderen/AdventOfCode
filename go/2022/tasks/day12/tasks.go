@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day12
 
 import (
@@ -7,6 +9,8 @@ import (
 	"sort"
 )
 
+// Task1 type:mock 	file:data	expected:31
+// Task1 type:real 	file:day12 	expected:330
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	grid := parse(data)
 
@@ -28,6 +32,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:29
+// Task2 type:real 	file:day12 	expected:321
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	grid := parse(data)
 

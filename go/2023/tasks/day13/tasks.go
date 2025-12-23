@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day13
 
 import (
@@ -9,6 +11,8 @@ import (
 	lop "github.com/samber/lo/parallel"
 )
 
+// Task1 type:mock 	file:data	expected:405
+// Task1 type:real 	file:day13 	expected:30802
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.LineBlocks(data)
 	cache := framework.NewSafeCache[string, *HashGroup]()
@@ -28,6 +32,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:400
+// Task2 type:real 	file:day13 	expected:37876
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.LineBlocks(data)
 	cache := framework.NewSafeCache[string, *HashGroup]()

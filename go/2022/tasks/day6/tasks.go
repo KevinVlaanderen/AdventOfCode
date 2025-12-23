@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day6
 
 import (
@@ -6,6 +8,12 @@ import (
 	"go/types"
 )
 
+// Task1 type:mock 	file:data1	expected:7
+// Task1 type:mock 	file:data2	expected:5
+// Task1 type:mock 	file:data3	expected:6
+// Task1 type:mock 	file:data4	expected:10
+// Task1 type:mock 	file:data5	expected:11
+// Task1 type:real 	file:day6 	expected:1042
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	signal := parse(data)
 
@@ -14,6 +22,12 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data1	expected:19
+// Task2 type:mock 	file:data2	expected:23
+// Task2 type:mock 	file:data3	expected:23
+// Task2 type:mock 	file:data4	expected:29
+// Task2 type:mock 	file:data5	expected:26
+// Task2 type:real 	file:day6 	expected:2980
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	signal := parse(data)
 

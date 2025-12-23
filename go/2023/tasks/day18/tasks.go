@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day18
 
 import (
@@ -12,6 +14,8 @@ import (
 	"github.com/samber/lo"
 )
 
+// Task1 type:mock 	file:data	expected:62
+// Task1 type:real 	file:day18 	expected:70026
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	instructions := parse1(data)
 	vertices := findVertices(instructions, geo2d.Point{})
@@ -20,6 +24,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:952408144115
+// Task2 type:real 	file:day18 	expected:68548301037382
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	instructions := parse2(data)
 	vertices := findVertices(instructions, geo2d.Point{})

@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day12
 
 import (
@@ -20,6 +22,8 @@ type Region struct {
 	requiredPresents []int
 }
 
+// Task1 type:mock 	file:data	expected:2
+// Task1 type:real 	file:day12 	expected:440
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	presents, regions := Parse(data)
 

@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day20
 
 import (
@@ -14,6 +16,9 @@ import (
 	"github.com/samber/lo"
 )
 
+// Task1 type:mock 	file:data	expected:32000000
+// Task1 type:mock 	file:data2	expected:11687500
+// Task1 type:real 	file:day20 	expected:821985143
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	descriptions := CreateDescriptions(data)
 	system := CreateSystem(descriptions)
@@ -27,6 +32,7 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:real 	file:day20 	expected:-1		skip:true
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	descriptions := CreateDescriptions(data)
 

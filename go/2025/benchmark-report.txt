@@ -1,5 +1,0 @@
-goos: darwin
-goarch: arm64
-pkg: aoc/2025/tasks/day1
-cpu: Apple M3 Max
-Benchmark/Task1/TestData(data)-14         	

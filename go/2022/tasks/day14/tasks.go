@@ -1,3 +1,5 @@
+//go:generate go run aoc/cmd/generate-tests
+
 package day14
 
 import (
@@ -10,6 +12,8 @@ import (
 	"strings"
 )
 
+// Task1 type:mock 	file:data	expected:24
+// Task1 type:real 	file:day14 	expected:799
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	cave := parse(data)
 
@@ -20,6 +24,8 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
+// Task2 type:mock 	file:data	expected:93
+// Task2 type:real 	file:day14 	expected:29076
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	cave := parse(data)
 

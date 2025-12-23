@@ -67,11 +67,12 @@ jobs:
     - name: Store benchmark result
       uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b #v1.20.7
       with:
+        name: Go ${{ inputs.year }}
         tool: 'go'
         output-file-path: go/${{ inputs.year }}/benchmark-report-${{ inputs.year }}.txt
-        external-data-json-path: benchmark-data/go-${{ inputs.year }}.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         summary-always: true
+        auto-push: true
 
     - name: Archive benchmark report
       uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f #v6.0.0

@@ -38,8 +38,6 @@ func hash(vertex Vertex) string {
 	return fmt.Sprintf("%v-%v-%v", vertex.Position.X, vertex.Position.Y, vertex.Type)
 }
 
-// Task1 type:mock 	file:data	expected:21
-// Task1 type:real 	file:day7 	expected:1570
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	lab, start := parse(data)
 	beams := lane.NewQueue[geo2d.Point](start.Neighbour(geo2d.South))
@@ -70,8 +68,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:40
-// Task2 type:real 	file:day7 	expected:15118009521693
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	lab, start := parse(data)
 

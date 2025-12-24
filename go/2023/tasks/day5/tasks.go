@@ -15,8 +15,6 @@ import (
 
 var seedsPattern = regexp.MustCompile(`seeds: ([\d\s]+)`)
 
-// Task1 type:mock 	file:data	expected:35
-// Task1 type:real 	file:day5 	expected:484023871
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.LineBlocks(data)
 	almanac := model.NewAlmanac(blocks[1:])
@@ -33,8 +31,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:46
-// Task2 type:real 	file:day5 	expected:46294175
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	blocks := tasks.LineBlocks(data)
 	almanac := model.NewAlmanac(blocks[1:])

@@ -12,8 +12,6 @@ import (
 	"github.com/samber/lo"
 )
 
-// Task1 type:mock 	file:data	expected:157
-// Task1 type:real 	file:day3	expected:8252
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	rucksacks := parse1(data)
 
@@ -34,8 +32,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:70
-// Task2 type:real 	file:day3 	expected:2828
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	groups := parse2(data)
 

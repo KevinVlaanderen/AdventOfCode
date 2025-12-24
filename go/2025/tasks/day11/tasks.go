@@ -11,8 +11,6 @@ import (
 	"github.com/samber/lo"
 )
 
-// Task1 type:mock 	file:data	expected:5
-// Task1 type:real 	file:day11 	expected:566
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	connections, deviceIndices := Parse(data)
 
@@ -37,8 +35,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data2	expected:2
-// Task2 type:real 	file:day11 	expected:331837854931968
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	connections, deviceIndices := Parse(data)
 

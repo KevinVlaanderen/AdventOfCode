@@ -16,8 +16,6 @@ type Galaxy struct {
 	id int
 }
 
-// Task1 type:mock 	file:data	expected:374
-// Task1 type:real 	file:day11 	expected:9418609
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	universe := NewUniverse(tasks.Lines(data))
 
@@ -26,7 +24,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:real 	file:day11 	expected:593821230983
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	universe := NewUniverse(tasks.Lines(data))
 

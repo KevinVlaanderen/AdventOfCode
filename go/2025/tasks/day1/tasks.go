@@ -8,14 +8,10 @@ import (
 	"strconv"
 )
 
-// Task1 type:mock 	file:data	param:false		expected:3
-// Task1 type:real 	file:day1 	param:false		expected:1023
 func Task1(data string, countPassing bool) (result tasks.Result[int]) {
 	return solve(data, countPassing)
 }
 
-// Task2 type:mock 	file:data	param:true		expected:6
-// Task2 type:real 	file:day1 	param:true		expected:5899
 func Task2(data string, countPassing bool) (result tasks.Result[int]) {
 	return solve(data, countPassing)
 }

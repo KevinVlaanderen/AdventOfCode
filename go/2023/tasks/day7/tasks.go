@@ -12,8 +12,6 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-// Task1 type:mock 	file:data	expected:6440
-// Task1 type:real 	file:day7 	expected:251216224
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	hands := parseHands(data, &cardMap1, false)
 
@@ -28,8 +26,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:5905
-// Task2 type:real 	file:day7 	expected:250825971
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	hands := parseHands(data, &cardMap2, true)
 

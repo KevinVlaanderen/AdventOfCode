@@ -10,8 +10,6 @@ import (
 	"strconv"
 )
 
-// Task1 type:mock 	file:data	expected:21
-// Task1 type:real 	file:day8 	expected:1792
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	grid := parse(data)
 
@@ -28,8 +26,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:8
-// Task2 type:real 	file:day8 	expected:334880
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	grid := parse(data)
 

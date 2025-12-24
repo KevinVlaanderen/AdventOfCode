@@ -22,8 +22,6 @@ type MachineDescription struct {
 	targetJoltages []uint
 }
 
-// Task1 type:mock 	file:data	expected:7
-// Task1 type:real 	file:day10 	expected:404
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	machines := Parse(data)
 
@@ -38,8 +36,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:33
-// Task2 type:real 	file:day10 	expected:16474
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	machines := Parse(data)
 

@@ -36,8 +36,6 @@ var words = map[string]int{
 	"nine":  9,
 }
 
-// Task1 type:mock 	file:data	expected:142
-// Task1 type:real 	file:day1 	expected:54081
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	lookup := digits
 
@@ -47,8 +45,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data2	expected:281
-// Task2 type:real 	file:day1 	expected:54649
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	lookup := lo.Assign(digits, words)
 

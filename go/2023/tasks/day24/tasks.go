@@ -13,8 +13,6 @@ import (
 	"gonum.org/v1/gonum/spatial/r3"
 )
 
-// Task1 type:mock 	file:data	param:"7,27"								expected:2
-// Task1 type:real 	file:day24	param:"200000000000000,400000000000000"		expected:21843
 func Task1(data string, param string) (result tasks.Result[int]) {
 	hailstones := parse(data, true)
 

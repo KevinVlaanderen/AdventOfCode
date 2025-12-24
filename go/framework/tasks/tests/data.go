@@ -11,8 +11,8 @@ import (
 type DataType string
 
 const (
-	Mock DataType = "Mock"
-	Real          = "Real"
+	Mock DataType = "mock"
+	Real          = "real"
 )
 
 type DataDescriptor struct {

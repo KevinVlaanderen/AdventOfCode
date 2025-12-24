@@ -17,8 +17,6 @@ import (
 	"github.com/samber/lo"
 )
 
-// Task1 type:mock 	file:data	expected:5
-// Task1 type:real 	file:day22 	expected:424
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	bricks := parse(data)
 
@@ -39,8 +37,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:7
-// Task2 type:real 	file:day22 	expected:55483
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	bricks := parse(data)
 

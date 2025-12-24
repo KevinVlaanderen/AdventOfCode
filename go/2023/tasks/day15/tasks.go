@@ -12,9 +12,6 @@ import (
 	"github.com/samber/lo"
 )
 
-// Task1 type:mock 	file:data	expected:52
-// Task1 type:mock 	file:data2	expected:1320
-// Task1 type:real 	file:day15 	expected:505427
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	words := strings.Split(tasks.Lines(data)[0], ",")
 	hashCalculator := createHashCalculator()
@@ -26,8 +23,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data2	expected:145
-// Task2 type:real 	file:day15 	expected:243747
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	hashCalculator := createHashCalculator()
 	instructions := lo.Map(strings.Split(tasks.Lines(data)[0], ","), func(word string, index int) model.Instruction {

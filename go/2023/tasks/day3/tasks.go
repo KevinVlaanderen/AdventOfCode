@@ -11,8 +11,6 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-// Task1 type:mock 	file:data	expected:4361
-// Task1 type:real 	file:day3 	expected:546312
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	schematic := parse(data)
 
@@ -29,8 +27,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:467835
-// Task2 type:real 	file:day3 	expected:87449461
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	schematic := parse(data)
 

@@ -15,8 +15,6 @@ import (
 	"github.com/samber/lo"
 )
 
-// Task1 type:mock 	file:data	expected:10605
-// Task1 type:real 	file:day11 	expected:76728
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	monkeys := parse(data)
 

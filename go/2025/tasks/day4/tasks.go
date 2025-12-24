@@ -9,8 +9,6 @@ import (
 	"go/types"
 )
 
-// Task1 type:mock 	file:data	expected:13
-// Task1 type:real 	file:day4 	expected:1491
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	rolls := parse(data)
 	minX, minY, maxX, maxY := rolls.Bounds()
@@ -26,8 +24,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:43
-// Task2 type:real 	file:day4 	expected:8722
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	rolls := parse(data)
 	minX, minY, maxX, maxY := rolls.Bounds()

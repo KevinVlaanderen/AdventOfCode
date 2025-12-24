@@ -15,8 +15,6 @@ import (
 type Elf = []Calories
 type Calories = int
 
-// Task1 type:mock 	file:data	expected:24000
-// Task1 type:real 	file:day1 	expected:67027
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	elfs := parse(data)
 
@@ -32,8 +30,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:45000
-// Task2 type:real 	file:day1 	expected:197291
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	elfs := parse(data)
 

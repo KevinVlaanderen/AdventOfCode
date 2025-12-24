@@ -12,8 +12,6 @@ import (
 	lop "github.com/samber/lo/parallel"
 )
 
-// Task1 type:mock 	file:data	expected:114
-// Task1 type:real 	file:day9 	expected:1993300041
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	reports := parse(data)
 
@@ -24,8 +22,6 @@ func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	return
 }
 
-// Task2 type:mock 	file:data	expected:2
-// Task2 type:real 	file:day9 	expected:1038
 func Task2(data string, _ types.Nil) (result tasks.Result[int]) {
 	reports := parse(data)
 

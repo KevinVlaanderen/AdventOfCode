@@ -38,8 +38,6 @@ func (g *Graph) Neighbours(point pathfinding.PointWithDirection, _ geo2d.Neighbo
 	return points
 }
 
-// Task1 type:mock 	file:data	expected:102	skip:true
-// Task1 type:real 	file:day17 	expected:-1		skip:true
 func Task1(data string, _ types.Nil) (result tasks.Result[int]) {
 	g, width, height := parse(data)
 

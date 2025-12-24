@@ -1,5 +1,3 @@
-//go:generate go run aoc/cmd/generate-tests
-
 package day25
 
 import (

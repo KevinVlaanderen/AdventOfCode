@@ -1,4 +1,0 @@
-[submodule "data"]
-	path = data
-	url = git@github.com:KevinVlaanderen/AdventOfCode-data.git
-	branch = main
